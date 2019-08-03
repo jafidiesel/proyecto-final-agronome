@@ -8,6 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TableComponent implements OnInit {
 
   @Input() tableData: any[];
+  tableDataHeader : any[];
+  tableDataRow : any[];
+  tableLong: number;
+
   dummyTableData: any[] = [
     0,
     1,
@@ -17,10 +21,11 @@ export class TableComponent implements OnInit {
   ];
 
   constructor() { 
-
   }
-
+  
   ngOnInit() {
+    this.tableDataHeader = this.tableData.slice(0,1);
+    this.tableDataRow = this.tableData.slice(1,this.tableData.length);
   }
 
 }
