@@ -5,21 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 /* own imports */
-import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { ActividadesModule } from './actividades/actividades.module';
-import { TableComponent } from './components/shared/table/table.component';
+import { CoreCommonModule  } from './core-common/core-common.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent,
-    NavbarComponent,
-    TableComponent
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CoreCommonModule, // Con esto ya se puede utilizar los componentes que estan dentro de CoreCommonModule
+
     ActividadesModule // Feature Module
   ],
   providers: [],
