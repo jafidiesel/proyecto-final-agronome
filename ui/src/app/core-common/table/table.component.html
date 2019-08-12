@@ -1,0 +1,16 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr *ngFor="let dataHeader of tableDataHeader">
+                <th scope="col" *ngFor="let col of dataHeader">{{ col }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dataRow of tableDataRow">
+                <td *ngFor="let row of dataRow">{{ row }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+<a href="#" class="btn btn-primary">Ver</a>

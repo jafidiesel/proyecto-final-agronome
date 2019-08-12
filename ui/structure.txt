@@ -1,0 +1,54 @@
+- src
+    - app.module
+            - login.module
+            - dashboard.module
+                - pages/
+                    - actividad-page.component
+                    - planificacion-page.component
+                    - recursos-page.component
+                    - fincas-page.component
+                    - recomendaciones-page.component
+                    - seguridad-page.component
+                    - configuracion-page.component
+                    - reportes-page.component
+
+                - components
+                    - actividad/
+                        - libro-de-campo.component
+                        - listar-actividades.component
+                        - actividad-detalle.component (para la visualizacion)
+                        - actividad-form.component (para la alta y modificacion)
+                    - planificacion/
+                        - listar-planificaciones.component
+                        - planificacion-detalle.component (para la visualizacion)
+                        - planificacion-form.component (para la alta y modificacion)
+                        - analisis-detalle.component
+                        - analisis-form.component
+                        - plan-detalle.component
+                        - plan-form.component
+                    -recursos/
+                        - listar-recursos.component
+                        - recurso-detalle.component (para la visualizacion)
+                        - recurso-form.component (para la alta y modificacion)
+                    - fincas/
+                        - listar-fincas.component
+                        - finca-detalle.component (para la visualizacion)
+                        - finca-form.component (para la alta y modificacion)
+                    - recomendaciones/
+                        - listar-recomendaciones.component
+                        - recomendacion-detalle.component (para la visualizacion)
+                        - recomendacion-form.component (para la alta y modificacion)
+                    - seguridad/
+                        - listar-usuarios-activos.component
+                        - usuario-detalle.component (para la visualizacion)
+                        - usuario-form.component (para la alta y modificacion)
+                    - configuracion/
+                        - listar-configuracion.component
+                        - usuario-detalle.component (para la visualizacion)
+                        - usuario-form.component (para la alta y modificacion)
+                    - reportes-page.component
+                    
+            - shared.module
+                - sidebar.component
+                - header.component
+                - table.component
