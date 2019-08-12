@@ -13,6 +13,7 @@ import { ConfiguracionPageComponent } from './pages/configuracion-page/configura
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 import { RouterModule } from '@angular/router';
+import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
 
 
 
@@ -26,7 +27,8 @@ import { RouterModule } from '@angular/router';
     SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
-    DashboardPageComponent
+    DashboardPageComponent,
+    LibroDeCampoComponent
   ],
   imports: [
     CommonModule,
