@@ -7,19 +7,18 @@ import { AppComponent } from './app.component';
 /* own imports */
 import { ActividadesModule } from './actividades/actividades.module';
 import { CoreCommonModule  } from './core-common/core-common.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CoreCommonModule, // Con esto ya se puede utilizar los componentes que estan dentro de CoreCommonModule
-
-    ActividadesModule // Feature Module
+    CoreCommonModule, // Common purpouse components
+    DashboardModule, // App main module
+   // ActividadesModule // Feature Module
   ],
   providers: [],
   bootstrap: [AppComponent]

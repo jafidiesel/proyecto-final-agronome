@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LibroDeCampoComponent } from './libro-de-campo/libro-de-campo.component';
+//import { TableComponent } from '../components/shared/table/table.component';
 
 
 
 @NgModule({
   declarations: [
-    LibroDeCampoComponent
+    LibroDeCampoComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+   // TableComponent,
   ],
   exports: [
-    LibroDeCampoComponent
+    LibroDeCampoComponent // required to use the module component from the outside
   ]
 })
 export class ActividadesModule { }

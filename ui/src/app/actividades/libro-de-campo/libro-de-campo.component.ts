@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./libro-de-campo.component.css']
 })
 export class LibroDeCampoComponent implements OnInit {
-  cantLC: any[] = [1, 2, 3, 4, 5];
+  cantLC: any[] = [1, 2, 3, 4];
 
   constructor() { }
 
