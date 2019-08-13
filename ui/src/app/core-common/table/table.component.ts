@@ -11,6 +11,8 @@ export class TableComponent implements OnInit {
   tableDataHeader : any[];
   tableDataRow : any[];
   tableLong: number;
+  @Input() tableCss: any;
+  @Input() hasLinks: any;
 
   dummyTableData: any[] = [
     0,
