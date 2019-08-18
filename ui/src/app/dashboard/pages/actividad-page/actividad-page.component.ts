@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LibroDeCampoComponent } from '../../components/actividad/libro-de-campo/libro-de-campo.component';
 import { ActividadService } from '../../services/actividad/actividad.service';
 
 
