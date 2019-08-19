@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfiguracionService } from '../../../services/configuracion/configuracion.service';
 
 @Component({
   selector: 'app-listar-actividades',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./listar-actividades.component.css']
 })
 export class ListarActividadesComponent implements OnInit {
+  actividadesMockedData: any;
 
-  constructor() { }
+  constructor(private _configuracionService: ConfiguracionService) {
+    this.actividadesMockedData = this._configuracionService.getActividadData();
+   }
 
   ngOnInit() {
   }
