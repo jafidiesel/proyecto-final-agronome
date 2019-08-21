@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
@@ -56,7 +56,7 @@ import { ModificarParametroComponent } from './pages/configuracion/parametro/mod
     CommonModule,
     CoreCommonModule,
     RouterModule,
-    FontAwesomeModule
+    
   ],
   exports: [
     ActividadPageComponent,
