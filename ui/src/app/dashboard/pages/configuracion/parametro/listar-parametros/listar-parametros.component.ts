@@ -3,8 +3,7 @@ import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/c
 
 @Component({
   selector: 'app-listar-parametros',
-  templateUrl: './listar-parametros.component.html',
-  styleUrls: ['./listar-parametros.component.css']
+  templateUrl: './listar-parametros.component.html'
 })
 export class ListarParametrosComponent implements OnInit {
 

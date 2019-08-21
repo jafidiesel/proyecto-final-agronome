@@ -14,7 +14,8 @@ import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/
 import { ListarPlanesComponent } from './dashboard/pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './dashboard/pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarNomencladoresComponent } from './dashboard/pages/configuracion/listar-nomencladores/listar-nomencladores.component';
-import { ListarParametrosComponent } from './dashboard/pages/configuracion/listar-parametros/listar-parametros.component';
+import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';
+import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
+  { path: 'configuracion/crear-parametro', component: CrearParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'configuracion' }

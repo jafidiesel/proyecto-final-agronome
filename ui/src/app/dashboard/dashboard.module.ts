@@ -24,7 +24,8 @@ import { ListarRecomendacionesComponent } from './pages/configuracion/listar-rec
 import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarNomencladoresComponent } from './pages/configuracion/listar-nomencladores/listar-nomencladores.component';
-import { ListarParametrosComponent } from './pages/configuracion/listar-parametros/listar-parametros.component';
+import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
+import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 
 
 
@@ -45,7 +46,8 @@ import { ListarParametrosComponent } from './pages/configuracion/listar-parametr
     ListarPlanesComponent,
     ListarAnalisisComponent,
     ListarNomencladoresComponent,
-    ListarParametrosComponent
+    ListarParametrosComponent,
+    CrearParametroComponent
   ],
   imports: [
     CommonModule,

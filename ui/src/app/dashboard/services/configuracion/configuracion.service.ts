@@ -13,10 +13,10 @@ export class ConfiguracionService {
   ];
 
   private parametroData = [
-    ['Nombre', 'Activo', 'Accion', ''],
-    ['Fitosanitaria', 'Si', '#/editar', '#/Desactivar'],
-    ['Fitosanitaria', 'Si', '#/editar', '#/Desactivar'],
-    ['Fitosanitaria', 'Si', '#/editar', '#/Desactivar']
+    ['Nombre', 'Activo', 'Tipo de dato', 'Tipo de parámetro', 'Accion', ''],
+    ['Hora de riego', 'Si', 'Time', 'Actividad', '#/editar', '#/Desactivar'],
+    ['Cantidad', 'Si', 'Number', 'Actividad', '#/editar', '#/Desactivar'],
+    ['Fecha', 'Si', 'Date', 'Recomendación', '#/editar', '#/Desactivar']
 ];
 
   private planData = [
