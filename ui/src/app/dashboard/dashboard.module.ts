@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
@@ -26,6 +27,7 @@ import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/l
 import { ListarNomencladoresComponent } from './pages/configuracion/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
+import { ModificarParametroComponent } from './pages/configuracion/parametro/modificar-parametro/modificar-parametro.component';
 
 
 
@@ -47,12 +49,14 @@ import { CrearParametroComponent } from './pages/configuracion/parametro/crear-p
     ListarAnalisisComponent,
     ListarNomencladoresComponent,
     ListarParametrosComponent,
-    CrearParametroComponent
+    CrearParametroComponent,
+    ModificarParametroComponent
   ],
   imports: [
     CommonModule,
     CoreCommonModule,
-    RouterModule
+    RouterModule,
+    FontAwesomeModule
   ],
   exports: [
     ActividadPageComponent,
