@@ -15,5 +15,4 @@ export class ListarParametrosComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
