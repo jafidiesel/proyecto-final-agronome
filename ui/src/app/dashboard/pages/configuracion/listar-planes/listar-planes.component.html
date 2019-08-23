@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-lg btn-success m-4">Crear Planes</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-table [tableData]="this.planesMockedData"></app-table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <button [routerLink]="['/configuracion']" type="button" class="btn btn-secondary btn-md">Volver</button>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive {{ tableCss }}">
     <table class="table table-hover">
         <thead>
             <tr *ngFor="let dataHeader of tableDataHeader">
@@ -7,10 +7,31 @@
         </thead>
         <tbody>
             <tr *ngFor="let dataRow of tableDataRow">
-                <td *ngFor="let row of dataRow">{{ row }}</td>
+                <td *ngFor="let row of dataRow">
+
+                    <span [ngSwitch]="row[0]">
+                        <div *ngSwitchCase="'*'">
+                            <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="btn btn-primary btn-sm"><fa-icon [icon]="faEdit"></fa-icon></button>
+                        </div>
+    
+                        <div *ngSwitchCase="'-'">
+                                <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="btn btn-primary btn-sm"><fa-icon [icon]="faPowerOff"></fa-icon></button>
+                            </div>
+
+                        <div *ngSwitchCase="'#'">
+                            <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="list-group-item list-group-item-action">{{ row.substr(2) }}</button>
+                        </div>
+                    
+                        <p *ngSwitchDefault>
+                            {{ row }}
+                        </p>
+                    </span>
+
+
+
+                </td>
             </tr>
 
         </tbody>
     </table>
 </div>
-<a href="#" class="btn btn-primary">Ver</a>
