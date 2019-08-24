@@ -2,3 +2,4 @@
 node_modules/
 __pycache__/
 migrations/__pycache__/
+app/__pycache__/

@@ -2,10 +2,8 @@ import os
 from flask_migrate import MigrateCommand
 from flask_script import Manager, Server
 from app.backend import create_api
+from app.model import hlmodel
 
-from app.model.hotel import Hotel
-from app.model.opcion import Opcion # creo qeu no hace falta esto
-from app.model.estadoPlanificacion import EstadoPlanificacion
 
 #el metodo create api es un metodo que crea traido del archivo backend
 
