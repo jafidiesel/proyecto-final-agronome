@@ -4,6 +4,7 @@ from flask_script import Manager, Server
 from app.backend import create_api
 
 from app.model.hotel import Hotel
+from app.model.estadoPlanificacion import EstadoPlanificacion
 
 #el metodo create api es un metodo que crea traido del archivo backend
 
