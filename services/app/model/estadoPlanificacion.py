@@ -9,6 +9,9 @@ class EstadoPlanificacion(db.Model):
     codEstadoPlanificacion = db.Column('cod_estado_planificacion', Integer,primary_key = True,index = True)
     nombreEstadoPlanificacion = db.Column('nombre_estado_planificacion', String(60), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
+    nombreEstado = db.Column('nombre_estado', String(60), nullable = True,  unique = True)
+    nombreEstado2 = db.Column('nombre_estado2', String(60), nullable = True,  unique = True)
+
 
     def __init__(self, nombreEstadoPlanificacion,isActiv):
         
