@@ -1,0 +1,43 @@
+crear enviroment 
+crear los requerimet que son librerias
+instalar las librerias 
+dar estructura al proyecto
+    -app.py: la semilla del proyecto
+    -config.py: configuraciones para el app, este archivo lee las variables de entorno de .enviroment
+    -.env: variables de configuraciones, variables de entorno
+    -backend: algunas funciones que necesita app que son diferentes a las config.py
+    -extensions.py: crea la app y la db
+comenzar con el archivo app
+    -import os: es una libreria para leer variables de entorno y manejar los path en la app
+    -Flask script: utilidades para correr el servidor, se agregan comandos  y luego se corre tal comando, como que se agrega un clave valor y luego se hace run en la clave
+
+Archivo config.py:
+    print(os.path.abspath(__file__)) #path de file actual
+    print(os.path.dirname(os.path.abspath(__file__))) #path del proyecto uno mas arriba que el archivo actual
+backend.py : 
+    inicial al api
+
+.env:
+    se usan en cofig.py los strings de variables de entorno
+
+modelo:
+    __tablename__ : nombre de la tabla en el modelo
+    LE FALTAN LOS INDEX
+    __init__ : constructor inicializador
+    from_json: json a modelo
+    to_json: modelo a json
+
+migraciones:
+    se usa una herramienta llamda alembic
+
+Validar codigo:
+    se valida el codigo porque hay algunos errores de sintaxis, se configura la uri para postgrest y se instala psycopg2
+
+hotel_apy.py:
+    jsonify: de diccionario a json
+    namespace: manejara los endpoints o rutas
+    se definen los protocolos http
+
+    estos names space se deben agregar en el backend y ahora a probar con postman
+
+postman:
