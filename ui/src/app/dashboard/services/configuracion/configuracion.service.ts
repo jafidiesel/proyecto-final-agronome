@@ -19,6 +19,12 @@ export class ConfiguracionService {
     ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/modificar-parametro', '-/Desactivar']
 ];
 
+  private opcionesParametro = [
+    'mañana',
+    'tarde',
+    'noche'
+  ];
+
   private planData = [
     ['Nombre', 'Activo', 'Accion', ''],
     ['Riego', 'Si', '*/editar', '-/Desactivar'],
@@ -54,6 +60,15 @@ export class ConfiguracionService {
   
   getParametroData() {
     return this.parametroData;
+  }
+  
+  getOpcionesParametrotroData() {
+    return this.opcionesParametro;
+  }
+  
+  setOpcionesParametrotroData(opcion:string) {
+    this.opcionesParametro.push(opcion);
+    console.log(this.opcionesParametro);
   }
 
   getPlanData() {

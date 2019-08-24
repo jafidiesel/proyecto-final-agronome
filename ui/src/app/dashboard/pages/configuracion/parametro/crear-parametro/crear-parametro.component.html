@@ -14,9 +14,9 @@
 
                     <div class="input-group mb-3">
                         <select class="custom-select" id="inputGroupSelect01">
-                    <option selected>Recomendacion</option>
-                    <option value="1">Actividad</option>
-                </select>
+                            <option selected>Recomendacion</option>
+                            <option value="1">Actividad</option>
+                       </select>
                     </div>
 
                 </div>
@@ -43,16 +43,18 @@
                 </div>
             </div>
             <div class="form-group row">
+                <app-table-pane [titleInput]="'Opciones'" [rows]="this.opcionesParametroMockedData"></app-table-pane>
+                
+            </div>
+
+            <div class="form-group row">
                 <div class="col-sm-12">
                     <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear</button>
                     <button [routerLink]="['/configuracion/listar-parametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col">
-            </div>
-        </div>
+
 
 
     </div>
