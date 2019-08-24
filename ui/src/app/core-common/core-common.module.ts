@@ -5,13 +5,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TablePaneComponent } from './table-pane/table-pane.component';
 
 
 @NgModule({
   declarations: [
     TableComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    TablePaneComponent
 
   ],
   imports: [
@@ -22,7 +24,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   exports: [
     TableComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    TablePaneComponent
   ]
 })
 export class CoreCommonModule { }
