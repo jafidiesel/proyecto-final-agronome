@@ -6,6 +6,8 @@ from app.backend import create_api
 from app.model.hotel import Hotel
 from app.model.opcion import Opcion # creo qeu no hace falta esto
 from app.model.estadoPlanificacion import EstadoPlanificacion
+from app.model.tipoPlanificacion import TipoPlanificacion
+from app.model.tipoAnalisis import TipoAnalisis
 
 #el metodo create api es un metodo que crea traido del archivo backend
 

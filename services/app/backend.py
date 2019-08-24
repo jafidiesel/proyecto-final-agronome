@@ -4,7 +4,7 @@ from app.extensions import api,db,migrate
 from app.api.hotel_api import hotels
 from app.api.estadoPlanificacion_api import estadoPlanificacion
 
-from config import config #ojo aca C o c
+from config import config 
 
 NAMESPACES = [
     hotels,
@@ -20,7 +20,7 @@ def create_api(environment_name=None):
     CORS(app)
 
     for namespace in NAMESPACES:
-        api.add_namespace(namespace)
+        api.add_namespace(namespace,path='/api')
 
     with app.app_context():
         db.init_app(app)

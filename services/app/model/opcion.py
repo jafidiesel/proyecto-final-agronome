@@ -1,7 +1,4 @@
-from sqlalchemy import Integer, String, Boolean
-from sqlalchemy.sql.schema import ForeignKey
-import enum
-from app.extensions import db
+from app.model.modelImport import *
 
 class Opcion(db.Model):
     __tablenombreOpcion__ = 'opcion'
