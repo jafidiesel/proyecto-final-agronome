@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 /* own imports */
 import { CoreCommonModule  } from './core-common/core-common.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    LoginModule,
     CoreCommonModule, // Common purpouse components
     DashboardModule, // App main module
 
