@@ -1,10 +1,43 @@
 # Ui
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+The instructions are for windows platform, linux people know how to handle.
 
-## Development server
+## Instalation node & npm
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Download and install [Node v10LTS](https://nodejs.org/es/)
+PS: be sure to have node in windows path variable and npm installed.
+
+#### Check instalation
+
+In a Command Prompt type:
+
+```
+node --version
+npm --version
+```
+
+
+## Instalation Angular
+
+In a Command Promp type:
+`npm install -g @angular/cli`
+
+#### Check instalation
+
+In a Command Prompt type:
+`ng --version`
+
+## Instalation AgronoMe
+
+Go to your repo folder
+Go to /ui/
+run:
+`npm install`
+
+## Run Development server
+
+Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
