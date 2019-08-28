@@ -1,16 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
 from app.extensions import api,db,migrate
-from app.api.hotel_api import hotels
 from app.api.estadoPlanificacion_api import estadoPlanificacion
-
+from app.api.helperApi.hlNamespaceBackend import NAMESPACES
 from config import config 
-
-NAMESPACES = [
-    hotels,
-    estadoPlanificacion
-]
-
 
 def create_api(environment_name=None):
     app= Flask(__name__)

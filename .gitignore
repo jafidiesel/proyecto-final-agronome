@@ -4,4 +4,4 @@ __pycache__/
 migrations/__pycache__/
 app/__pycache__/
 app/api/__pycache__/
-app/model/__pycache__/h
+app/model/__pycache__/

@@ -1,20 +1,18 @@
-from flask import jsonify
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource
+from app.api.helperApi.hlUrl import urlEstadoPlanificacion
+from app.api.helperApi.hlDb import saveEntidad,selectAll
 from app.extensions import db
 from app.model.estadoPlanificacion import EstadoPlanificacion
 
-estadoPlanificacion = Namespace('estadoPlanificacion')
+estadoPlanificacion = urlEstadoPlanificacion
 
 @estadoPlanificacion.route('')
 class EstadoPlanificacionHandler(Resource):
     def get(self):
-        estadosPlanificacion = EstadoPlanificacion.query.all()
-        return jsonify([estadoPlanificacion.to_json() for estadoPlanificacion in estadosPlanificacion])
+        return selectAll(EstadoPlanificacion)
     
     def post(self):
         data = self.api.payload
         estadoPlanificacion= EstadoPlanificacion.from_json(data)
-        db.session.add(estadoPlanificacion)
-        db.session.commit()
-        return jsonify(estadoPlanificacion.to_json())
+        return saveEntidad(estadoPlanificacion)
         
