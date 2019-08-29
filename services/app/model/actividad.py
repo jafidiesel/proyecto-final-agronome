@@ -6,6 +6,10 @@ class Actividad(db.Model):
     nombreActividad = db.Column('nombre_tipo_actividad', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
+    #Relaciones OneToMany lado Many
+    actividadParametro = relationship("ActividadParametro")
+
+
     def __init__(self, nombreActividad, isActiv):
         self.nombreActividad = nombreActividad
         self.isActiv = isActiv

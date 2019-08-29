@@ -6,6 +6,9 @@ class TipoDato(db.Model):
     nombreTipoDato = db.Column('nombre_tipo_dato', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
+    #Relaciones OneToMany lado Many
+    parametro = relationship("Parametro")
+
     def __init__(self, nombreTipoDato, isActiv):
         self.nombreTipoDato = nombreTipoDato
         self.isActiv = isActiv

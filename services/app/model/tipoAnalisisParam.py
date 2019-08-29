@@ -5,6 +5,7 @@ class TipoAnalisisParam(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True)
     codTipoAnalisisParam = db.Column('fk_cod_tipo_analisis',Integer,ForeignKey('tipo_analisis.cod_tipo_analisis'),index = True)
+    #PK compuesta
     __table_args__ = (
         PrimaryKeyConstraint(codParametro, codTipoAnalisisParam),
         {},

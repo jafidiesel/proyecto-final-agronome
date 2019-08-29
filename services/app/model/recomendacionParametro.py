@@ -5,11 +5,12 @@ class RecomendacionParametro(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True)
     codRecomendacion = db.Column('fk_cod_recomendacion',Integer,ForeignKey('recomendacion.cod_recomendacion'),index = True)
+    #PK compuesta
     __table_args__ = (
         PrimaryKeyConstraint(codParametro, codRecomendacion),
         {},
     )
-
+    
     def __init__(self,isActiv):
         self.isActiv = isActiv
 

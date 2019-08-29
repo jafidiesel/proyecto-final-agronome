@@ -5,7 +5,10 @@ class TipoPlan(db.Model):
     codTipoPlan = db.Column('cod_tipo_plan', Integer,primary_key = True,index = True)
     nombreTipoPlan = db.Column('nombre_tipo_plan', String(60), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-
+    
+    #Relaciones OneToMany lado Many
+    tipoPlanParam = relationship("TipoPlanParam")
+    
     def __init__(self, nombreTipoPlan, isActiv):
         self.nombreTipoPlan = nombreTipoPlan
         self.isActiv = isActiv

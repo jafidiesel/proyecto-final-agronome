@@ -5,8 +5,8 @@ class Opcion(db.Model):
     codOpcion = db.Column('cod_opcion',Integer, primary_key = True, index=True)
     nombreOpcion = db.Column('nombre_opcion',String(60), nullable=False,unique=True)
     isActiv = db.Column('is_activ',Boolean,nullable=True)
+    #Relaciones OneToMany lado Many
     parametroOpcion = relationship("ParametroOpcion")
-
 
     def __init__(self, nombreOpcion, isActiv):
         self.nombreOpcion = nombreOpcion

@@ -5,7 +5,8 @@ class TipoParametro(db.Model):
     codTipoParametro = db.Column('cod_tipo_parametro',Integer,primary_key = True,index = True)
     nombreTipoParametro = db.Column('nombre_tipo_parametro', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-    #Equivalente a indicar que TipoParametro esta relacionada a una coleccion de parametros
+      
+    #Relaciones OneToMany lado Many
     parametro = relationship("Parametro")
 
     def __init__(self, nombreTipoParametro, isActiv):
