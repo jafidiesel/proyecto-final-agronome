@@ -1,61 +1,53 @@
-<h3 class="m-4">Nuevo Parámetro</h3>
-<main role="main" class="container">
-    <div class="jumbotron">
-        <form>
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nombre" placeholder="Nombre">
-                </div>
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4">Nuevo Parámetro</h3>
             </div>
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Tipo Parámetro</label>
-                <div class="col-sm-10">
-
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Recomendacion</option>
-                            <option value="1">Actividad</option>
-                       </select>
-                    </div>
-
+            <form>
+                <div class="form-group">
+                    <label for="nameInput">Nombre</label>
+                    <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" placeholder="Ingrese nombre">
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Tipo Dato</label>
-                <div class="col-sm-10">
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="inputGroupSelect01">
-                    <option selected>String</option>
-                    <option value="1">Number</option>
-                </select>
-                    </div>
-
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-2">Activo</div>
-                <div class="col-sm-10">
-                    <div class="form-check m-2">
-                        <input class="form-check-input " type="checkbox" id="activo" checked>
-
+                <div class="form-group">
+                    <label for="parametroInput" class=" col-form-label">Tipo Parámetro</label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="parametroInput">
+                                <option selected>Recomendacion</option>
+                                <option value="1">Actividad</option>
+                           </select>
                     </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <app-table-pane [titleInput]="'Opciones'" [rows]="this.opcionesParametroMockedData"></app-table-pane>
-                
-            </div>
-
-            <div class="form-group row">
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear</button>
-                    <button [routerLink]="['/configuracion/listar-parametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                <div class="form-group">
+                    <label for="datoInput" class=" col-form-label">Tipo Dato</label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="datoInput">
+                        <option selected>String</option>
+                        <option value="1">Number</option>
+                    </select>
+                    </div>
                 </div>
-            </div>
-        </form>
 
+                <div class="form-group form-check">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="activoInput">
+                        <label class="custom-control-label" for="activoInput">Activo</label>
+                    </div>
+                </div>
 
+                <div class="form-group row">
+                    <app-table-pane [titleInput]="'Opciones'" [rows]="this.opcionesParametroMockedData"></app-table-pane>
 
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear</button>
+                        <button [routerLink]="['/configuracion/listar-parametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 </main>
