@@ -2,8 +2,8 @@ from app.model.modelImport import *
 
 class Actividad(db.Model):
     __tablename__ = 'actividad'
-    codActividad = db.Column('cod_tipo_actividad',Integer,primary_key = True,index = True)
-    nombreActividad = db.Column('nombre_tipo_actividad', String(32), nullable = False, unique = True)
+    codActividad = db.Column('cod_actividad',Integer,primary_key = True,index = True)
+    nombreActividad = db.Column('nombre_actividad', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
     #Relaciones OneToMany lado Many

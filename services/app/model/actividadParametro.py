@@ -4,7 +4,7 @@ class ActividadParametro(db.Model):
     __tablename__ = 'actividad_parametro'
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True)
-    codActividad = db.Column('fk_cod_actividad',Integer,ForeignKey('opcion.cod_actividad'),index = True)
+    codActividad = db.Column('fk_cod_actividad',Integer,ForeignKey('actividad.cod_actividad'),index = True)
     __table_args__ = (
         PrimaryKeyConstraint(codParametro, codActividad),
         {},

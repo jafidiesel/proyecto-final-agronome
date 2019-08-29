@@ -6,6 +6,7 @@ from app.model.tipoAnalisis import TipoAnalisis
 from app.model.tipoDato import TipoDato
 from app.model.tipoParametro import TipoParametro
 from app.model.actividad import Actividad
+from app.model.actividadParametro import ActividadParametro
 from app.model.permiso import Permiso
 from app.model.tipoPlan import TipoPlan
 from app.model.parametro import Parametro

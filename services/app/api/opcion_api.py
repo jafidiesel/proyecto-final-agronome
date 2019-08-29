@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlOpcion
-from app.api.helperApi.hlDb import saveEntidad, selectAll, selectCod
+from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod
 from app.model.opcion import Opcion
 
 
@@ -21,5 +21,5 @@ class OpcionsHandler(Resource):
 @opcion.route('/<int:id>')
 class OpcionHandler(Resource):
     def get(self, id):
-        return selectCod(Opcion,id) #solo funciona para codOpcion 
+        return selectByCod(Opcion,id) #solo funciona para codOpcion 
     
