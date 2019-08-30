@@ -6,6 +6,9 @@ class Recomendacion(db.Model):
     nombreRecomendacion = db.Column('nombre_recomendacion', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
+    nombreNomenclador = "recomendacion"
+
+
     def __init__(self, nombreRecomendacion, isActiv):
         self.nombreRecomendacion = nombreRecomendacion
         self.isActiv = isActiv
@@ -13,14 +16,15 @@ class Recomendacion(db.Model):
     @staticmethod
     def from_json(json):
         recomendacion = Recomendacion(
-            nombreRecomendacion=json.get('nombreRecomendacion'),
+            nombreRecomendacion=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return recomendacion
 
     def to_json(self):
         return {
-            'codRecomendacion': self.codRecomendacion,
-            'nombreRecomendacion': self.nombreRecomendacion,
+            'id': self.codRecomendacion,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreRecomendacion,
             'isActiv': self.isActiv
         }

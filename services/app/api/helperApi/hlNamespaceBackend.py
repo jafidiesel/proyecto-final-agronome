@@ -4,5 +4,5 @@ from app.api.opcion_api import opcion
 
 NAMESPACES = [
     estadoPlanificacion,
-    opcion
+    opcion    
 ]

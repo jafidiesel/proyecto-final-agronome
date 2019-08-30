@@ -9,6 +9,9 @@ class TipoDato(db.Model):
     #Relaciones OneToMany lado Many
     parametro = relationship("Parametro")
 
+    nombreNomenclador = "tipoDato"
+
+
     def __init__(self, nombreTipoDato, isActiv):
         self.nombreTipoDato = nombreTipoDato
         self.isActiv = isActiv
@@ -16,14 +19,15 @@ class TipoDato(db.Model):
     @staticmethod
     def from_json(json):
         tipoDato = TipoDato(
-            nombreTipoDato=json.get('nombreTipoDato'),
+            nombreTipoDato=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return tipoDato
 
     def to_json(self):
         return {
-            'codTipoDato': self.codTipoDato,
-            'nombreTipoDato': self.nombreTipoDato,
+            'id': self.codTipoDato,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreTipoDato,
             'isActiv': self.isActiv
         }

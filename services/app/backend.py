@@ -13,7 +13,7 @@ def create_api(environment_name=None):
     CORS(app)
 
     for namespace in NAMESPACES:
-        api.add_namespace(namespace,path='/api')
+        api.add_namespace(namespace)
 
     with app.app_context():
         db.init_app(app)

@@ -8,6 +8,9 @@ class Opcion(db.Model):
     #Relaciones OneToMany lado Many
     parametroOpcion = relationship("ParametroOpcion")
 
+    nombreNomenclador = "opcion"
+
+
     def __init__(self, nombreOpcion, isActiv):
         self.nombreOpcion = nombreOpcion
         self.isActiv = isActiv
@@ -16,14 +19,15 @@ class Opcion(db.Model):
     @staticmethod
     def from_json(json):
         opcion = Opcion(
-            nombreOpcion=json.get('nombreOpcion'),
+            nombreOpcion=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return opcion
 
     def to_json(self):
         return {
-            'codOpcion': self.codOpcion,
-            'nombreOpcion': self.nombreOpcion,
+            'id': self.codOpcion,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreOpcion,
             'isActiv': self.isActiv
         }

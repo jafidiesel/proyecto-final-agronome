@@ -7,6 +7,10 @@ class TipoAnalisis(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     #Relaciones OneToMany lado Many
     tipoAnalisisParam = relationship("TipoAnalisisParam")
+    nombreNomenclador = "tipoAnalisis"
+
+
+    
 
     def __init__(self, nombreTipoAnalisis, isActiv):
         self.nombreTipoAnalisis = nombreTipoAnalisis
@@ -15,14 +19,15 @@ class TipoAnalisis(db.Model):
     @staticmethod
     def from_json(json):
         tipoAnalisis = TipoAnalisis(
-            nombreTipoAnalisis=json.get('nombreTipoAnalisis'),
+            nombreTipoAnalisis=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return tipoAnalisis
 
     def to_json(self):
         return {
-            'codTipoAnalisis': self.codTipoAnalisis,
-            'nombreTipoAnalisis': self.nombreTipoAnalisis,
+            'id': self.codTipoAnalisis,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreTipoAnalisis,
             'isActiv': self.isActiv
         }

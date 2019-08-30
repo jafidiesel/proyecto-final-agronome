@@ -5,7 +5,7 @@ class Actividad(db.Model):
     codActividad = db.Column('cod_actividad',Integer,primary_key = True,index = True)
     nombreActividad = db.Column('nombre_actividad', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-
+    nombreNomenclador = "actividad"
     #Relaciones OneToMany lado Many
     actividadParametro = relationship("ActividadParametro")
 
@@ -17,14 +17,15 @@ class Actividad(db.Model):
     @staticmethod
     def from_json(json):
         actividad = Actividad(
-            nombreActividad=json.get('nombreActividad'),
+            nombreActividad=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return actividad
 
     def to_json(self):
         return {
-            'codActividad': self.codActividad,
-            'nombreActividad': self.nombreActividad,
+            'id': self.codActividad,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreActividad,
             'isActiv': self.isActiv
         }

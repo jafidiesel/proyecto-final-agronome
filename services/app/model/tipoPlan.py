@@ -1,4 +1,5 @@
 from app.model.modelImport import *
+from app.model.hlmodel import *
 
 class TipoPlan(db.Model):
     __tablename__ = 'tipo_plan'
@@ -8,7 +9,8 @@ class TipoPlan(db.Model):
     
     #Relaciones OneToMany lado Many
     tipoPlanParam = relationship("TipoPlanParam")
-    
+    nombreNomenclador = "tipoPlan"
+
     def __init__(self, nombreTipoPlan, isActiv):
         self.nombreTipoPlan = nombreTipoPlan
         self.isActiv = isActiv
@@ -16,15 +18,16 @@ class TipoPlan(db.Model):
     @staticmethod
     def from_json(json):
         tipoPlan = TipoPlan(
-            nombreTipoPlan=json.get('nombreTipoPlan'),
+            nombreTipoPlan=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return tipoPlan
 
     def to_json(self):
         return {
-            'codTipoPlan': self.codTipoPlan,
-            'nombreTipoPlan': self.nombreTipoPlan,
+            'id': self.codTipoPlan,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreTipoPlan,
             'isActiv': self.isActiv
         }
 

@@ -6,6 +6,9 @@ class Rol(db.Model):
     nombreRol = db.Column('nombre_rol', String(60), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
+    nombreNomenclador = "rol"
+
+
     def __init__(self, nombreRol, isActiv):
         self.nombreRol = nombreRol
         self.isActiv = isActiv
@@ -13,14 +16,15 @@ class Rol(db.Model):
     @staticmethod
     def from_json(json):
         rol = Rol(
-            nombreRol=json.get('nombreRol'),
+            nombreRol=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return rol
 
     def to_json(self):
         return {
-            'codRol': self.codRol,
-            'nombreRol': self.nombreRol,
+            'id': self.codRol,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombreRol,
             'isActiv': self.isActiv
         }
