@@ -3,31 +3,31 @@ from app.model.hlmodel import *
 
 class TipoPlan(db.Model):
     __tablename__ = 'tipo_plan'
-    codTipoPlan = db.Column('cod_tipo_plan', Integer,primary_key = True,index = True)
-    nombreTipoPlan = db.Column('nombre_tipo_plan', String(60), nullable = False,  unique = True)
+    cod = db.Column('cod_tipo_plan', Integer,primary_key = True,index = True)
+    nombre = db.Column('nombre_tipo_plan', String(60), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
     #Relaciones OneToMany lado Many
     tipoPlanParam = relationship("TipoPlanParam")
     nombreNomenclador = "tipoPlan"
 
-    def __init__(self, nombreTipoPlan, isActiv):
-        self.nombreTipoPlan = nombreTipoPlan
+    def __init__(self, nombre, isActiv):
+        self.nombre = nombreTipoPlan
         self.isActiv = isActiv
 
     @staticmethod
     def from_json(json):
         tipoPlan = TipoPlan(
-            nombreTipoPlan=json.get('nombre'),
+            nombre=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return tipoPlan
 
     def to_json(self):
         return {
-            'id': self.codTipoPlan,
+            'id': self.cod,
             'tipoNomenclador': self.nombreNomenclador,
-            'nombre': self.nombreTipoPlan,
+            'nombre': self.nombre,
             'isActiv': self.isActiv
         }
 

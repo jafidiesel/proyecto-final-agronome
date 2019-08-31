@@ -2,8 +2,8 @@ from app.model.modelImport import *
 
 class TipoParametro(db.Model):
     __tablename__ = 'tipo_parametro'
-    codTipoParametro = db.Column('cod_tipo_parametro',Integer,primary_key = True,index = True)
-    nombreTipoParametro = db.Column('nombre_tipo_parametro', String(32), nullable = False, unique = True)
+    cod= db.Column('cod_tipo_parametro',Integer,primary_key = True,index = True)
+    nombre= db.Column('nombre_tipo_parametro', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
       
     #Relaciones OneToMany lado Many
@@ -12,22 +12,22 @@ class TipoParametro(db.Model):
     nombreNomenclador = "tipoParametro"
 
 
-    def __init__(self, nombreTipoParametro, isActiv):
-        self.nombreTipoParametro = nombreTipoParametro
+    def __init__(self, nombre, isActiv):
+        self.nombre = nombre
         self.isActiv = isActiv
 
     @staticmethod
     def from_json(json):
         tipoParametro = TipoParametro(
-            nombreTipoParametro=json.get('nombre'),
+            nombre=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return tipoParametro
 
     def to_json(self):
         return {
-            'id': self.codTipoParametro,
+            'id': self.cod,
             'tipoNomenclador': self.nombreNomenclador,
-            'nombre': self.nombreTipoParametro,
+            'nombre': self.nombre,
             'isActiv': self.isActiv
         }
