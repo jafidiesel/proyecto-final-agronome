@@ -8,7 +8,7 @@ class Opcion(db.Model):
     #Relaciones OneToMany lado Many
     #parametroOpcion = relationship("ParametroOpcion")
 
-    #nombreNomenclador = "opcion"
+    nombreNomenclador = "opcion"
 
 
     def __init__(self, nombre, isActiv):

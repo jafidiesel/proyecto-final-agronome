@@ -1,41 +1,53 @@
-from app.model.opcion import Opcion
-from app.model.estadoPlanificacion import EstadoPlanificacion
+from app.model import hlmodel
 from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad
-
-
-modelos = {"opcion":Opcion,"estadoPlanificacion":EstadoPlanificacion}
+from app.api.helperApi.hlResponse import ResponseException
+modelos = {
+"actividad":hlmodel.Actividad,
+"estadoPlanificacion":hlmodel.EstadoPlanificacion,
+"opcion":hlmodel.Opcion,
+"permiso": hlmodel.Permiso,
+"recomendacion": hlmodel.Recomendacion,
+"recurso": hlmodel.Recurso,
+"rol": hlmodel.Rol,
+"tipoAnalisis": hlmodel.TipoAnalisis,
+"tipoCultivo": hlmodel.TipoCultivo,
+"tipoDato": hlmodel.TipoDato,
+"tipoParametro": hlmodel.TipoParametro,
+"tipoPlan": hlmodel.TipoPlan,
+"tipoPlanificacion": hlmodel.TipoPlanificacion,
+"tipoRecurso": hlmodel.TipoRecurso
+}
 
 def getNomenclador(data):
     try:
-        entidad = data.get('entidad')
+        entidad = data.get('tipoNomenclador')
         objetos = selectAll(modelos[entidad])
         return objetos 
-    except:
-        return ("mala sintaxis")
-
+    except Exception as e:
+        return ResponseException(e)
 
 def postNomenclador(data):
     try:
-        entidad = data.get('entidad')
+        entidad = data.get('tipoNomenclador')
         objeto = modelos[entidad].from_json(data)
         result =saveEntidad(objeto)
-        return result 
-    except:
-        return ("mala sintaxis")
+        return result
+    except Exception as e:
+        return ResponseException(e)
 
 
 def getNomencladoCod(data,id):
     try:
-        entidad = data.get('entidad')
+        entidad = data.get('tipoNomenclador')
         objeto = selectByCod(modelos[entidad],id)
         return objeto 
-    except:
-        return ("mala sintaxis")
+    except Exception as e:
+        return ResponseException(e)
 
 def putNomenclador(data,id):
     try:
-        entidad = data.get('entidad')
+        entidad = data.get('tipoNomenclador')
         objeto = updateEntidad(modelos[entidad],id,data)
         return objeto 
-    except:
-        return ("mala sintaxis")
+    except Exception as e:
+        return ResponseException(e)

@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from app.extensions import api,db,migrate
-from app.api.estadoPlanificacion_api import estadoPlanificacion
 from app.api.helperApi.hlNamespaceBackend import NAMESPACES
 from config import config 
 

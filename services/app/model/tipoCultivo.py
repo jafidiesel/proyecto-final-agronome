@@ -1,14 +1,11 @@
 from app.model.modelImport import *
 
-class Actividad(db.Model):
-    __tablename__ = 'actividad'
-    cod = db.Column('cod_actividad',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_actividad', String(32), nullable = False, unique = True)
+class TipoCultivo(db.Model):
+    __tablename__ = 'tipo_Cultivo'
+    cod = db.Column('cod_tipo_cultivo',Integer,primary_key = True,index = True)
+    nombre = db.Column('nombre_tipo_cultivo', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-    nombreNomenclador = "actividad"
-    #Relaciones OneToMany lado Many
-    actividadParametro = relationship("ActividadParametro")
-
+    nombreNomenclador = "tipoCultivo"
 
     def __init__(self, nombre, isActiv):
         self.nombre = nombre
@@ -16,11 +13,11 @@ class Actividad(db.Model):
 
     @staticmethod
     def from_json(json):
-        actividad = Actividad(
+        tipoCultivo = TipoCultivo(
             nombre=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
-        return actividad
+        return tipoCultivo
 
     def to_json(self):
         return {

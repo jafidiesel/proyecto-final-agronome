@@ -1,5 +1,5 @@
 from app.model.modelImport import *
-from app.model.hlmodel import *
+
 
 class TipoPlan(db.Model):
     __tablename__ = 'tipo_plan'
@@ -12,7 +12,7 @@ class TipoPlan(db.Model):
     nombreNomenclador = "tipoPlan"
 
     def __init__(self, nombre, isActiv):
-        self.nombre = nombreTipoPlan
+        self.nombre = nombre
         self.isActiv = isActiv
 
     @staticmethod
