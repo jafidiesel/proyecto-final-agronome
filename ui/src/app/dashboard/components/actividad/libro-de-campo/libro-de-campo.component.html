@@ -1,10 +1,7 @@
-<a class="btn btn-success btn-lg" href="#" role="button">Crear Actividad</a>
-<br>
+<a class="btn btn-success btn-lg m-3" href="#" role="button">Crear Actividad</a>
 
-<br>
-
-<div class="card-deck row">
-    <div class="card border-gray col-md" *ngFor="let i of cantLC" style="min-width: 300px;">
+<div class="card-deck row ">
+    <div class="card border-gray col-md m-2" *ngFor="let i of cantLC" style="min-width: 300px;">
         <div class="card-header">Libro de Campo n° {{i}}</div>
         <div class="card-body text-dark">
             <app-table [tableData]="[['Fecha', 'Actividad'],['10/05/2019','Riego'],['10/05/2019','Riego'],['10/05/2019','Siembra']]"></app-table>
