@@ -7,13 +7,13 @@
             <form>
                 <div class="form-group">
                     <label for="nameInput">Nombre</label>
-                    <input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp" placeholder="Ingrese nombre">
+                    <input type="text" class="form-control" id="nameInput" name="nameInput" aria-describedby="nameHelp" placeholder="Ingrese nombre" [(ngModel)]="nameInput">
                 </div>
                 <div class="form-group">
                     <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
                     <div class="input-group ">
-                        <select class="custom-select" id="parametroInput">
-                                <option selected>estadoPlanificacion</option>
+                        <select [(ngModel)]="tipoNomencladorInput" class="custom-select" id="tipoNomencladorInput" name="tipoNomencladorInput">
+                                <option selected value="0">estadoPlanificacion</option>
                                 <option value="1">tipoActividad</option>
                            </select>
                     </div>
@@ -21,7 +21,7 @@
 
                 <div class="form-group form-check">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="activoInput">
+                        <input [(ngModel)]="activoInput" type="checkbox" class="custom-control-input" id="activoInput" name="activoInput">
                         <label class="custom-control-label" for="activoInput">Activo</label>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
 
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear</button>
+                        <button type="button" class="btn btn-success btn-lg float-right mr-5" (click)="this.imprimir()">Crear</button>
                         <button [routerLink]="['/configuracion/listar-nomencladores']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
