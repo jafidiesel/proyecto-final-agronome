@@ -1,58 +1,34 @@
+# AgronoMe
+## back-end
 <a name="top"></a>
 # AgronoMe Services
 
 API REST endopints
 
 - [Actividad](#actividad)
-	- [Registrar Actividad](#crear-actividad)
+	- [Crear Actividad](#crear-actividad)
     - [Consultar Actividad](#consultar-actividad)
-    - [Modificar Actividad](#crear-actividad)
-    - [Eliminar Actividad](#crear-actividad)
     - [Consultar Actividades](#consultar-actividades)
 
 - [Planificacion](#)
 	- [Crear Planificacion](#read)
     - [Consultar Planificacion](#read)
-    - [Crear Analisis](#read)
-    - [Consultar Analisis](#read)
-    - [Modificar Analisis](#read)
-    - [Eliminar Analisis](#read)
-    - [Crear Plan](#read)
-    - [Consultar Plan](#read)
-    - [Modificar Plan](#read)
-    - [Eliminar Plan](#read)
     - [Consultar Planificaciones](#read)
     
 - [Finca](#)
 	- [Crear Finca](#read)
-	- [Modificar Finca](#read)
     - [Consultar Finca](#read)
-    - [Consultar Fincas](#read)
-    - [Crear Supervisor](#read)
-    - [Modificar Supervisor](#read)
-    - [Eliminar Supervisor](#read)
+    - [Consultar Finca](#read)
 
 - [Recurso](#)
 	- [Crear Recurso](#read)
     - [Consultar Recurso](#read)
-    - [Modificar Recurso](#read)
-    - [Eliminar Recurso](#read)
     - [Consultar Recursos](#read)
 
 - [Seguridad](#)
-	- [Crear Usuario](#read)
-	- [Modificar Usuario](#read)
-	- [Eliminar Usuario](#read)
-	- [Crear Rol](#read)
-	- [Modificar Rol](#read)
-	- [Eliminar Rol](#read)
-    - [Consultar Usuarios](#read)
-    - [Consultar Roles](#read)
-    - [Consultar Usuarios Activos](#read)
-
-- [Sesion](#)
-	- [Log In](#read)
-	- [Blanquear Contraseña](#read)
+	- [Crear Recurso](#read)
+    - [Consultar Recurso](#read)
+    - [Consultar Recursos](#read)
 
 - [Configuracion](#configuracion)
 	- [Crear Nomenclador](#crear-nomenclador)
@@ -71,14 +47,13 @@ API REST endopints
     - [Consultar Nomencladores recomendacion](#get-nomencladores-recomendacion)
     
 - [Reporte](#)
-	- [Generar Reporte](#read)
+	- [Crear Reporte](#read)
     - [Consultar Reporte](#read)
     - [Consultar Reportes](#read)
 
 - [Recomendacion](#)
-	- [Registrar Recomendacion](#read)
+	- [Crear Recomendacion](#read)
     - [Consultar Recomendacion](#read)
-    - [Consultar Actividades a Recomendar](#read)
     - [Consultar Recomendaciones](#read)
 
 # <a name='configuracion'></a> Configuracion
