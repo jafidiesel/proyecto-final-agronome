@@ -5,6 +5,10 @@ class ParametroOpcion(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True)
     codOpcion = db.Column('fk_cod_opcion',Integer,ForeignKey('opcion.cod_opcion'),index = True)
+    #Agregar relationship hacia parametro
+    parametro = relationship('Parametro',cascade="save-update")
+    opcion = relationship('Opcion',cascade="save-update")
+
     #PK compuesta
     __table_args__ = (
         PrimaryKeyConstraint(codParametro, codOpcion),

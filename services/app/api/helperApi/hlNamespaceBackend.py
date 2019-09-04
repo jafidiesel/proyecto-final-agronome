@@ -1,9 +1,9 @@
-from app.api.estadoPlanificacion_api import estadoPlanificacion
-from app.api.opcion_api import opcion
+
 from app.api.nomenclador_api import nomenclador
+from app.api.parametro_api import parametro
+
 
 NAMESPACES = [
-    estadoPlanificacion,
-    opcion,
-    nomenclador    
+    nomenclador,
+    parametro
 ]
