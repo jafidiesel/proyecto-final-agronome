@@ -1,14 +1,11 @@
+from app.model.modelImport import *
+
 class TipoCultivo(db.Model):
-    __tablename__ = 'tipo_cultivo'
+    __tablename__ = 'tipo_Cultivo'
     cod = db.Column('cod_tipo_cultivo',Integer,primary_key = True,index = True)
-    nombre= db.Column('nombre_tipo_cultivo', String(32), nullable = False, unique = True)
+    nombre = db.Column('nombre_tipo_cultivo', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-
-    #Relaciones OneToMany lado Many
-    parametro = relationship("Parametro")
-
     nombreNomenclador = "tipoCultivo"
-
 
     def __init__(self, nombre, isActiv):
         self.nombre = nombre

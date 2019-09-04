@@ -2,25 +2,28 @@ from app.model.modelImport import *
 
 class Permiso(db.Model):
     __tablename__ = 'permiso'
-    codPermiso = db.Column('cod_permiso',  Integer,primary_key = True,index = True)
-    nombrePermiso = db.Column('nombre_permiso', String(60), nullable = False,  unique = True)
+    cod = db.Column('cod_permiso',  Integer,primary_key = True,index = True)
+    nombre = db.Column('nombre_permiso', String(60), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
-    def __init__(self, nombrePermiso, isActiv):
-        self.nombrePermiso = nombrePermiso
+    nombreNomenclador = "permiso"
+
+    def __init__(self, nombre, isActiv):
+        self.nombre = nombre
         self.isActiv = isActiv
 
     @staticmethod
     def from_json(json):
         permiso = Permiso(
-            nombrePermiso=json.get('nombrePermiso'),
+            nombre=json.get('nombre'),
             isActiv=json.get('isActiv')
             )
         return permiso
 
     def to_json(self):
         return {
-            'codPermiso': self.codPermiso,
-            'nombrePermiso': self.nombrePermiso,
+            'id': self.cod,
+            'tipoNomenclador': self.nombreNomenclador,
+            'nombre': self.nombre,
             'isActiv': self.isActiv
         }

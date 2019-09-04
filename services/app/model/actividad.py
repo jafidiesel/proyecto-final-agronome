@@ -25,7 +25,7 @@ class Actividad(db.Model):
     def to_json(self):
         return {
             'id': self.cod,
-            'tipoNomenclador': self.nombre,
+            'tipoNomenclador': self.nombreNomenclador,
             'nombre': self.nombre,
             'isActiv': self.isActiv
         }
