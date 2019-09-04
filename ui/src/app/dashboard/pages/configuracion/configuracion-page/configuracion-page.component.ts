@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-configuracion-page',
-  templateUrl: './configuracion-page.component.html',
-  styleUrls: ['./configuracion-page.component.css']
+  templateUrl: './configuracion-page.component.html'
 })
 export class ConfiguracionPageComponent implements OnInit {
   configurationButtons: any[] = [

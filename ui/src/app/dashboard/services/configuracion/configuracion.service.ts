@@ -7,9 +7,9 @@ export class ConfiguracionService {
 
   private nomencladorData = [
     ['Nombre', 'Activo', 'Tipo Nomenclador', 'Accion', ''],
-    ['En Curso', 'Si', 'EstadoPlanificacion', '*/editar', '-/Desactivar'],
-    ['Inicial', 'Si', 'TipoPlanificacion', '*/editar', '-/Desactivar'],
-    ['Supervisada', 'Si', 'TipoPlanificacion', '*/editar', '-/Desactivar']
+    ['En Curso', 'Si', 'EstadoPlanificacion', '*/configuracion/modificar-parametro', '-/Desactivar'],
+    ['Inicial', 'Si', 'TipoPlanificacion', '*/configuracion/editar-nomenclador', '-/Desactivar'],
+    ['Supervisada', 'Si', 'TipoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar']
   ];
 
   private parametroData = [

@@ -17,7 +17,7 @@ export class CrearNomencladorComponent implements OnInit {
     console.log(headers);
 
     // http://127.0.0.1:4000/api/configuracion/nomenclador/1
-    this.http.get('https://restcountries.eu/rest/v2/lang/es' )
+    this.http.get('localhost:9001/api/configuracion/nomenclador' )
         .subscribe( Response => {
           console.log(Response);
         } );

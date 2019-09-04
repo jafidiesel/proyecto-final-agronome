@@ -30,6 +30,7 @@ import { ListarParametrosComponent } from './pages/configuracion/parametro/lista
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 import { ModificarParametroComponent } from './pages/configuracion/parametro/modificar-parametro/modificar-parametro.component';
 import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
+import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 
 
 
@@ -53,7 +54,8 @@ import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/cre
     ListarParametrosComponent,
     CrearParametroComponent,
     ModificarParametroComponent,
-    CrearNomencladorComponent
+    CrearNomencladorComponent,
+    EditarNomencladorComponent
   ],
   imports: [
     CommonModule,

@@ -18,6 +18,7 @@ import { ListarParametrosComponent } from './dashboard/pages/configuracion/param
 import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 import { ModificarParametroComponent } from './dashboard/pages/configuracion/parametro/modificar-parametro/modificar-parametro.component';
 import { CrearNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
+import { EditarNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 
 
 const routes: Routes = [
@@ -35,12 +36,14 @@ const routes: Routes = [
   { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
+  { path: 'configuracion/editaNomenclador', component: EditarNomencladorComponent },
+  { path: 'configuracion/edita-nomenclador', component: EditarNomencladorComponent },
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
   { path: 'configuracion/modificar-parametro', component: ModificarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
-  { path: '**', pathMatch: 'full', redirectTo: 'configuracion' }
+  /* { path: '**', pathMatch: 'full', redirectTo: 'configuracion' } */
 ];
 
 @NgModule({
