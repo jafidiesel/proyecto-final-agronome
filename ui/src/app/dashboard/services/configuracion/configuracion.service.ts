@@ -7,16 +7,16 @@ export class ConfiguracionService {
 
   private nomencladorData = [
     ['Nombre', 'Activo', 'Tipo Nomenclador', 'Accion', ''],
-    ['En Curso', 'Si', 'EstadoPlanificacion', '*/configuracion/modificar-parametro', '-/Desactivar'],
-    ['Inicial', 'Si', 'TipoPlanificacion', '*/configuracion/editar-nomenclador', '-/Desactivar'],
+    ['En Curso', 'Si', 'EstadoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar'],
+    ['Inicial', 'Si', 'TipoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar'],
     ['Supervisada', 'Si', 'TipoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar']
   ];
 
   private parametroData = [
     ['Nombre', 'Activo', 'Tipo de dato', 'Tipo de parámetro', 'Accion', ''],
-    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/modificar-parametro', '-/Desactivar'],
-    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/modificar-parametro', '-/Desactivar'],
-    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/modificar-parametro', '-/Desactivar']
+    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
+    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
+    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/editarParametro', '-/Desactivar']
 ];
 
   private opcionesParametro = [

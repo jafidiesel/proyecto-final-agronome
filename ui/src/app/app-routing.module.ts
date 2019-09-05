@@ -13,10 +13,10 @@ import { ListarActividadesComponent } from './dashboard/pages/configuracion/list
 import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './dashboard/pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './dashboard/pages/configuracion/listar-analisis/listar-analisis.component';
-import { ListarNomencladoresComponent } from './dashboard/pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
-import { ModificarParametroComponent } from './dashboard/pages/configuracion/parametro/modificar-parametro/modificar-parametro.component';
+import { EditarParametroComponent } from './dashboard/pages/configuracion/parametro/editar-parametro/editar-parametro.component';
+import { ListarNomencladoresComponent } from './dashboard/pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { CrearNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
 import { EditarNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 
@@ -37,10 +37,10 @@ const routes: Routes = [
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
   { path: 'configuracion/editaNomenclador', component: EditarNomencladorComponent },
-  { path: 'configuracion/edita-nomenclador', component: EditarNomencladorComponent },
+  { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
-  { path: 'configuracion/modificar-parametro', component: ModificarParametroComponent },
+  { path: 'configuracion/editarParametro', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   /* { path: '**', pathMatch: 'full', redirectTo: 'configuracion' } */

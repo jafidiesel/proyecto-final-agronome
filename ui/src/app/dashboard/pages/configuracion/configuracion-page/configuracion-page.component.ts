@@ -6,12 +6,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfiguracionPageComponent implements OnInit {
   configurationButtons: any[] = [
+    ['Nomencladores', '/configuracion/listarNomencladores'],
+    ['Parámetros', '/configuracion/listarParametros'],
     ['Actividad', '/configuracion/listarActividades'],
     ['Recomendaciones', '/configuracion/listarRecomendaciones'],
     ['Planes', '/configuracion/listarPlanes'],
     ['Análisis', '/configuracion/listarAnalisis'],
-    ['Nomencladores', '/configuracion/listarNomencladores'],
-    ['Parámetros', '/configuracion/listarParametros'],
 
   ];
 

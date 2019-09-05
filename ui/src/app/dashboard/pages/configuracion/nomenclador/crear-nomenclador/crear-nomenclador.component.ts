@@ -11,17 +11,7 @@ export class CrearNomencladorComponent implements OnInit {
   tipoNomencladorInput: string;
   obj: any[];
 
-  constructor( private http: HttpClient ) {
-    const headers = new HttpHeaders()
-    .set("Content-Type", "application/json");
-    console.log(headers);
-
-    // http://127.0.0.1:4000/api/configuracion/nomenclador/1
-    this.http.get('localhost:9001/api/configuracion/nomenclador' )
-        .subscribe( Response => {
-          console.log(Response);
-        } );
-   }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
   }
@@ -34,5 +24,39 @@ export class CrearNomencladorComponent implements OnInit {
     };
 
     console.log( JSON.stringify( myobj ) );
+
+  }
+
+  crearNomenclador(){
+    let httpHeaders = new HttpHeaders()
+     .set('Content-Type', 'application/json');
+
+
+    let options = {
+      headers: httpHeaders
+    };
+
+    let url = 'http://localhost:7000/api/configuracion/nomenclador';
+
+    let myobj = {
+      nameInput: this.nameInput,
+      tipoNomencladorInput: this.tipoNomencladorInput,
+      activoInput: this.activoInput
+    };
+
+    this.http.post(
+        url,
+        myobj,
+        options
+        ).subscribe( (res: any)  => {
+          console.log(res);
+          console.log(res.data.nameInput);
+          $('#alerta').popover('show');
+        },
+        err => {
+          console.log(err.status);
+          }
+        );
+
   }
 }
