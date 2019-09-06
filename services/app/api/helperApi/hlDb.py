@@ -2,9 +2,6 @@ from flask import jsonify
 from app.extensions import db
 
 def saveEntidad(entidad):
-    print("En save entidad")
-    print(entidad.isActiv)
-    #print(entidad.to_json())
     print(db.session.add(entidad))
     print(db.session.commit())
     return jsonify(entidad.to_json())
@@ -14,6 +11,9 @@ def selectAll(entidad):
     objList=entidad.query.all()
     return jsonify([obj.to_json() for obj in objList])
 
+def selectAll2(entidad):
+    objList=entidad.query.all()
+    return objList
 
 def selectByCod(entidad,cod):
     obj = entidad.query.filter(entidad.cod==cod).first()

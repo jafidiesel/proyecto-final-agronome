@@ -5,10 +5,6 @@ class TipoParametro(db.Model):
     cod= db.Column('cod_tipo_parametro',Integer,primary_key = True,index = True)
     nombre= db.Column('nombre_tipo_parametro', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-      
-    #Relaciones OneToMany lado Many
-    #parametro = relationship("Parametro")
-
     nombreNomenclador = "tipoParametro"
 
 

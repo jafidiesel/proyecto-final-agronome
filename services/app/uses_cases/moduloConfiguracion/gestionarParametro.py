@@ -1,4 +1,4 @@
-from app.api.helperApi.hlDb import saveEntidad
+from app.api.helperApi.hlDb import saveEntidad,selectAll2
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 import json
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod2
@@ -25,27 +25,27 @@ def postParametro(data):
         parametroRst = Parametro.from_json(parametroJson)     
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
-        parametroOpcion = ParametroOpcion(True,parametroRst,opcionRst) 
-
-        rst2 =saveEntidad(parametroRst)
-
-        #Creacion  y persistencia de ParametroOpcion 
+        ParametroOpcion(True,parametroRst,opcionRst) 
         
-        print(parametroOpcion.parametro)
-        
-        #opcionRst.parametroOpcion.append(parametroOpcion)
-        #parametroRst.parametroOpcion.append(parametroOpcion)
-
-        saveEntidad(parametroOpcion)
-       # rst3 = getNomencladoCod2(rst2,rst2.get('id'))
+        saveEntidad(parametroRst)
         print("Despues de append")
-        
-        return rst2 
+      
+        return Ok 
     except:
+        
         return ("mala sintaxis")
-    #Asociar Parametro a TipoParametro
-    #Asociar Parametro a TipoDato
-    #Buscar opciones agregadas
-        #Crear ParametroOpcion
-        #Asociar ParametroOpcion a Opcion y Parametro
-    
+
+def putParametro(data):
+    return True
+
+#Obtener todos los parametros con sus asociaciones TipoParametro y TipoDato. Retorna Json
+def getParametros():
+    for obj in selectAll2(Parametro):
+        print(obj.nombre)
+        print(obj.to_json())
+        print(obj.to_json())
+
+    return True
+
+def getParametro():
+    return True
