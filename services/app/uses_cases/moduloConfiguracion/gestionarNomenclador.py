@@ -1,5 +1,5 @@
 from app.model import hlmodel
-from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad
+from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
 from app.api.helperApi.hlResponse import ResponseException
 modelos = {
 "actividad":hlmodel.Actividad,
@@ -48,6 +48,15 @@ def putNomenclador(data,id):
     try:
         entidad = data.get('tipoNomenclador')
         objeto = updateEntidad(modelos[entidad],id,data)
+        return objeto 
+    except Exception as e:
+        return ResponseException(e)
+
+def getNomencladoCod2(data,id):
+    try:
+        print(data)
+        entidad = data.get('tipoNomenclador')
+        objeto = selectByCod2(modelos[entidad],id)
         return objeto 
     except Exception as e:
         return ResponseException(e)

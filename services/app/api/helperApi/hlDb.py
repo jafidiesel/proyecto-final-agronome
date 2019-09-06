@@ -2,8 +2,11 @@ from flask import jsonify
 from app.extensions import db
 
 def saveEntidad(entidad):
-    db.session.add(entidad)
-    db.session.commit()
+    print("En save entidad")
+    print(entidad.isActiv)
+    #print(entidad.to_json())
+    print(db.session.add(entidad))
+    print(db.session.commit())
     return jsonify(entidad.to_json())
 
 
@@ -26,3 +29,7 @@ def updateEntidad(entidad,cod,data):
 
     db.session.commit()
     return jsonify(obj.to_json())
+
+def selectByCod2(entidad,cod):
+    obj = entidad.query.filter(entidad.cod==cod).first()
+    return obj

@@ -7,7 +7,7 @@ class TipoParametro(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
       
     #Relaciones OneToMany lado Many
-    parametro = relationship("Parametro")
+    #parametro = relationship("Parametro")
 
     nombreNomenclador = "tipoParametro"
 
