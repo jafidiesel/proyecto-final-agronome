@@ -1,8 +1,7 @@
+from flask import jsonify
 from app.api.helperApi.hlDb import saveEntidad
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
-import json
-from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod2
-from app.extensions import db
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 
 def postParametro(data): 
     try:
@@ -13,39 +12,26 @@ def postParametro(data):
         tipoDatoJson = data.get('tipoDato')
         opcionJson = data.get('opcion')
 
-        
         #Buscar instancias a asociar
-        tipoParametroRst = getNomencladoCod2(tipoParametroJson, tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod2(tipoDatoJson, tipoDatoJson.get('id'))
-        opcionRst = getNomencladoCod2(opcionJson,opcionJson.get('id'))
-        #Verificar que las clases esten activas
-        
-        #Creacion  y persistencia de Parametro 
 
+        tipoParametroRst = getNomencladoCod('tipoParametro', tipoParametroJson.get('id'))
+        tipoDatoRst = getNomencladoCod('tipoDato', tipoDatoJson.get('id'))
+        opcionRst = getNomencladoCod('opcion',opcionJson.get('id'))
+      
+        
+        #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson)     
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
-        parametroOpcion = ParametroOpcion(True,parametroRst,opcionRst) 
 
-        rst2 =saveEntidad(parametroRst)
+        parametroOpcion = ParametroOpcion(True,parametroRst,opcionRst) #parametro opcion son muchos ojo
 
+        parmNew =saveEntidad(parametroRst)
+        
         #Creacion  y persistencia de ParametroOpcion 
-        
-        print(parametroOpcion.parametro)
-        
-        #opcionRst.parametroOpcion.append(parametroOpcion)
-        #parametroRst.parametroOpcion.append(parametroOpcion)
-
         saveEntidad(parametroOpcion)
-       # rst3 = getNomencladoCod2(rst2,rst2.get('id'))
-        print("Despues de append")
-        
-        return rst2 
-    except:
-        return ("mala sintaxis")
-    #Asociar Parametro a TipoParametro
-    #Asociar Parametro a TipoDato
-    #Buscar opciones agregadas
-        #Crear ParametroOpcion
-        #Asociar ParametroOpcion a Opcion y Parametro
+        return jsonify(parmNew.to_json())  
+    except Exception as e:
+        return str(e.__cause__)
+
     

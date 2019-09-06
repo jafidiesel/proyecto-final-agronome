@@ -9,7 +9,9 @@ def create_api(environment_name=None):
 
     app.config.from_object(config[environment_name])
 
-    CORS(app)
+    #CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
     for namespace in NAMESPACES:
         api.add_namespace(namespace)

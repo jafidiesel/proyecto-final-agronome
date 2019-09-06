@@ -1,6 +1,8 @@
+from flask import jsonify
 from app.model import hlmodel
 from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
 from app.api.helperApi.hlResponse import ResponseException
+
 modelos = {
 "actividad":hlmodel.Actividad,
 "estadoPlanificacion":hlmodel.EstadoPlanificacion,
@@ -18,11 +20,11 @@ modelos = {
 "tipoRecurso": hlmodel.TipoRecurso
 }
 
-def getNomenclador(data):
+
+def getNomenclador(entidad):
     try:
-        entidad = data.get('tipoNomenclador')
         objetos = selectAll(modelos[entidad])
-        return objetos 
+        return jsonify([obj.to_json() for obj in objetos])
     except Exception as e:
         return ResponseException(e)
 
@@ -31,24 +33,23 @@ def postNomenclador(data):
         entidad = data.get('tipoNomenclador')
         objeto = modelos[entidad].from_json(data)
         result =saveEntidad(objeto)
-        return result
+        return jsonify(result.to_json()) 
     except Exception as e:
         return ResponseException(e)
 
 
-def getNomencladoCod(data,id):
+def getNomencladoCod(entidad,id):
     try:
-        entidad = data.get('tipoNomenclador')
         objeto = selectByCod(modelos[entidad],id)
+        #return jsonify(objeto.to_json())
         return objeto 
     except Exception as e:
         return ResponseException(e)
 
-def putNomenclador(data,id):
+def putNomenclador(data,entidad,id):
     try:
-        entidad = data.get('tipoNomenclador')
         objeto = updateEntidad(modelos[entidad],id,data)
-        return objeto 
+        return jsonify(objeto.to_json()) 
     except Exception as e:
         return ResponseException(e)
 
