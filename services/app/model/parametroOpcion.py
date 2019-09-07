@@ -6,14 +6,7 @@ class ParametroOpcion(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True, primary_key = True)
     codOpcion = db.Column('fk_cod_opcion',Integer,ForeignKey('opcion.cod_opcion'),index = True,  primary_key = True)
-    #Agregar relationship hacia parametro
-    
-    #PK compuesta
-    #__table_args__ = (
-    #    PrimaryKeyConstraint(codParametro, codOpcion),
-    #    {},
-    #)
-    
+      
     def __init__(self,isActiv,parametro,opcion):
         print("En constructor parametro opcion")
         self.isActiv = isActiv
