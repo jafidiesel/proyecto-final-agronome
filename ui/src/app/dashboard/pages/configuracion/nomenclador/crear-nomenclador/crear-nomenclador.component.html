@@ -4,15 +4,21 @@
             <div>
                 <h3 class="display-4">Nuevo Nomenclador</h3>
             </div>
-            <form>
+            <form #formCrearNomenclador="ngForm" (ngSubmit)="onSubmitNomenclador(formCrearNomenclador)">
                 <div class="form-group">
-                    <label for="nameInput">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" disabled [(ngModel)]="nameInput">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" [(ngModel)]="nomencladorAEnviar.nombre" required #nameField="ngModel" [class.field-error]="formCrearNomenclador.submitted && nameField.invalid"
+                        (blur)="onBlur(nameField)">
+                    <div [hidden]="!formCrearNomenclador.submitted || nameField.valid" class="aler alert-danger">
+                        Enter a name
+                    </div>
                 </div>
+
+
                 <div class="form-group">
                     <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
                     <div class="input-group ">
-                        <select [(ngModel)]="tipoNomenclador" class="custom-select" id="tipoNomenclador" disabled name="tipoNomenclador">
+                        <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador">
                                 <option selected value="0">estadoPlanificacion</option>
                                 <option value="1">tipoActividad</option>
                            </select>
@@ -21,7 +27,7 @@
 
                 <div class="form-group form-check">
                     <div class="custom-control custom-checkbox">
-                        <input [(ngModel)]="isActiv" type="checkbox" class="custom-control-input" id="isActiv" disabled name="isActiv">
+                        <input [(ngModel)]="nomencladorAEnviar.isActiv" type="checkbox" class="custom-control-input" id="isActiv" name="isActiv">
                         <label class="custom-control-label" for="isActiv">Activo</label>
                     </div>
                 </div>
@@ -34,7 +40,8 @@
 
                 <div class="form-group row">
                     <div class="col-sm-12">
-                       <!--  <button type="button" class="btn btn-success btn-lg float-right mr-5 disabled" (click)="this.crearNomenclador()">Crear</button> -->
+                        <button type="button" class="btn btn-success btn-lg float-right mr-5 " (click)="this.imprimir()">Crear</button>
+                        <button type="submit" class="btn  btn-lg float-right mr-5 ">submit</button>
                         <button type="button" class="btn btn-info btn-lg float-right mr-5" (click)="this.getNomenclador()">get</button>
                         <button type="button" class="btn btn-info btn-lg float-right mr-5" (click)="this.postNomenclador()">post</button>
                         <button [routerLink]="['/configuracion/listarNomencladores']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
@@ -48,3 +55,4 @@
         </div>
     </div>
 </main>
+{{ formCrearNomenclador.value | json}}

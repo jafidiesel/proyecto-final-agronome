@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-crear-nomenclador',
@@ -9,24 +10,34 @@ export class CrearNomencladorComponent implements OnInit {
   nombre: string;
   tipoNomenclador: boolean;
   isActiv: string;
-  obj: any[];
+
+
+  nomencladorAEnviar = {
+    nombre: this.nombre,
+    tipoNomenclador: this.tipoNomenclador,
+    isActiv: this.isActiv
+  };
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
   }
 
-  imprimir( ) {
-    let myobj = {
-      nombre: this.nombre,
-      tipoNomenclador: this.tipoNomenclador,
-      isActiv: this.isActiv
-    };
-
-    console.log( JSON.stringify( myobj ) );
-
+  onSubmitNomenclador(form: NgForm) {
+    console.log("in onSubmitNomenclador " + form.valid);
   }
 
+  onBlur(field: NgModel){
+    console.log("In onBlur: " + field.valid);
+  }
+
+  imprimir( ) {
+    //formCrearNomenclador
+    console.log( JSON.stringify( this.nomencladorAEnviar ) );
+  }
+
+  
+/* 
   crearNomenclador(){
     let httpHeaders = new HttpHeaders()
      .set('Content-Type', 'application/json');
@@ -35,14 +46,14 @@ export class CrearNomencladorComponent implements OnInit {
     let options = {
       headers: httpHeaders
     };
-    
+
     // http://localhost:7000/api/configuracion/nomenclador
     let url = 'http://localhost:9001/api/configuracion/nomenclador';
 
     let myobj = {
-      nameInput: this.nameInput,
-      tipoNomencladorInput: this.tipoNomencladorInput,
-      activoInput: this.activoInput
+      nameInput: this.nombre,
+      tipoNomencladorInput: this.tipoNomenclador,
+      activoInput: this.isActiv
     };
 
     let objDummy = {
@@ -53,7 +64,7 @@ export class CrearNomencladorComponent implements OnInit {
 
     this.http.post(
         url,
-        obj2,
+        objDummy,
         options
         ).subscribe( (res: any)  => {
           console.log(res);
@@ -115,5 +126,5 @@ export class CrearNomencladorComponent implements OnInit {
         console.error("error code: " + err.status + "  " + err.error.message);
         }
       );
-  }
+  } */
 }

@@ -6,6 +6,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditarNomencladorComponent implements OnInit {
 
+  originalNomencladorAcargar = {
+    nombre: '',
+    tipoNomenclador: -1,
+    isActiv: 0
+  };
+
+  nomencladorAcargar = { ...this.originalNomencladorAcargar };
+
   constructor() { }
 
   ngOnInit() {
