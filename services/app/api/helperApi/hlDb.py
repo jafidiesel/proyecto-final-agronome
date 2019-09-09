@@ -11,15 +11,7 @@ def selectAll(entidad):
     objList=entidad.query.all()
     return objList
 
-<<<<<<< HEAD
 def selectByCod(entidad,cod): ##si el codigo se llama cod
-=======
-def selectAll2(entidad):
-    objList=entidad.query.all()
-    return objList
-
-def selectByCod(entidad,cod):
->>>>>>> develop-backend
     obj = entidad.query.filter(entidad.cod==cod).first()
     return obj
 
