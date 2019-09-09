@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Nomenclador } from '../../data/nomenclador';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -52,20 +55,20 @@ export class ConfiguracionService {
     ['Siembra', 'Si', '*/editar', '-/Desactivar']
 ];
 
-  constructor() { }
+  constructor( private http: HttpClient ) { }
 
   getNomencladorData() {
     return this.nomencladorData;
   }
-  
+
   getParametroData() {
     return this.parametroData;
   }
-  
+
   getOpcionesParametrotroData() {
     return this.opcionesParametro;
   }
-  
+
   setOpcionesParametrotroData(opcion:string) {
     this.opcionesParametro.push(opcion);
     console.log(this.opcionesParametro);
@@ -86,5 +89,17 @@ export class ConfiguracionService {
   getActividadData() {
     return this.actividadData;
   }
+
+  getTipoNomenclador(): Observable<string[]> {
+    return of(['One', 'Two', 'Three']);
+  }
+
+  postNomencladorForm( nomencladorForm: Nomenclador ) : Observable<any> {
+    //return of(nomencladorForm);
+
+    return this.http.post( 'https://putsreq.com/rZeNVru9hSMoNfnVB7Op', nomencladorForm);
+
+  }
+
 
 }

@@ -1,6 +1,9 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm, NgModel } from '@angular/forms';
+import { Nomenclador } from '../../../../data/nomenclador';
+import { ConfiguracionService } from '../../../../services/configuracion/configuracion.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-crear-nomenclador',
@@ -8,36 +11,60 @@ import { NgForm, NgModel } from '@angular/forms';
 })
 export class CrearNomencladorComponent implements OnInit {
   nombre: string;
-  tipoNomenclador: boolean;
-  isActiv: string;
+  tipoNomenclador: number;
+  isActiv: boolean;
 
+  postError = false;
+  postErrorMessage = '';
 
-  nomencladorAEnviar = {
+  tiposNomencladoresSelect: Observable<string[]>;
+
+  nomencladorAEnviar: Nomenclador = {
     nombre: this.nombre,
     tipoNomenclador: this.tipoNomenclador,
     isActiv: this.isActiv
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private configuracionService: ConfiguracionService) {}
 
   ngOnInit() {
+    this.tiposNomencladoresSelect = this.configuracionService.getTipoNomenclador();
+  }
+
+  onHttpError( errorResponse: any ) {
+    console.log(errorResponse);
+    this.postError = true;
+    this.postErrorMessage = errorResponse.error.errorMessage
   }
 
   onSubmitNomenclador(form: NgForm) {
-    console.log("in onSubmitNomenclador " + form.valid);
+    console.log('in onSubmitNomenclador ' + form.valid);
+
+    if( form.valid ) {
+      this.configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
+        result => {
+          console.log('succes');
+          console.log( result);
+        },
+        error => this.onHttpError(error)
+      );
+    } else {
+      this.postError = true;
+      this.postErrorMessage = 'Please check the form values';
+    }
   }
 
-  onBlur(field: NgModel){
+  onBlur(field: NgModel) {
     console.log("In onBlur: " + field.valid);
   }
 
   imprimir( ) {
-    //formCrearNomenclador
+    // formCrearNomenclador
     console.log( JSON.stringify( this.nomencladorAEnviar ) );
   }
 
-  
-/* 
+
+/*
   crearNomenclador(){
     let httpHeaders = new HttpHeaders()
      .set('Content-Type', 'application/json');

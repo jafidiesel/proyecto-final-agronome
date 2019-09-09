@@ -9,7 +9,7 @@
                     <label for="nombre">Nombre</label>
                     <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" [(ngModel)]="nomencladorAEnviar.nombre" required #nameField="ngModel" [class.field-error]="formCrearNomenclador.submitted && nameField.invalid"
                         (blur)="onBlur(nameField)">
-                    <div [hidden]="!formCrearNomenclador.submitted || nameField.valid" class="aler alert-danger">
+                    <div [hidden]="!formCrearNomenclador.submitted || nameField.valid" class="alert alert-danger">
                         Enter a name
                     </div>
                 </div>
@@ -19,9 +19,10 @@
                     <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
                     <div class="input-group ">
                         <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador">
-                                <option selected value="0">estadoPlanificacion</option>
-                                <option value="1">tipoActividad</option>
-                           </select>
+                                <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected value="0">
+                                    {{ tipoNomencladorSelect }}
+                                </option>
+                        </select>
                     </div>
                 </div>
 
@@ -40,6 +41,9 @@
 
                 <div class="form-group row">
                     <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
                         <button type="button" class="btn btn-success btn-lg float-right mr-5 " (click)="this.imprimir()">Crear</button>
                         <button type="submit" class="btn  btn-lg float-right mr-5 ">submit</button>
                         <button type="button" class="btn btn-info btn-lg float-right mr-5" (click)="this.getNomenclador()">get</button>
@@ -55,4 +59,4 @@
         </div>
     </div>
 </main>
-{{ formCrearNomenclador.value | json}}
+{{ nomencladorAEnviar | json}}
