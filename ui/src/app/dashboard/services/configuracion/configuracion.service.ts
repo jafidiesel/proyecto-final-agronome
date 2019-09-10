@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Nomenclador } from '../../data/nomenclador';
+import { NomencladorInterface } from '../../data/nomenclador';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -89,15 +89,30 @@ export class ConfiguracionService {
   getActividadData() {
     return this.actividadData;
   }
+  
 
   getTipoNomenclador(): Observable<string[]> {
-    return of(['One', 'Two', 'Three']);
+    return of(['actividad',
+    'estadoPlanificacion',
+    'opcion',
+    'permiso',
+    'recomendacion',
+    'recurso',
+    'rol',
+    'tipoAnalisis',
+    'tipoCultivo',
+    'tipoDato',
+    'tipoParametro',
+    'tipoPlan',
+    'tipoPlanificacion',
+    'tipoRecurso',
+  ]);
   }
 
-  postNomencladorForm( nomencladorForm: Nomenclador ) : Observable<any> {
+  postNomencladorForm( nomencladorForm: NomencladorInterface ) : Observable<any> {
     //return of(nomencladorForm);
-
-    return this.http.post( 'https://putsreq.com/rZeNVru9hSMoNfnVB7Op', nomencladorForm);
+    
+    return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorForm);
 
   }
 

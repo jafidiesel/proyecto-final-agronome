@@ -18,8 +18,8 @@
                 <div class="form-group">
                     <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
                     <div class="input-group ">
-                        <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador">
-                                <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected value="0">
+                        <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" >
+                                <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected [value]="tipoNomencladorSelect">
                                     {{ tipoNomencladorSelect }}
                                 </option>
                         </select>
@@ -28,7 +28,7 @@
 
                 <div class="form-group form-check">
                     <div class="custom-control custom-checkbox">
-                        <input [(ngModel)]="nomencladorAEnviar.isActiv" type="checkbox" class="custom-control-input" id="isActiv" name="isActiv">
+                        <input [(ngModel)]="nomencladorAEnviar.isActiv" type="checkbox" class="custom-control-input" id="isActiv" name="isActiv" >
                         <label class="custom-control-label" for="isActiv">Activo</label>
                     </div>
                 </div>
@@ -44,15 +44,9 @@
                         <div [hidden]="!postError" class="alert alert-danger">
                             {{ postErrorMessage }}
                         </div>
-                        <button type="button" class="btn btn-success btn-lg float-right mr-5 " (click)="this.imprimir()">Crear</button>
-                        <button type="submit" class="btn  btn-lg float-right mr-5 ">submit</button>
-                        <button type="button" class="btn btn-info btn-lg float-right mr-5" (click)="this.getNomenclador()">get</button>
-                        <button type="button" class="btn btn-info btn-lg float-right mr-5" (click)="this.postNomenclador()">post</button>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Crear</button>
                         <button [routerLink]="['/configuracion/listarNomencladores']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
-                </div>
-                <div class="alert alert-info" role="alert">
-                    Para visualizar el resultado de los botones post y get debemos ver la consola. Cabe aclarar que para el post se utiliza datos random predefinidos.
                 </div>
             </form>
 
