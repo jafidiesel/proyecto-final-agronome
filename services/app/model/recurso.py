@@ -5,13 +5,14 @@ class Recurso(db.Model):
     cod = db.Column('cod_recurso',Integer,primary_key = True,index = True)
     nombre = db.Column('nombre_recurso', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-
+    tipoRecurso = db.Column('fk_tipo_recurso',Integer,ForeignKey('tipo_recurso.cod_tipo_recurso'),index = True)
     nombreNomenclador = "recurso"
 
 
-    def __init__(self, nombre, isActiv):
+    def __init__(self, nombre, isActiv,tipo):
         self.nombre = nombre
         self.isActiv = isActiv
+        self.tipoRecurso = tipo
 
     @staticmethod
     def from_json(json):
