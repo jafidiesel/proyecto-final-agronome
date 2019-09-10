@@ -4,9 +4,6 @@ from flask_script import Manager, Server
 from app.backend import create_api
 from app.model import hlmodel
 
-
-
-
 #el metodo create api es un metodo que crea traido del archivo backend
 
 app = create_api(os.getenv('FLASK_CONFIG') or 'default')
