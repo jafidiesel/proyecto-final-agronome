@@ -1,0 +1,43 @@
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4">Nuevo Nomenclador</h3>
+            </div>
+            <form #formEditarNomenclador="ngForm">
+                <div class="form-group">
+                    <label for="nameInput">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" [(ngModel)]="nomencladorAcargar.nombre">
+                </div>
+                <div class="form-group">
+                    <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
+                    <div class="input-group ">
+                        <select [(ngModel)]="nomencladorAcargar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador">
+                                <option selected value="0">estadoPlanificacion</option>
+                                <option value="1">tipoActividad</option>
+                           </select>
+                    </div>
+                </div>
+
+                <div class="form-group form-check">
+                    <div class="custom-control custom-checkbox">
+                        <input [(ngModel)]="nomencladorAcargar.isActiv" type="checkbox" class="custom-control-input" id="isActiv" name="isActiv">
+                        <label class="custom-control-label" for="activoInput">Activo</label>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-success btn-lg float-right mr-5" (click)="this.imprimir()">Crear</button>
+                        <button [routerLink]="['/configuracion/listarNomencladores']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</main>
+
+
+{{ formEditarNomenclador | json }}

@@ -3,6 +3,22 @@
 <a name="top"></a>
 # AgronoMe Services
 
+### Levantar entorno
+workon // Lista los entornos creados que tenemos
+workon "nombre_entorno"
+
+#### Dentro de la carpeta services:
+
+python app.py
+
+
+#### Para probar que este corriendo ejecutar en el navegador:
+
+http://localhost:9001/api/ 
+
+
+-------------------------------------------
+
 API REST endopints
 
 - [Actividad](#actividad)
