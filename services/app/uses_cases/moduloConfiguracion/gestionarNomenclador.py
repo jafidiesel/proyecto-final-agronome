@@ -17,7 +17,8 @@ modelos = {
 "tipoParametro": hlmodel.TipoParametro,
 "tipoPlan": hlmodel.TipoPlan,
 "tipoPlanificacion": hlmodel.TipoPlanificacion,
-"tipoRecurso": hlmodel.TipoRecurso
+"tipoRecurso": hlmodel.TipoRecurso,
+"parametro": hlmodel.Parametro
 }
 
 
