@@ -27,3 +27,18 @@ def updateEntidad(entidad,cod,data): ##solo update nomencladores
 def selectByCod2(entidad,cod):
     obj = entidad.query.filter(entidad.cod==cod).first()
     return obj
+
+
+def saveEntidadSinCommit(entidad):
+   db.session.add(entidad)
+   return entidad
+
+def Commit():
+    db.session.commit()
+    print('commit de la base de datos')
+    return 'commit sucess'
+
+def Rollback():
+    print('rollback de la base de datos')
+    db.session.rollback()
+    return 'rollback sucess'
