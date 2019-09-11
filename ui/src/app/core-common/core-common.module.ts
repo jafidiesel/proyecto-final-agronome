@@ -5,24 +5,28 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
+import { TablePaneComponent } from './table-pane/table-pane.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     TableComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    TablePaneComponent
 
   ],
   imports: [
     CommonModule,
     RouterModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
   exports: [
     TableComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    TablePaneComponent
   ]
 })
 export class CoreCommonModule { }
