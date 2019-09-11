@@ -111,9 +111,21 @@ export class ConfiguracionService {
 
   postNomencladorForm( nomencladorForm: NomencladorInterface ) : Observable<any> {
     //return of(nomencladorForm);
-    
     return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorForm);
+  }
 
+  getNomencladores(){
+    let resultado: any;
+    this.http.get('http://localhost:9001/api/configuracion/nomenclador/actividad').subscribe(
+      result => {
+        //console.log(result);
+        resultado = result;
+        //console.log(resultado);
+        return resultado;
+      },
+      error =>  console.log(error),
+    );
+    return resultado;
   }
 
 
