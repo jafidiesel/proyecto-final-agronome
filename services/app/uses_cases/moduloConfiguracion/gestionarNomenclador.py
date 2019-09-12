@@ -1,7 +1,7 @@
 from flask import jsonify
 from app.model import hlmodel
 from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
-from app.api.helperApi.hlResponse import ResponseException
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 modelos = {
 "actividad":hlmodel.Actividad,
@@ -18,7 +18,7 @@ modelos = {
 "tipoPlan": hlmodel.TipoPlan,
 "tipoPlanificacion": hlmodel.TipoPlanificacion,
 "tipoRecurso": hlmodel.TipoRecurso,
-"parametro": hlmodel.Parametro
+"parametro": hlmodel.Parametro #agregue esto para usarlo en gestionar entidad intermedia, darle una vuelta de rosca mas con la chechi, basicamente el parametro no es un nomenclador comun, pero lo necesito aca para reutilizar la funcion getNomencladorCod
 }
 
 
@@ -33,24 +33,23 @@ def postNomenclador(data):
     try:
         entidad = data.get('tipoNomenclador')
         objeto = modelos[entidad].from_json(data)
-        result =saveEntidad(objeto)
-        return jsonify(result.to_json()) 
+        saveEntidad(objeto)
+        return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 
 
 def getNomencladoCod(entidad,id):
-    try:
         objeto = selectByCod(modelos[entidad],id)
-        #return jsonify(objeto.to_json())
-        return objeto 
-    except Exception as e:
-        return ResponseException(e)
+        if not objeto:
+            raise Exception('N','No existe el codigo ingresado') #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
+        return objeto
 
+        
 def putNomenclador(data,entidad,id):
     try:
-        objeto = updateEntidad(modelos[entidad],id,data)
-        return jsonify(objeto.to_json()) 
+        updateEntidad(modelos[entidad],id,data)
+        return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 
