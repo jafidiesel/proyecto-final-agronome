@@ -33,7 +33,8 @@ import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/ed
 import { EditarParametroComponent } from './pages/configuracion/parametro/editar-parametro/editar-parametro.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-
+// import pagination component
+import { JwPaginationComponent } from 'jw-angular-pagination';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CrearParametroComponent,
     EditarParametroComponent,
     CrearNomencladorComponent,
-    EditarNomencladorComponent
+    EditarNomencladorComponent,
+    JwPaginationComponent
   ],
   imports: [
     CommonModule,

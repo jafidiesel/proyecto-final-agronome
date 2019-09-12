@@ -26,10 +26,10 @@ export class CrearNomencladorComponent implements OnInit {
     isActiv: this.isActiv
   };
 
-  constructor(private http: HttpClient, private configuracionService: ConfiguracionService) {}
+  constructor(private http: HttpClient, private _configuracionService: ConfiguracionService) {}
 
   ngOnInit() {
-    this.tiposNomencladoresSelect = this.configuracionService.getTipoNomenclador();
+    this.tiposNomencladoresSelect = this._configuracionService.getTiposNomenclador();
   }
 
   onHttpError( errorResponse: any ) {
@@ -42,7 +42,7 @@ export class CrearNomencladorComponent implements OnInit {
   onSubmitNomenclador(form: NgForm) {
 
     if ( form.controls.tipoNomenclador.value && form.controls.nombre.value ) {
-      this.configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
+      this._configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;

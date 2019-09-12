@@ -91,7 +91,7 @@ export class ConfiguracionService {
   }
   
 
-  getTipoNomenclador(): Observable<string[]> {
+  getTiposNomenclador(): Observable<string[]> {
     return of(['actividad',
     'estadoPlanificacion',
     'opcion',
@@ -108,14 +108,17 @@ export class ConfiguracionService {
     'tipoRecurso',
   ]);
   }
-
-  postNomencladorForm( nomencladorForm: NomencladorInterface ) : Observable<any> {
+  postNomencladorForm( nomencladorForm: NomencladorInterface ): Observable<any> {
     //return of(nomencladorForm);
     return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorForm);
   }
 
   getNomencladores() {
-    return this.http.get('http://localhost:9001/api/configuracion/nomenclador/actividad');
+    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
+  }
+
+  getNomencladoresTipo(tipoNomenclador: string) {
+    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
   }
 
 
