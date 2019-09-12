@@ -31,8 +31,10 @@ import { CrearParametroComponent } from './pages/configuracion/parametro/crear-p
 import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
 import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 import { EditarParametroComponent } from './pages/configuracion/parametro/editar-parametro/editar-parametro.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-
+// import pagination component
+import { JwPaginationComponent } from 'jw-angular-pagination';
 
 @NgModule({
   declarations: [
@@ -55,13 +57,15 @@ import { EditarParametroComponent } from './pages/configuracion/parametro/editar
     CrearParametroComponent,
     EditarParametroComponent,
     CrearNomencladorComponent,
-    EditarNomencladorComponent
+    EditarNomencladorComponent,
+    JwPaginationComponent
   ],
   imports: [
     CommonModule,
     CoreCommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule
   ],
   exports: [
     ActividadPageComponent,
