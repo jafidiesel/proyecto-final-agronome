@@ -1,4 +1,4 @@
-from app.api.helperApi.hlDb import saveEntidad,selectAll2
+from app.api.helperApi.hlDb import saveEntidad,selectAll2, selectAllByFilter
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 import json
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod2
@@ -14,7 +14,7 @@ def postParametro(data):
         opcionJson = data.get('opcion')
 
         
-        #Buscar instancias a asociar
+        #Buscar a asociar
         tipoParametroRst = getNomencladoCod2(tipoParametroJson, tipoParametroJson.get('id'))
         tipoDatoRst = getNomencladoCod2(tipoDatoJson, tipoDatoJson.get('id'))
         opcionRst = getNomencladoCod2(opcionJson,opcionJson.get('id'))
@@ -48,4 +48,24 @@ def getParametros():
     return True
 
 def getParametro():
+    return True
+
+#Listar atributos para combo: TipoDato, TipoParametro, Opcion
+#https://es.stackoverflow.com/questions/24320/necesito-pasarle-dinamicamente-al-objeto-query-de-sqlalchemy-los-parametros-de/24748
+def listarAtributos():
+    queryString={"isActiv" : 'isActiv'}
+    #Buscar TipoParametro isActiv = True
+    print("----------------")
+    for obj in selectAllByFilter(TipoParametro,getattr(TipoParametro,queryString['isActiv']),True):
+        print(obj.to_json())
+    print("----------------")
+    #Buscar TipoDato isActiv = True
+    print("----------------")
+    for obj in TipoDato.query.filter(TipoDato.isActiv == True).all():
+        print(obj.to_json())
+    print("----------------")
+    #Buscar Opcions isActiv = True
+    for obj in TipoDato.query.filter(TipoDato.isActiv == True).all():
+        print(obj.to_json())
+    print("----------------")
     return True

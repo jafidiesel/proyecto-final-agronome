@@ -19,6 +19,10 @@ def selectByCod(entidad,cod):
     obj = entidad.query.filter(entidad.cod==cod).first()
     return jsonify(obj.to_json())
 
+def selectAllByFilter(entidad,value):
+    obj = entidad.query.filter(entidad.isActiv==value).all()
+    return obj
+
 
 def updateEntidad(entidad,cod,data):
     obj = entidad.query.filter(entidad.cod==cod).first()
