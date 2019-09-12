@@ -12,8 +12,9 @@ import { Observable } from 'rxjs';
 export class CrearNomencladorComponent implements OnInit {
   nombre: string;
   tipoNomenclador: string;
-  isActiv: boolean;
+  isActiv = false;
 
+  postSuccess = false;
   postError = false;
   postErrorMessage = '';
 
@@ -34,30 +35,36 @@ export class CrearNomencladorComponent implements OnInit {
   onHttpError( errorResponse: any ) {
     console.log(errorResponse);
     this.postError = true;
-    this.postErrorMessage = errorResponse.error.errorMessage
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.error.messages
   }
 
   onSubmitNomenclador(form: NgForm) {
-    console.log('in onSubmitNomenclador ' + form.valid);
 
-    if( form.valid ) {
+    if ( form.controls.tipoNomenclador.value && form.controls.nombre.value ) {
       this.configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
         result => {
           console.log('Enviado.');
-          console.log( result);
+          this.postSuccess = true;
+          this.resetForm();
         },
         error => this.onHttpError(error)
       );
     } else {
       this.postError = true;
-      this.postErrorMessage = 'Por favor complete los campos del formulario.';
+      this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
     }
   }
 
   onBlur(field: NgModel) {
     console.log("In onBlur: " + field.valid);
   }
-  
+
+  resetForm() {
+    this.nomencladorAEnviar.nombre = '';
+    this.nomencladorAEnviar.isActiv = false;
+    this.nomencladorAEnviar.tipoNomenclador = '';
+  }
 
 
 }

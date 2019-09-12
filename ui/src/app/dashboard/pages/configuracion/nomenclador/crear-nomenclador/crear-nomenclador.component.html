@@ -6,17 +6,17 @@
             </div>
             <form #formCrearNomenclador="ngForm" (ngSubmit)="onSubmitNomenclador(formCrearNomenclador)">
                 <div class="form-group">
-                    <label for="nombre">Nombre</label>
+                    <label for="nombre">Nombre * </label>
                     <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" [(ngModel)]="nomencladorAEnviar.nombre" required #nameField="ngModel" [class.field-error]="formCrearNomenclador.submitted && nameField.invalid"
                         (blur)="onBlur(nameField)">
                     <div [hidden]="!formCrearNomenclador.submitted || nameField.valid" class="alert alert-danger">
-                        Enter a name
+                        Ingrese un nombre
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    <label for="parametroInput" class=" col-form-label">Tipo Nomenclador</label>
+                    <label for="parametroInput" class=" col-form-label">Tipo Nomenclador * </label>
                     <div class="input-group ">
                         <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" >
                                 <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected [value]="tipoNomencladorSelect">
@@ -29,14 +29,17 @@
                 <div class="form-group form-check">
                     <div class="custom-control custom-checkbox">
                         <input [(ngModel)]="nomencladorAEnviar.isActiv" type="checkbox" class="custom-control-input" id="isActiv" name="isActiv" >
-                        <label class="custom-control-label" for="isActiv">Activo</label>
+                        <label class="custom-control-label" for="isActiv">Activo * </label>
                     </div>
                 </div>
-                <div class="alert alert-success alert-dismissible fade show invisible" id="alerta" role="alert">
-                    A simple success alert—check it out!
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Nomenclador Creado !
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
                 </div>
 
                 <div class="form-group row">
