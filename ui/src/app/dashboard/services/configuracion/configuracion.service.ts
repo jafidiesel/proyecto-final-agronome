@@ -117,8 +117,12 @@ export class ConfiguracionService {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
   }
 
-  getNomencladoresTipo(tipoNomenclador: string) {
+  getListaNomencladores(tipoNomenclador: string) {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
+  }
+
+  getNomenclador(tipoNomenclador: string, id: number){
+    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
 

@@ -47,7 +47,7 @@ export class ListarNomencladoresComponent implements OnInit {
       for (let index = 0; index < this.tiposNomencladores.length; index++) {
         const element = this.tiposNomencladores[index];
         
-        this._configuracionService.getNomencladoresTipo(element).subscribe(
+        this._configuracionService.getListaNomencladores(element).subscribe(
           (result: any) => {
             for (let index = 0; index < result.length ; index++) {
               this.nomencladoresTabla.push([

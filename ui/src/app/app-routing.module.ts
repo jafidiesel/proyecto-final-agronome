@@ -34,9 +34,10 @@ const routes: Routes = [
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },
   { path: 'configuracion/listarPlanes', component: ListarPlanesComponent },
   { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
+  /* Modulo Configuracion */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
-  { path: 'configuracion/editaNomenclador', component: EditarNomencladorComponent },
+  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:id', component: EditarNomencladorComponent },
   { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
