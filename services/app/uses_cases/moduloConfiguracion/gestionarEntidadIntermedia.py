@@ -41,7 +41,7 @@ def postEntidadInterm(data):
             saveEntidadSinCommit(intermedia)
 
         Commit()
-        return ResponseOk('postEntidadIntermMSG')
+        return ResponseOk()
 
     except Exception as e:
         Rollback()
