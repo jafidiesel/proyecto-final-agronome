@@ -12,7 +12,7 @@ export class ListarNomencladoresComponent implements OnInit {
 
   nomencladoresMockedData: any;
   nomencladoresTabla = [];
-  tableDataHeader = ['Nombre', 'Activo', 'Tipo Nomenclador', 'Accion', ''];
+  tableDataHeader = ['Nombre', 'Activo', 'Tipo Nomenclador', 'Editar'];
   
   tiposNomencladores = ['actividad',
   'estadoPlanificacion',
@@ -47,23 +47,20 @@ export class ListarNomencladoresComponent implements OnInit {
       for (let index = 0; index < this.tiposNomencladores.length; index++) {
         const element = this.tiposNomencladores[index];
         
-        this._configuracionService.getNomencladoresTipo(element).subscribe(
+        this._configuracionService.getListaNomencladores(element).subscribe(
           (result: any) => {
             for (let index = 0; index < result.length ; index++) {
               this.nomencladoresTabla.push([
               `${result[index].nombre}`,
               `${result[index].isActiv}`,
               element, 
-              `*/configuracion/editarNomenclador/${element}/${result[index].id}`, 
-              `-/Desactivar`]);
+              `*/configuracion/editarNomenclador/${element}/${result[index].id}`
+            ]);
             }
           },
           error => console.log('error')
           );
         }
-          
-         
-
   }
 
   imprimir() {

@@ -108,17 +108,27 @@ export class ConfiguracionService {
     'tipoRecurso',
   ]);
   }
-  postNomencladorForm( nomencladorForm: NomencladorInterface ): Observable<any> {
+  postNomencladorForm( nomencladorJson: NomencladorInterface ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorJson);
+  }
+
+  putNomencladorForm( nomencladorJson: any ): Observable<any> {
+    //return of(nomencladorForm);
+    console.log(nomencladorJson);
+    return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.id}`, nomencladorJson);
   }
 
   getNomencladores() {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
   }
 
-  getNomencladoresTipo(tipoNomenclador: string) {
+  getListaNomencladores(tipoNomenclador: string) {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
+  }
+
+  getNomenclador(tipoNomenclador: string, id: number){
+    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
 
