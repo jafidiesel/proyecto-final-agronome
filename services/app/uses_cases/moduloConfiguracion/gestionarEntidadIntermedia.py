@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.api.helperApi.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
 #from app.model.hlmodel import Parametro, Actividad, ActividadParametro
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
@@ -92,7 +92,7 @@ def getEntidadInterm(entidadIntermedia):
             dtoAux[nomDtoAux] = nombreNomen
             
             dtoParamList.append(dtoAux)
-
         return (dtoParamList)
+        #return (json.dumps(dtoParamList))
     except Exception as e:
         return ResponseException(e)

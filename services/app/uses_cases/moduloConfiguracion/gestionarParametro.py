@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.api.helperApi.hlDb import saveEntidad
+from app.repositorio.hlDb import saveEntidad
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 
@@ -20,7 +20,7 @@ def postParametro(data):
       
         
         #Creacion  y asociación de Parametro 
-        parametroRst = Parametro.from_json(parametroJson)     
+        parametroRst = Parametro.from_json(parametroJson) 
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
 

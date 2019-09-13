@@ -1,6 +1,6 @@
 # from app.model import hlmodel
 # from app.model.hlmodel import TipoRecurso, Recurso
-# from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectTipoRecurso
+# from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectTipoRecurso
 # from app.api.helperApi.hlResponse import ResponseException
 
 
