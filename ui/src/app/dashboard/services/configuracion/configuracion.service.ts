@@ -108,9 +108,15 @@ export class ConfiguracionService {
     'tipoRecurso',
   ]);
   }
-  postNomencladorForm( nomencladorForm: NomencladorInterface ): Observable<any> {
+  postNomencladorForm( nomencladorJson: NomencladorInterface ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorJson);
+  }
+
+  putNomencladorForm( nomencladorJson: any ): Observable<any> {
+    //return of(nomencladorForm);
+    console.log(nomencladorJson);
+    return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.id}`, nomencladorJson);
   }
 
   getNomencladores() {

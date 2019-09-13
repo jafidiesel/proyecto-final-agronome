@@ -17,7 +17,7 @@ export class EditarNomencladorComponent implements OnInit {
     isActiv: false
   };
 
-  nomencladorAcargar ={};
+  nomencladorAcargar:any ={};
 
   postSuccess = false;
   postError = false;
@@ -35,6 +35,7 @@ export class EditarNomencladorComponent implements OnInit {
             this.originalNomencladorAcargar.nombre = result.nombre;
             this.originalNomencladorAcargar.isActiv = result.isActiv;
             this.originalNomencladorAcargar.tipoNomenclador = result.tipoNomenclador;
+            this.originalNomencladorAcargar.id = params['id'];
             this.nomencladorAcargar = { ...this.originalNomencladorAcargar };
           },
         error => console.log(error)
@@ -55,9 +56,9 @@ export class EditarNomencladorComponent implements OnInit {
     }
   
     onSubmitNomenclador(form: NgForm) {
-  
-      /* if ( form.controls.tipoNomenclador.value && form.controls.nombre.value ) {
-        this._configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
+
+      if ( form.controls.nombre.value ) {
+        this._configuracionService.putNomencladorForm(this.nomencladorAcargar).subscribe(
           result => {
             console.log('Enviado.');
             this.postSuccess = true;
@@ -68,10 +69,16 @@ export class EditarNomencladorComponent implements OnInit {
       } else {
         this.postError = true;
         this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
-      } */
+      }
     }
   
     onBlur(field: NgModel) {
       console.log("In onBlur: " + field.valid);
+    }
+
+    resetForm() {
+      this.nomencladorAcargar.nombre = '';
+      this.nomencladorAcargar.isActiv = false;
+      //this.nomencladorAcargar.tipoNomenclador = '';
     }
 }
