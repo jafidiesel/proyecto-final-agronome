@@ -5,7 +5,7 @@ from flask_restplus import Namespace
 URL_MC = 'api/configuracion/'
 urlNomenclador = Namespace(URL_MC + 'nomenclador')
 urlParametro = Namespace(URL_MC + 'parametro')
-urlEntidadInterm = Namespace(URL_MC + 'entidadInterm')
+urlEntidadInterm = Namespace(URL_MC + 'asociar')
 
 #modulo de recursos
 URL_MR = 'api/recurso/'

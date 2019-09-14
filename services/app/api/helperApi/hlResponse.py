@@ -6,11 +6,11 @@ contentType = 'application/json'
     
 
 errors = {
-"(psycopg2.errors.UniqueViolation)":"Nombre ya existente",
+"(psycopg2.errors.UniqueViolation)":"existente",
 "(psycopg2.errors.ForeignKeyViolation)": "No existe la instancia que desea asignar"
 }
 #AGREGAR ESTOOO es cuando no existe el objeto
-#"revisar 'NoneType' object has no attribute 'nombre'"
+#error de sintaxis: 'NoneType' object has no attribute 'nombre'"
 def ResponseException(e):
     messages=e.args
     message = messages[0]
@@ -19,11 +19,11 @@ def ResponseException(e):
 
     if count==1: ##exception automaticas
         if cause=='None':
-            ExceptionResp=dict(flag='N',message='revisar: ' + message)
+            ExceptionResp=dict(flag='N',message='error de sintaxis: ' + message)
         else:
             ExceptionResp = definirCauses(message)
     else: ##exception generadas
-        ExceptionResp=dict(flag='N',message=messages[1])
+        ExceptionResp=dict(flag=messages[0],message=messages[1])
 
     response= make_response(ExceptionResp,400)
     response.headers['Server'] = server

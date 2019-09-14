@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.model import hlmodel
-from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
+from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 modelos = {
@@ -45,7 +45,7 @@ def getNomencladoCod(entidad,id):
             raise Exception('N','No existe el codigo ingresado') #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
         return objeto
 
-        
+
 def putNomenclador(data,entidad,id):
     try:
         updateEntidad(modelos[entidad],id,data)
