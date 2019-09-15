@@ -28,7 +28,7 @@ class  NomencladorHandler(Resource):
             return (obj.to_json())
         except Exception as e:
             return ResponseException(e)
-
+         
     def put(self,tipoNomenclador,id):
         data = self.api.payload
         return putNomenclador(data,tipoNomenclador,id)
