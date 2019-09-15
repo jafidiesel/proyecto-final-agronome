@@ -51,7 +51,13 @@ API REST endopints
     - [Consultar Nomenclador](#get-nomenclador)
     - [Consultar Nomenclador ID](#get-nomencladorid)
     - [Modficar Nomenclador ID](#put-nomenclador)
+    - [Asociar Parametros](#post-asociarParametro)
+    - [Consultar Parametros](#get-consultarParametro)
+    - [Modificar Parametro Asociado](#put-modificarParametro)
+
     
+
+
 - [Reporte](#)
 	- [Crear Reporte](#read)
     - [Consultar Reporte](#read)
@@ -179,7 +185,7 @@ API REST endopints
 ## <a name='put-nomenclador'></a> Modificar Nomenclador Id
 [Back to top](#top)
 
-<p>Obtiene la intancia de un nomenclador</p>
+<p>Modifica la intancia de un nomenclador</p>
 
 	PUT /api/configuracion/nomenclador/:tipoNomenclador/:id
 
@@ -208,4 +214,118 @@ API REST endopints
   "message": "cause"
 }
 ```
+
+#
+
+## <a name='post-asociarParametro'></a> Asociar Parametros
+[Back to top](#top)
+
+<p>Asociar Parametros a actividad o recomendación o tipo analisis o tipo plan</p>
+
+	POST api/configuracion/asociar
+
+
+### Body
+```
+{
+    "entidadIntermedia": "actividadParametro",
+    "id": int, //CODIGO DE ENTIDAD A ASOCIAR
+    "parametros": {
+        "id": "[int]" //lista de parametros
+    }
+}
+```
+
+
+### Success Response 
+200 Ok
+```
+{
+  "flag": "S"
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
+
+#
+
+
+## <a name='get-consultarParametro'></a> Consultar Parametros
+[Back to top](#top)
+
+<p>Consultar Parametros de una actividad o recomendación o tipo analisis o tipo plan</p>
+
+	GET /api/configuracion/asociar/:entidadIntermedia/:id
+
+
+### Success Response 
+200 Ok
+
+```
+{
+    "parametros": [
+        {
+            "codParametro": int,
+            "nombreParametro": string,
+            "isActiv": boolean
+        },
+        ......
+    ]
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
+
+#
+
+
+## <a name='put-modificarParametro'></a> Modificar Parametro Asociado
+[Back to top](#top)
+
+<p>Activar o desactivar un determinado parametro de una entidad</p>
+
+	PUT /api/configuracion/asociar/:entidadIntermedia/:id
+
+### Body
+```
+{
+  "idParametro": int,
+  "isActiv": boolean
+}
+```
+
+### Success Response 
+200 Ok
+```
+{
+  "flag": "S"
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
+
 

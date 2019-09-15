@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
-#from app.model.hlmodel import Parametro, Actividad, ActividadParametro
+from app.repositorio.DbEntidadIntermedia import selectByCodEspec, updateEntidadInterm
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -47,6 +47,44 @@ def postEntidadInterm(data):
         Rollback()
         return ResponseException(e)
 
+
+def getEntidadIntermCod(entidadIntermedia,id):
+    try:
+        isFilterParam = False # no filtro por parametro
+        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,id,isFilterParam,'')
+        dtoParamList = []
+
+        for obj in objetos:
+            #print(obj)
+            codParam = obj.codParametro
+            param = getNomencladoCod('parametro',codParam)
+            nombreParam = param.nombre
+
+            dtoAux =dict(codParametro = obj.codParametro, nombreParametro= nombreParam, isActiv= obj.isActiv)
+            dtoParamList.append(dtoAux)
+        # #endfor
+        return (dict(parametros=dtoParamList))
+    except Exception as e:
+        return ResponseException(e)
+
+
+def putEntidadInterm(data,entidadIntermedia,id):
+    try:
+        isFilterParam = True
+        codParam= data.get('idParametro')
+        isActiv = data.get('isActiv')
+        updateEntidadInterm(isActiv,modelos[entidadIntermedia],entidadIntermedia,id,isFilterParam,codParam) 
+        return ResponseOk()
+    except Exception as e:
+        return ResponseException(e)
+
+
+
+
+
+
+
+##SOLO SE DEJA DE EJEMPLO NO SE USA EN LA APIII PORQUE BUSCA TODO DE TODOS
 def getEntidadInterm(entidadIntermedia):
     try:
         objetos = selectAll(modelos[entidadIntermedia])
@@ -92,7 +130,9 @@ def getEntidadInterm(entidadIntermedia):
             dtoAux[nomDtoAux] = nombreNomen
             
             dtoParamList.append(dtoAux)
-        return (dtoParamList)
+        #endfor
+            
+        return (dict(parametro=dtoParamList))
         #return (json.dumps(dtoParamList))
     except Exception as e:
         return ResponseException(e)
