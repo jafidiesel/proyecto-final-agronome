@@ -16,10 +16,10 @@ class ParametroOpcion(db.Model):
         print(self.opcion)
 
     parametro = relationship(Parametro,backref = "parametroOpcion")
-    print("Paramtro relationship")
+    #print("Paramtro relationship")
     
     opcion = relationship(Opcion,backref = "parametroOpcion")
-    print("Opcion relationship")
+    #print("Opcion relationship")
 
    
 

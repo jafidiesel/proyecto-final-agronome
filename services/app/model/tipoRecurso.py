@@ -1,13 +1,15 @@
 from app.model.modelImport import *
 
 class TipoRecurso(db.Model):
-    __tablename__ = 'tipo_Recurso'
+    __tablename__ = 'tipo_recurso'
     cod = db.Column('cod_tipo_recurso',Integer,primary_key = True,index = True)
     nombre = db.Column('nombre_tipo_recurso', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
+    
+    recursos = relationship('Recurso',backref= 'tipoRe',lazy='dynamic')
+
+
     nombreNomenclador = "tipoRecurso"
-
-
     def __init__(self, nombre, isActiv):
         self.nombre = nombre
         self.isActiv = isActiv

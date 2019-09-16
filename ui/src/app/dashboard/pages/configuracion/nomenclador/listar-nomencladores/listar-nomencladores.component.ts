@@ -3,8 +3,7 @@ import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/c
 
 @Component({
   selector: 'app-listar-nomencladores',
-  templateUrl: './listar-nomencladores.component.html',
-  styleUrls: ['./listar-nomencladores.component.css']
+  templateUrl: './listar-nomencladores.component.html'
 })
 export class ListarNomencladoresComponent implements OnInit {
 

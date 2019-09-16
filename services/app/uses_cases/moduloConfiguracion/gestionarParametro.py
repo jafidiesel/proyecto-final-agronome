@@ -1,8 +1,7 @@
 from app.api.helperApi.hlDb import saveEntidad,selectAll2, selectAllByFilter
+from flask import jsonify
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
-import json
-from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod2
-from app.extensions import db
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 
 def postParametro(data): 
     try:
@@ -21,35 +20,32 @@ def postParametro(data):
         #Verificar que las clases esten activas
         
         #Creacion  y persistencia de Parametro 
+        #Buscar instancias a asociar
 
+        tipoParametroRst = getNomencladoCod('tipoParametro', tipoParametroJson.get('id'))
+        tipoDatoRst = getNomencladoCod('tipoDato', tipoDatoJson.get('id'))
+        opcionRst = getNomencladoCod('opcion',opcionJson.get('id'))
+      
+        
+        #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson)     
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
-        ParametroOpcion(True,parametroRst,opcionRst) 
+
+        parametroOpcion = ParametroOpcion(True,parametroRst,opcionRst) #parametro opcion son muchos ojo
+
+        parmNew =saveEntidad(parametroRst)
         
-        saveEntidad(parametroRst)
-        print("Despues de append")
-      
-        return Ok 
-    except:
-        
-        return ("mala sintaxis")
-
-def putParametro(data):
-    return True
-
-#Obtener todos los parametros con sus asociaciones TipoParametro y TipoDato. Retorna Json
-def getParametros():
-    for obj in selectAll2(Parametro):
-        print(obj.nombre)
-        print(obj.to_json())
-        print(obj.to_json())
-
-    return True
+        #Creacion  y persistencia de ParametroOpcion 
+        saveEntidad(parametroOpcion)
+        return jsonify(parmNew.to_json())  
+    except Exception as e:
+        return str(e.__cause__)
 
 def getParametro():
     return True
-
+#en algun lado debe decri que nomenclador lo llama para poder filtrar por tipo
+#EJ: si lo llama actividad, solo debe mostrar los parametros que son de tipo Actividad
 #Listar atributos para combo: TipoDato, TipoParametro, Opcion
 #https://es.stackoverflow.com/questions/24320/necesito-pasarle-dinamicamente-al-objeto-query-de-sqlalchemy-los-parametros-de/24748
 def listarAtributos():
@@ -69,3 +65,4 @@ def listarAtributos():
         print(obj.to_json())
     print("----------------")
     return True
+    

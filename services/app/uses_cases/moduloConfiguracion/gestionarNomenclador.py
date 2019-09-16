@@ -1,6 +1,8 @@
+from flask import jsonify
 from app.model import hlmodel
 from app.api.helperApi.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
-from app.api.helperApi.hlResponse import ResponseException
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+
 modelos = {
 "actividad":hlmodel.Actividad,
 "estadoPlanificacion":hlmodel.EstadoPlanificacion,
@@ -15,14 +17,15 @@ modelos = {
 "tipoParametro": hlmodel.TipoParametro,
 "tipoPlan": hlmodel.TipoPlan,
 "tipoPlanificacion": hlmodel.TipoPlanificacion,
-"tipoRecurso": hlmodel.TipoRecurso
+"tipoRecurso": hlmodel.TipoRecurso,
+"parametro": hlmodel.Parametro #agregue esto para usarlo en gestionar entidad intermedia, darle una vuelta de rosca mas con la chechi, basicamente el parametro no es un nomenclador comun, pero lo necesito aca para reutilizar la funcion getNomencladorCod
 }
 
-def getNomenclador(data):
+
+def getNomenclador(entidad):
     try:
-        entidad = data.get('tipoNomenclador')
         objetos = selectAll(modelos[entidad])
-        return objetos 
+        return jsonify([obj.to_json() for obj in objetos])
     except Exception as e:
         return ResponseException(e)
 
@@ -30,25 +33,23 @@ def postNomenclador(data):
     try:
         entidad = data.get('tipoNomenclador')
         objeto = modelos[entidad].from_json(data)
-        result =saveEntidad(objeto)
-        return result
+        saveEntidad(objeto)
+        return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 
 
-def getNomencladoCod(data,id):
-    try:
-        entidad = data.get('tipoNomenclador')
+def getNomencladoCod(entidad,id):
         objeto = selectByCod(modelos[entidad],id)
-        return objeto 
-    except Exception as e:
-        return ResponseException(e)
+        if not objeto:
+            raise Exception('N','No existe el codigo ingresado') #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
+        return objeto
 
-def putNomenclador(data,id):
+        
+def putNomenclador(data,entidad,id):
     try:
-        entidad = data.get('tipoNomenclador')
-        objeto = updateEntidad(modelos[entidad],id,data)
-        return objeto 
+        updateEntidad(modelos[entidad],id,data)
+        return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 

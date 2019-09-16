@@ -3,6 +3,22 @@
 <a name="top"></a>
 # AgronoMe Services
 
+### Levantar entorno
+workon // Lista los entornos creados que tenemos
+workon "nombre_entorno"
+
+#### Dentro de la carpeta services:
+
+python app.py
+
+
+#### Para probar que este corriendo ejecutar en el navegador:
+
+http://localhost:9001/api/ 
+
+
+-------------------------------------------
+
 API REST endopints
 
 - [Actividad](#actividad)
@@ -30,11 +46,12 @@ API REST endopints
     - [Consultar Recurso](#read)
     - [Consultar Recursos](#read)
 
-- [Configuracion](#)
-	- [Crear Parametro](#read)
-    - [Consultar Parametro](#read)
-    - [Consultar Parametro](#read)
-
+- [Configuracion](#configuracion)
+	- [Crear Nomenclador](#crear-nomenclador)
+    - [Consultar Nomenclador](#get-nomenclador)
+    - [Consultar Nomenclador ID](#get-nomencladorid)
+    - [Modficar Nomenclador ID](#put-nomenclador)
+    
 - [Reporte](#)
 	- [Crear Reporte](#read)
     - [Consultar Reporte](#read)
@@ -45,55 +62,150 @@ API REST endopints
     - [Consultar Recomendacion](#read)
     - [Consultar Recomendaciones](#read)
 
-# <a name='actividad'></a> Actividad
+# <a name='configuracion'></a> Configuracion
 
-## <a name='crear-actividad'></a> Crear Actividad
+## <a name='crear-nomenclador'></a> Crear Nomenclador
 [Back to top](#top)
 
-<p>Crea una actividad</p>
+<p>Crea un nomenclador</p>
 
-	POST /api/v1/actividad/
+	POST /api/configuracion/nomenclador
 
 
 ### Body
 ```
 {
-
+    "tipoNomenclador": "string",
+    "nombre": "string",
+    "isActive": boolean
 }
 ```
 
 
-### Success Response
-
-Success-Response:
-
+### Success Response 
+200 Ok
 ```
-HTTP/1.1 200 Ok
-
+{
+  "flag": "S"
+}
 ```
-
 
 ### Error Response
-
 400 Bad Request
 
 ```
-HTTP/1.1 400 Bad Request
 {
-   "messages" : [
-     {
-       "path" : "{Nombre de la propiedad}",
-       "message" : "{Motivo del error}"
-     },
-     ...
-  ]
+  "flag": "N",
+  "message": "cause"
 }
 ```
-500 Server Error
+
+#
+
+
+## <a name='get-nomenclador'></a> Consultar Nomenclador
+[Back to top](#top)
+
+<p>Obtiene todas las instancias de un nomenclador</p>
+
+	GET /api/configuracion/nomenclador/:tipoNomenclador
+
+
+### Success Response 
+200 Ok
 
 ```
-HTTP/1.1 500 Internal Server Error
+[
+  {
+    "id": int,
+    "isActiv": boolean,
+    "nombre": "string",
+    "tipoNomenclador": "tipoNomenclador"
+  },
+    .
+    .
+    ....
+]
+```
+
+### Error Response
+400 Bad Request
+
+```
 {
-   "error" : "Not Found"
+  "flag": "N",
+  "message": "cause"
 }
 ```
+ 
+
+ 
+#
+
+
+## <a name='get-nomencladorid'></a> Consultar  Nomenclador Id
+[Back to top](#top)
+
+<p>Obtiene la intancia de un nomenclador</p>
+
+	GET /api/configuracion/nomenclador/:tipoNomenclador/:id
+
+
+### Success Response 
+200 Ok
+
+```
+{
+  "id": int,
+  "isActiv": boolean,
+  "nombre": "string",
+  "tipoNomenclador": "tipoNomenclador"
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
+
+
+#
+
+## <a name='put-nomenclador'></a> Modificar Nomenclador Id
+[Back to top](#top)
+
+<p>Obtiene la intancia de un nomenclador</p>
+
+	PUT /api/configuracion/nomenclador/:tipoNomenclador/:id
+
+### Body
+```
+{
+    "nombre": "string",
+    "isActive": boolean
+}
+```
+
+### Success Response 
+200 Ok
+```
+{
+  "flag": "S"
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
+

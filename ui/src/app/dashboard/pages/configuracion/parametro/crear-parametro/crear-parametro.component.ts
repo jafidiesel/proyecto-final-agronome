@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 
 @Component({
   selector: 'app-crear-parametro',
@@ -6,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CrearParametroComponent implements OnInit {
 
-  constructor() { }
+  opcionesParametroMockedData: any;
 
+  constructor( private _configuracionService: ConfiguracionService ) {
+    
+    this.opcionesParametroMockedData = this._configuracionService.getOpcionesParametrotroData();
+
+  }
   ngOnInit() {
+    
   }
 
+  
 }

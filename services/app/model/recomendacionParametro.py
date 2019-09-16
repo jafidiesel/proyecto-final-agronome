@@ -3,16 +3,13 @@ from app.model.modelImport import *
 class RecomendacionParametro(db.Model):
     __tablename__ = 'recomendacion_parametro'
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-    codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True)
-    codRecomendacion = db.Column('fk_cod_recomendacion',Integer,ForeignKey('recomendacion.cod_recomendacion'),index = True)
-    #PK compuesta
-    __table_args__ = (
-        PrimaryKeyConstraint(codParametro, codRecomendacion),
-        {},
-    )
+    codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True, primary_key=True)
+    codRecomendacion = db.Column('fk_cod_recomendacion',Integer,ForeignKey('recomendacion.cod_recomendacion'),index = True, primary_key=True)
     
-    def __init__(self,isActiv):
+    def __init__(self,isActiv,codParam,codRecomen):
         self.isActiv = isActiv
+        self.codParametro = codParam
+        self.codRecomendacion = codRecomen
 
     @staticmethod
     def from_json(json):
@@ -24,4 +21,5 @@ class RecomendacionParametro(db.Model):
     def to_json(self):
         return {
             'isActiv': self.isActiv
+
         }

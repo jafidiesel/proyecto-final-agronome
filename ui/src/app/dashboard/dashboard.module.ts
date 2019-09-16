@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
@@ -24,10 +25,12 @@ import { ListarActividadesComponent } from './pages/configuracion/listar-activid
 import { ListarRecomendacionesComponent } from './pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
-import { ListarNomencladoresComponent } from './pages/configuracion/listar-nomencladores/listar-nomencladores.component';
+import { ListarNomencladoresComponent } from './pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
-import { ModificarParametroComponent } from './pages/configuracion/parametro/modificar-parametro/modificar-parametro.component';
+import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
+import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
+import { EditarParametroComponent } from './pages/configuracion/parametro/editar-parametro/editar-parametro.component';
 
 
 
@@ -50,13 +53,15 @@ import { ModificarParametroComponent } from './pages/configuracion/parametro/mod
     ListarNomencladoresComponent,
     ListarParametrosComponent,
     CrearParametroComponent,
-    ModificarParametroComponent
+    EditarParametroComponent,
+    CrearNomencladorComponent,
+    EditarNomencladorComponent
   ],
   imports: [
     CommonModule,
     CoreCommonModule,
     RouterModule,
-    
+    FormsModule
   ],
   exports: [
     ActividadPageComponent,

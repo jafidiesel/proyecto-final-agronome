@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Nomenclador } from '../../data/nomenclador';
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,17 +10,23 @@ export class ConfiguracionService {
 
   private nomencladorData = [
     ['Nombre', 'Activo', 'Tipo Nomenclador', 'Accion', ''],
-    ['En Curso', 'Si', 'EstadoPlanificacion', '*/editar', '-/Desactivar'],
-    ['Inicial', 'Si', 'TipoPlanificacion', '*/editar', '-/Desactivar'],
-    ['Supervisada', 'Si', 'TipoPlanificacion', '*/editar', '-/Desactivar']
+    ['En Curso', 'Si', 'EstadoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar'],
+    ['Inicial', 'Si', 'TipoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar'],
+    ['Supervisada', 'Si', 'TipoPlanificacion', '*/configuracion/editarNomenclador', '-/Desactivar']
   ];
 
   private parametroData = [
     ['Nombre', 'Activo', 'Tipo de dato', 'Tipo de parámetro', 'Accion', ''],
-    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/modificar-parametro', '-/Desactivar'],
-    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/modificar-parametro', '-/Desactivar'],
-    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/modificar-parametro', '-/Desactivar']
+    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
+    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
+    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/editarParametro', '-/Desactivar']
 ];
+
+  private opcionesParametro = [
+    'mañana',
+    'tarde',
+    'noche'
+  ];
 
   private planData = [
     ['Nombre', 'Activo', 'Accion', ''],
@@ -46,14 +55,23 @@ export class ConfiguracionService {
     ['Siembra', 'Si', '*/editar', '-/Desactivar']
 ];
 
-  constructor() { }
+  constructor( private http: HttpClient ) { }
 
   getNomencladorData() {
     return this.nomencladorData;
   }
-  
+
   getParametroData() {
     return this.parametroData;
+  }
+
+  getOpcionesParametrotroData() {
+    return this.opcionesParametro;
+  }
+
+  setOpcionesParametrotroData(opcion:string) {
+    this.opcionesParametro.push(opcion);
+    console.log(this.opcionesParametro);
   }
 
   getPlanData() {
@@ -71,5 +89,17 @@ export class ConfiguracionService {
   getActividadData() {
     return this.actividadData;
   }
+
+  getTipoNomenclador(): Observable<string[]> {
+    return of(['One', 'Two', 'Three']);
+  }
+
+  postNomencladorForm( nomencladorForm: Nomenclador ) : Observable<any> {
+    //return of(nomencladorForm);
+
+    return this.http.post( 'https://putsreq.com/rZeNVru9hSMoNfnVB7Op', nomencladorForm);
+
+  }
+
 
 }
