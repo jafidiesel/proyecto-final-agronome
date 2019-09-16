@@ -16,7 +16,7 @@ def selectByCod(entidad,cod): ##si el codigo se llama cod
     if not obj:
         print('no hay objeto')
         raise Exception('N','No existe el codigo ingresado')
-   
+
     return (obj)
 
 

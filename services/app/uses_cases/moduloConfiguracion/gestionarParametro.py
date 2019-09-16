@@ -1,46 +1,53 @@
-from app.api.helperApi.hlDb import saveEntidad,selectAll2, selectAllByFilter
 from flask import jsonify
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+
 
 def postParametro(data): 
     try:
+        print("EN POSTPARAMETRO")
         #Manejo de Json
         parametroJson = data.get('parametro')
         print(parametroJson)
         tipoParametroJson = data.get('tipoParametro')
+        print(tipoParametroJson)
         tipoDatoJson = data.get('tipoDato')
-        opcionJson = data.get('opcion')
-
-        
+        opcionJsonList = data.get('opcion')
+        claves = list(data.keys())
+        print(claves[0])
         #Buscar a asociar
-        tipoParametroRst = getNomencladoCod2(tipoParametroJson, tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod2(tipoDatoJson, tipoDatoJson.get('id'))
-        opcionRst = getNomencladoCod2(opcionJson,opcionJson.get('id'))
+        tipoParametroRst = getNomencladoCod(claves[0], tipoParametroJson.get('id'))
+        tipoDatoRst = getNomencladoCod(tipoDatoJson, tipoDatoJson.get('id'))
+        print("EN Asociar")
+        opcionList=[]
+        for opcionJson in opcionJsonList:
+            opcionList.append(opcionJson.get('id'))
         #Verificar que las clases esten activas
-        
-        #Creacion  y persistencia de Parametro 
-        #Buscar instancias a asociar
-
-        tipoParametroRst = getNomencladoCod('tipoParametro', tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod('tipoDato', tipoDatoJson.get('id'))
-        opcionRst = getNomencladoCod('opcion',opcionJson.get('id'))
-      
-        
+              
         #Creacion  y asociación de Parametro 
-        parametroRst = Parametro.from_json(parametroJson)     
+        parametroRst = Parametro.from_json(parametroJson) 
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
 
-        parametroOpcion = ParametroOpcion(True,parametroRst,opcionRst) #parametro opcion son muchos ojo
+        codParametro = parametroJson.get('id')
+        for opcion in opcionList:
+            codOpcion = opcion.get('id')
+            parametroOpcion = ParametroOpcion(True,codParametro,codOpcion) #parametro opcion son muchos ojo
+            saveEntidadSinCommit(parametroOpcion)
+            print("EN FOR")
 
-        parmNew =saveEntidad(parametroRst)
-        
+        saveEntidadSinCommit(parametroRst)
+        print("DPS DE COMMIT PARAMETRO")
+
         #Creacion  y persistencia de ParametroOpcion 
-        saveEntidad(parametroOpcion)
-        return jsonify(parmNew.to_json())  
+        saveEntidadSinCommit(parametroOpcion)
+        Commit()
+        return ResponseOk()
     except Exception as e:
-        return str(e.__cause__)
+        Rollback()
+        return ResponseException(e)
 
 def getParametro():
     return True
@@ -48,7 +55,9 @@ def getParametro():
 #EJ: si lo llama actividad, solo debe mostrar los parametros que son de tipo Actividad
 #Listar atributos para combo: TipoDato, TipoParametro, Opcion
 #https://es.stackoverflow.com/questions/24320/necesito-pasarle-dinamicamente-al-objeto-query-de-sqlalchemy-los-parametros-de/24748
-def listarAtributos():
+#Para el armado de las estructuras
+def getEstructura(tipoNomenclador):
+
     queryString={"isActiv" : 'isActiv'}
     #Buscar TipoParametro isActiv = True
     print("----------------")

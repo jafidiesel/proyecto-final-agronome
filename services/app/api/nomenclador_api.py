@@ -10,6 +10,7 @@ nomenclador = urlNomenclador
 @nomenclador.route('')
 class NomencladorsHandler(Resource):
     def post(self):
+        print("EN URL")
         data = self.api.payload
         return postNomenclador(data)
 
@@ -28,7 +29,7 @@ class  NomencladorHandler(Resource):
             return (obj.to_json())
         except Exception as e:
             return ResponseException(e)
-
+         
     def put(self,tipoNomenclador,id):
         data = self.api.payload
         return putNomenclador(data,tipoNomenclador,id)
