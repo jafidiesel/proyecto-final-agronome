@@ -119,9 +119,9 @@ export class ConfiguracionService {
     return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.id}`, nomencladorJson);
   }
 
-  getNomencladores() {
+/*   getNomencladores() {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
-  }
+  } */
 
   getListaNomencladores(tipoNomenclador: string) {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
@@ -131,5 +131,8 @@ export class ConfiguracionService {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
-
+  postAsociacionForm( nomencladorJson: any ): Observable<any> {
+    //return of(nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/asociar', nomencladorJson);
+  }
 }
