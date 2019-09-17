@@ -7,7 +7,6 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 def postParametro(data): 
     try:
-        print("EN POSTPARAMETRO")
         #Manejo de Json
         parametroJson = data.get('parametro')
         print(parametroJson)
@@ -15,15 +14,16 @@ def postParametro(data):
         print(tipoParametroJson)
         tipoDatoJson = data.get('tipoDato')
         opcionJsonList = data.get('opcion')
+        #Lista de claves del Json --> Para obenter el tipo de entidad
         claves = list(data.keys())
-        print(claves[0])
-        #Buscar a asociar
-        tipoParametroRst = getNomencladoCod(claves[0], tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod(tipoDatoJson, tipoDatoJson.get('id'))
-        print("EN Asociar")
-        opcionList=[]
+
+        #Busqueda de entidades a asociar a Parametro
+        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
+        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
+        codOpcionList=[]
         for opcionJson in opcionJsonList:
-            opcionList.append(opcionJson.get('id'))
+            codOpcionList.append(opcionJson.get('id'))
+            
         #Verificar que las clases esten activas
               
         #Creacion  y asociación de Parametro 
@@ -31,18 +31,14 @@ def postParametro(data):
         tipoDatoRst.parametroRef.append(parametroRst)
         tipoParametroRst.parametroRef.append(parametroRst)
 
-        codParametro = parametroJson.get('id')
-        for opcion in opcionList:
-            codOpcion = opcion.get('id')
-            parametroOpcion = ParametroOpcion(True,codParametro,codOpcion) #parametro opcion son muchos ojo
-            saveEntidadSinCommit(parametroOpcion)
-            print("EN FOR")
-
         saveEntidadSinCommit(parametroRst)
-        print("DPS DE COMMIT PARAMETRO")
 
-        #Creacion  y persistencia de ParametroOpcion 
-        saveEntidadSinCommit(parametroOpcion)
+        #Creacion  y asociación de OpcionParametro 
+        codParametro = parametroRst.cod
+        for codOpcion in codOpcionList:
+            parametroOpcion = ParametroOpcion(True,codParametro,codOpcion) 
+            saveEntidadSinCommit(parametroOpcion)           
+        
         Commit()
         return ResponseOk()
     except Exception as e:
