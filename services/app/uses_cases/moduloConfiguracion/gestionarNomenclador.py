@@ -1,8 +1,8 @@
 from flask import jsonify
 from app.model import hlmodel
-from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
+from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2 , selectByisActiv
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
-
+import json
 modelos = {
 "actividad":hlmodel.Actividad,
 "estadoPlanificacion":hlmodel.EstadoPlanificacion,
@@ -61,3 +61,21 @@ def getNomencladoCod2(data,id):
         return objeto 
     except Exception as e:
         return ResponseException(e)
+
+
+def getNomencladorFilter(data,entidad):
+    try:
+        filtros= data.get('filtros')
+        if not filtros:
+            raise Exception('N','No posee filtros, por favor declare los filtros de esta manera: {"filtros:{"isActiv":true}}')
+        valor = filtros.get('isActiv')
+        
+        if valor == None: 
+             raise Exception('N','el campo is Activ no posee valor, coloque true o false')
+             
+        objetos = selectByisActiv(modelos[entidad],valor)
+        return  jsonify([obj.to_json() for obj in objetos])
+    except Exception as e:
+        return ResponseException(e)
+    
+
