@@ -10,6 +10,7 @@ nomenclador = urlNomenclador
 @nomenclador.route('')
 class NomencladorsHandler(Resource):
     def post(self):
+        print("EN URL")
         data = self.api.payload
         return postNomenclador(data)
 
