@@ -26,9 +26,9 @@ export class AsociarActividadComponent implements OnInit {
     id: -1,
     parametros: {
       id: "[1]"
-    }
+    },
+    optionsList: this.optionsList
   }
-
 
 
   constructor(private _configuracionService: ConfiguracionService) {
@@ -46,9 +46,13 @@ export class AsociarActividadComponent implements OnInit {
   actualizarActividad(obj){
     this.actividadAsociadaAEnviar.entidadIntermedia = obj.tipoNomenclador + "Parametro";
     this.actividadAsociadaAEnviar.id = obj.id;
-
     console.log(obj);
     console.log(this.actividadAsociadaAEnviar);
+  }
+
+  actualizar(){
+    console.log("actualizar");
+    this.actividadAsociadaAEnviar.optionsList = this.optionsList;
   }
 
   onSubmitAsociacion(form: NgForm) {

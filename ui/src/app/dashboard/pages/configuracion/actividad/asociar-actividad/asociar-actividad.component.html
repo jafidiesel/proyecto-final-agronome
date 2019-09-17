@@ -18,18 +18,6 @@
                     </div>
                 </div>
 
-<!--                 <div class="form-group">
-                    <label for="parametroInput" class=" col-form-label">Seleccione un Parámetro a agregar * </label>
-                    <div class="input-group ">
-                        <select [(ngModel)]="actividadAsociadaAEnviar.tipoPArametro" class="custom-select" id="tipoPArametro" name="tipoPArametro" >
-                                <option *ngFor="let tipoParametroSelect of tiposParametrosSelect | async" selected [value]="tipoParametroSelect">
-                                    {{ tipoParametroSelect }}
-                                </option>
-                        </select>
-                    </div>
-                </div> -->
-
-
                 <div class="form-group row">
                     <app-table-pane [titleText]="'Parametros *'" [rows]="this.tiposParametrosSelect" [(output)]="this.optionsList" [buttonAddText]="'Agregar Parametro'"></app-table-pane>
 
@@ -51,7 +39,7 @@
                             {{ postErrorMessage }}
                         </div>
                         <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Crear</button>
-                        <button [routerLink]="['/configuracion/asociar/listarNomencladores']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                        <button [routerLink]="['/configuracion/asociar/listarActividades']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
                 
