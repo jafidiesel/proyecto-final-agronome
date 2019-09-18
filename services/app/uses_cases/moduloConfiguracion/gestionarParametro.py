@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit,selectByCod, addObject
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -9,9 +9,7 @@ def postParametro(data):
     try:
         #Manejo de Json
         parametroJson = data.get('parametro')
-        print(parametroJson)
         tipoParametroJson = data.get('tipoParametro')
-        print(tipoParametroJson)
         tipoDatoJson = data.get('tipoDato')
         opcionJsonList = data.get('opcion')
         #Lista de claves del Json --> Para obenter el tipo de entidad
@@ -28,18 +26,28 @@ def postParametro(data):
               
         #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson) 
+        
+        addObject(parametroRst)
+        tipoParametroRst.parametroTipo.append(parametroRst)
+        tipoDatoRst.parametroDato.append(parametroRst)
+       
+        print(parametroRst)
+        """parametroRst.tipoDatoRef.append(tipoDatoRst)
+        print("Hola1")
+        param.tipoParametroRef.append(tipoParametroRst)
+        print("Hola2")
         tipoDatoRst.parametroRef.append(parametroRst)
-        tipoParametroRst.parametroRef.append(parametroRst)
+        #tipoParametroRst.parametroRef.append(parametroRst)
 
         saveEntidadSinCommit(parametroRst)
-
+        """
         #Creacion  y asociación de OpcionParametro 
         codParametro = parametroRst.cod
         for codOpcion in codOpcionList:
             parametroOpcion = ParametroOpcion(True,codParametro,codOpcion) 
             saveEntidadSinCommit(parametroOpcion)           
         
-        Commit()
+        Commit() 
         return ResponseOk()
     except Exception as e:
         Rollback()
@@ -52,8 +60,8 @@ def getParametro():
 #Listar atributos para combo: TipoDato, TipoParametro, Opcion
 #https://es.stackoverflow.com/questions/24320/necesito-pasarle-dinamicamente-al-objeto-query-de-sqlalchemy-los-parametros-de/24748
 #Para el armado de las estructuras
-def getEstructura(tipoNomenclador):
-
+def getParametroEstructura(tipoNomenclador):
+    
     queryString={"isActiv" : 'isActiv'}
     #Buscar TipoParametro isActiv = True
     print("----------------")
@@ -71,3 +79,18 @@ def getEstructura(tipoNomenclador):
     print("----------------")
     return True
     
+def getParametroById(id):
+    #Manejo de Json
+    
+    print("En getByid")
+    from app.model import hlmodel
+
+    parametro = selectByCod(hlmodel.Parametro,id)
+    print(parametro)
+    print(parametro.tipoParametroRef.nombre)
+
+
+
+
+def updateParametro():
+    return "Hello"

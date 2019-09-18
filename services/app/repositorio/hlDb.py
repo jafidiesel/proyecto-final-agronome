@@ -19,7 +19,6 @@ def selectByCod(entidad,cod): ##si el codigo se llama cod
 
     return (obj)
 
-
 def updateEntidad(entidad,cod,data): ##solo update nomencladores
     obj = entidad.query.filter(entidad.cod==cod).first() 
     if not obj: ## si el objeto no existe lanzo la exeption
@@ -29,13 +28,6 @@ def updateEntidad(entidad,cod,data): ##solo update nomencladores
     obj.isActiv = data.get('isActiv')
     db.session.commit()
     return (obj)
-    
-
-##se puede borrar creo
-def selectByCod2(entidad,cod):
-    obj = entidad.query.filter(entidad.cod==cod).first()
-    return obj
-
 
 def saveEntidadSinCommit(entidad):
    db.session.add(entidad)
@@ -50,3 +42,7 @@ def Rollback():
     print('rollback de la base de datos')
     db.session.rollback()
     return 'rollback sucess'
+
+def addObject(entidad):
+    db.session.add(entidad)
+    return 'add success'

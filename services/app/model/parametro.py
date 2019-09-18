@@ -10,13 +10,15 @@ class Parametro(db.Model):
     codTipoDato = db.Column('fk_cod_tipo_dato',Integer,ForeignKey('tipo_dato.cod_tipo_dato'),index = True)
 
     #Relaciones OneToMany lado One
-    tipoParametro = relationship("TipoParametro", backref="parametroRef")
-    tipoDato = relationship("TipoDato", backref="parametroRef")
+    #tipoParametro = relationship("TipoParametro", backref="parametroRef")
+    #tipoParametro5 = relationship("TipoParametro", backref="parametroPruebaRef")
+    #tipoDato = relationship("TipoDato", backref="parametroRef")
    
     
     def __init__(self, nombre, isActiv):
         self.nombre = nombre
         self.isActiv = isActiv
+    
 
     @staticmethod
     def from_json(json):
@@ -34,5 +36,5 @@ class Parametro(db.Model):
             'isActiv': self.isActiv
         }
 
-#Agregar metodos add
-#
+    def getObjetc(self):
+        return self

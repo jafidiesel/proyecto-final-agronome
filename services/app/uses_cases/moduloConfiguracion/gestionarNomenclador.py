@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.model import hlmodel
-from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByCod2
+from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 modelos = {
@@ -50,14 +50,5 @@ def putNomenclador(data,entidad,id):
     try:
         updateEntidad(modelos[entidad],id,data)
         return ResponseOk()
-    except Exception as e:
-        return ResponseException(e)
-
-def getNomencladoCod2(data,id):
-    try:
-        print(data)
-        entidad = data.get('tipoNomenclador')
-        objeto = selectByCod2(modelos[entidad],id)
-        return objeto 
     except Exception as e:
         return ResponseException(e)
