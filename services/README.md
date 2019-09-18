@@ -49,8 +49,9 @@ API REST endopints
 - [Configuracion](#configuracion)
 	- [Crear Nomenclador](#crear-nomenclador)
     - [Consultar Nomenclador](#get-nomenclador)
+    - [Consultar Nomenclador Filter](#post-nomencladorFilter)
     - [Consultar Nomenclador ID](#get-nomencladorid)
-    - [Modficar Nomenclador ID](#put-nomenclador)
+    - [Modoficar Nomenclador ID](#put-nomenclador)
     - [Asociar Parametros](#post-asociarParametro)
     - [Consultar Parametros](#get-consultarParametro)
     - [Modificar Parametro Asociado](#put-modificarParametro)
@@ -147,8 +148,53 @@ API REST endopints
 
  
 #
+## <a name='post-nomencladorFilter'></a> Consultar Nomenclador Filter (isActiv)
+[Back to top](#top)
+
+<p>Obtiene la intancia de un nomenclador segun el filtro isActiv</p>
+
+	POST /api/configuracion/nomenclador/:tipoNomenclador
+### Body
+```
+{
+  "filtros":
+    {
+    "isActiv":boolean
+    }  
+}
+
+```
+### Success Response 
+200 Ok
+
+```
+[
+  {
+    "id": int,
+    "isActiv": boolean,
+    "nombre": "string",
+    "tipoNomenclador": "tipoNomenclador"
+  },
+    .
+    .
+    ....
+]
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
 
 
+
+
+#
 ## <a name='get-nomencladorid'></a> Consultar  Nomenclador Id
 [Back to top](#top)
 
