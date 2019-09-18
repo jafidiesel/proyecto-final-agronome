@@ -44,8 +44,8 @@ def postParametro(data):
         """
         #Creacion  y asociación de OpcionParametro 
         codParametro = parametroRst.cod
-        for codOpcion in codOpcionList:
-            parametroOpcion = ParametroOpcion(True,codParametro,codOpcion) 
+        for cod in codOpcionList:
+            parametroOpcion = ParametroOpcion(True,codParametro,cod) 
             saveEntidadSinCommit(parametroOpcion)           
         
         Commit() 
@@ -83,11 +83,42 @@ def getParametroEstructura(tipoNomenclador):
 def getParametroById(id):  
     from app.model import hlmodel
 
-    parametro = selectByCod(hlmodel.Parametro,id)
-    for obj in ParametroOpcion.query.filter(ParametroOpcion.codParametro == parametro.cod).all():
-        print(obj.to_json)
-        print(obj.codParametro)
+    dtoGeneral= []
+    dtoParametroOpcion = []
+    dtoOpcionList = []
 
+    parametro = selectByCod(hlmodel.Parametro,id)
+    print(parametro)
+    print(parametro.tipoDatoRef)
+    #Creacion dto parametro
+    parametroDto = parametro.__dict__
+    parametroDto.pop('codTipoDato',None)
+    parametroDto.pop('codTipoParametro',None)
+    #Creacion dto tipoParametro
+    tipoParametroDto = parametro.tipoParametroRef.nombre
+    print("djfiopjewspjmfjds")
+    print(tipoParametroDto)
+    #Creacion dto tipoDato
+    tipoDatoDto = parametro.tipoDatoRef.__dict__
+
+    dtoGeneral.append(dict(parametro = parametroDto))
+    dtoGeneral.append(dict(tipoParametro = tipoParametroDto))
+    dtoGeneral.append(dict(parametro = tipoDatoDto))
+
+    for parametroOpcion in selectAllByParamCod(parametro.cod):
+            parametroOpcionDict = parametroOpcion.__dict__
+            opcion =selectByCod(hlmodel.Opcion,parametroOpcion.codOpcion)
+            opcionDto = opcion.__dict__
+            opcionDto.pop('_sa_instance_state',None)
+            dtoOpcionList.append(opcionDto)
+            print(dtoOpcionList)
+            
+    parametroOpcionDict.pop('_sa_instance_state', None)     
+    parametroOpcionDict.pop('codOpcion', None)   
+    dtoParametroOpcion.append(dict( parametroOpcion = parametroOpcionDict))  
+    dtoParametroOpcion.append(dict(opcion=dtoOpcionList))
+    dtoGeneral.append(dtoParametroOpcion)
+    print(dtoGeneral)
 
 def updateParametro():
     return "Hello"
