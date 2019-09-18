@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlNomenclador
-from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador, getNomencladorFilter
 from app.api.helperApi.hlResponse import ResponseException
 
 
@@ -19,6 +19,10 @@ class NomencladorsHandler(Resource):
 class NomencladorsHandler(Resource):
     def get(self,tipoNomenclador):
         return getNomenclador(tipoNomenclador)
+
+    def post(self,tipoNomenclador):
+        data = self.api.payload
+        return getNomencladorFilter(data,tipoNomenclador)
 
 @nomenclador.route('/<string:tipoNomenclador>/<int:id>')
 class  NomencladorHandler(Resource):

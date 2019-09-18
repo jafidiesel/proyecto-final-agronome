@@ -3,6 +3,8 @@ from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Comm
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+import json
+from app.repositorio.repositorioParametro import selectAllByParamCod
 
 
 def postParametro(data): 
@@ -18,6 +20,7 @@ def postParametro(data):
         #Busqueda de entidades a asociar a Parametro
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
         tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
+        print(tipoDatoRst.cod)
         codOpcionList=[]
         for opcionJson in opcionJsonList:
             codOpcionList.append(opcionJson.get('id'))
@@ -26,12 +29,10 @@ def postParametro(data):
               
         #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson) 
-        
         addObject(parametroRst)
         tipoParametroRst.parametroTipo.append(parametroRst)
         tipoDatoRst.parametroDato.append(parametroRst)
-       
-        print(parametroRst)
+
         """parametroRst.tipoDatoRef.append(tipoDatoRst)
         print("Hola1")
         param.tipoParametroRef.append(tipoParametroRst)
@@ -79,17 +80,13 @@ def getParametroEstructura(tipoNomenclador):
     print("----------------")
     return True
     
-def getParametroById(id):
-    #Manejo de Json
-    
-    print("En getByid")
+def getParametroById(id):  
     from app.model import hlmodel
 
     parametro = selectByCod(hlmodel.Parametro,id)
-    print(parametro)
-    print(parametro.tipoParametroRef.nombre)
-
-
+    for obj in ParametroOpcion.query.filter(ParametroOpcion.codParametro == parametro.cod).all():
+        print(obj.to_json)
+        print(obj.codParametro)
 
 
 def updateParametro():
