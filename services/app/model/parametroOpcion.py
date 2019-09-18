@@ -8,17 +8,14 @@ class ParametroOpcion(db.Model):
     codOpcion = db.Column('fk_cod_opcion',Integer,ForeignKey('opcion.cod_opcion'),index = True,  primary_key = True)
       
     def __init__(self,isActiv,parametro,opcion):
-        print("En constructor parametro opcion")
         self.isActiv = isActiv
-        self.parametro = parametro
-        self.opcion = opcion
-        print(self.parametro)
-        print(self.opcion)
-
-    parametro = relationship(Parametro,backref = "parametroOpcion")
+        self.codParametro = parametro
+        self.codOpcion = opcion
+        
+    #parametro = relationship(Parametro,backref = "parametroOpcion")
     #print("Paramtro relationship")
     
-    opcion = relationship(Opcion,backref = "parametroOpcion")
+    #opcion = relationship(Opcion,backref = "parametroOpcion")
     #print("Opcion relationship")
 
    
