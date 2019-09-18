@@ -50,64 +50,94 @@ export class ConfiguracionService {
 
   private actividadData = [
     ['Nombre', 'Activo', 'Accion', ''],
-    ['Riego', 'Si', '*/editar', '-/Desactivar'],
-    ['Cosecha', 'Si', '*/editar', '-/Desactivar'],
-    ['Siembra', 'Si', '*/editar', '-/Desactivar']
+    ['Riego', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar'],
+    ['Cosecha', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar'],
+    ['Siembra', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar']
 ];
 
   constructor( private http: HttpClient ) { }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getNomencladorData() {
     return this.nomencladorData;
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getParametroData() {
     return this.parametroData;
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getOpcionesParametrotroData() {
     return this.opcionesParametro;
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   setOpcionesParametrotroData(opcion:string) {
     this.opcionesParametro.push(opcion);
     console.log(this.opcionesParametro);
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getPlanData() {
     return this.planData;
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getRecomendacionData() {
     return this.recomendacionData;
   }
 
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getAnalisisData() {
     return this.analisisData;
   }
-
+  
+  /**
+   * @deprecated Devuelve datos mockeados
+   */
   getActividadData() {
     return this.actividadData;
   }
-  
 
-  getTiposNomenclador(): Observable<string[]> {
-    return of(['actividad',
-    'estadoPlanificacion',
-    'opcion',
-    'permiso',
-    'recomendacion',
-    'recurso',
-    'rol',
-    'tipoAnalisis',
-    'tipoCultivo',
-    'tipoDato',
-    'tipoParametro',
-    'tipoPlan',
-    'tipoPlanificacion',
-    'tipoRecurso',
-  ]);
+/**
+ * @return observable<String [tipoNomenclador] [id]>
+ * Description. Lista de los tipos de nomencladores
+ */
+  getTiposNomenclador() {
+    let nomencladores=[
+      ['actividad','0'],
+      ['estadoPlanificacion','1'],
+      ['opcion','2'],
+      ['permiso','3'],
+      ['recomendacion','4'],
+      ['recurso','5'],
+      ['rol','6'],
+      ['tipoAnalisis','7'],
+      ['tipoCultivo','8'],
+      ['tipoDato','9'],
+      ['tipoParametro','10'],
+      ['tipoPlan','11'],
+      ['tipoPlanificacion','12'],
+      ['tipoRecurso','13'],
+    ];
+    return of(nomencladores);
   }
+  
   postNomencladorForm( nomencladorJson: NomencladorInterface ): Observable<any> {
     //return of(nomencladorForm);
     return this.http.post( 'http://localhost:9001/api/configuracion/nomenclador', nomencladorJson);
@@ -123,16 +153,33 @@ export class ConfiguracionService {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
   } */
 
-  getListaNomencladores(tipoNomenclador: string) {
-    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
+/**
+ * @param tipoNomenclador string
+ * @return Observable<Object>
+ *  
+ * Devuelve todos los nomencladores creados del tipo enviado por parámetro
+ */
+  getListaNomencladores(tipoNomenclador: string): Observable<String> {
+    return this.http.get<String>(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
   }
 
   getNomenclador(tipoNomenclador: string, id: number){
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
-  postAsociacionForm( nomencladorJson: any ): Observable<any> {
+  postAsociacionForm( asociacionJson: any ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.post( 'http://localhost:9001/api/configuracion/asociar', nomencladorJson);
+    return this.http.post( 'http://localhost:9001/api/configuracion/asociar', asociacionJson);
+  }
+  
+  /**
+   * @param nomencladorJson any
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion post para almacenar el parametro creado
+   */
+  postParametroForm(parametroJson: any){
+    //return of(nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
   }
 }

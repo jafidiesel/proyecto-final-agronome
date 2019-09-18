@@ -14,8 +14,8 @@ export class AsociarActividadComponent implements OnInit {
   
   tipoNomencladorLocal: string;
   tipoParametro: string;
-  tiposNomencladoresSelect: Observable<string[]>;
-  tiposParametrosSelect: Observable<string[]>;
+  tiposNomencladoresSelect: Observable<String[][]>;
+  tiposParametrosSelect: Observable<String[][]>;
   
   optionsList = [];
 

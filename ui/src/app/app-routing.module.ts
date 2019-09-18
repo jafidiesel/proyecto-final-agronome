@@ -20,6 +20,7 @@ import { ListarNomencladoresComponent } from './dashboard/pages/configuracion/no
 import { CrearNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
 import { EditarNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 import { AsociarActividadComponent } from './dashboard/pages/configuracion/actividad/asociar-actividad/asociar-actividad.component';
+import { EditarActividadAsociadaComponent } from './dashboard/pages/configuracion/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
 
 
 const routes: Routes = [
@@ -31,16 +32,19 @@ const routes: Routes = [
   { path: 'seguridad', component: SeguridadPageComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
-  { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
-  { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },
   { path: 'configuracion/listarPlanes', component: ListarPlanesComponent },
   { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
-  /* Modulo Configuracion */
+  /* Modulo Configuracion - Asociar */
+  { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
+  { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
+  { path: 'configuracion/asociar/editarActividad/:id', component: EditarActividadAsociadaComponent },
+  /* Modulo Configuracion - Nomencladores */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
   { path: 'configuracion/editarNomenclador/:tipoNomenclador/:id', component: EditarNomencladorComponent },
   { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
+  /* Modulo Configuracion - Parametros */
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
   { path: 'configuracion/editarParametro', component: EditarParametroComponent },

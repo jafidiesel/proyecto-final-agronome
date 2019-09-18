@@ -19,8 +19,8 @@
                     <label for="parametroInput" class=" col-form-label">Tipo Nomenclador * </label>
                     <div class="input-group ">
                         <select [(ngModel)]="nomencladorAEnviar.tipoNomenclador" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" >
-                                <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected [value]="tipoNomencladorSelect">
-                                    {{ tipoNomencladorSelect }}
+                                <option *ngFor="let tipoNomencladorSelect of tiposNomencladoresSelect | async" selected [value]="tipoNomencladorSelect[0]">
+                                    {{ tipoNomencladorSelect[0] }}
                                 </option>
                         </select>
                     </div>

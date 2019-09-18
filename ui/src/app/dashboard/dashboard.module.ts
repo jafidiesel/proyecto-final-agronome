@@ -32,6 +32,7 @@ import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/cre
 import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 import { EditarParametroComponent } from './pages/configuracion/parametro/editar-parametro/editar-parametro.component';
 import { AsociarActividadComponent } from './pages/configuracion/actividad/asociar-actividad/asociar-actividad.component';
+import { EditarActividadAsociadaComponent } from './pages/configuracion/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -62,7 +63,8 @@ import { JwPaginationComponent } from 'jw-angular-pagination';
     EditarNomencladorComponent,
     JwPaginationComponent,
     ListarActividadesAsociadasComponent,
-    AsociarActividadComponent
+    AsociarActividadComponent,
+    EditarActividadAsociadaComponent
   ],
   imports: [
     CommonModule,

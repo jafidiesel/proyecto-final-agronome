@@ -7,7 +7,6 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './table-pane.component.html'
 })
 export class TablePaneComponent implements OnInit {
-  selectedOption: string;
   @Input() titleText: string;
   @Input() rows: Observable<string>;
   @Input() buttonAddText: string;
@@ -16,12 +15,16 @@ export class TablePaneComponent implements OnInit {
   @Input() output =[]
   
   faTrashAlt = faTrashAlt;
-
+  
   mockedData = [
     "noche",
     "mañana",
   ];
-
+  
+  selectedOption: any = {
+    id: 0,
+    nombre: ""
+  };
 
   constructor() {
   }
@@ -41,9 +44,14 @@ export class TablePaneComponent implements OnInit {
   }
 
   agregarItem(){
-    this.optionsList.push( this.selectedOption );
-    this.output.push( this.selectedOption );
+    this.optionsList.push( this.selectedOption.nombre );
+    this.output.push( this.selectedOption.id );
     console.log(this.optionsList);
+  }
+
+  actualizarSelectedOption(obj:any){
+    this.selectedOption.id = obj.id;
+    this.selectedOption.nombre = obj.nombre;
   }
 
   quitarItem(itemARemover){
