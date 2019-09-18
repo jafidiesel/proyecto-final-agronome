@@ -14,7 +14,7 @@ def selectAll(entidad):
 def selectByCod(entidad,cod): ##si el codigo se llama cod
     obj = entidad.query.filter(entidad.cod==cod).first()
     if not obj:
-        print('no hay objeto')
+        #print('no hay objeto')
         raise Exception('N','No existe el codigo ingresado')
 
     return (obj)
@@ -35,6 +35,12 @@ def updateEntidad(entidad,cod,data): ##solo update nomencladores
 def selectByCod2(entidad,cod):
     obj = entidad.query.filter(entidad.cod==cod).first()
     return obj
+
+def selectByisActiv(entidad,valor):
+    objetos = entidad.query.filter(entidad.isActiv==valor).all()
+    if not objetos:
+        raise Exception('N','No existen objetos con isActiv ingresado')
+    return objetos
 
 
 def saveEntidadSinCommit(entidad):
