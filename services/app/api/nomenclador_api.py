@@ -4,13 +4,17 @@ from app.api.helperApi.hlUrl import urlNomenclador
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador, getNomencladorFilter
 from app.api.helperApi.hlResponse import ResponseException
 
-
 nomenclador = urlNomenclador
 
 @nomenclador.route('')
+@nomenclador.doc(params={
+    "tipoNomenclador": "nombre del nomenclador",
+    "nombre": "string",
+    "isActiv": "boolean"
+},responses={202: 'Flag s', 404: 'Flag:n'})
+
 class NomencladorsHandler(Resource):
     def post(self):
-        print("EN URL")
         data = self.api.payload
         return postNomenclador(data)
 
