@@ -23,7 +23,7 @@ export class EditarNomencladorComponent implements OnInit {
   postError = false;
   postErrorMessage = '';
 
-  tiposNomencladoresSelect: Observable<string[]>;
+  tiposNomencladoresSelect: Observable<Object>;
 
   constructor(private activatedRoute: ActivatedRoute,
     private _configuracionService: ConfiguracionService) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { async } from '@angular/core/testing';
-import { faEdit, faPowerOff } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -31,7 +31,6 @@ export class ListarNomencladoresComponent implements OnInit {
 ]; // Lista con todos los tipoNomenclador
   
   faEdit = faEdit;
-  faPowerOff = faPowerOff;
 
   constructor( private _configuracionService: ConfiguracionService) {
     this.nomencladoresMockedData = _configuracionService.getNomencladorData();

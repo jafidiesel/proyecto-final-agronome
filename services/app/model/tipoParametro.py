@@ -6,11 +6,16 @@ class TipoParametro(db.Model):
     nombre= db.Column('nombre_tipo_parametro', String(32), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     nombreNomenclador = "tipoParametro"
+    parametroTipo = relationship("Parametro", backref="tipoParametroRef",uselist=True)
 
+
+    #parametroTipoRef = relationship("Parametro", back_populates="tipoParametroRef",uselist=True)
 
     def __init__(self, nombre, isActiv):
         self.nombre = nombre
         self.isActiv = isActiv
+
+    
 
     @staticmethod
     def from_json(json):

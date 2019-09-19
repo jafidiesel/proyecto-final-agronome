@@ -8,10 +8,10 @@ export class ConfiguracionPageComponent implements OnInit {
   configurationButtons: any[] = [
     ['Nomencladores', '/configuracion/listarNomencladores'],
     ['Parámetros', '/configuracion/listarParametros'],
-    ['Actividad', '/configuracion/listarActividades'],
-    ['Recomendaciones', '/configuracion/listarRecomendaciones'],
-    ['Planes', '/configuracion/listarPlanes'],
-    ['Análisis', '/configuracion/listarAnalisis'],
+    ['Asociar Actividad', '/configuracion/asociar/listarActividades'],
+    ['Asociar Recomendaciones', '/configuracion/listarRecomendaciones'],
+    ['Asociar Planes', '/configuracion/listarPlanes'],
+    ['Asociar Análisis', '/configuracion/listarAnalisis'],
 
   ];
 

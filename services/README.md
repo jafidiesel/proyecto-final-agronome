@@ -14,7 +14,7 @@ python app.py
 
 #### Para probar que este corriendo ejecutar en el navegador:
 
-http://localhost:9001/api/ 
+http://localhost:9001
 
 
 -------------------------------------------
@@ -53,7 +53,7 @@ API REST endopints
     - [Consultar Nomenclador ID](#get-nomencladorid)
     - [Modoficar Nomenclador ID](#put-nomenclador)
     - [Asociar Parametros](#post-asociarParametro)
-    - [Consultar Parametros](#get-consultarParametro)
+    - [Consultar Parametros Asociados](#get-consultarParametroAsociados)
     - [Modificar Parametro Asociado](#put-modificarParametro)
 
     
@@ -84,7 +84,7 @@ API REST endopints
 {
     "tipoNomenclador": "string",
     "nombre": "string",
-    "isActive": boolean
+    "isActiv": boolean
 }
 ```
 
@@ -239,7 +239,7 @@ API REST endopints
 ```
 {
     "nombre": "string",
-    "isActive": boolean
+    "isActiv": boolean
 }
 ```
 
@@ -304,10 +304,10 @@ API REST endopints
 #
 
 
-## <a name='get-consultarParametro'></a> Consultar Parametros
+## <a name='get-consultarParametroAsociados'></a> Consultar Parametros asociados
 [Back to top](#top)
 
-<p>Consultar Parametros de una actividad o recomendación o tipo analisis o tipo plan</p>
+<p>Consultar Parametros de actividad, recomendación, tipo analisis o tipo plan</p>
 
 	GET /api/configuracion/asociar/:entidadIntermedia/:id
 

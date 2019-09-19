@@ -1,0 +1,55 @@
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4">Asociar Actividad</h3>
+            </div>
+            
+            <form #formAsociarActividad="ngForm" (ngSubmit)="onSubmitAsociacion(formAsociarActividad)">
+
+                <div class="form-group">
+                    <label for="parametroInput" class=" col-form-label">Seleccione un Nomenclador * </label>
+                    <div class="input-group ">
+                        <select [(ngModel)]="test" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" (ngModelChange)="actualizarActividad($event)">
+                            <option *ngFor="let tipoNomencladorSelect of listaNomencladoresActividad | async" selected [ngValue]="tipoNomencladorSelect" >
+                                {{ tipoNomencladorSelect.nombre }} {{ tipoNomencladorSelect.id }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <app-table-pane [titleText]="'Parametros *'" [rows]="this.tiposParametrosSelect" [(output)]="this.optionsList" [buttonAddText]="'Agregar Parametro'"></app-table-pane>
+
+                </div>
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Nomenclador Creado !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Crear</button>
+                        <button [routerLink]="['/configuracion/asociar/listarActividades']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</main>
+
+{{ actividadAsociadaAEnviar | json }}
+
+<h4>{{ this.optionsList | json }}</h4>
+
+{{ test |json }}

@@ -1,9 +1,10 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm, NgModel } from '@angular/forms';
 import { NomencladorInterface } from '../../../../data/nomenclador';
 import { ConfiguracionService } from '../../../../services/configuracion/configuracion.service';
-import { Observable } from 'rxjs';
+import { Observable, } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-crear-nomenclador',
@@ -18,7 +19,7 @@ export class CrearNomencladorComponent implements OnInit {
   postError = false;
   postErrorMessage = '';
 
-  tiposNomencladoresSelect: Observable<string[]>;
+  tiposNomencladoresSelect: Observable<String[][]>;
 
   nomencladorAEnviar: NomencladorInterface = {
     nombre: this.nombre,
@@ -26,8 +27,10 @@ export class CrearNomencladorComponent implements OnInit {
     isActiv: this.isActiv
   };
 
-  constructor(private http: HttpClient, private _configuracionService: ConfiguracionService) {}
-
+  constructor( private _configuracionService: ConfiguracionService) {
+    
+  }
+  
   ngOnInit() {
     this.tiposNomencladoresSelect = this._configuracionService.getTiposNomenclador();
   }
