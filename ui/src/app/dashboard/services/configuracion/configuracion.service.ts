@@ -163,6 +163,24 @@ export class ConfiguracionService {
     return this.http.get<String>(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`);
   }
 
+  /**
+ * @param tipoNomenclador string
+ * @param isActiv boolean
+ * @return Observable<Object>
+ *  
+ * Devuelve todos los nomencladores activos creados del tipo enviado por parámetro
+ */
+  getListaNomencladoresConFiltro(tipoNomenclador: string, isActiv: boolean): Observable<String> {
+    let filtroJson = {
+      "filtros":
+        {
+        "isActiv": isActiv
+        }  
+    }
+    
+    return this.http.post<String>(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`, filtroJson);
+  }
+
   getNomenclador(tipoNomenclador: string, id: number){
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }

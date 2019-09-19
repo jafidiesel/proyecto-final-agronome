@@ -54,7 +54,7 @@ export class CrearParametroComponent implements OnInit {
       }
     );
 
-    this._configuracionService.getListaNomencladores('tipoDato').subscribe(
+    this._configuracionService.getListaNomencladoresConFiltro('tipoDato',true).subscribe(
       result => {
         for (let index = 0; index < result.length; index++) {
           const element:any = result[index];
@@ -64,7 +64,7 @@ export class CrearParametroComponent implements OnInit {
       }
     );
 
-    this.tiposOpcionesSelect = this._configuracionService.getListaNomencladores('opcion');  
+    this.tiposOpcionesSelect = this._configuracionService.getListaNomencladoresConFiltro('opcion', true);  
   }
 
   imprimir(){
