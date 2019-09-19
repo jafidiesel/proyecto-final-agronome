@@ -5,7 +5,7 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import json
 from app.repositorio.repositorioParametro import selectAllByParamCod
-
+from app.model import hlmodel
 
 def postParametro(data): 
     try:
@@ -81,44 +81,41 @@ def getParametroEstructura(tipoNomenclador):
     return True
     
 def getParametroById(id):  
-    from app.model import hlmodel
+    try:
+        dtoGeneral= []
+        dtoOpcionList = []
 
-    dtoGeneral= []
-    dtoParametroOpcion = []
-    dtoOpcionList = []
+        parametro = selectByCod(hlmodel.Parametro,id)
+        #Creacion dto parametro
+        parametroDto = parametro.__dict__
+        #Creacion dto tipoParametro
+        tipoParametroDto = parametro.tipoParametroRef.__dict__
+        print("djfiopjewspjmfjds")
+        print(tipoParametroDto)
+        #Creacion dto tipoDato
+        tipoDatoDto = parametro.tipoDatoRef.__dict__
+        ##Eliminacion de datos innecesarios de los diccionarios
+        parametroDto.pop('_sa_instance_state',None)
+        parametroDto.pop('codTipoParametro', None)
+        parametroDto.pop('codTipoDato', None)
+        parametroDto.pop('tipoParametroRef', None)
+        parametroDto.pop('tipoDatoRef', None)
+        tipoDatoDto.pop('_sa_instance_state',None)
+        tipoParametroDto.pop('_sa_instance_state',None)
+        
+        #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
+        for parametroOp in selectAllByParamCod(parametro.cod):
+                opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
+                opcionDto = opcion.__dict__
+                opcionDto.pop('_sa_instance_state',None)
+                dtoOpcionList.append(opcionDto)
+        
+        dtoGeneral.append(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
+        print(dtoGeneral)
 
-    parametro = selectByCod(hlmodel.Parametro,id)
-    print(parametro)
-    print(parametro.tipoDatoRef)
-    #Creacion dto parametro
-    parametroDto = parametro.__dict__
-    parametroDto.pop('codTipoDato',None)
-    parametroDto.pop('codTipoParametro',None)
-    #Creacion dto tipoParametro
-    tipoParametroDto = parametro.tipoParametroRef.nombre
-    print("djfiopjewspjmfjds")
-    print(tipoParametroDto)
-    #Creacion dto tipoDato
-    tipoDatoDto = parametro.tipoDatoRef.__dict__
-
-    dtoGeneral.append(dict(parametro = parametroDto))
-    dtoGeneral.append(dict(tipoParametro = tipoParametroDto))
-    dtoGeneral.append(dict(parametro = tipoDatoDto))
-
-    for parametroOpcion in selectAllByParamCod(parametro.cod):
-            parametroOpcionDict = parametroOpcion.__dict__
-            opcion =selectByCod(hlmodel.Opcion,parametroOpcion.codOpcion)
-            opcionDto = opcion.__dict__
-            opcionDto.pop('_sa_instance_state',None)
-            dtoOpcionList.append(opcionDto)
-            print(dtoOpcionList)
-            
-    parametroOpcionDict.pop('_sa_instance_state', None)     
-    parametroOpcionDict.pop('codOpcion', None)   
-    dtoParametroOpcion.append(dict( parametroOpcion = parametroOpcionDict))  
-    dtoParametroOpcion.append(dict(opcion=dtoOpcionList))
-    dtoGeneral.append(dtoParametroOpcion)
-    print(dtoGeneral)
-
+        return jsonify(dtoGeneral)
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
 def updateParametro():
     return "Hello"
