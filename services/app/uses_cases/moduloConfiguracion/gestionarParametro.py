@@ -4,8 +4,12 @@ from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDat
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import json
-from app.repositorio.repositorioParametro import selectAllByParamCod
+from app.repositorio.repositorioParametro import selectAllByParamCod,selectActiveByName,selectByValue,selectAllActiveByParamCod
 from app.model import hlmodel
+
+modelos = {
+"tipoParametro": hlmodel.TipoParametro,
+}
 
 def postParametro(data): 
     try:
@@ -56,30 +60,45 @@ def postParametro(data):
 
 def getParametro():
     return True
-#en algun lado debe decri que nomenclador lo llama para poder filtrar por tipo
-#EJ: si lo llama actividad, solo debe mostrar los parametros que son de tipo Actividad
-#Listar atributos para combo: TipoDato, TipoParametro, Opcion
-#https://es.stackoverflow.com/questions/24320/necesito-pasarle-dinamicamente-al-objeto-query-de-sqlalchemy-los-parametros-de/24748
+
 #Para el armado de las estructuras
-def getParametroEstructura(tipoNomenclador):
-    
-    queryString={"isActiv" : 'isActiv'}
-    #Buscar TipoParametro isActiv = True
-    print("----------------")
-    for obj in selectAllByFilter(TipoParametro,getattr(TipoParametro,queryString['isActiv']),True):
-        print(obj.to_json())
-    print("----------------")
-    #Buscar TipoDato isActiv = True
-    print("----------------")
-    for obj in TipoDato.query.filter(TipoDato.isActiv == True).all():
-        print(obj.to_json())
-    print("----------------")
-    #Buscar Opcions isActiv = True
-    for obj in TipoDato.query.filter(TipoDato.isActiv == True).all():
-        print(obj.to_json())
-    print("----------------")
-    return True
-    
+def getParametroEstructura(entidad):
+    try:
+        #Buscar TipoParametro por nombre: 
+        tipoParametroRst = selectActiveByName(modelos['tipoParametro'],entidad)
+        if not tipoParametroRst:
+            raise Exception('N','No existe el codigo ingresado')
+        #Obtension de Parametro asociado a TipoParametro
+        parametroRstList = selectByValue(hlmodel.Parametro,tipoParametroRst.cod)
+        dtoGeneral = []
+        dtoParametro = []
+        #Obtener TipoDato activo y las opciones de cada parametro
+        for parametro in parametroRstList:        
+            parametroDto = parametro.__dict__
+            tipoDatoDto = parametro.tipoDatoRef.__dict__
+            parametroDto.pop('_sa_instance_state',None)
+            parametroDto.pop('codTipoParametro', None)
+            parametroDto.pop('codTipoDato', None)
+            parametroDto.pop('tipoParametroRef', None)
+            parametroDto.pop('tipoDatoRef', None)
+            tipoDatoDto.pop('_sa_instance_state',None)
+            dtoOpcionList = []
+            #Obtener Opciones activas
+            for parametroOp in selectAllActiveByParamCod(parametro.cod):
+                opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
+                opcionDto = opcion.__dict__
+                opcionDto.pop('_sa_instance_state',None)
+                dtoOpcionList.append(opcionDto)
+            print("Dto Opcion de un parametro")
+            print(dtoOpcionList)
+            dtoParametro.append(dict(parametro = parametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
+        dtoGeneral.append(dtoParametro)
+        return jsonify(dtoGeneral)
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
+
+            
 def getParametroById(id):  
     try:
         dtoGeneral= []
@@ -88,12 +107,13 @@ def getParametroById(id):
         parametro = selectByCod(hlmodel.Parametro,id)
         #Creacion dto parametro
         parametroDto = parametro.__dict__
+        print(parametroDto)
         #Creacion dto tipoParametro
         tipoParametroDto = parametro.tipoParametroRef.__dict__
-        print("djfiopjewspjmfjds")
-        print(tipoParametroDto)
         #Creacion dto tipoDato
         tipoDatoDto = parametro.tipoDatoRef.__dict__
+        print("TipoDato")
+        print(tipoDatoDto)
         ##Eliminacion de datos innecesarios de los diccionarios
         parametroDto.pop('_sa_instance_state',None)
         parametroDto.pop('codTipoParametro', None)
@@ -111,11 +131,15 @@ def getParametroById(id):
                 dtoOpcionList.append(opcionDto)
         
         dtoGeneral.append(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
-        print(dtoGeneral)
-
         return jsonify(dtoGeneral)
     except Exception as e:
         Rollback()
         return ResponseException(e)
+        
 def updateParametro():
     return "Hello"
+
+def getAllParametros():
+    #Buscar todos los parametros (Inactivos tambien??)
+    #Buscar por cada parametro, los tipoParametros y los tipoDatos
+    return True

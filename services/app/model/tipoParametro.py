@@ -8,6 +8,9 @@ class TipoParametro(db.Model):
     nombreNomenclador = "tipoParametro"
     parametroTipo = relationship("Parametro", backref="tipoParametroRef",uselist=True)
 
+
+    #parametroTipoRef = relationship("Parametro", back_populates="tipoParametroRef",uselist=True)
+
     def __init__(self, nombre, isActiv):
         self.nombre = nombre
         self.isActiv = isActiv
