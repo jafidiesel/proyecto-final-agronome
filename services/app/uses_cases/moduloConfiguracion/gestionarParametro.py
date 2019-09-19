@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit,selectByCod, addObject
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit,selectByCod, addObject, selectAll
 from app.model.hlmodel import Parametro, ParametroOpcion, TipoParametro, TipoDato, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -68,32 +68,20 @@ def getParametroEstructura(entidad):
         tipoParametroRst = selectActiveByName(modelos['tipoParametro'],entidad)
         if not tipoParametroRst:
             raise Exception('N','No existe el codigo ingresado')
-        #Obtension de Parametro asociado a TipoParametro
+        #Obtension de Parametros asociados a TipoParametro
         parametroRstList = selectByValue(hlmodel.Parametro,tipoParametroRst.cod)
-        dtoGeneral = []
         dtoParametro = []
         #Obtener TipoDato activo y las opciones de cada parametro
         for parametro in parametroRstList:        
-            parametroDto = parametro.__dict__
-            tipoDatoDto = parametro.tipoDatoRef.__dict__
+            parametroDto = parametro.__dict__            
             parametroDto.pop('_sa_instance_state',None)
             parametroDto.pop('codTipoParametro', None)
             parametroDto.pop('codTipoDato', None)
             parametroDto.pop('tipoParametroRef', None)
             parametroDto.pop('tipoDatoRef', None)
-            tipoDatoDto.pop('_sa_instance_state',None)
-            dtoOpcionList = []
-            #Obtener Opciones activas
-            for parametroOp in selectAllActiveByParamCod(parametro.cod):
-                opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
-                opcionDto = opcion.__dict__
-                opcionDto.pop('_sa_instance_state',None)
-                dtoOpcionList.append(opcionDto)
-            print("Dto Opcion de un parametro")
-            print(dtoOpcionList)
-            dtoParametro.append(dict(parametro = parametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
-        dtoGeneral.append(dtoParametro)
-        return jsonify(dtoGeneral)
+            #dtoParametro.append(dict(parametro = parametroDto))
+            dtoParametro.append(parametroDto)
+        return jsonify(dtoParametro)
     except Exception as e:
         Rollback()
         return ResponseException(e)
@@ -140,6 +128,21 @@ def updateParametro():
     return "Hello"
 
 def getAllParametros():
-    #Buscar todos los parametros (Inactivos tambien??)
-    #Buscar por cada parametro, los tipoParametros y los tipoDatos
-    return True
+    #Buscar todos los parametros Activos e Inactivos 
+    try:
+        parametroRstList = selectAll(hlmodel.Parametro)
+        dtoParametro = []
+        #Obtener TipoDato activo y las opciones de cada parametro
+        for parametro in parametroRstList:        
+            parametroDto = parametro.__dict__            
+            parametroDto.pop('_sa_instance_state',None)
+            parametroDto.pop('codTipoParametro', None)
+            parametroDto.pop('codTipoDato', None)
+            parametroDto.pop('tipoParametroRef', None)
+            parametroDto.pop('tipoDatoRef', None)
+            #dtoParametro.append(dict(parametro = parametroDto))
+            dtoParametro.append(parametroDto)
+        return jsonify(dtoParametro)
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
