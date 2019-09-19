@@ -32,7 +32,7 @@ export class CrearParametroComponent implements OnInit {
     tipoDato:{
       id: 0
     },
-    opcion: this.optionsList
+    opcion: []
   };
 
   // error flags
@@ -83,6 +83,10 @@ export class CrearParametroComponent implements OnInit {
   }
 
   onSubmitParametro(form: NgForm) {
+    this.parametroAEnviar.opcion = [];
+    this.optionsList.forEach(element => {
+      this.parametroAEnviar.opcion.push({'id': element});
+    });
 
     if ( form.controls.tipoParametro.value && form.controls.nombre.value ) {
       this._configuracionService.postParametroForm(this.parametroAEnviar).subscribe(
