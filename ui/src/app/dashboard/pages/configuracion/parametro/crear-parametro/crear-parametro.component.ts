@@ -16,7 +16,7 @@ export class CrearParametroComponent implements OnInit {
   tiposParametrosSelect: Observable<Object>;
   tiposParametrosSelectArray =[];
 
-  // Dropdown tipoDatp
+  // Dropdown tipoDato
   tiposDatosSelect: Observable<Object>;
   tiposDatosSelectArray =[];
 

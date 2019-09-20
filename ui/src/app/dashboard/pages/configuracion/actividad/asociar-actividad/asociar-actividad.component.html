@@ -12,7 +12,7 @@
                     <div class="input-group ">
                         <select [(ngModel)]="test" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" (ngModelChange)="actualizarActividad($event)">
                             <option *ngFor="let tipoNomencladorSelect of listaNomencladoresActividad | async" selected [ngValue]="tipoNomencladorSelect" >
-                                {{ tipoNomencladorSelect.nombre }} {{ tipoNomencladorSelect.id }}
+                                {{ tipoNomencladorSelect.nombre }}
                             </option>
                         </select>
                     </div>
