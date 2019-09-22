@@ -114,6 +114,10 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
           },
           error => this.onHttpError(error)
         );
+      }else {
+        // [disabled]="!crearParametroForm.valid"
+        this.postError = true;
+        this.postErrorMessage = "Ingrese todos los campos obligatorios.";
       }
   }
 
