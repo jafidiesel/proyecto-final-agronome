@@ -51,7 +51,7 @@
                         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"  >
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <strong class="text-gray-dark">{{option.value.nombre}}</strong>
-                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(option)"><fa-icon [icon]="faTrashAlt"></fa-icon></button>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(i)"><fa-icon [icon]="faTrashAlt"></fa-icon></button>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,8 @@
                     <div class="media-body pb-3 mb-0 small lh-125 ">
                         <div class="d-flex justify-content-between align-items-center w-100">
 
-                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01"  >
+                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizaropcionSeleccionada($event)"  >
+                                <option>Seleccione una opcion</option>
                                 <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray" [value]="tipoOpcioneSelectArray.id">
                                     {{tipoOpcioneSelectArray.nombre}}
                                 </option>
@@ -91,6 +92,7 @@
                             {{ postErrorMessage }}
                         </div>
                         <button type="submit" class="btn btn-success btn-lg float-right mr-5" [disabled]="!editarParametroForm.valid">Editar</button>
+                        <button type="button" class="btn btn-warning btn-lg float-right mr-5" (click)="imprimir()">imprimir</button>
                         <button [routerLink]="['/configuracion/listarParametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
@@ -100,9 +102,6 @@
     </div>
 </main>
 
-<pre>
-    editarParametroForm (formBuilder): {{ editarParametroForm  }}
-</pre>
 <pre>
 originalParametroAEditar: {{ originalParametroAEditar | json }}
 </pre>

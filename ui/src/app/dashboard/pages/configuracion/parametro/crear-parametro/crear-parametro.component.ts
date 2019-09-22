@@ -146,31 +146,31 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
     console.log('form',this.crearParametroForm);
   }
 
-  updateOpciones(){
-    this.crearParametroForm.patchValue({
-      opcion: this.fb.array( this.opcionesElegidas.map( element =>  this.crearOpcion(element) ) ).value
-    });
-  }
-
+  
   crearOpcion( obj: any){
     return this.fb.control({
-          id: obj.id,
+      id: obj.id,
           nombre: obj.nombre,
         })
-      ;
+        ;
   }
-
+      
   actualizaropcionSeleccionada(event){
-
     const selectEl = event.target;
-    const attrVal = selectEl.options[selectEl.selectedIndex].getAttribute('value');
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     this.opcionSeleccionada.id = attrVal;
     this.opcionSeleccionada.nombre = inn;
     console.log("this.opcionSeleccionada",this.opcionSeleccionada);
     
   }
-  
+
+  updateOpciones(){
+    this.crearParametroForm.patchValue({
+      opcion: this.fb.array( this.opcionesElegidas.map( element =>  this.crearOpcion(element) ) ).value
+    });
+  }
+
   agregarItem(){
     this.opcionesElegidas.push({
       id: this.opcionSeleccionada.id,

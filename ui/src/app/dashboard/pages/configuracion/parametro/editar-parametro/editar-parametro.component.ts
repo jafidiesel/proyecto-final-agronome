@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Observable, Subscription } from 'rxjs';
-import { NgForm, FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-editar-parametro',
@@ -13,6 +14,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
   
   editarParametroForm:FormGroup;
+  faTrashAlt = faTrashAlt;
 
  // json con los datos originales
   originalParametroAEditar: any = {
@@ -45,6 +47,11 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   // Lista con opciones
   tiposOpcionesSelect: Observable<object>;
   tiposOpcionesSelectArray = [];
+  opcionesElegidas = [];
+  opcionSeleccionada = {
+    id: null,
+    nombre: null
+  };
 
   // error flags
   postSuccess = false;
@@ -152,65 +159,132 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     ));  
 
   }
-    onHttpError( errorResponse: any ) {
-      console.log(errorResponse);
-      this.postError = true;
-      this.postSuccess = false;
-      this.postErrorMessage = errorResponse.error.messages;
+  onHttpError( errorResponse: any ) {
+    console.log(errorResponse);
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.error.messages;
+  }
+
+  onSubmitParametro() {
+
+    console.warn(this.editarParametroForm.value);
+
+    if( this.editarParametroForm.status == 'VALID' ){
+      this._configuracionService.postParametroForm(this.editarParametroForm.value).subscribe(
+        result => {
+          console.log('Enviado.');
+          
+        },
+        error => this.onHttpError(error)
+      );
     }
-  
-    onSubmitParametro() {
-
-      console.warn(this.editarParametroForm.value);
-
-      if( this.editarParametroForm.status == 'VALID' ){
-        this._configuracionService.postParametroForm(this.editarParametroForm.value).subscribe(
-          result => {
-            console.log('Enviado.');
-            
-          },
-          error => this.onHttpError(error)
-        );
-      }
-    }
+  }
   
 
-    initForm(formValues){
+  initForm(formValues){
+    
+    this.editarParametroForm = this.fb.group({
+      parametro: this.fb.group({
+        id: [formValues[0].parametro.cod],
+        nombre: [formValues[0].parametro.nombre, Validators.required],
+        isActiv: [formValues[0].parametro.isActiv],
+      }),
+      tipoParametro: this.fb.group({
+        id: [formValues[0].tipoParametro.cod, Validators.required],
+        nombre: [formValues[0].tipoParametro.nombre],
+        isActiv: [formValues[0].tipoParametro.isActiv],
+      }),
+      tipoDato: this.fb.group({
+        id: [formValues[0].tipoDato.cod, Validators.required],
+        nombre: [formValues[0].tipoDato.nombre],
+        isActiv: [formValues[0].tipoDato.isActiv],
+      }),
+      opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
       
-      this.editarParametroForm = this.fb.group({
-        parametro: this.fb.group({
-          id: [formValues[0].parametro.cod],
-          nombre: [formValues[0].parametro.nombre, Validators.required],
-          isActiv: [formValues[0].parametro.isActiv],
-        }),
-        tipoParametro: this.fb.group({
-          id: [formValues[0].tipoParametro.cod, Validators.required],
-          nombre: [formValues[0].tipoParametro.nombre],
-          isActiv: [formValues[0].tipoParametro.isActiv],
-        }),
-        tipoDato: this.fb.group({
-          id: [formValues[0].tipoDato.cod, Validators.required],
-          nombre: [formValues[0].tipoDato.nombre],
-          isActiv: [formValues[0].tipoDato.isActiv],
-        }),
-        opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
-        
+    });
+
+    formValues[0].opcion.map( element => {
+      this.opcionesElegidas.push({
+        id: element.cod,
+        nombre: element.nombre
       });
-      console.log('editarParametroForm',this.editarParametroForm.value);
-      console.log('form',this.editarParametroForm);
+    } );
+    console.log('opcionesElegidas',this.opcionesElegidas);
+    console.log('editarParametroForm',this.editarParametroForm.value);
+    console.log('form',this.editarParametroForm);
+  }
+
+  crearOpcion( obj: any){
+    console.log('crearOpcion',obj);
+    let codigo =0;
+    if(obj.cod == null){
+      codigo = obj.id;
+    }else{
+      codigo = obj.cod;
+    }
+    return this.fb.control({
+          id: codigo,
+          nombre: obj.nombre,
+          isActiv: obj.isActiv
+        })
+      ;
+  }
+
+    
+  updateOpciones(){
+    this.editarParametroForm.patchValue({
+      opcion: this.fb.array( this.opcionesElegidas.map( element => this.crearOpcion(element) ) ).value
+    });
+  }
+
+  agregarItem(){
+    let obj = {
+      id: this.opcionSeleccionada.id,
+      nombre: this.opcionSeleccionada.nombre
+    }
+    this.opcionesElegidas.push(obj);
+
+    let arr = this.editarParametroForm.get('opcion')  as FormArray;
+    arr.push(this.crearOpcion(obj))
+
+    console.log("this.opcionesElegidas",this.opcionesElegidas);
+    console.log('this.editarParametroForm',this.editarParametroForm.value);
+    //this.updateOpciones();
+    
+  }
+
+  actualizaropcionSeleccionada(event){
+    const selectEl = event.target;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const inn = selectEl.options[selectEl.selectedIndex].innerText;
+    this.opcionSeleccionada.id = attrVal;
+    this.opcionSeleccionada.nombre = inn;
+    console.log("this.opcionSeleccionada",this.opcionSeleccionada);
+    
+  }
+
+  quitarItem(index){
+    
+    let arr = this.editarParametroForm.get('opcion')  as FormArray;
+
+    if (index > -1) {
+      arr.removeAt(index);
     }
 
-    crearOpcion( obj: any){
-      
-      
-      return this.fb.control({
-            id: obj.cod,
-            nombre: obj.nombre,
-            isActiv: obj.isActiv
-          })
-        ;
+    /* console.log('antes',this.opcionesElegidas);
+    this.opcionesElegidas.forEach( (item, index) => {
+      if(item.id === itemARemover.id) {
+        this.opcionesElegidas.splice(index,1);
       }
+    }); 
+    console.log('despues',this.opcionesElegidas);
+    this.updateOpciones(); */
+  }
 
+  imprimir(){
+    console.log(this.editarParametroForm.value);
+  }
 
 
     ngOnDestroy(){
