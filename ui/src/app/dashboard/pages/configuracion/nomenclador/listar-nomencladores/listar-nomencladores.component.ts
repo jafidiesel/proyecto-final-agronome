@@ -33,11 +33,11 @@ export class ListarNomencladoresComponent implements OnInit {
   faEdit = faEdit;
 
   constructor( private _configuracionService: ConfiguracionService) {
-    this.nomencladoresMockedData = _configuracionService.getNomencladorData();
-    this.getNomencladores();
   }
-
+  
   ngOnInit() {
+    this.nomencladoresMockedData = this._configuracionService.getNomencladorData();
+    this.getNomencladores();
     
   }
 
@@ -57,7 +57,7 @@ export class ListarNomencladoresComponent implements OnInit {
             ]);
             }
           },
-          error => console.log('error')
+          error => console.error(error)
           );
         }
   }

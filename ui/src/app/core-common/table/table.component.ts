@@ -31,6 +31,7 @@ export class TableComponent implements OnInit {
   }
   
   ngOnInit() {
+    console.log("tableData",this.tableData);
     this.tableDataHeader = this.tableData.slice(0,1);
     this.tableDataRow = this.tableData.slice(1,this.tableData.length);
   }

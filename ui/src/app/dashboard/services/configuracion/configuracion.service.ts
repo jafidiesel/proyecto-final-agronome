@@ -208,4 +208,8 @@ export class ConfiguracionService {
     // http://localhost:9001/api/configuracion/parametro/2
 
   }
+
+  getListaParametros(){
+    return this.http.get('http://localhost:9001/api/configuracion/parametro');
+  }
 }

@@ -4,9 +4,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="mostrarTabla" >
     <div class="col">
-        <app-table [tableData]="this.parametrosMockedData"></app-table>
+        <app-table [tableData]="this.nomencladoresTabla" ></app-table>
     </div>
 </div>
 
