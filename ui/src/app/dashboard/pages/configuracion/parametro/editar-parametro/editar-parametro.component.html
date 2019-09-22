@@ -3,7 +3,6 @@
         <div class="card-body ">
             <h3 class="display-4">Editar Parámetro</h3>
 
-            <h6><i>form status: {{ editarParametroForm.status }} </i></h6>
             <form (ngSubmit)="onSubmitParametro()" [formGroup]="editarParametroForm" >
                 <div  formGroupName="parametro">
                     <div class="form-group">
@@ -92,7 +91,6 @@
                             {{ postErrorMessage }}
                         </div>
                         <button type="submit" class="btn btn-success btn-lg float-right mr-5" [disabled]="!editarParametroForm.valid">Editar</button>
-                        <button type="button" class="btn btn-warning btn-lg float-right mr-5" (click)="imprimir()">imprimir</button>
                         <button [routerLink]="['/configuracion/listarParametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
@@ -101,8 +99,4 @@
         </div>
     </div>
 </main>
-
-<pre>
-originalParametroAEditar: {{ originalParametroAEditar | json }}
-</pre>
 

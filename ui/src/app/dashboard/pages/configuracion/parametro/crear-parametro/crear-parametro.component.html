@@ -27,7 +27,7 @@
                     <div class="input-group ">
                         <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="id" >
                                 <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray" [value]="tipoDatoSelectArray.id" >
-                                    {{ tipoDatoSelectArray.nombre }} {{ tipoDatoSelectArray.id }}
+                                    {{ tipoDatoSelectArray.nombre }}
                                 </option>
                         </select>
                     </div>
@@ -85,7 +85,6 @@
                         <div [hidden]="!postError" class="alert alert-danger">
                             {{ postErrorMessage }}
                         </div>
-                        <button type="button" class="btn btn-warning btn-lg float-right mr-5" (click)="imprimir()">imprimir</button>
                         <button type="submit" class="btn btn-success btn-lg float-right mr-5" [disabled]="!crearParametroForm.valid" >Crear</button>
                         <button [routerLink]="['/configuracion/listarParametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
