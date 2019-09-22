@@ -1,54 +1,102 @@
-<h3 class="m-4">Editar Parámetro</h3>
-<form>
-    <div class="form-group row">
-        <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+<main role="main" class="container mt-4" *ngIf="editarParametroForm != null">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <h3 class="display-4">Editar Parámetro</h3>
+
+            <form (ngSubmit)="onSubmitParametro()" [formGroup]="editarParametroForm" >
+                <div  formGroupName="parametro">
+                    <div class="form-group">
+                        <label for="nameInput" >Nombre *</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp" placeholder="Ingrese nombre" formControlName="nombre" >
+                    </div>
+
+                </div>
+
+                <div class="form-group" formGroupName="tipoParametro">
+                    <label for="parametroInput" class=" col-form-label">Tipo Parametro * </label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="id">
+                            <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.id" >
+                                {{ tipoParametroSelectArray.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" formGroupName="tipoDato">
+                    <label for="parametroInput" class=" col-form-label">Tipo Dato * </label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="tipoDato" name="tipoDato" formControlName="id">
+                                <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray" [value]="tipoDatoSelectArray.id" >
+                                    {{ tipoDatoSelectArray.nombre }} {{ tipoDatoSelectArray.id }}
+                                </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div  formGroupName="parametro">
+                    <div class="form-group form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input  type="checkbox" class="custom-control-input" id="isActiv" name="isActiv" formControlName="isActiv">
+                            <label class="custom-control-label" for="isActiv">Activo</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h6 class="border-bottom border-gray pb-2 mb-0"> Opciones </h6>
+                <div formArrayName="opcion">
+                    <div class="media text-muted pt-3" *ngFor="let option of editarParametroForm.get('opcion').controls; let i = index;">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"  >
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark">{{option.value.nombre}}</strong>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(i)"><fa-icon [icon]="faTrashAlt"></fa-icon></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="media text-muted pt-3">
+                    <div class="media-body pb-3 mb-0 small lh-125 ">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+
+                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizaropcionSeleccionada($event)"  >
+                                <option>Seleccione una opcion</option>
+                                <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray" [value]="tipoOpcioneSelectArray.id">
+                                    {{tipoOpcioneSelectArray.nombre}}
+                                </option>
+                            </select>
+
+
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()">Agregar Opcion</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Nomenclador Editado !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5" [disabled]="!editarParametroForm.valid">Editar</button>
+                        <button [routerLink]="['/configuracion/listarParametros']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+            </form>
+    
         </div>
     </div>
-    <div class="form-group row">
-        <label for="inputEmail3" class="col-sm-2 col-form-label">Tipo Parámetro</label>
-        <div class="col-sm-10">
+</main>
 
-            <div class="input-group mb-3">
-                <select class="custom-select" id="inputGroupSelect01">
-                    <option selected>Recomendacion</option>
-                    <option value="1">Actividad</option>
-                </select>
-            </div>
-
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="inputEmail3" class="col-sm-2 col-form-label">Tipo Dato</label>
-        <div class="col-sm-10">
-
-            <div class="input-group mb-3">
-                <select class="custom-select" id="inputGroupSelect01">
-                    <option selected>String</option>
-                    <option value="1">Number</option>
-                </select>
-            </div>
-
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-2">Activo</div>
-        <div class="col-sm-10">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="activo" checked>
-
-            </div>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-12">
-            <button type="submit" class="btn btn-primary">Modificar</button>
-        </div>
-    </div>
-</form>
-<div class="row">
-    <div class="col">
-        <button [routerLink]="['/configuracion/listarParametros']" type="button" class="btn btn-secondary btn-md">Volver</button>
-    </div>
-</div>

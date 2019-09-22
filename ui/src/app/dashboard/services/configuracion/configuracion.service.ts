@@ -17,9 +17,9 @@ export class ConfiguracionService {
 
   private parametroData = [
     ['Nombre', 'Activo', 'Tipo de dato', 'Tipo de parámetro', 'Accion', ''],
-    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
-    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/editarParametro', '-/Desactivar'],
-    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/editarParametro', '-/Desactivar']
+    ['Hora de riego', 'Si', 'Time', 'Actividad', '*/configuracion/editarParametro/2', '-/Desactivar'],
+    ['Cantidad', 'Si', 'Number', 'Actividad', '*/configuracion/editarParametro/2', '-/Desactivar'],
+    ['Fecha', 'Si', 'Date', 'Recomendación', '*/configuracion/editarParametro/2', '-/Desactivar']
 ];
 
   private opcionesParametro = [
@@ -149,10 +149,6 @@ export class ConfiguracionService {
     return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.id}`, nomencladorJson);
   }
 
-/*   getNomencladores() {
-    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/actividad`);
-  } */
-
 /**
  * @param tipoNomenclador string
  * @return Observable<Object>
@@ -199,5 +195,21 @@ export class ConfiguracionService {
   postParametroForm(parametroJson: any){
     //return of(nomencladorForm);
     return this.http.post( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
+  }
+
+  /**
+   * @param id number
+   * @return Observable<Object>
+   *  
+   * Obtiene los datos del parametro segun su id
+   */
+  getParametro(id: number){
+    return this.http.get( `http://localhost:9001/api/configuracion/parametro/${id}` );
+    // http://localhost:9001/api/configuracion/parametro/2
+
+  }
+
+  getListaParametros(){
+    return this.http.get('http://localhost:9001/api/configuracion/parametro');
   }
 }
