@@ -1,27 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
-import { Observable } from 'rxjs';
-import { NgForm, NgModel } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { NgForm, NgModel, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-crear-parametro',
   templateUrl: './crear-parametro.component.html'
 })
-export class CrearParametroComponent implements OnInit {
+export class CrearParametroComponent implements OnInit, OnDestroy {
 
-  tiposOpcionesSelect: Observable<Object>;
-  optionsList = [];
+  subscriptions : Subscription[] = [];
 
-  // Dropdown tipoParametro
-  tiposParametrosSelect: Observable<Object>;
-  tiposParametrosSelectArray =[];
-
-  // Dropdown tipoDato
-  tiposDatosSelect: Observable<Object>;
-  tiposDatosSelectArray =[];
-
+  crearParametroForm:FormGroup;
+  
+  faTrashAlt = faTrashAlt;
+  
   // json a enviar para POST
-  parametroAEnviar: any = {
+  originalParametroAEnviar: any = {
     parametro: {
       nombre: "",
       isActiv: false,
@@ -34,17 +30,37 @@ export class CrearParametroComponent implements OnInit {
     },
     opcion: []
   };
+  
+  // Dropdown tipoParametro
+  tiposParametrosSelect: Observable<Object>;
+  tiposParametrosSelectArray =[];
+  
+  // Dropdown tipoDato
+  tiposDatosSelect: Observable<Object>;
+  tiposDatosSelectArray =[];
+
+  // Lista con opciones
+  tiposOpcionesSelect: Observable<Object>;
+  tiposOpcionesSelectArray= [];
+  opcionesElegidas = [];
+  opcionSeleccionada = {
+    id: null,
+    nombre: null
+  };
 
   // error flags
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
 
-  constructor( private _configuracionService: ConfiguracionService ) {
+  constructor( private _configuracionService: ConfiguracionService, 
+    private fb: FormBuilder ) {
   }
 
   ngOnInit() {
-     this._configuracionService.getListaNomencladores('tipoParametro').subscribe(
+
+    this.initForm(this.crearParametroForm);
+    this.subscriptions.push(this._configuracionService.getListaNomencladores('tipoParametro').subscribe(
       result => {
         for (let index = 0; index < result.length; index++) {
           const element:any = result[index];
@@ -52,9 +68,9 @@ export class CrearParametroComponent implements OnInit {
           
         }
       }
-    );
+    ));
 
-    this._configuracionService.getListaNomencladoresConFiltro('tipoDato',true).subscribe(
+    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('tipoDato',true).subscribe(
       result => {
         for (let index = 0; index < result.length; index++) {
           const element:any = result[index];
@@ -62,13 +78,17 @@ export class CrearParametroComponent implements OnInit {
           
         }
       }
-    );
+    ));
 
-    this.tiposOpcionesSelect = this._configuracionService.getListaNomencladoresConFiltro('opcion', true);  
-  }
-
-  imprimir(){
-    //console.log(this.optionsList);
+    this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
+      result=>{
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          this.tiposOpcionesSelectArray.push(element);
+          
+        }
+      }
+    );  
   }
   
   onBlur(field: NgModel) {
@@ -79,32 +99,101 @@ export class CrearParametroComponent implements OnInit {
     console.log(errorResponse);
     this.postError = true;
     this.postSuccess = false;
-    this.postErrorMessage = errorResponse.error.messages
+    this.postErrorMessage = errorResponse.message;
   }
 
   onSubmitParametro(form: NgForm) {
-    this.parametroAEnviar.opcion = [];
-    this.optionsList.forEach(element => {
-      this.parametroAEnviar.opcion.push({'id': element});
-    });
+    console.warn(this.crearParametroForm.value);
+    this.updateOpciones();
 
-    if ( form.controls.tipoParametro.value && form.controls.nombre.value ) {
-      this._configuracionService.postParametroForm(this.parametroAEnviar).subscribe(
-        result => {
-          console.log('Enviado.');
-          this.postSuccess = true;
-          this.resetForm();
-        },
-        error => this.onHttpError(error)
-      );
-    } else {
-      this.postError = true;
-      this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
-    }
+      if( this.crearParametroForm.status == 'VALID' ){
+        this._configuracionService.postParametroForm(this.crearParametroForm.value).subscribe(
+          result => {
+            console.log('Enviado.');
+            
+          },
+          error => this.onHttpError(error)
+        );
+      }
   }
-  resetForm() {
-    //this.nomencladorAEnviar.nombre = '';
-    //this.nomencladorAEnviar.isActiv = false;
-    //this.nomencladorAEnviar.tipoNomenclador = '';
+
+
+  initForm(formValues){
+      
+    this.crearParametroForm = this.fb.group({
+      parametro: this.fb.group({
+        nombre: ['', Validators.required],
+        isActiv: [false],
+      }),
+      tipoParametro: this.fb.group({
+        id: [null, Validators.required],
+        nombre: [''],
+        isActiv: [false],
+      }),
+      tipoDato: this.fb.group({
+        id: [null, Validators.required],
+        nombre: [''],
+        isActiv: [false],
+      }),
+      opcion: [ this.fb.control({
+        id: null,
+        nombre: "",
+        isActiv: false
+      }) ] 
+      
+    });
+    console.log('editarParametroForm',this.crearParametroForm.value);
+    console.log('form',this.crearParametroForm);
+  }
+
+  updateOpciones(){
+    this.crearParametroForm.patchValue({
+      opcion: this.fb.array( this.opcionesElegidas.map( element =>  this.crearOpcion(element) ) ).value
+    });
+  }
+
+  crearOpcion( obj: any){
+    return this.fb.control({
+          id: obj.id,
+          nombre: obj.nombre,
+        })
+      ;
+  }
+
+  actualizaropcionSeleccionada(event){
+
+    const selectEl = event.target;
+    const attrVal = selectEl.options[selectEl.selectedIndex].getAttribute('value');
+    const inn = selectEl.options[selectEl.selectedIndex].innerText;
+    this.opcionSeleccionada.id = attrVal;
+    this.opcionSeleccionada.nombre = inn;
+    console.log("this.opcionSeleccionada",this.opcionSeleccionada);
+    
+  }
+  
+  agregarItem(){
+    this.opcionesElegidas.push({
+      id: this.opcionSeleccionada.id,
+      nombre: this.opcionSeleccionada.nombre
+    });
+    console.log("this.opcionesElegidas",this.opcionesElegidas);
+    
+    
+  }
+
+  quitarItem(itemARemover){
+    this.opcionesElegidas.forEach( (item, index) => {
+      if(item === itemARemover) {
+        this.opcionesElegidas.splice(index,1);
+      }
+    }); 
+  }
+
+  imprimir(){
+    this.updateOpciones();
+    console.log(this.crearParametroForm.value);
+  }
+  ngOnDestroy(){
+    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
   }
 }

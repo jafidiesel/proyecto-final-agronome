@@ -30,13 +30,9 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
       id: 0,
       isActiv: false,
       nombre: ""
-
     },
     opcion: []
   };
-
-  // json a enviar para PUT
-  parametroAEditar = {};
 
   // Dropdown tipoParametro
   tiposParametrosSelect: Observable<Object>;
@@ -46,6 +42,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   tiposDatosSelect: Observable<Object>;
   tiposDatosSelectArray =[];
 
+  // Lista con opciones
   tiposOpcionesSelect: Observable<object>;
   tiposOpcionesSelectArray = [];
 
@@ -59,7 +56,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     private fb: FormBuilder) {}
     
   ngOnInit() {
-    this.parametroAEditar = { ...this.originalParametroAEditar };
 
     this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
       
@@ -83,8 +79,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
             this.originalParametroAEditar.opcion.push( { id:`${element.cod}` });
           });
 
-          
-          this.parametroAEditar = { ...this.originalParametroAEditar };
           
         },
       error => console.log(error)
