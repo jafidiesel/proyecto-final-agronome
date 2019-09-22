@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { CoreCommonModule  } from './core-common/core-common.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginModule } from './login/login.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { LoginModule } from './login/login.module';
     LoginModule,
     CoreCommonModule, // Common purpouse components
     DashboardModule, // App main module
-    HttpClientModule
+    HttpClientModule,
 
   ],
   providers: [],

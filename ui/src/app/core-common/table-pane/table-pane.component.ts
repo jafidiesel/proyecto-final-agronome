@@ -1,6 +1,7 @@
 import { Component, OnInit, Input,  } from '@angular/core';
 import { Observable } from 'rxjs';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-table-pane',
@@ -13,6 +14,7 @@ export class TablePaneComponent implements OnInit {
   @Input() optionsDropdown = []; // Todas las opciones para mostrarle en el dropdown
   @Input() optionsList = []; // Las opciones que tiene realmente el parametro
   @Input() output =[]
+  @Input() parentForm: FormGroup;
   
   faTrashAlt = faTrashAlt;
   
