@@ -149,21 +149,17 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     this.subscriptions.push( this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
       result =>{
         //this.tiposOpcionesSelectArray.push(result);
-        console.log(result.length);
         for (let index = 0; index < result.length; index++) {
-          console.log(this.tiposOpcionesSelect);
           this.tiposOpcionesSelectArray.push(result[index]);
         }
-        console.log(this.tiposOpcionesSelectArray);
       }
     ));  
 
   }
   onHttpError( errorResponse: any ) {
-    console.log(errorResponse);
     this.postError = true;
     this.postSuccess = false;
-    this.postErrorMessage = errorResponse.error.messages;
+    this.postErrorMessage = errorResponse.message;
   }
 
   onSubmitParametro() {
@@ -171,9 +167,11 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     console.warn(this.editarParametroForm.value);
 
     if( this.editarParametroForm.status == 'VALID' ){
-      this._configuracionService.postParametroForm(this.editarParametroForm.value).subscribe(
+      this._configuracionService.putParametroForm(this.editarParametroForm.value).subscribe(
         result => {
-          console.log('Enviado.');
+          this.postSuccess = true;
+          this.postError = false;
+          this.postErrorMessage = '';
           
         },
         error => this.onHttpError(error)
@@ -210,13 +208,10 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
         nombre: element.nombre
       });
     } );
-    console.log('opcionesElegidas',this.opcionesElegidas);
-    console.log('editarParametroForm',this.editarParametroForm.value);
-    console.log('form',this.editarParametroForm);
+
   }
 
   crearOpcion( obj: any){
-    console.log('crearOpcion',obj);
     let codigo =0;
     if(obj.cod == null){
       codigo = obj.id;
@@ -248,10 +243,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     let arr = this.editarParametroForm.get('opcion')  as FormArray;
     arr.push(this.crearOpcion(obj))
 
-    console.log("this.opcionesElegidas",this.opcionesElegidas);
-    console.log('this.editarParametroForm',this.editarParametroForm.value);
-    //this.updateOpciones();
-    
   }
 
   actualizaropcionSeleccionada(event){
@@ -260,7 +251,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     this.opcionSeleccionada.id = attrVal;
     this.opcionSeleccionada.nombre = inn;
-    console.log("this.opcionSeleccionada",this.opcionSeleccionada);
     
   }
 
@@ -271,15 +261,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     if (index > -1) {
       arr.removeAt(index);
     }
-
-    /* console.log('antes',this.opcionesElegidas);
-    this.opcionesElegidas.forEach( (item, index) => {
-      if(item.id === itemARemover.id) {
-        this.opcionesElegidas.splice(index,1);
-      }
-    }); 
-    console.log('despues',this.opcionesElegidas);
-    this.updateOpciones(); */
   }
 
   imprimir(){

@@ -24,12 +24,10 @@ def postParametro(data):
         #Busqueda de entidades a asociar a Parametro
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
         tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
-        print(tipoDatoRst.cod)
+
         codOpcionList=[]
         for opcionJson in opcionJsonList:
             codOpcionList.append(opcionJson.get('id'))
-            
-        #Verificar que las clases esten activas
               
         #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson) 
@@ -37,15 +35,6 @@ def postParametro(data):
         tipoParametroRst.parametroTipo.append(parametroRst)
         tipoDatoRst.parametroDato.append(parametroRst)
 
-        """parametroRst.tipoDatoRef.append(tipoDatoRst)
-        print("Hola1")
-        param.tipoParametroRef.append(tipoParametroRst)
-        print("Hola2")
-        tipoDatoRst.parametroRef.append(parametroRst)
-        #tipoParametroRst.parametroRef.append(parametroRst)
-
-        saveEntidadSinCommit(parametroRst)
-        """
         #Creacion  y asociación de OpcionParametro 
         codParametro = parametroRst.cod
         for cod in codOpcionList:
@@ -58,18 +47,17 @@ def postParametro(data):
         Rollback()
         return ResponseException(e)
 
-def getParametro():
-    return True
-
 #Para el armado de las estructuras
 def getParametroEstructura(entidad):
-    try:
+    try:        
         #Buscar TipoParametro por nombre: 
         tipoParametroRst = selectActiveByName(modelos['tipoParametro'],entidad)
         if not tipoParametroRst:
             raise Exception('N','No existe el codigo ingresado')
         #Obtension de Parametros asociados a TipoParametro
         parametroRstList = selectByValue(hlmodel.Parametro,tipoParametroRst.cod)
+        if not parametroRstList:
+            raise Exception('N','No existen parametros asociados')
         dtoParametro = []
         #Obtener TipoDato activo y las opciones de cada parametro
         for parametro in parametroRstList:        
@@ -95,13 +83,10 @@ def getParametroById(id):
         parametro = selectByCod(hlmodel.Parametro,id)
         #Creacion dto parametro
         parametroDto = parametro.__dict__
-        print(parametroDto)
         #Creacion dto tipoParametro
         tipoParametroDto = parametro.tipoParametroRef.__dict__
         #Creacion dto tipoDato
         tipoDatoDto = parametro.tipoDatoRef.__dict__
-        print("TipoDato")
-        print(tipoDatoDto)
         ##Eliminacion de datos innecesarios de los diccionarios
         parametroDto.pop('_sa_instance_state',None)
         parametroDto.pop('codTipoParametro', None)
@@ -123,9 +108,6 @@ def getParametroById(id):
     except Exception as e:
         Rollback()
         return ResponseException(e)
-        
-def updateParametro():
-    return "Hello"
 
 def getAllParametros():
     #Buscar todos los parametros Activos e Inactivos 
@@ -140,9 +122,29 @@ def getAllParametros():
             parametroDto.pop('codTipoDato', None)
             parametroDto.pop('tipoParametroRef', None)
             parametroDto.pop('tipoDatoRef', None)
-            #dtoParametro.append(dict(parametro = parametroDto))
             dtoParametro.append(parametroDto)
         return jsonify(dtoParametro)
     except Exception as e:
         Rollback()
         return ResponseException(e)
+        
+def updateParametro(data):
+    try:
+        #Extraccion de datos    
+        parametroJson = data.get('parametro')
+        tipoParametroJson = data.get('tipoParametro')
+        tipoDatoJson = data.get('tipoDato')
+        opcionJsonList = data.get('opcion')
+        #Lista de claves del Json --> Para obtener el tipo de entidad
+        claves = list(data.keys())
+        #Busqueda de entidades a asociar a Parametro
+        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
+        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
+
+        from app.repositorio.repositorioParametro import updateParam        
+        return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
+    except Exception as e:
+        return ResponseException(e)
+    
+
+    

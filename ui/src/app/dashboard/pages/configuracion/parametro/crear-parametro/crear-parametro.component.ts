@@ -96,7 +96,6 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
   }
   
   onHttpError( errorResponse: any ) {
-    console.log(errorResponse);
     this.postError = true;
     this.postSuccess = false;
     this.postErrorMessage = errorResponse.message;
@@ -109,7 +108,9 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
       if( this.crearParametroForm.status == 'VALID' ){
         this._configuracionService.postParametroForm(this.crearParametroForm.value).subscribe(
           result => {
-            console.log('Enviado.');
+            this.postSuccess = true;
+            this.postError = false;
+            this.postErrorMessage = '';
             
           },
           error => this.onHttpError(error)
@@ -146,8 +147,6 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
       }) ] 
       
     });
-    console.log('editarParametroForm',this.crearParametroForm.value);
-    console.log('form',this.crearParametroForm);
   }
 
   
@@ -165,7 +164,6 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     this.opcionSeleccionada.id = attrVal;
     this.opcionSeleccionada.nombre = inn;
-    console.log("this.opcionSeleccionada",this.opcionSeleccionada);
     
   }
 
@@ -179,10 +177,7 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
     this.opcionesElegidas.push({
       id: this.opcionSeleccionada.id,
       nombre: this.opcionSeleccionada.nombre
-    });
-    console.log("this.opcionesElegidas",this.opcionesElegidas);
-    
-    
+    });    
   }
 
   quitarItem(itemARemover){
@@ -195,8 +190,8 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
 
   imprimir(){
     this.updateOpciones();
-    console.log(this.crearParametroForm.value);
   }
+
   ngOnDestroy(){
     this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
   }

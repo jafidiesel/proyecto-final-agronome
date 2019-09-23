@@ -6,16 +6,18 @@ from app.uses_cases.moduloConfiguracion.gestionarParametro import postParametro,
 
 
 parametro = urlParametro
-print(urlParametro)
 
 @parametro.route('')
 class ParametroHandler(Resource):
     def post(self):
-        print("EN URL")
         data = self.api.payload
         return postParametro(data)
     def get(self):
         return getAllParametros() 
+    def put(self):
+        data = self.api.payload
+        return updateParametro(data)
+
 
 @parametro.route('/<string:tipoNomenclador>')
 class ParametroHandler(Resource):
@@ -26,3 +28,4 @@ class ParametroHandler(Resource):
 class  ParametroHandler(Resource):
     def get(self, id):
         return getParametroById(id)
+

@@ -23,7 +23,6 @@ export class ListarParametrosComponent implements OnInit, OnDestroy {
     //this.parametrosMockedData = this._configuracionService.getParametroData();
     this.subscriptions.push(this._configuracionService.getListaParametros().subscribe(
       (result:any) => {
-        console.log(result);
         this.nomencladoresTabla.push(this.tableDataHeader);
         
         for (let index = 0; index < result.length ; index++) {
