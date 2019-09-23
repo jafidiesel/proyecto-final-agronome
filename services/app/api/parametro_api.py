@@ -6,7 +6,6 @@ from app.uses_cases.moduloConfiguracion.gestionarParametro import postParametro,
 
 
 parametro = urlParametro
-print(urlParametro)
 
 @parametro.route('')
 class ParametroHandler(Resource):

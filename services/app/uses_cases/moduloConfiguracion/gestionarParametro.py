@@ -52,7 +52,7 @@ def getParametro():
 
 #Para el armado de las estructuras
 def getParametroEstructura(entidad):
-    try:
+    try:        
         #Buscar TipoParametro por nombre: 
         tipoParametroRst = selectActiveByName(modelos['tipoParametro'],entidad)
         if not tipoParametroRst:
@@ -132,43 +132,20 @@ def getAllParametros():
         return ResponseException(e)
         
 def updateParametro(data):
-    try:
+    
         #Extraccion de datos    
         parametroJson = data.get('parametro')
         tipoParametroJson = data.get('tipoParametro')
         tipoDatoJson = data.get('tipoDato')
         opcionJsonList = data.get('opcion')
-        #Lista de claves del Json --> Para obenter el tipo de entidad
+        #Lista de claves del Json --> Para obtener el tipo de entidad
         claves = list(data.keys())
-
-        #Se busca Parametro por id, en caso de existir se actualiza
-        parametroRst = selectByCod(hlmodel.Parametro, tipoParametroJson.get('id'))
-        parametro = Parametro.from_json(parametroJson)
-        #Actualizacion datos propios de Parametro
-        if (parametroRst.nombre != parametro.nombre):
-            parametroRst.nombre = parametro.nombre
-        parametroRst.isActiv = parametro.isActiv
         #Busqueda de entidades a asociar a Parametro
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
         tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
-            
-        #Asociacion
-        tipoParametroRst.parametroTipo.append(parametroRst)
-        tipoDatoRst.parametroDato.append(parametroRst)
 
-        #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
-        """ codParametro = parametroRst.cod
-        for parametroOp in selectAllByParamCod(parametro.cod):
-            opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
-            for opcionJson in opcionJsonList:        
-                if opcion.cod == opcionJson.get('id'):
-                    parametroOp.isActiv = opcionJson.get('isActiv')
-                else:
-                    parametroOpcion = ParametroOpcion(True,codParametro,cod) 
-                    saveEntidadSinCommit(parametroOpcion)           
-        """
-        Commit()      
+        from app.repositorio.repositorioParametro import updateParam
+
+        updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
         return "Hello"
-    except Exception as e:
-        Rollback()
-        return ResponseException(e)
+    
