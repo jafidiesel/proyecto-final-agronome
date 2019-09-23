@@ -1,9 +1,8 @@
 from app.extensions import db
-from app.repositorio.hlDb import Commit, saveEntidadSinCommit
+from app.repositorio.hlDb import Commit, saveEntidadSinCommit, Rollback
 from app.model.hlmodel import ParametroOpcion, Parametro, Opcion
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
-
-
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 def selectAllByParamCod(codParam):
     objectList = ParametroOpcion.query.filter(ParametroOpcion.codParametro == codParam).all()
@@ -22,14 +21,13 @@ def selectAllActiveByParamCod(valor):
     return objectList
 
 def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):    
-    try
+    try:
         #Se busca Parametro por id, en caso de existir se actualiza
         parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('id')).first()
         parametro = Parametro.from_json(parametroJson)
         codOpcionList=[]
             
-        #Actualizacion datos propios de Parametro
-        
+        #Actualizacion datos propios de Parametro        
         parametroRst.nombre = parametro.nombre
         parametroRst.isActiv = parametro.isActiv
                 
@@ -57,12 +55,13 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
             for parametroOp in paramOpList:
                 if(opcionJson.get('id') == parametroOp.codOpcion):      
                     i += 1
+                    
             if(i ==0 ):
                 opcion = Opcion.query.filter(Opcion.cod == opcionJson.get('id'))
-                saveEntidadSinCommit(ParametroOpcion(True,parametroRst.cod, opcion.cod)        
+                saveEntidadSinCommit(ParametroOpcion(True,parametroRst.cod, opcion.cod))       
 
         Commit()      
-        return ResponseOk()
+        return ResponseOk()   
     except Exception as e:
         Rollback()
         return ResponseException(e)
