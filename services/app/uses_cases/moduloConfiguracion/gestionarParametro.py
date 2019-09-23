@@ -47,9 +47,6 @@ def postParametro(data):
         Rollback()
         return ResponseException(e)
 
-def getParametro():
-    return True
-
 #Para el armado de las estructuras
 def getParametroEstructura(entidad):
     try:        
@@ -132,7 +129,7 @@ def getAllParametros():
         return ResponseException(e)
         
 def updateParametro(data):
-    
+    try:
         #Extraccion de datos    
         parametroJson = data.get('parametro')
         tipoParametroJson = data.get('tipoParametro')
@@ -144,8 +141,10 @@ def updateParametro(data):
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
         tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
 
-        from app.repositorio.repositorioParametro import updateParam
+        from app.repositorio.repositorioParametro import updateParam        
+        return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
+    except Exception as e:
+        return ResponseException(e)
+    
 
-        updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
-        return "Hello"
     
