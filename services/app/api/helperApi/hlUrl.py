@@ -12,3 +12,6 @@ URL_MR = 'api/recurso/'
 urlRecurso=Namespace(URL_MR)
 
 
+#modulo de actividades"
+URL_MA= 'api/actividad/'
+urlResgistrarActiv = Namespace(URL_MA + 'registrar', description='Registrar Actividad')

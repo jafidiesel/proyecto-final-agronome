@@ -80,59 +80,55 @@ def putEntidadInterm(data,entidadIntermedia,id):
 
 
 
-
-
-
-
-##SOLO SE DEJA DE EJEMPLO NO SE USA EN LA APIII PORQUE BUSCA TODO DE TODOS
 def getEntidadInterm(entidadIntermedia):
+    helperEntidad= {
+        "actividadParametro":hlmodel.Actividad,
+        "recomendacionParametro": hlmodel.Recomendacion,
+        "tipoAnalisisParam": hlmodel.TipoAnalisis,
+        "tipoPlanParam": hlmodel.TipoPlan
+    }
+
     try:
         objetos = selectAll(modelos[entidadIntermedia])
-        dtoParamList = []
-
+        entidades = selectAll(helperEntidad[entidadIntermedia])
+        dtoAsociacionesList = []
+        dtoSinAsociacionesList = []
+        print(entidades)
         for obj in objetos:
-            codParam = obj.codParametro
-            param = getNomencladoCod('parametro',codParam)
-            nombreParam = param.nombre
-
             entidad=nomenclador[entidadIntermedia]
-            
             if entidad=='actividad':
                 codNomen = obj.codActividad
-                codDtoAux= 'codActividad'
-                nomDtoAux= 'nombreActividad'
             else:
                 if entidad=='recomendacion':
                     codNomen = obj.codRecomendacion
-                    codDtoAux= 'codRecomendacion'
-                    nomDtoAux= 'nombreRecomendacion'
                 else:
                     if entidad=='tipoPlan':
                         codNomen = obj.codTipoPlan
-                        codDtoAux= 'codTipoPlan'
-                        nomDtoAux= 'nombreTipoPlan'
                     else:
                         if entidad=='tipoAnalisis':
                             codNomen = obj.codTipoAnalisis
-                            codDtoAux= 'codTipoAnalisis'
-                            nomDtoAux= 'nombreTipoAnalisis'
                         else:
                             raise Exception('N','error en la entidad')
         
             nomen = getNomencladoCod(entidad,codNomen)
             nombreNomen = nomen.nombre
-
-            #definicion de un diccionario
-            dtoAux =dict(isActiv=obj.isActiv,codParametro = obj.codParametro, nombreParametro= nombreParam)
-            
-            #se le agregan al diccionario estos campos al dic
-            dtoAux[codDtoAux] = codNomen
-            dtoAux[nomDtoAux] = nombreNomen
-            
-            dtoParamList.append(dtoAux)
+            dtoAux = dict(cod=codNomen,nombre=nombreNomen)
+            ##armo la lista con asociaciones
+            if not dtoAux in dtoAsociacionesList:
+                dtoAsociacionesList.append(dtoAux)
         #endfor
-            
-        return (dict(parametro=dtoParamList))
-        #return (json.dumps(dtoParamList))
+
+        #elimino de las entidades las que tienen asociaciones
+        for item in dtoAsociacionesList:
+            for ent in entidades:
+                if  item['cod'] == ent.cod:
+                    entidades.remove(ent)
+
+        #transformo la entidades que no tienen asociaciones en dicc
+        for dto in entidades:
+            dtoAuxSin = dict(cod = dto.cod, nombre = dto.nombre)
+            dtoSinAsociacionesList.append(dtoAuxSin)
+
+        return (dict(asociaciones=dtoAsociacionesList,sinAsociaciones=dtoSinAsociacionesList))
     except Exception as e:
         return ResponseException(e)
