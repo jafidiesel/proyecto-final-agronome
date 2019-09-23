@@ -6,9 +6,45 @@
 
 <div class="row">
     <div class="col">
-        <app-table [tableData]=this.nomencladoresMockedData></app-table>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th *ngFor="let dataHeader of tableDataHeader" scope="col">{{ dataHeader }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dataRow of nomencladoresTabla">
+                    <td *ngFor="let row of dataRow">
+    
+                        <span [ngSwitch]="row[0]">
+                            <div *ngSwitchCase="'*'">
+                                <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="btn btn-primary btn-sm"><fa-icon [icon]="faEdit"></fa-icon></button>
+                            </div>
+        
+                            <div *ngSwitchCase="'-'">
+                                    <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="btn btn-primary btn-sm"><fa-icon [icon]="faPowerOff"></fa-icon></button>
+                                </div>
+    
+                            <div *ngSwitchCase="'#'">
+                                <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active" class="list-group-item list-group-item-action">{{ row.substr(2) }}</button>
+                            </div>
+                        
+                            <p *ngSwitchDefault>
+                                {{ row }}
+                            </p>
+                        </span>
+    
+     
+    
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
     </div>
 </div>
+
+
 
 <div class="row">
     <div class="col">

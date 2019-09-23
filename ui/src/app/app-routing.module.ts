@@ -9,7 +9,6 @@ import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes-page/reportes-page.component';
-import { ListarActividadesComponent } from './dashboard/pages/configuracion/listar-actividades/listar-actividades.component';
 import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './dashboard/pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './dashboard/pages/configuracion/listar-analisis/listar-analisis.component';
@@ -19,6 +18,9 @@ import { EditarParametroComponent } from './dashboard/pages/configuracion/parame
 import { ListarNomencladoresComponent } from './dashboard/pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { CrearNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
 import { EditarNomencladorComponent } from './dashboard/pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
+import { ListarActividadesAsociadasComponent } from './dashboard/pages/configuracion/asociar/actividad/listar-actividades-asociadas/listar-actividades-asociadas.component';
+import { AsociarActividadComponent } from './dashboard/pages/configuracion/asociar/actividad/asociar-actividad/asociar-actividad.component';
+import { EditarActividadAsociadaComponent } from './dashboard/pages/configuracion/asociar/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
 
 
 const routes: Routes = [
@@ -30,17 +32,22 @@ const routes: Routes = [
   { path: 'seguridad', component: SeguridadPageComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
-  { path: 'configuracion/listarActividades', component: ListarActividadesComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },
   { path: 'configuracion/listarPlanes', component: ListarPlanesComponent },
   { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
+  /* Modulo Configuracion - Asociar */
+  { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
+  { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
+  { path: 'configuracion/asociar/editarActividad/:id', component: EditarActividadAsociadaComponent },
+  /* Modulo Configuracion - Nomencladores */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
-  { path: 'configuracion/editaNomenclador', component: EditarNomencladorComponent },
+  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:id', component: EditarNomencladorComponent },
   { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
+  /* Modulo Configuracion - Parametros */
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
-  { path: 'configuracion/editarParametro', component: EditarParametroComponent },
+  { path: 'configuracion/editarParametro/:id', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   /* { path: '**', pathMatch: 'full', redirectTo: 'configuracion' } */

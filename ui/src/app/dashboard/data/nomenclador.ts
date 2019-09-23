@@ -1,6 +1,6 @@
 
-export interface Nomenclador {
+export interface NomencladorInterface {
     nombre: string ,
-    tipoNomenclador: number,
+    tipoNomenclador: string,
     isActiv: boolean,
   }

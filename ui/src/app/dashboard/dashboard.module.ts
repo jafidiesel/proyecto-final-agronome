@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
@@ -21,7 +21,6 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
 
 /* Configuracion */
-import { ListarActividadesComponent } from './pages/configuracion/listar-actividades/listar-actividades.component';
 import { ListarRecomendacionesComponent } from './pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
@@ -31,8 +30,14 @@ import { CrearParametroComponent } from './pages/configuracion/parametro/crear-p
 import { CrearNomencladorComponent } from './pages/configuracion/nomenclador/crear-nomenclador/crear-nomenclador.component';
 import { EditarNomencladorComponent } from './pages/configuracion/nomenclador/editar-nomenclador/editar-nomenclador.component';
 import { EditarParametroComponent } from './pages/configuracion/parametro/editar-parametro/editar-parametro.component';
+import { ListarActividadesAsociadasComponent } from './pages/configuracion/asociar/actividad/listar-actividades-asociadas/listar-actividades-asociadas.component';
+import { AsociarActividadComponent } from './pages/configuracion/asociar/actividad/asociar-actividad/asociar-actividad.component';
+import { EditarActividadAsociadaComponent } from './pages/configuracion/asociar/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+// import pagination component
+import { JwPaginationComponent } from 'jw-angular-pagination';
 
 @NgModule({
   declarations: [
@@ -46,7 +51,7 @@ import { EditarParametroComponent } from './pages/configuracion/parametro/editar
     ReportesPageComponent,
     DashboardPageComponent,
     LibroDeCampoComponent,
-    ListarActividadesComponent,
+    ListarActividadesAsociadasComponent,
     ListarRecomendacionesComponent,
     ListarPlanesComponent,
     ListarAnalisisComponent,
@@ -55,13 +60,19 @@ import { EditarParametroComponent } from './pages/configuracion/parametro/editar
     CrearParametroComponent,
     EditarParametroComponent,
     CrearNomencladorComponent,
-    EditarNomencladorComponent
+    EditarNomencladorComponent,
+    JwPaginationComponent,
+    ListarActividadesAsociadasComponent,
+    AsociarActividadComponent,
+    EditarActividadAsociadaComponent
   ],
   imports: [
     CommonModule,
     CoreCommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    FontAwesomeModule,
+    ReactiveFormsModule
   ],
   exports: [
     ActividadPageComponent,
