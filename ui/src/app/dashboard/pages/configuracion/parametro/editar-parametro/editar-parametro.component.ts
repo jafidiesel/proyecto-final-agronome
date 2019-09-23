@@ -167,7 +167,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     console.warn(this.editarParametroForm.value);
 
     if( this.editarParametroForm.status == 'VALID' ){
-      this._configuracionService.postParametroForm(this.editarParametroForm.value).subscribe(
+      this._configuracionService.putParametroForm(this.editarParametroForm.value).subscribe(
         result => {
           this.postSuccess = true;
           this.postError = false;

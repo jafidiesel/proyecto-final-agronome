@@ -188,18 +188,6 @@ export class ConfiguracionService {
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
-  
-  /**
-   * @param nomencladorJson any
-   * @return Observable<Object>
-   *  
-   * Realiza una peticion post para almacenar el parametro creado
-   */
-  postParametroForm(parametroJson: any){
-    //return of(nomencladorForm);
-    return this.http.post( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
-  }
-  
   /**
    * @param id number
    * @return Observable<Object>
@@ -211,6 +199,29 @@ export class ConfiguracionService {
     // http://localhost:9001/api/configuracion/parametro/2
     
   }
+
+  /**
+   * @param nomencladorJson any
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion post para almacenar el parametro creado
+   */
+  postParametroForm(parametroJson: any){
+    //return of(nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
+  }
+
+  /**
+   * @param nomencladorJson any
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion put para modificar un parametro
+   */
+  putParametroForm(parametroJson: any){
+    //return of(nomencladorForm);
+    return this.http.put( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
+  }
+
   /**
    * @return Observable<Object>
    *  
