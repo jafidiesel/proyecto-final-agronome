@@ -5,7 +5,7 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 def selectAllByParamCod(codParam):
-    objectList = ParametroOpcion.query.filter(ParametroOpcion.codParametro == codParam).all()
+    objectList = ParametroOpcion.query.filter(ParametroOpcion.codParametro == codParam).filter(ParametroOpcion.isActiv==True ).all()
     return objectList
 
 def selectActiveByName(entidad,valor):
@@ -22,10 +22,12 @@ def selectAllActiveByParamCod(valor):
 
 def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):    
     try:
+        
+        for opcionJson in opcionJsonList:
+            opcionJson.pop('nombre',None)
         #Se busca Parametro por id, en caso de existir se actualiza
         parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('id')).first()
         parametro = Parametro.from_json(parametroJson)
-        codOpcionList=[]
             
         #Actualizacion datos propios de Parametro        
         parametroRst.nombre = parametro.nombre
@@ -36,14 +38,16 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
         tipoDatoRst.parametroDato.append(parametroRst)
 
         paramOpList = ParametroOpcion.query.filter(ParametroOpcion.codParametro==parametroRst.cod).all()
+
         #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
         for parametroOp in paramOpList:
             opcion= Opcion.query.filter(Opcion.cod == parametroOp.codOpcion).one()
             opcionTmp = opcion.to_json()
             opcionTmp.pop('tipoNomenclador', None)
             opcionTmp.pop('nombre', None)
+            opcionTmp.pop('isActiv', None)
             
-            if (opcionTmp not in opcionJsonList):
+            if (opcionTmp not in opcionJsonList)or(opcionJsonList[0].get("")):
                 #Si ParametroOpcion tiene asociado un codOpcion que NO esta en opcionJsonList, actualizar iSActiv a False
                 parametroOp.isActiv = False
             elif (opcionTmp in opcionJsonList):
@@ -51,8 +55,12 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
     
 
         for opcionJson in opcionJsonList:
+            print("OpcionJson")
+            print(opcionJson)
             i = 0
             for parametroOp in paramOpList:
+                print("Parametro Opcion")
+                print(parametroOp)
                 if(opcionJson.get('id') == parametroOp.codOpcion):      
                     i += 1
                     
@@ -60,6 +68,7 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
                 opcion = Opcion.query.filter(Opcion.cod == opcionJson.get('id'))
                 saveEntidadSinCommit(ParametroOpcion(True,parametroRst.cod, opcion.cod))       
 
+        #Lista Opcion vacia
         Commit()      
         return ResponseOk()   
     except Exception as e:
