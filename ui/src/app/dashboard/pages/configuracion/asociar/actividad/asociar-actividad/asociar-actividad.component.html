@@ -5,23 +5,53 @@
                 <h3 class="display-4">Asociar Actividad</h3>
             </div>
             
-            <form #formAsociarActividad="ngForm" (ngSubmit)="onSubmitAsociacion(formAsociarActividad)">
+            <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="crearParametroForm">
 
-                <div class="form-group">
-                    <label for="parametroInput" class=" col-form-label">Seleccione un Nomenclador * </label>
+                <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
+                    <label for="parametroInput" class=" col-form-label">Nomenclador * </label>
                     <div class="input-group ">
-                        <select [(ngModel)]="test" class="custom-select" id="tipoNomenclador" name="tipoNomenclador" (ngModelChange)="actualizarActividad($event)">
-                            <option *ngFor="let tipoNomencladorSelect of listaNomencladoresActividad | async" selected [ngValue]="tipoNomencladorSelect" >
-                                {{ tipoNomencladorSelect.nombre }}
+                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id">
+                            <option selected value="null">Seleccione un nomenclador actividad</option>
+                            <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.id" >
+                                {{ nomencladorActividadArray.nombre }}
                             </option>
                         </select>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <app-table-pane [titleText]="'Parametros *'" [rows]="this.tiposParametrosSelect" [(output)]="this.optionsList" [buttonAddText]="'Agregar Parametro'"></app-table-pane>
-
+                <h6 class="border-bottom border-gray pb-2 mb-0"> Parametros </h6>
+                <div formArrayName="parametros">
+                    <div class="media text-muted pt-3" *ngFor="let parametro of parametrosElegidos">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"  >
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark"> {{ parametro.nombre }} </strong>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(parametro)"><fa-icon [icon]="faTrashAlt"></fa-icon></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="media text-muted pt-3">
+                    <div class="media-body pb-3 mb-0 small lh-125 ">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+
+                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizaropcionSeleccionada($event)" >
+                                <option>Seleccione una opcion</option>
+                                <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.cod"  >
+                                    {{tipoParametroSelectArray.nombre}}
+                                </option>
+                            </select>
+
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()">Agregar Opcion</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
                 <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
                     ¡ Nomenclador Creado !
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -39,6 +69,7 @@
                             {{ postErrorMessage }}
                         </div>
                         <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Crear</button>
+                        <button type="button" class="btn btn-warning btn-lg float-right mr-5 " (click)="imprimir()" >imprimir()</button>
                         <button [routerLink]="['/configuracion/asociar/listarActividades']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
