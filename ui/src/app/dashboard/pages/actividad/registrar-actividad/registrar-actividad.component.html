@@ -1,13 +1,40 @@
 <main role="main" class="container mt-4" [ngSwitch]="step">
+    <div class="card m-3" *ngSwitchCase="'0'">
+        <div class="card-header">
+            Seleccionar actividad
+        </div>
+        <div class="card-body">
+            <div class ="card-deck m-3">
+            <div *ngFor="let button of configurationButtons" class="card border-gray col-3 m-3 text-center" style="min-width: 220px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ button[0] }}</h5>
+                    <a  class="btn btn-primary" (click) ="registrarActividad(button)">Registrar</a>
+                </div>
+            </div>    
+        </div>        
+        </div>
+    </div>
     <div class="card m-3" *ngSwitchCase="'1'">
         <div class="card-header">
             Datos del campo
         </div>
         <div class="card-body">
-            <blockquote class="blockquote mb-0">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
+            <form>
+                <div class="form-group">
+                    <label for="colFormLabel" class="col-form-label">Fecha</label>
+                    <input type="date" class="form-control" id="fecha" placeholder="fecha">
+                </div>
+                <div>
+                    <label for="colFormLabel" class="col-form-label">Libro de campo</label>
+                    <select class="custom-select" id="libro">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    <button type="button" class="btn btn-success mt-4">Añadir parcela</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="card m-3" *ngSwitchCase="'2'">
@@ -15,10 +42,15 @@
             Actividad de riego
         </div>
         <div class="card-body">
-            <blockquote class="blockquote mb-0">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
+            <div class="form-group">
+                <label for="colFormLabel" class="col-form-label">Tipo de riego</label>
+                <select class="custom-select" id="libro">
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="colFormLabel" class="col-form-label">Fuente de riego</label>
+                <input type="text" class="form-control" id="fuente" placeholder="fuente de riego">
+            </div>
         </div>
     </div>
     <div class="card m-3" *ngSwitchCase="'3'">

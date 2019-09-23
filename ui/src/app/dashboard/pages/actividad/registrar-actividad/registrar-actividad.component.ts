@@ -7,12 +7,24 @@ import { Router } from '@angular/router';
 })
 export class RegistrarActividadComponent implements OnInit {
 
-  step: number = 1;
+  step: number = 0;
   backButtonText = "Volver"; // both in initial state
   nextButtonText = "Siguiente";
-  guardarClass="btn-primary";
+  guardarClass="d-none";
   cancelarClass="btn-danger";
 
+  configurationButtons: any[] = [
+    ['Riego'],
+    ['Siembra'],
+    ['Fertilizacion'],
+    ['Preparacion suelo'],
+    ['Tratamiento fitosanitario'],
+    ['Cosecha'],
+    ['Deteccion Fitosanitaria'],
+    ['Deteccion Catastrofe'],
+    ['Fertirrigacion'],
+
+  ];
 
   constructor(private router: Router,) { }
 
@@ -21,8 +33,17 @@ export class RegistrarActividadComponent implements OnInit {
 
   atras(){
     switch (this.step){
-      case 1:
+      case 0:
         this.router.navigate(['/actividades']);
+        break;
+      case 1:
+        //this.router.navigate(['/actividades']);
+        this.backButtonText = "Volver";
+        this.cancelarClass = "btn-danger";
+
+        this.nextButtonText = "Siguiente";
+        this.guardarClass = "btn-primary";
+        this.step--;        
         break;
       case 2:
         this.backButtonText = "Volver";
@@ -64,6 +85,11 @@ export class RegistrarActividadComponent implements OnInit {
         break;
     }
 
+  }
+
+  registrarActividad(nombreActividad: string){
+    this.step++;
+    console.log(this.step);
   }
 
 }
