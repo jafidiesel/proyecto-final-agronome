@@ -176,15 +176,18 @@ export class ConfiguracionService {
     
     return this.http.post<String>(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}`, filtroJson);
   }
-
+  
+  /**
+   * @param tipoNomenclador string
+   * @param id number
+   * @return Observable<Object>
+   *  
+   * Obtiene un nomenclador en especifico
+   */
   getNomenclador(tipoNomenclador: string, id: number){
     return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
   }
 
-  postAsociacionForm( asociacionJson: any ): Observable<any> {
-    //return of(nomencladorForm);
-    return this.http.post( 'http://localhost:9001/api/configuracion/asociar', asociacionJson);
-  }
   
   /**
    * @param nomencladorJson any
@@ -196,7 +199,7 @@ export class ConfiguracionService {
     //return of(nomencladorForm);
     return this.http.post( 'http://localhost:9001/api/configuracion/parametro', parametroJson);
   }
-
+  
   /**
    * @param id number
    * @return Observable<Object>
@@ -206,10 +209,36 @@ export class ConfiguracionService {
   getParametro(id: number){
     return this.http.get( `http://localhost:9001/api/configuracion/parametro/${id}` );
     // http://localhost:9001/api/configuracion/parametro/2
-
+    
   }
-
+  /**
+   * @return Observable<Object>
+   *  
+   * Obtiene una lista de parametros
+   */
   getListaParametros(){
     return this.http.get('http://localhost:9001/api/configuracion/parametro');
+  }
+  
+  /**
+   * @param asociacionJson json a guardar
+   * @return Observable<Object>
+   *  
+   * POST configuracion/asociar
+   */
+  postAsociacionForm( asociacionJson: any ): Observable<any> {
+    //return of(nomencladorForm);
+    return this.http.post( 'http://localhost:9001/api/configuracion/asociar', asociacionJson);
+  }
+
+  /**
+   * @param parametro string
+   * @return Observable<string>
+   *  
+   * GET obtiene la lista de asociaciones segun el parametro enviado
+   */
+  getListaAsociacion( parametro: string ): Observable<any> {
+    //return of(nomencladorForm);
+    return this.http.get<string>( `http://localhost:9001/api/configuracion/asociar/${parametro}`);
   }
 }
