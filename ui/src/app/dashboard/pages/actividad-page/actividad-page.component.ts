@@ -4,8 +4,7 @@ import { ActividadService } from '../../services/actividad/actividad.service';
 
 @Component({
   selector: 'app-actividad-page',
-  templateUrl: './actividad-page.component.html',
-  styleUrls: ['./actividad-page.component.css']
+  templateUrl: './actividad-page.component.html'
 })
 export class ActividadPageComponent implements OnInit {
 

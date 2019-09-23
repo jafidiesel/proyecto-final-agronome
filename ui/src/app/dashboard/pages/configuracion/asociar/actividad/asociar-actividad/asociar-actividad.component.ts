@@ -85,6 +85,12 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  onHttpError( errorResponse: any ) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
+  }
+
   actualizarActividad(obj){
   }
 

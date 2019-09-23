@@ -1,0 +1,39 @@
+<main role="main" class="container mt-4" [ngSwitch]="step">
+    <div class="card m-3" *ngSwitchCase="'1'">
+        <div class="card-header">
+            Datos del campo
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="card m-3" *ngSwitchCase="'2'">
+        <div class="card-header">
+            Actividad de riego
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <div class="card m-3" *ngSwitchCase="'3'">
+        <div class="card-header">
+            Recursos
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+            </blockquote>
+        </div>
+    </div>
+    <h4>{{ step }}</h4>
+    <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}} </button>
+    <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()" > {{ nextButtonText }}</button>
+</main>
+

@@ -21,14 +21,22 @@ import { EditarNomencladorComponent } from './dashboard/pages/configuracion/nome
 import { ListarActividadesAsociadasComponent } from './dashboard/pages/configuracion/asociar/actividad/listar-actividades-asociadas/listar-actividades-asociadas.component';
 import { AsociarActividadComponent } from './dashboard/pages/configuracion/asociar/actividad/asociar-actividad/asociar-actividad.component';
 import { EditarActividadAsociadaComponent } from './dashboard/pages/configuracion/asociar/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
+import { RegistrarActividadComponent } from './dashboard/pages/actividad/registrar-actividad/registrar-actividad.component';
 
 
 const routes: Routes = [
+  /* Modulo Actividades */
   { path: 'actividades', component: ActividadPageComponent },
+  { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
+  /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
+  /* Modulo Finca */
   { path: 'finca', component: FincasPageComponent },
+  /* Modulo Recomendaciones */
   { path: 'recomendaciones', component: RecomendacionesPageComponent },
+  /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
+  /* Modulo Seguridad */
   { path: 'seguridad', component: SeguridadPageComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
@@ -50,7 +58,7 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:id', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
-  /* { path: '**', pathMatch: 'full', redirectTo: 'configuracion' } */
+  { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
 ];
 
 @NgModule({
