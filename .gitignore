@@ -7,3 +7,4 @@ app/api/__pycache__/
 app/model/__pycache__/
 migrations/
 services\app\__pycache__
+services/__pycache__/

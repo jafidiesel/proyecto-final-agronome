@@ -3,7 +3,7 @@ from app.repositorio.hlDb import Commit, addObject, saveEntidadSinCommit
 #from app.model.hlmodel import 
 from app.model import hlmodel
 
-def selectByCodEspec(entidad,codEspecial,cod,isFilterParametro,codParametro): 
+def selectByCodEspec(entidad,codEspecial,cod): 
     if codEspecial=='actividadParametro':
         filtro = entidad.codActividad
     else:
@@ -18,16 +18,11 @@ def selectByCodEspec(entidad,codEspecial,cod,isFilterParametro,codParametro):
                 else:
                      raise Exception('N','No existe el codigo especial ingresado')
         
-    if isFilterParametro:
-        objetos = entidad.query.filter(entidad.codParametro==codParametro).filter(filtro==cod).first()
-    else:
-        objetos = entidad.query.filter(filtro==cod).all()
+
+    objetos = entidad.query.filter(filtro==cod).filter(entidad.isActiv==True).all()
     
     if not objetos:
-        if isFilterParametro:
-            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado, o el codParametro ingresado')
-        else:    
-            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
+        raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
 
     return (objetos)
 

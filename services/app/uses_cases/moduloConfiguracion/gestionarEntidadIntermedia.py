@@ -50,8 +50,7 @@ def postEntidadInterm(data):
 
 def getEntidadIntermCod(entidadIntermedia,id):
     try:
-        isFilterParam = False # no filtro por parametro
-        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,id,isFilterParam,'')
+        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,id)
         dtoParamList = []
 
         for obj in objetos:
