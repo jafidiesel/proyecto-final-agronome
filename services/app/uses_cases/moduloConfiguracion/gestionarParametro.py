@@ -144,6 +144,7 @@ def updateParametro(data):
         from app.repositorio.repositorioParametro import updateParam        
         return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
     except Exception as e:
+        Rollback()
         return ResponseException(e)
     
 
