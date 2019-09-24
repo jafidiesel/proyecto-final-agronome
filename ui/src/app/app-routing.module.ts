@@ -20,6 +20,8 @@ import { ListarActividadesAsociadasComponent } from './dashboard/pages/configura
 import { AsociarActividadComponent } from './dashboard/pages/configuracion/asociar/actividad/asociar-actividad/asociar-actividad.component';
 import { EditarActividadAsociadaComponent } from './dashboard/pages/configuracion/asociar/actividad/editar-actividad-asociada/editar-actividad-asociada.component';
 import { RegistrarActividadComponent } from './dashboard/pages/actividad/registrar-actividad/registrar-actividad.component';
+import { EditarRecomendacionAsociadaComponent } from './dashboard/pages/configuracion/asociar/recomendacion/editar-recomendacion-asociada/editar-recomendacion-asociada.component';
+import { AsociarRecomendacionComponent } from './dashboard/pages/configuracion/asociar/recomendacion/asociar-recomendacion/asociar-recomendacion.component';
 
 
 const routes: Routes = [
@@ -43,6 +45,7 @@ const routes: Routes = [
   { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
   { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
   { path: 'configuracion/asociar/editarActividad/:id', component: EditarActividadAsociadaComponent },
+  { path: 'configuracion/asociar/asociarRecomendacion', component: AsociarRecomendacionComponent},
   /* Modulo Configuracion - Nomencladores */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
