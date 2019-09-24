@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Observable, Subscription } from 'rxjs';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-editar-actividad-asociada',
   templateUrl: './editar-actividad-asociada.component.html'
 })
-export class EditarActividadAsociadaComponent implements OnInit {
+export class EditarActividadAsociadaComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
 
   asociarParametroForm:FormGroup;
@@ -88,7 +88,6 @@ export class EditarActividadAsociadaComponent implements OnInit {
   }
   
   agregarItem(){
-    debugger;
     let obj = {
       idParametro: this.parametroSeleccionado.idParametro,
       nombreParametro: this.parametroSeleccionado.nombreParametro
