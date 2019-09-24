@@ -53,6 +53,7 @@ API REST endopints
     - [Consultar Nomenclador ID](#get-nomencladorid)
     - [Modoficar Nomenclador ID](#put-nomenclador)
     - [Asociar Parametros](#post-asociarParametro)
+    - [Consultar Asociaciones](#get-consultarAsociaciones)
     - [Consultar Parametros Asociados](#get-consultarParametroAsociados)
     - [Modificar Parametro Asociado](#put-modificarParametro)
 
@@ -300,7 +301,51 @@ API REST endopints
   "message": "cause"
 }
 ```
+#
 
+
+## <a name='get-consultarAsociaciones'></a> Consultar Asociaciones
+[Back to top](#top)
+
+<p>Consultar actividades, recomendaciones, tipo plan y tipo paramatro que tienen asociaciones</p>
+
+	GET /api/configuracion/asociar/:entidadIntermedia
+
+
+### Success Response 
+200 Ok
+
+```
+{
+    "asociaciones": [
+        {
+            "cod": int,
+            "nombre": "String"
+        },
+        {
+            "cod": int,
+            "nombre": "String"
+        }
+    ],
+
+    "sinAsociaciones": [
+        {
+            "cod": int,
+            "nombre": "String"
+        }
+    ]
+}
+```
+
+### Error Response
+400 Bad Request
+
+```
+{
+  "flag": "N",
+  "message": "cause"
+}
+```
 #
 
 
