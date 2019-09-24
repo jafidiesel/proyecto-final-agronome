@@ -1,1 +1,67 @@
-<p>editar-recomendacion-asociada works!</p>
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4">Editar Recomendacion Asociada</h3>
+            </div>
+            
+            <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="asociarParametroForm" *ngIf="asociarParametroForm != null">
+
+                <div class="form-group mt-2">
+                    <h3 >Nomenclador Recomendacion: {{nombreNomenclador}}</h3>
+                </div>
+
+                <h6 class="border-bottom border-gray pb-2 mb-0"> Parametros </h6>
+                <div formArrayName="parametros">
+                    <div class="media text-muted pt-3" *ngFor="let parametro of asociarParametroForm.get('parametros').controls; let i = index;">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"  >
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark"> {{parametro.value.nombreParametro}} </strong>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(i)" [disabled]="postSuccess" ><fa-icon [icon]="faTrashAlt"></fa-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media text-muted pt-3">
+                    <div class="media-body pb-3 mb-0 small lh-125 ">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+
+                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizarParametroSeleccionado($event)" [disabled]="postSuccess" >
+                                <option>Seleccione un Parámetro</option>
+                                <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.cod"  >
+                                    {{tipoParametroSelectArray.nombre}}
+                                </option>
+                            </select>
+
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()" [disabled]="postSuccess" >Agregar Parámetro</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Asociación editada exitosamente !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Editar</button>
+                        <button [routerLink]="['/configuracion/asociar/listarRecomendaciones']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</main>

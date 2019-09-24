@@ -50,7 +50,7 @@ const routes: Routes = [
   { path: 'configuracion/asociar/editarActividad/:id', component: EditarActividadAsociadaComponent },
   { path: 'configuracion/asociar/asociarRecomendacion', component: AsociarRecomendacionComponent},
   { path: 'configuracion/asociar/listarRecomendaciones', component: ListarRecomendacionesComponent},
-  { path: 'configuracion/asociar/editarRecomendacion', component: EditarRecomendacionAsociadaComponent},
+  { path: 'configuracion/asociar/editarRecomendacion/:id', component: EditarRecomendacionAsociadaComponent},
   { path: 'configuracion/asociar/listarAnalisis', component: ListarAnalisisComponent },
   { path: 'configuracion/asociar/asociarAnalisis', component: AsociarAnalisisComponent },
   { path: 'configuracion/asociar/editarAnalisis/:id', component: EditarAnalisisAsociadoComponent },

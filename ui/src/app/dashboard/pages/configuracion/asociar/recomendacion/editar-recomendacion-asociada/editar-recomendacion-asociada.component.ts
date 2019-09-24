@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Observable, Subscription } from 'rxjs';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-editar-recomendacion-asociada',
   templateUrl: './editar-recomendacion-asociada.component.html'
 })
-export class EditarRecomendacionAsociadaComponent implements OnInit {
+export class EditarRecomendacionAsociadaComponent implements OnInit, OnDestroy {
 
   subscriptions : Subscription[] = [];
 
@@ -54,7 +54,7 @@ export class EditarRecomendacionAsociadaComponent implements OnInit {
         
       } ));
 
-      this.subscriptions.push( this._configuracionService.getListaParametros().subscribe(
+      this.subscriptions.push( this._configuracionService.getListaParametrosPorTipo('recomendacion').subscribe(
         (result:any) =>{
           for (let index = 0; index < result.length; index++) {
             this.tiposParametrosSelectArray.push(result[index]);
@@ -88,7 +88,6 @@ export class EditarRecomendacionAsociadaComponent implements OnInit {
   }
   
   agregarItem(){
-    debugger;
     let obj = {
       idParametro: this.parametroSeleccionado.idParametro,
       nombreParametro: this.parametroSeleccionado.nombreParametro

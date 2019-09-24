@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
-import { debug } from 'util';
 @Component({
   selector: 'app-listar-recomendaciones',
   templateUrl: './listar-recomendaciones.component.html',
 })
-export class ListarRecomendacionesComponent implements OnInit {
+export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
   
   // array de rows para table component
