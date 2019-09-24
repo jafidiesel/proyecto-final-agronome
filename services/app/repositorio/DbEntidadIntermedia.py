@@ -59,16 +59,16 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
     parametros = data.get('parametros')  
 
     for param in parametros:
-        isActiv = param.get('isActiv')
+        #isActiv = param.get('isActiv')
         idParam = param.get('idParametro')
         objeto = entidadInterm.query.filter(entidadInterm.codParametro==idParam).filter(filtro==cod).first() 
         if objeto: #si existe, actualizo
             dtoAux=dict(codParam = idParam, codNomen = cod)
-            objeto.isActiv = isActiv
+            objeto.isActiv = True
             dtoActualizadoList.append(dtoAux)
         else: # si no creo
             dtoAux=dict(codParam = idParam, codNomen = cod)
-            objeto = modelos[entidad](isActiv,idParam,cod)
+            objeto = modelos[entidad](True,idParam,cod)
             dtoActualizadoList.append(dtoAux)
             saveEntidadSinCommit(objeto)
 
