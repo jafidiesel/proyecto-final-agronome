@@ -55,7 +55,7 @@ API REST endopints
     - [Asociar Parametros](#post-asociarParametro)
     - [Consultar Asociaciones](#get-consultarAsociaciones)
     - [Consultar Parametros Asociados](#get-consultarParametroAsociados)
-    - [Modificar Parametro Asociado](#put-modificarParametro)
+    - [Modificar Parametros Asociados](#put-modificarParametro)
 
     
 
@@ -386,19 +386,27 @@ API REST endopints
 #
 
 
-## <a name='put-modificarParametro'></a> Modificar Parametro Asociado
+## <a name='put-modificarParametro'></a> Modificar Parametros Asociados
 [Back to top](#top)
 
-<p>Activar o desactivar un determinado parametro de una entidad</p>
+<p>Activar o desactivar un determinado parametro de una entidad, los parametros que no son enviados se desactivan</p>
 
 	PUT /api/configuracion/asociar/:entidadIntermedia/:id
 
 ### Body
 ```
 {
-  "idParametro": int,
-  "isActiv": boolean
-}
+    "parametros": [
+        {
+            "codParametro": int,
+            "nombreParametro": "String",
+            "isActiv": boolean
+        },
+        {
+            "codParametro": int,
+            "nombreParametro": "String",
+            "isActiv": boolean
+        },
 ```
 
 ### Success Response 
