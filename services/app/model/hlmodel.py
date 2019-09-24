@@ -23,5 +23,6 @@ from app.model.tipoPlanParam import TipoPlanParam
 from app.model.tipoAnalisisParam import TipoAnalisisParam
 from app.model.parametroOpcion import ParametroOpcion
 from app.model.recomendacionParametro import RecomendacionParametro
-
-
+from app.model.actividadDetalle import ActividadDetalle
+from app.model.imgActivDetalle import ImgActivDetalle
+from app.model.activDetalleParam import ActivDetalleParam
