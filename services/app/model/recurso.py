@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Recurso(db.Model):
     __tablename__ = 'recurso'
     cod = db.Column('cod_recurso',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_recurso', String(32), nullable = False, unique = True)
+    nombre = db.Column('nombre_recurso', String(80), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     tipoRecurso = db.Column('fk_tipo_recurso',Integer,ForeignKey('tipo_recurso.cod_tipo_recurso'),index = True)
     nombreNomenclador = "recurso"

@@ -1,25 +1,97 @@
-# AgronoMe
-## back-end
-<a name="top"></a>
+# AgronoMe - back end
+_El backend de agronome esta desarrollado en python con Flask, para renspoder peticiones hhtps_
+ 
 # AgronoMe Services
 
-### Levantar entorno
-workon // Lista los entornos creados que tenemos
-workon "nombre_entorno"
+## Instalación 🔧 
 
-#### Dentro de la carpeta services:
-
-python app.py
+ _🔧 Instalar [Python 3.7.4](https://www.python.org/downloads/)_ 
+ * check instalación: python --version
 
 
-#### Para probar que este corriendo ejecutar en el navegador:
+_🔧 Instalar [Postgres 9.6](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)_
 
-http://localhost:9001
+_🔧 Instalar [PGAdmin 3](https://www.pgadmin.org/download/pgadmin-3-windows/) o [PGAdmin 4](https://www.pgadmin.org/download/pgadmin-4-windows/)_
+
+_🔧 Instalar las siguientes librerias desde la consola para poder trabajar con ambientes:_
+```
+pip install virtualenv
+```
+```
+pip install virtualenvwrapper-win
+```
+
+## Configuración 🛠️
+
+_🛠️ Crear un ambiente virtual y acceder al mismo para poder dentro de este instalar los paquetes asociados a nuestro proyecto_ 
+```
+mkvirtualenv agronomedev
+```
+_🛠️ Listar todos los ambientes virtuales_ 
+
+```
+workon
+```
+
+_🛠️ Entrar al ambiente creado (agronomedev)_ 
+
+```
+workon agronomedev 
+```
+
+_🛠️ Instalar todas las librerias en el ambiente (agronomedev), para esto vamos a la carpeta raiz del proyecto (services) y instalamos lo que esta en requirements.txt_ 
+
+```
+\agronome\services pip install -r requirements.txt 
+```
+
+## Inicialización de la base de datos  🔩
+
+_🔩 Crear desde PGAdmin una base de datos con el nombre agronome_
+
+_🔩 En caso que el proyecto contenga una migración se debe borrar la carpeta migrations, buscar en agronome\services\migrations_
+
+_🔩 Inicializar la base de dato desde consola, en la carpeta agronome\services>_
+
+```
+ app.py db init    // crea el repositorio migrations
+```
+
+```
+ app.py db migrate  //detecta las tablas a crear
+```
+
+```
+ app.py db upgrade //actualiza la tabla
+```
+
+## Run services  🚀
+
+_🚀 Run a la aplicación dentro de  agronome\services>_
+
+```
+ python app.py 
+```
 
 
--------------------------------------------
+* Para probar que este corriendo ejecutar en el navegador: http://localhost:9001
 
-API REST endopints
+## Impactar cambios en la base de datos  📌
+
+_📌 Para poder verificar los cambios en el modelo de la aplicación se escribir el comando db migrate, este proceso genera un archivo dentro de la carpeta migrations del proyecto, que posee todas las sentias para actualizar las tablas_
+```
+ app.py db migrate 
+```
+
+_📌 Para impactar todos los cambios se debe realizar un upgrade_
+```
+ app.py db upgrade 
+```
+
+#
+
+
+## API REST endopints 📄
 
 - [Actividad](#actividad)
 	- [Crear Actividad](#crear-actividad)
