@@ -10,8 +10,6 @@ import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/segurid
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes-page/reportes-page.component';
 import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
-import { ListarPlanesComponent } from './dashboard/pages/configuracion/listar-planes/listar-planes.component';
-import { ListarAnalisisComponent } from './dashboard/pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 import { EditarParametroComponent } from './dashboard/pages/configuracion/parametro/editar-parametro/editar-parametro.component';
@@ -41,8 +39,6 @@ const routes: Routes = [
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },
-  { path: 'configuracion/listarPlanes', component: ListarPlanesComponent },
-  { path: 'configuracion/listarAnalisis', component: ListarAnalisisComponent },
   /* Modulo Configuracion - Asociar */
   { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
   { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },

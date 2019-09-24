@@ -22,8 +22,6 @@ import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/lib
 
 /* Configuracion */
 import { ListarRecomendacionesComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
-import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
-import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarNomencladoresComponent } from './pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
@@ -41,6 +39,11 @@ import { JwPaginationComponent } from 'jw-angular-pagination';
 import { RegistrarActividadComponent } from './pages/actividad/registrar-actividad/registrar-actividad.component';
 import { AsociarRecomendacionComponent } from './pages/configuracion/asociar/recomendacion/asociar-recomendacion/asociar-recomendacion.component';
 import { EditarRecomendacionAsociadaComponent } from './pages/configuracion/asociar/recomendacion/editar-recomendacion-asociada/editar-recomendacion-asociada.component';
+import { EditarAnalisisAsociadoComponent } from './pages/configuracion/asociar/analisis/editar-analisis-asociado/editar-analisis-asociado.component';
+import { AsociarAnalisisComponent } from './pages/configuracion/asociar/analisis/asociar-analisis/asociar-analisis.component';
+import { ListarPlanComponent } from './pages/configuracion/asociar/plan/listar-plan/listar-plan.component';
+import { AsociarPlanComponent } from './pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
+import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 
 @NgModule({
   declarations: [
@@ -56,8 +59,6 @@ import { EditarRecomendacionAsociadaComponent } from './pages/configuracion/asoc
     LibroDeCampoComponent,
     ListarActividadesAsociadasComponent,
     ListarRecomendacionesComponent,
-    ListarPlanesComponent,
-    ListarAnalisisComponent,
     ListarNomencladoresComponent,
     ListarParametrosComponent,
     CrearParametroComponent,
@@ -70,7 +71,12 @@ import { EditarRecomendacionAsociadaComponent } from './pages/configuracion/asoc
     EditarActividadAsociadaComponent,
     RegistrarActividadComponent,
     AsociarRecomendacionComponent,
-    EditarRecomendacionAsociadaComponent
+    EditarRecomendacionAsociadaComponent,
+    EditarAnalisisAsociadoComponent,
+    AsociarAnalisisComponent,
+    ListarPlanComponent,
+    AsociarPlanComponent,
+    EditarPlanAsociadoComponent
   ],
   imports: [
     CommonModule,
