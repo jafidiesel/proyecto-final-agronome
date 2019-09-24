@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
-import { debug } from 'util';
 
 
 @Component({

@@ -9,9 +9,9 @@ export class ConfiguracionPageComponent implements OnInit {
     ['Nomencladores', '/configuracion/listarNomencladores'],
     ['Parámetros', '/configuracion/listarParametros'],
     ['Asociar Actividad', '/configuracion/asociar/listarActividades'],
-    ['Asociar Recomendaciones', '/configuracion/listarRecomendaciones'],
-    ['Asociar Planes', '/configuracion/listarPlanes'],
-    ['Asociar Análisis', '/configuracion/listarAnalisis'],
+    ['Asociar Recomendaciones', '/configuracion/asociar/listarRecomendaciones'],
+    ['Asociar Planes', '/configuracion/asociar/listarPlanes'],
+    ['Asociar Análisis', '/configuracion/asociar/listarAnalisis'],
 
   ];
 

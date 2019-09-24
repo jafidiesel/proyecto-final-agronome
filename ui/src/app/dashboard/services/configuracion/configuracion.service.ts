@@ -232,6 +232,15 @@ export class ConfiguracionService {
   }
   
   /**
+   * @param tipoNomenclador string
+   * @return Observable<Object>
+   *  
+   * O configuracion/asociar
+   */
+  getListaParametrosPorTipo(tipoNomenclador: string){
+    return this.http.get(`http://localhost:9001/api/configuracion/parametro/${tipoNomenclador}`);
+  }
+  /**
    * @param asociacionJson json a guardar
    * @return Observable<Object>
    *  
