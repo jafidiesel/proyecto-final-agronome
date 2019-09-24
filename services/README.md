@@ -352,7 +352,7 @@ API REST endopints
 ## <a name='get-consultarParametroAsociados'></a> Consultar Parametros asociados
 [Back to top](#top)
 
-<p>Consultar Parametros de actividad, recomendación, tipo analisis o tipo plan</p>
+<p>Consultar Parametros de actividad, recomendación, tipo analisis o tipo plan que estan activos</p>
 
 	GET /api/configuracion/asociar/:entidadIntermedia/:id
 
@@ -398,15 +398,13 @@ API REST endopints
 {
     "parametros": [
         {
-            "codParametro": int,
-            "nombreParametro": "String",
-            "isActiv": boolean
+            "codParametro": int
         },
         {
             "codParametro": int,
-            "nombreParametro": "String",
-            "isActiv": boolean
-        },
+        }
+      ]
+}
 ```
 
 ### Success Response 

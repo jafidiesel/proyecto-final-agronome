@@ -3,7 +3,7 @@ from app.repositorio.hlDb import Commit, addObject, saveEntidadSinCommit
 #from app.model.hlmodel import 
 from app.model import hlmodel
 
-def selectByCodEspec(entidad,codEspecial,cod,isFilterParametro,codParametro): 
+def selectByCodEspec(entidad,codEspecial,cod): 
     if codEspecial=='actividadParametro':
         filtro = entidad.codActividad
     else:
@@ -18,16 +18,11 @@ def selectByCodEspec(entidad,codEspecial,cod,isFilterParametro,codParametro):
                 else:
                      raise Exception('N','No existe el codigo especial ingresado')
         
-    if isFilterParametro:
-        objetos = entidad.query.filter(entidad.codParametro==codParametro).filter(filtro==cod).first()
-    else:
-        objetos = entidad.query.filter(filtro==cod).all()
+
+    objetos = entidad.query.filter(filtro==cod).filter(entidad.isActiv==True).all()
     
     if not objetos:
-        if isFilterParametro:
-            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado, o el codParametro ingresado')
-        else:    
-            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
+        raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
 
     return (objetos)
 
@@ -59,16 +54,16 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
     parametros = data.get('parametros')  
 
     for param in parametros:
-        isActiv = param.get('isActiv')
+        #isActiv = param.get('isActiv')
         idParam = param.get('idParametro')
         objeto = entidadInterm.query.filter(entidadInterm.codParametro==idParam).filter(filtro==cod).first() 
         if objeto: #si existe, actualizo
             dtoAux=dict(codParam = idParam, codNomen = cod)
-            objeto.isActiv = isActiv
+            objeto.isActiv = True
             dtoActualizadoList.append(dtoAux)
         else: # si no creo
             dtoAux=dict(codParam = idParam, codNomen = cod)
-            objeto = modelos[entidad](isActiv,idParam,cod)
+            objeto = modelos[entidad](True,idParam,cod)
             dtoActualizadoList.append(dtoAux)
             saveEntidadSinCommit(objeto)
 
