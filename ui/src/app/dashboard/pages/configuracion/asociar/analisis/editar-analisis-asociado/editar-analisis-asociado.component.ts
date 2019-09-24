@@ -55,7 +55,7 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
         
       } ));
 
-      this.subscriptions.push( this._configuracionService.getListaParametros().subscribe(
+      this.subscriptions.push( this._configuracionService.getListaParametrosPorTipo('analisis').subscribe(
         (result:any) =>{
           for (let index = 0; index < result.length; index++) {
             this.tiposParametrosSelectArray.push(result[index]);
