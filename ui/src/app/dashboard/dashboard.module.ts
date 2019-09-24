@@ -21,9 +21,7 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
 
 /* Configuracion */
-import { ListarRecomendacionesComponent } from './pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
-import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
-import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
+import { ListarRecomendacionesComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarNomencladoresComponent } from './pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
@@ -39,6 +37,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import pagination component
 import { JwPaginationComponent } from 'jw-angular-pagination';
 import { RegistrarActividadComponent } from './pages/actividad/registrar-actividad/registrar-actividad.component';
+import { AsociarRecomendacionComponent } from './pages/configuracion/asociar/recomendacion/asociar-recomendacion/asociar-recomendacion.component';
+import { EditarRecomendacionAsociadaComponent } from './pages/configuracion/asociar/recomendacion/editar-recomendacion-asociada/editar-recomendacion-asociada.component';
+import { EditarAnalisisAsociadoComponent } from './pages/configuracion/asociar/analisis/editar-analisis-asociado/editar-analisis-asociado.component';
+import { AsociarAnalisisComponent } from './pages/configuracion/asociar/analisis/asociar-analisis/asociar-analisis.component';
+import { ListarPlanComponent } from './pages/configuracion/asociar/plan/listar-plan/listar-plan.component';
+import { AsociarPlanComponent } from './pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
+import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 
 @NgModule({
   declarations: [
@@ -54,8 +59,6 @@ import { RegistrarActividadComponent } from './pages/actividad/registrar-activid
     LibroDeCampoComponent,
     ListarActividadesAsociadasComponent,
     ListarRecomendacionesComponent,
-    ListarPlanesComponent,
-    ListarAnalisisComponent,
     ListarNomencladoresComponent,
     ListarParametrosComponent,
     CrearParametroComponent,
@@ -66,7 +69,14 @@ import { RegistrarActividadComponent } from './pages/actividad/registrar-activid
     ListarActividadesAsociadasComponent,
     AsociarActividadComponent,
     EditarActividadAsociadaComponent,
-    RegistrarActividadComponent
+    RegistrarActividadComponent,
+    AsociarRecomendacionComponent,
+    EditarRecomendacionAsociadaComponent,
+    EditarAnalisisAsociadoComponent,
+    AsociarAnalisisComponent,
+    ListarPlanComponent,
+    AsociarPlanComponent,
+    EditarPlanAsociadoComponent
   ],
   imports: [
     CommonModule,

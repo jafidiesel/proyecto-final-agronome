@@ -12,7 +12,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   opcionesParametroMockedData: any;
   subscriptions : Subscription[] = [];
 
-  crearParametroForm:FormGroup;
+  asociarParametroForm:FormGroup;
   
   faTrashAlt = faTrashAlt;
 
@@ -24,7 +24,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   tiposParametrosSelect: Observable<object>;
   tiposParametrosSelectArray = [];
   parametrosElegidos = [];
-  parametroSeleccionada = {
+  parametroSeleccionado = {
     id: null,
     nombre: null
   };
@@ -39,13 +39,13 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm(this.crearParametroForm);
-    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('actividad', true).subscribe(
-      result => {
-        console.log('result',result);
+    this.initForm(this.asociarParametroForm);
 
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
+    this.subscriptions.push(this._configuracionService.getListaAsociacion('actividadParametro').subscribe(
+      result => {
+
+        for (let index = 0; index < result.sinAsociaciones.length; index++) {
+          const element = result.sinAsociaciones[index];
           this.listaNomencladoresActividadArray.push(element);
           
         }
@@ -54,7 +54,6 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push( this._configuracionService.getListaParametros().subscribe(
       (result:any) =>{
-        //this.tiposParametrosSelectArray.push(result);
         for (let index = 0; index < result.length; index++) {
           this.tiposParametrosSelectArray.push(result[index]);
         }
@@ -63,25 +62,14 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
 
   }
 
- /*  {
-    "entidadIntermedia": "actividadParametro",
-    "id": 1,
-    "parametros": {
-        "id": "[9]"
-    }
-} */
-
   initForm(formValues){
       
-    this.crearParametroForm = this.fb.group({
+    this.asociarParametroForm = this.fb.group({
       entidadIntermedia: ['actividadParametro'],
-      id: null,
+      id: [null, Validators.required], // id nomenclador actividad
       parametros: this.fb.group({
-        id: null,
-        nombre: ['', Validators.required],
-        isActiv: [false],
+        id: [null, Validators.required]
       }),
-      
     });
   }
 
@@ -91,31 +79,78 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = errorResponse.message;
   }
 
-  actualizarActividad(obj){
+  actualizarNomencladorActividad(event){
+    // This is ducktape, do not usit at home
+    const selectEl = event.target;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    this.asociarParametroForm.patchValue({
+      id: attrVal
+    });
+
+    console.log('this.asociarParametroForm',this.asociarParametroForm);
   }
 
-  actualizar(){
+  actualizarParametroSeleccionado(event){
+    const selectEl = event.target;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const inn = selectEl.options[selectEl.selectedIndex].innerText;
+    
+    this.parametroSeleccionado.id = attrVal;
+    this.parametroSeleccionado.nombre = inn;
+    
+  }
+
+  updateOpciones(){
+    this.asociarParametroForm.patchValue({
+      parametros: {
+        id: "[" + this.parametrosElegidos.map( element => {return element.id} ) + "]"
+      }
+    });
+    
+  }
+
+  agregarItem(){
+    let obj = {
+      id: this.parametroSeleccionado.id,
+      nombre: this.parametroSeleccionado.nombre
+    }
+    this.parametrosElegidos.push(obj);
+
+    this.updateOpciones();
+
+  }
+
+  quitarItem(itemARemover){
+    this.parametrosElegidos.forEach( (item, index) => {
+      if(item === itemARemover) {
+        this.parametrosElegidos.splice(index,1);
+      }
+    }); 
   }
 
   onSubmitAsociacion() {
+    this.updateOpciones();
 
-    /* if ( true ) {
-      this._configuracionService.postAsociacionForm(this.actividadAsociadaAEnviar).subscribe(
+    if ( this.asociarParametroForm.status == 'VALID' ) {
+      this._configuracionService.postAsociacionForm(this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
-          //this.postSuccess = true;
-          //this.resetForm();
+          this.postSuccess = true;
+
+          this.asociarParametroForm.controls['id'].disable();
+          this.asociarParametroForm.controls['id'].disable();
         },
         error => console.log(error) //this.onHttpError(error)
       );
     } else {
-      //this.postError = true;
-      //this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
-    } */
+      this.postError = true;
+      this.postSuccess = false;
+      this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
+    }
   }
 
   imprimir(){
-    console.warn('this.crearParametroForm.value',this.crearParametroForm.value);
+    console.warn('this.asociarParametroForm.values',this.asociarParametroForm.value);
   }
 
   ngOnDestroy(){
