@@ -53,7 +53,7 @@ export class AsociarAnalisisComponent implements OnInit, OnDestroy {
       }
     ));
 
-    this.subscriptions.push( this._configuracionService.getListaParametrosPorTipo('analisis').subscribe(
+    this.subscriptions.push( this._configuracionService.getListaParametrosPorTipo('Analisis').subscribe(
       (result:any) =>{
         for (let index = 0; index < result.length; index++) {
           this.tiposParametrosSelectArray.push(result[index]);
@@ -66,7 +66,7 @@ export class AsociarAnalisisComponent implements OnInit, OnDestroy {
   initForm(formValues){
       
     this.asociarParametroForm = this.fb.group({
-      entidadIntermedia: ['analisisParametro'],
+      entidadIntermedia: ['tipoAnalisisParam'],
       id: [null, Validators.required], // id nomenclador actividad
       parametros: this.fb.group({
         id: [null, Validators.required]
