@@ -70,10 +70,7 @@ def getEntidadIntermCod(entidadIntermedia,id):
 
 def putEntidadInterm(data,entidadIntermedia,id):
     try:
-        isFilterParam = True
-        codParam= data.get('idParametro')
-        isActiv = data.get('isActiv')
-        updateEntidadInterm(isActiv,modelos[entidadIntermedia],entidadIntermedia,id,isFilterParam,codParam) 
+        updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,id) 
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
