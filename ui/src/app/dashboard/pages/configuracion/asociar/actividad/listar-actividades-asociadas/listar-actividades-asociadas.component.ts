@@ -14,7 +14,7 @@ export class ListarActividadesAsociadasComponent implements OnInit, OnDestroy {
   
   // array de rows para table component
   actividadesTabla = [];
-  tableDataHeader = ['Nombre Actividad', 'Activo', 'Editar'];
+  tableDataHeader = ['Nombre Actividad', 'Editar'];
   mostrarTabla:boolean = false;
   
   actividadesMockedData: any;
@@ -28,11 +28,10 @@ export class ListarActividadesAsociadasComponent implements OnInit, OnDestroy {
       (result:any) => {
         this.actividadesTabla.push(this.tableDataHeader);
 
-        for (let index = 0; index < result.parametro.length ; index++) {
+        for (let index = 0; index < result.asociaciones.length ; index++) {
           this.actividadesTabla.push([
-          `${result.parametro[index].nombreActividad}`,
-          `${result.parametro[index].isActiv}`,
-          `*/configuracion/asociar/editarActividad/${result.parametro[index].codActividad}`
+          `${result.asociaciones[index].nombre}`,
+          `*/configuracion/asociar/editarActividad/${result.asociaciones[index].cod}`
         ]);
         }
         this.mostrarTabla = true;
