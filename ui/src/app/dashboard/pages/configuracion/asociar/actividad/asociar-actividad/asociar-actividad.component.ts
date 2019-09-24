@@ -82,7 +82,6 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   actualizarNomencladorActividad(event){
     // This is ducktape, do not usit at home
     const selectEl = event.target;
-    debugger;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     this.asociarParametroForm.patchValue({
       id: attrVal

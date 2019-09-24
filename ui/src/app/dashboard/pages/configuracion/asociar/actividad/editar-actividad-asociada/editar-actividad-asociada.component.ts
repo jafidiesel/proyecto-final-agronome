@@ -69,18 +69,26 @@ export class EditarActividadAsociadaComponent implements OnInit {
     this.asociarParametroForm = this.fb.group({
       parametros: this.fb.array( result.parametros.map( element => this.crearParametro(element) ))
     });
+    console.log('initform',this.asociarParametroForm)
   }
   
   crearParametro( obj: any){
+    let codigo;
+    if(obj.codParametro == null){
+      codigo = obj.idParametro;
+    }else {
+      codigo = obj.codParametro
+    }
     return this.fb.control({
-          idParametro: [obj.codParametro, Validators.required],
+          idParametro: codigo,
           nombreParametro: obj.nombreParametro,
-          isActiv: obj.isActiv
+          isActiv: true
         })
       ;
   }
   
   agregarItem(){
+    debugger;
     let obj = {
       idParametro: this.parametroSeleccionado.idParametro,
       nombreParametro: this.parametroSeleccionado.nombreParametro
@@ -114,15 +122,16 @@ export class EditarActividadAsociadaComponent implements OnInit {
 
   onSubmitAsociacion() {
     //this.updateOpciones();
+    console.log(this.asociarParametroForm.value);
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
-      this._configuracionService.putAsociacionForm('actividadParametro', 1,this.asociarParametroForm.value).subscribe(
+      this._configuracionService.putAsociacionForm('actividadParametro', this.idActividad ,this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
 
           this.asociarParametroForm.controls['id'].disable();
-          this.asociarParametroForm.controls['id'].disable();
+          
         },
         error => console.log(error) //this.onHttpError(error)
       );

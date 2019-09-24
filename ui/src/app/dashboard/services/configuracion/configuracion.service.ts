@@ -255,7 +255,7 @@ export class ConfiguracionService {
 
   putAsociacionForm( parametro:string, id: number, json:any ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.get<string>( `http://localhost:9001/api/configuracion/asociar/${parametro}/${id}`, json);
+    return this.http.put( `http://localhost:9001/api/configuracion/asociar/${parametro}/${id}`, json);
   }
 
   /**
