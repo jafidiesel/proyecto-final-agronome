@@ -66,7 +66,7 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
   initForm(formValues){
       
     this.asociarParametroForm = this.fb.group({
-      entidadIntermedia: ['actividadParametro'],
+      entidadIntermedia: ['recomendacionParametro'],
       id: [null, Validators.required], // id nomenclador actividad
       parametros: this.fb.group({
         id: [null, Validators.required]
