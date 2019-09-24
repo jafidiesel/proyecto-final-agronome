@@ -255,9 +255,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   }
 
   quitarItem(index){
-    
     let arr = this.editarParametroForm.get('opcion')  as FormArray;
-
     if (index > -1) {
       arr.removeAt(index);
     }

@@ -9,7 +9,7 @@
             <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="asociarParametroForm">
 
                 <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
-                    <label for="parametroInput" class=" col-form-label">Nomenclador * </label>
+                    <label for="parametroInput" class=" col-form-label">Nomenclador Actividad * </label>
                     <div class="input-group ">
                         <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id" >
                             <option selected value="null">Seleccione un nomenclador actividad</option>
@@ -37,13 +37,13 @@
                         <div class="d-flex justify-content-between align-items-center w-100">
 
                             <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizarParametroSeleccionado($event)" [disabled]="postSuccess" >
-                                <option>Seleccione una opcion</option>
+                                <option>Seleccione un Parámetro</option>
                                 <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.cod"  >
                                     {{tipoParametroSelectArray.nombre}}
                                 </option>
                             </select>
 
-                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()" [disabled]="postSuccess" >Agregar Opcion</button>
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()" [disabled]="postSuccess" >Agregar Parámetro</button>
                         </div>
                     </div>
                 </div>
