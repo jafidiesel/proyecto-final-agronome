@@ -2,8 +2,8 @@ from flask import jsonify
 from app.extensions import db
 
 def saveEntidad(entidad):
-    #print(db.session.add(entidad))
-    #print(db.session.commit())
+    db.session.add(entidad)
+    db.session.commit()
     return entidad
 
 
