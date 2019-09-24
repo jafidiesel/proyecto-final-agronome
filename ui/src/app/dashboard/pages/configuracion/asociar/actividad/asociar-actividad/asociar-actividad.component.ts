@@ -138,7 +138,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
           this.postSuccess = true;
 
           this.asociarParametroForm.controls['id'].disable();
-          this.asociarParametroForm.controls['id'].disable();
+          //this.asociarParametroForm.controls['id'].disable();
         },
         error => console.log(error) //this.onHttpError(error)
       );
