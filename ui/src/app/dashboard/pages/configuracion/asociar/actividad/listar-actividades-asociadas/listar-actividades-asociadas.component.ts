@@ -19,7 +19,7 @@ export class ListarActividadesAsociadasComponent implements OnInit, OnDestroy {
   actividadesMockedData: any;
 
   constructor(private _configuracionService: ConfiguracionService) {
-    this.actividadesMockedData = this._configuracionService.getActividadData();
+    //this.actividadesMockedData = this._configuracionService.getActividadData();
    }
 
   ngOnInit() {

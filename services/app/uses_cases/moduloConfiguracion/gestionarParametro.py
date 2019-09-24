@@ -8,7 +8,21 @@ from app.repositorio.repositorioParametro import selectAllByParamCod,selectActiv
 from app.model import hlmodel
 
 modelos = {
+"actividad":hlmodel.Actividad,
+"estadoPlanificacion":hlmodel.EstadoPlanificacion,
+"opcion":hlmodel.Opcion,
+"permiso": hlmodel.Permiso,
+"recomendacion": hlmodel.Recomendacion,
+"recurso": hlmodel.Recurso,
+"rol": hlmodel.Rol,
+"tipoAnalisis": hlmodel.TipoAnalisis,
+"tipoCultivo": hlmodel.TipoCultivo,
+"tipoDato": hlmodel.TipoDato,
 "tipoParametro": hlmodel.TipoParametro,
+"tipoPlan": hlmodel.TipoPlan,
+"tipoPlanificacion": hlmodel.TipoPlanificacion,
+"tipoRecurso": hlmodel.TipoRecurso,
+"parametro": hlmodel.Parametro #agregue esto para usarlo en gestionar entidad intermedia, darle una vuelta de rosca mas con la chechi, basicamente el parametro no es un nomenclador comun, pero lo necesito aca para reutilizar la funcion getNomencladorCod
 }
 
 def postParametro(data): 

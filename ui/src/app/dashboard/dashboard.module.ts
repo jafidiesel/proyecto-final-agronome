@@ -80,7 +80,10 @@ import { ListarAnalisisComponent } from './pages/configuracion/asociar/analisis/
     EditarPlanAsociadoComponent,
     ListarAnalisisComponent,
     AsociarAnalisisComponent,
-    EditarAnalisisAsociadoComponent
+    EditarAnalisisAsociadoComponent,
+    ListarPlanComponent,
+    AsociarPlanComponent,
+    EditarPlanAsociadoComponent
   ],
   imports: [
     CommonModule,
