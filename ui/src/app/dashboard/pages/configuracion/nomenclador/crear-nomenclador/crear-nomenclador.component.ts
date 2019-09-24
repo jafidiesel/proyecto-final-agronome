@@ -49,6 +49,7 @@ export class CrearNomencladorComponent implements OnInit {
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
+          this.postError = false;
           this.resetForm();
         },
         error => this.onHttpError(error)
