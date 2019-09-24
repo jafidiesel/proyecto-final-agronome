@@ -28,6 +28,7 @@ import { EditarAnalisisAsociadoComponent } from './dashboard/pages/configuracion
 import { ListarPlanComponent } from './dashboard/pages/configuracion/asociar/plan/listar-plan/listar-plan.component';
 import { AsociarPlanComponent } from './dashboard/pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
 import { EditarPlanAsociadoComponent } from './dashboard/pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
+import { LoginPageTempComponent } from './dashboard/pages/login-page-temp/login-page-temp/login-page-temp.component';
 
 
 const routes: Routes = [
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:id', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
+  { path: 'home', component: LoginPageTempComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
 ];
 
