@@ -15,6 +15,7 @@ export class EditarActividadAsociadaComponent implements OnInit {
   asociarParametroForm:FormGroup;
   
   nombreNomenclador: string;
+  idActividad:number;
 
   // error flags
   postSuccess = false;
@@ -37,6 +38,7 @@ export class EditarActividadAsociadaComponent implements OnInit {
   ngOnInit() {
     
     this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
+      this.idActividad = params['id'];
       this.subscriptions.push(this._configuracionService.getNomenclador( 'actividad', params['id'] ).subscribe(
         (result:any) => this.nombreNomenclador = result.nombre
       ));
@@ -111,10 +113,10 @@ export class EditarActividadAsociadaComponent implements OnInit {
   }
 
   onSubmitAsociacion() {
-    /* this.updateOpciones();
+    //this.updateOpciones();
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
-      this._configuracionService.postAsociacionForm(this.asociarParametroForm.value).subscribe(
+      this._configuracionService.putAsociacionForm('actividadParametro', 1,this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
@@ -128,7 +130,7 @@ export class EditarActividadAsociadaComponent implements OnInit {
       this.postError = true;
       this.postSuccess = false;
       this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
-    } */
+    }
   }
 
   imprimir(){

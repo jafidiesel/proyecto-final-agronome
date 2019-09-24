@@ -2,7 +2,7 @@
     <div class="card  bg-light">
         <div class="card-body ">
             <div>
-                <h3 class="display-4">Asociar Actividad</h3>
+                <h3 class="display-4" (click)="imprimir()" >Asociar Actividad</h3>
             </div>
             
             <h6>{{this.asociarParametroForm.status}}</h6>
@@ -11,9 +11,9 @@
                 <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
                     <label for="parametroInput" class=" col-form-label">Nomenclador Actividad * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id" >
+                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id" (change)="actualizarNomencladorActividad($event)" >
                             <option selected value="null">Seleccione un nomenclador actividad</option>
-                            <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.id" >
+                            <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.cod" >
                                 {{ nomencladorActividadArray.nombre }}
                             </option>
                         </select>

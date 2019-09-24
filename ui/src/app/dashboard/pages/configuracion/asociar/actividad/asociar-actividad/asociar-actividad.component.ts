@@ -66,7 +66,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
       
     this.asociarParametroForm = this.fb.group({
       entidadIntermedia: ['actividadParametro'],
-      id: [null, Validators.required],
+      id: [null, Validators.required], // id nomenclador actividad
       parametros: this.fb.group({
         id: [null, Validators.required]
       }),
@@ -79,6 +79,17 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = errorResponse.message;
   }
 
+  actualizarNomencladorActividad(event){
+    // This is ducktape, do not usit at home
+    const selectEl = event.target;
+    debugger;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    this.asociarParametroForm.patchValue({
+      id: attrVal
+    });
+
+    console.log('this.asociarParametroForm',this.asociarParametroForm);
+  }
 
   actualizarParametroSeleccionado(event){
     const selectEl = event.target;
