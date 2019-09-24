@@ -39,6 +39,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import pagination component
 import { JwPaginationComponent } from 'jw-angular-pagination';
 import { RegistrarActividadComponent } from './pages/actividad/registrar-actividad/registrar-actividad.component';
+import { AsociarRecomendacionComponent } from './pages/configuracion/asociar/recomendacion/asociar-recomendacion/asociar-recomendacion.component';
+import { EditarRecomendacionAsociadaComponent } from './pages/configuracion/asociar/recomendacion/editar-recomendacion-asociada/editar-recomendacion-asociada.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { RegistrarActividadComponent } from './pages/actividad/registrar-activid
     ListarActividadesAsociadasComponent,
     AsociarActividadComponent,
     EditarActividadAsociadaComponent,
-    RegistrarActividadComponent
+    RegistrarActividadComponent,
+    AsociarRecomendacionComponent,
+    EditarRecomendacionAsociadaComponent
   ],
   imports: [
     CommonModule,
