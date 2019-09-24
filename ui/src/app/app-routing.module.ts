@@ -9,7 +9,7 @@ import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes-page/reportes-page.component';
-import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
+import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './dashboard/pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './dashboard/pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';

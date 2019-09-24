@@ -21,7 +21,7 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
 
 /* Configuracion */
-import { ListarRecomendacionesComponent } from './pages/configuracion/listar-recomendaciones/listar-recomendaciones.component';
+import { ListarRecomendacionesComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
 import { ListarPlanesComponent } from './pages/configuracion/listar-planes/listar-planes.component';
 import { ListarAnalisisComponent } from './pages/configuracion/listar-analisis/listar-analisis.component';
 import { ListarNomencladoresComponent } from './pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
