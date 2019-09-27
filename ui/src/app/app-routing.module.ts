@@ -68,7 +68,7 @@ const routes: Routes = [
   /* Modulo Configuracion - Parametros */
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
-  { path: 'configuracion/editarParametro/:id', component: EditarParametroComponent },
+  { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }

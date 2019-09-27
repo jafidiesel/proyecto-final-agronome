@@ -15,8 +15,8 @@
                 <div class="form-group" formGroupName="tipoParametro">
                     <label for="parametroInput" class=" col-form-label">Tipo Parametro * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="id">
-                            <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.id" >
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="cod">
+                            <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.cod" >
                                 {{ tipoParametroSelectArray.nombre }}
                             </option>
                         </select>
@@ -26,8 +26,8 @@
                 <div class="form-group" formGroupName="tipoDato">
                     <label for="parametroInput" class=" col-form-label">Tipo Dato * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoDato" name="tipoDato" formControlName="id">
-                                <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray" [value]="tipoDatoSelectArray.id" >
+                        <select class="custom-select" id="tipoDato" name="tipoDato" formControlName="cod">
+                                <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray" [value]="tipoDatoSelectArray.cod" >
                                     {{ tipoDatoSelectArray.nombre }}
                                 </option>
                         </select>
@@ -63,7 +63,7 @@
 
                             <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizaropcionSeleccionada($event)"  >
                                 <option>Seleccione una opcion</option>
-                                <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray" [value]="tipoOpcioneSelectArray.id">
+                                <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray" [value]="tipoOpcioneSelectArray.cod">
                                     {{tipoOpcioneSelectArray.nombre}}
                                 </option>
                             </select>

@@ -19,17 +19,17 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
  // json con los datos originales
   originalParametroAEditar: any = {
     parametro: {
-      id: 0,
+      cod: 0,
       nombre: "",
       isActiv: false,
     },
     tipoParametro: {
-      id: 2,
+      cod: 2,
       isActiv: false,
       nombre: ""
     },
     tipoDato:{
-      id: 0,
+      cod: 0,
       isActiv: false,
       nombre: ""
     },
@@ -49,7 +49,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   tiposOpcionesSelectArray = [];
   opcionesElegidas = [];
   opcionSeleccionada = {
-    id: null,
+    cod: null,
     nombre: null
   };
 
@@ -66,24 +66,24 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
       
-      this.subscriptions.push(this._configuracionService.getParametro( params['id'] ).subscribe(
+      this.subscriptions.push(this._configuracionService.getParametro( params['cod'] ).subscribe(
         (result: any) => {
           this.initForm(result);
         
-          this.originalParametroAEditar.parametro.id = result[0].parametro.cod;
+          this.originalParametroAEditar.parametro.cod = result[0].parametro.cod;
           this.originalParametroAEditar.parametro.nombre = result[0].parametro.nombre;
           this.originalParametroAEditar.parametro.isActiv = result[0].parametro.isActiv;
           
-          this.originalParametroAEditar.tipoParametro.id = result[0].tipoParametro.cod;
+          this.originalParametroAEditar.tipoParametro.cod = result[0].tipoParametro.cod;
           this.originalParametroAEditar.tipoParametro.isActiv = result[0].tipoParametro.isActiv;
           this.originalParametroAEditar.tipoParametro.nombre = result[0].tipoParametro.nombre;
           
-          this.originalParametroAEditar.tipoDato.id = result[0].tipoDato.cod;
+          this.originalParametroAEditar.tipoDato.cod = result[0].tipoDato.cod;
           this.originalParametroAEditar.tipoDato.isActiv = result[0].tipoDato.isActiv;
           this.originalParametroAEditar.tipoDato.nombre = result[0].tipoDato.nombre;
 
           result[0].opcion.forEach(element => {
-            this.originalParametroAEditar.opcion.push( { id:`${element.cod}` });
+            this.originalParametroAEditar.opcion.push( { cod:`${element.cod}` });
           });
 
           
@@ -103,13 +103,13 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
         // Si el elemento no esta dentro de los activos, lo agrega al dropdown
         let agregarElemento = true;
         this.tiposParametrosSelectArray.forEach(element => {
-          if( element.id == this.originalParametroAEditar.tipoParametro.id ){
+          if( element.cod == this.originalParametroAEditar.tipoParametro.cod ){
             agregarElemento = false;
           }
         });
         if( agregarElemento ){
           let obj = {
-            id: this.originalParametroAEditar.tipoParametro.id,
+            cod: this.originalParametroAEditar.tipoParametro.cod,
             isActiv: this.originalParametroAEditar.tipoParametro.isActiv,
             nombre: this.originalParametroAEditar.tipoParametro.nombre,
           }
@@ -184,17 +184,17 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     
     this.editarParametroForm = this.fb.group({
       parametro: this.fb.group({
-        id: [formValues[0].parametro.cod],
+        cod: [formValues[0].parametro.cod],
         nombre: [formValues[0].parametro.nombre, Validators.required],
         isActiv: [formValues[0].parametro.isActiv],
       }),
       tipoParametro: this.fb.group({
-        id: [formValues[0].tipoParametro.cod, Validators.required],
+        cod: [formValues[0].tipoParametro.cod, Validators.required],
         nombre: [formValues[0].tipoParametro.nombre],
         isActiv: [formValues[0].tipoParametro.isActiv],
       }),
       tipoDato: this.fb.group({
-        id: [formValues[0].tipoDato.cod, Validators.required],
+        cod: [formValues[0].tipoDato.cod, Validators.required],
         nombre: [formValues[0].tipoDato.nombre],
         isActiv: [formValues[0].tipoDato.isActiv],
       }),
@@ -204,7 +204,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
     formValues[0].opcion.map( element => {
       this.opcionesElegidas.push({
-        id: element.cod,
+        cod: element.cod,
         nombre: element.nombre
       });
     } );
@@ -212,14 +212,8 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   }
 
   crearOpcion( obj: any){
-    let codigo =0;
-    if(obj.cod == null){
-      codigo = obj.id;
-    }else{
-      codigo = obj.cod;
-    }
     return this.fb.control({
-          id: codigo,
+          cod: obj.cod,
           nombre: obj.nombre,
           isActiv: obj.isActiv
         })
@@ -235,7 +229,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
   agregarItem(){
     let obj = {
-      id: this.opcionSeleccionada.id,
+      cod: this.opcionSeleccionada.cod,
       nombre: this.opcionSeleccionada.nombre
     }
     this.opcionesElegidas.push(obj);
@@ -249,7 +243,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
-    this.opcionSeleccionada.id = attrVal;
+    this.opcionSeleccionada.cod = attrVal;
     this.opcionSeleccionada.nombre = inn;
     
   }
