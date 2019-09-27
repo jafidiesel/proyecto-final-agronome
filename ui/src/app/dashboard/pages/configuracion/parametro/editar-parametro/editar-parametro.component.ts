@@ -261,12 +261,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     }
   }
 
-  imprimir(){
-    console.log(this.editarParametroForm.value);
+  ngOnDestroy(){
+    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
   }
-
-
-    ngOnDestroy(){
-      this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
-    }
 }

@@ -63,7 +63,7 @@ const routes: Routes = [
   /* Modulo Configuracion - Nomencladores */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
-  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:id', component: EditarNomencladorComponent },
+  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:cod', component: EditarNomencladorComponent },
   { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
   /* Modulo Configuracion - Parametros */
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },

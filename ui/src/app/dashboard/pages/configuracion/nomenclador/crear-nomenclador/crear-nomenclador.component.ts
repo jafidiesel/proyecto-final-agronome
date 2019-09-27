@@ -1,8 +1,8 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { NomencladorInterface } from '../../../../data/nomenclador';
 import { ConfiguracionService } from '../../../../services/configuracion/configuracion.service';
-import { Observable, } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 
 
@@ -10,7 +10,10 @@ import { Observable, } from 'rxjs';
   selector: 'app-crear-nomenclador',
   templateUrl: './crear-nomenclador.component.html'
 })
-export class CrearNomencladorComponent implements OnInit {
+export class CrearNomencladorComponent implements OnInit, OnDestroy {
+  
+  subscriptions : Subscription[] = [];
+  
   nombre: string;
   tipoNomenclador: string;
   isActiv = false;
@@ -45,7 +48,7 @@ export class CrearNomencladorComponent implements OnInit {
   onSubmitNomenclador(form: NgForm) {
 
     if ( form.controls.tipoNomenclador.value && form.controls.nombre.value ) {
-      this._configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
+      this.subscriptions.push(this._configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
@@ -53,7 +56,7 @@ export class CrearNomencladorComponent implements OnInit {
           this.resetForm();
         },
         error => this.onHttpError(error)
-      );
+      ));
     } else {
       this.postError = true;
       this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
@@ -69,6 +72,9 @@ export class CrearNomencladorComponent implements OnInit {
     this.nomencladorAEnviar.isActiv = false;
     this.nomencladorAEnviar.tipoNomenclador = '';
   }
-
+  
+  ngOnDestroy(){
+    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
+  }
 
 }
