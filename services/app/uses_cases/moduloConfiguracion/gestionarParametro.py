@@ -36,12 +36,12 @@ def postParametro(data):
         claves = list(data.keys())
 
         #Busqueda de entidades a asociar a Parametro
-        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
+        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
+        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('cod'))
 
         codOpcionList=[]
         for opcionJson in opcionJsonList:
-            codOpcionList.append(opcionJson.get('id'))
+            codOpcionList.append(opcionJson.get('cod'))
               
         #Creacion  y asociación de Parametro 
         parametroRst = Parametro.from_json(parametroJson) 
@@ -89,12 +89,12 @@ def getParametroEstructura(entidad):
         return ResponseException(e)
 
             
-def getParametroById(id):  
+def getParametroById(cod):  
     try:
         dtoGeneral= []
         dtoOpcionList = []
 
-        parametro = selectByCod(hlmodel.Parametro,id)
+        parametro = selectByCod(hlmodel.Parametro,cod)
         #Creacion dto parametro
         parametroDto = parametro.__dict__
         #Creacion dto tipoParametro
@@ -152,8 +152,8 @@ def updateParametro(data):
         #Lista de claves del Json --> Para obtener el tipo de entidad
         claves = list(data.keys())
         #Busqueda de entidades a asociar a Parametro
-        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('id'))
-        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('id'))
+        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
+        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('cod'))
 
         from app.repositorio.repositorioParametro import updateParam        
         return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
