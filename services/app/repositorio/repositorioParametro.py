@@ -26,11 +26,11 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
             #Limpiar Json, solo queda el Id
             claves = list(opcionJson.keys())
             for clave in claves:
-                if clave!="id":
+                if clave!="cod":
                     opcionJson.pop(clave,None)
                     
         #Se busca Parametro por id, en caso de existir se actualiza
-        parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('id')).first()
+        parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('cod')).first()
         parametro = Parametro.from_json(parametroJson)
             
         #Actualizacion datos propios de Parametro        
@@ -62,11 +62,11 @@ def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):
             i = 0
             for parametroOp in paramOpList:
                 
-                if(opcionJson.get('id') == parametroOp.codOpcion):      
+                if(opcionJson.get('cod') == parametroOp.codOpcion):      
                     i += 1
             from app.model import hlmodel
             if(i ==0 ):
-                opcion = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('id')).one()
+                opcion = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('cod')).one()
                 saveEntidadSinCommit(ParametroOpcion(True,parametroRst.cod, opcion.cod))       
 
         #Lista Opcion vacia

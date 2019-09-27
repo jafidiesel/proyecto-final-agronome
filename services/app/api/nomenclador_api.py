@@ -28,17 +28,17 @@ class NomencladorsHandler(Resource):
         data = self.api.payload
         return getNomencladorFilter(data,tipoNomenclador)
 
-@nomenclador.route('/<string:tipoNomenclador>/<int:id>')
+@nomenclador.route('/<string:tipoNomenclador>/<int:cod>')
 class  NomencladorHandler(Resource):
-    def get(self,tipoNomenclador,id):
+    def get(self,tipoNomenclador,cod):
         ##tengo que agregar una exceptión ya que el .to_json es parte del objeto, y no puedo econtrar la exceptión primaraia si no encuentro la que to_json no es una funcion de un objeto vacio
         try:    
-            obj = getNomencladoCod(tipoNomenclador,id)
+            obj = getNomencladoCod(tipoNomenclador,cod)
             return (obj.to_json())
         except Exception as e:
             return ResponseException(e)
          
-    def put(self,tipoNomenclador,id):
+    def put(self,tipoNomenclador,cod):
         data = self.api.payload
-        return putNomenclador(data,tipoNomenclador,id)
+        return putNomenclador(data,tipoNomenclador,cod)
     

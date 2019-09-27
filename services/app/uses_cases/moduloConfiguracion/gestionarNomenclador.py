@@ -39,16 +39,16 @@ def postNomenclador(data):
         return ResponseException(e)
 
 
-def getNomencladoCod(entidad,id):
-        objeto = selectByCod(modelos[entidad],id)
+def getNomencladoCod(entidad,cod):
+        objeto = selectByCod(modelos[entidad],cod)
         if not objeto:
             raise Exception('N','No existe el codigo ingresado') #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
         return objeto
 
 
-def putNomenclador(data,entidad,id):
+def putNomenclador(data,entidad,cod):
     try:
-        updateEntidad(modelos[entidad],id,data)
+        updateEntidad(modelos[entidad],cod,data)
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
