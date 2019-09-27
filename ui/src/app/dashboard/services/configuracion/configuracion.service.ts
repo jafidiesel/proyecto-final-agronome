@@ -146,7 +146,7 @@ export class ConfiguracionService {
   putNomencladorForm( nomencladorJson: any ): Observable<any> {
     //return of(nomencladorForm);
     console.log(nomencladorJson);
-    return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.id}`, nomencladorJson);
+    return this.http.put( `http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.cod}`, nomencladorJson);
   }
 
 /**
@@ -184,8 +184,8 @@ export class ConfiguracionService {
    *  
    * Obtiene un nomenclador en especifico
    */
-  getNomenclador(tipoNomenclador: string, id: number){
-    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${id}`);
+  getNomenclador(tipoNomenclador: string, cod: number){
+    return this.http.get(`http://localhost:9001/api/configuracion/nomenclador/${tipoNomenclador}/${cod}`);
   }
 
   /**
@@ -194,8 +194,8 @@ export class ConfiguracionService {
    *  
    * Obtiene los datos del parametro segun su id
    */
-  getParametro(id: number){
-    return this.http.get( `http://localhost:9001/api/configuracion/parametro/${id}` );
+  getParametro(cod: number){
+    return this.http.get( `http://localhost:9001/api/configuracion/parametro/${cod}` );
     // http://localhost:9001/api/configuracion/parametro/2
     
   }
@@ -257,14 +257,14 @@ export class ConfiguracionService {
    *  
    * POST configuracion/asociar
    */
-  getAsociacionForm( parametro:string, id: number ): Observable<any> {
+  getAsociacionForm( parametro:string, cod: number ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.get<string>( `http://localhost:9001/api/configuracion/asociar/${parametro}/${id}`);
+    return this.http.get<string>( `http://localhost:9001/api/configuracion/asociar/${parametro}/${cod}`);
   }
 
-  putAsociacionForm( parametro:string, id: number, json:any ): Observable<any> {
+  putAsociacionForm( parametro:string, cod: number, json:any ): Observable<any> {
     //return of(nomencladorForm);
-    return this.http.put( `http://localhost:9001/api/configuracion/asociar/${parametro}/${id}`, json);
+    return this.http.put( `http://localhost:9001/api/configuracion/asociar/${parametro}/${cod}`, json);
   }
 
   /**
