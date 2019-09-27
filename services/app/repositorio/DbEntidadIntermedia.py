@@ -22,7 +22,11 @@ def selectByCodEspec(entidad,codEspecial,cod):
     objetos = entidad.query.filter(filtro==cod).filter(entidad.isActiv==True).all()
     
     if not objetos:
-        raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
+        obj = entidad.query.filter(filtro==cod).all()
+        if obj:
+            raise Exception('N','Posee asociaciones pero estan desactivdadas')
+        else:  
+            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
 
     return (objetos)
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
-import { debug } from 'util';
 
 
 @Component({
@@ -20,7 +19,7 @@ export class ListarActividadesAsociadasComponent implements OnInit, OnDestroy {
   actividadesMockedData: any;
 
   constructor(private _configuracionService: ConfiguracionService) {
-    this.actividadesMockedData = this._configuracionService.getActividadData();
+    //this.actividadesMockedData = this._configuracionService.getActividadData();
    }
 
   ngOnInit() {

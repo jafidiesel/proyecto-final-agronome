@@ -1,1 +1,17 @@
-<p>listar-analisis works!</p>
+<div class="row">
+    <div class="col">
+        <button [routerLink]="['/configuracion/asociar/asociarAnalisis']" type="button" class="btn btn-lg btn-success m-4">Asociar Análisis</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-table *ngIf="this.mostrarTabla" [tableData]="this.actividadesTabla"></app-table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <button [routerLink]="['/configuracion']" type="button" class="btn btn-secondary btn-md">Volver</button>
+    </div>
+</div>

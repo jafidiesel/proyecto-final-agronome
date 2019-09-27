@@ -4,7 +4,7 @@ from app.model.modelImport import *
 class TipoPlan(db.Model):
     __tablename__ = 'tipo_plan'
     cod = db.Column('cod_tipo_plan', Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_tipo_plan', String(60), nullable = False,  unique = True)
+    nombre = db.Column('nombre_tipo_plan', String(80), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
     #Relaciones OneToMany lado Many

@@ -53,3 +53,10 @@ def Rollback():
 def addObject(entidad):
     db.session.add(entidad)
     return 'add success'
+
+
+def selectByisActivAUX(entidad,valor):
+    objetos = entidad.query.filter(entidad.isActiv==valor).all()
+    #if not objetos:
+    #    raise Exception('N','No existen objetos con isActiv ingresado')
+    return objetos

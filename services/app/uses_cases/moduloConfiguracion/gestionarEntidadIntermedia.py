@@ -1,5 +1,5 @@
 from flask import jsonify
-from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll, selectByisActivAUX
 from app.repositorio.DbEntidadIntermedia import selectByCodEspec, updateEntidadInterm
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
@@ -85,11 +85,12 @@ def getEntidadInterm(entidadIntermedia):
     }
 
     try:
-        objetos = selectAll(modelos[entidadIntermedia])
+        #objetos = selectAll(modelos[entidadIntermedia])
+        objetos = selectByisActivAUX(modelos[entidadIntermedia],True)
         entidades = selectAll(helperEntidad[entidadIntermedia])
         dtoAsociacionesList = []
         dtoSinAsociacionesList = []
-        print(entidades)
+        #print(entidades)
         for obj in objetos:
             entidad=nomenclador[entidadIntermedia]
             if entidad=='actividad':
@@ -108,6 +109,7 @@ def getEntidadInterm(entidadIntermedia):
         
             nomen = getNomencladoCod(entidad,codNomen)
             nombreNomen = nomen.nombre
+            print(nomen.isActiv)
             dtoAux = dict(cod=codNomen,nombre=nombreNomen)
             ##armo la lista con asociaciones
             if not dtoAux in dtoAsociacionesList:

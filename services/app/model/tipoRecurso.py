@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class TipoRecurso(db.Model):
     __tablename__ = 'tipo_recurso'
     cod = db.Column('cod_tipo_recurso',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_tipo_recurso', String(32), nullable = False, unique = True)
+    nombre = db.Column('nombre_tipo_recurso', String(80), nullable = False, unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
     recursos = relationship('Recurso',backref= 'tipoRe',lazy='dynamic')

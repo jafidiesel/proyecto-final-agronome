@@ -44,6 +44,7 @@ import { AsociarAnalisisComponent } from './pages/configuracion/asociar/analisis
 import { ListarPlanComponent } from './pages/configuracion/asociar/plan/listar-plan/listar-plan.component';
 import { AsociarPlanComponent } from './pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
 import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
+import { ListarAnalisisComponent } from './pages/configuracion/asociar/analisis/listar-analisis/listar-analisis.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,12 @@ import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/
     EditarRecomendacionAsociadaComponent,
     EditarAnalisisAsociadoComponent,
     AsociarAnalisisComponent,
+    ListarPlanComponent,
+    AsociarPlanComponent,
+    EditarPlanAsociadoComponent,
+    ListarAnalisisComponent,
+    AsociarAnalisisComponent,
+    EditarAnalisisAsociadoComponent,
     ListarPlanComponent,
     AsociarPlanComponent,
     EditarPlanAsociadoComponent
