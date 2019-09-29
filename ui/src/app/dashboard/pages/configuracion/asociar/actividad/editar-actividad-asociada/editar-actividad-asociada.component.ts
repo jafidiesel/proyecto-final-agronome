@@ -126,7 +126,7 @@ export class EditarActividadAsociadaComponent implements OnInit, OnDestroy {
           //this.asociarParametroForm.controls['cod'].disable();
           
         },
-        error => console.log(error) //this.onHttpError(error)
+        error => this.onHttpError(error)
       );
     } else {
       this.postError = true;

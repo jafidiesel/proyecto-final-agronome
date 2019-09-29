@@ -16,7 +16,7 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
   asociarParametroForm:FormGroup;
   
   nombreNomenclador: string;
-  idActividad:number;
+  codActividad:number;
 
   // error flags
   postSuccess = false;
@@ -28,7 +28,7 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
   // Lista con Parametros
   tiposParametrosSelectArray = [];
   parametroSeleccionado = {
-    idParametro: null,
+    codParametro: null,
     nombreParametro: null
   };
 
@@ -39,13 +39,13 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
-      this.idActividad = params['id'];
-      this.subscriptions.push(this._configuracionService.getNomenclador( 'tipoAnalisis', params['id'] ).subscribe(
+      this.codActividad = params['cod'];
+      this.subscriptions.push(this._configuracionService.getNomenclador( 'tipoAnalisis', params['cod'] ).subscribe(
         (result:any) => this.nombreNomenclador = result.nombre
       ));
 
 
-      this.subscriptions.push(this._configuracionService.getAsociacionForm( 'tipoAnalisisParam', params['id'] ).subscribe(
+      this.subscriptions.push(this._configuracionService.getAsociacionForm( 'tipoAnalisisParam', params['cod'] ).subscribe(
         (result: any) => {
           this.initForm(result);
 
@@ -74,14 +74,8 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
   }
   
   crearParametro( obj: any){
-    let codigo;
-    if(obj.codParametro == null){
-      codigo = obj.idParametro;
-    }else {
-      codigo = obj.codParametro
-    }
     return this.fb.control({
-          idParametro: codigo,
+          codParametro: obj.codParametro,
           nombreParametro: obj.nombreParametro,
           isActiv: true
         })
@@ -90,7 +84,7 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
   
   agregarItem(){
     let obj = {
-      idParametro: this.parametroSeleccionado.idParametro,
+      codParametro: this.parametroSeleccionado.codParametro,
       nombreParametro: this.parametroSeleccionado.nombreParametro
     }
     let arr = this.asociarParametroForm.get('parametros')  as FormArray;
@@ -109,7 +103,7 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     
-    this.parametroSeleccionado.idParametro = attrVal;
+    this.parametroSeleccionado.codParametro = attrVal;
     this.parametroSeleccionado.nombreParametro = inn;
     
   }
@@ -125,15 +119,15 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
     console.log(this.asociarParametroForm.value);
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
-      this._configuracionService.putAsociacionForm('tipoAnalisisParam', this.idActividad ,this.asociarParametroForm.value).subscribe(
+      this._configuracionService.putAsociacionForm('tipoAnalisisParam', this.codActividad ,this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
 
-          this.asociarParametroForm.controls['id'].disable();
+          //this.asociarParametroForm.controls['cod'].disable();
           
         },
-        error => console.log(error) //this.onHttpError(error)
+        error => this.onHttpError(error)
       );
     } else {
       this.postError = true;
