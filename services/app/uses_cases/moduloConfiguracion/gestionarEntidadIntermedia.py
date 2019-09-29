@@ -24,10 +24,10 @@ nomenclador = { ##para detectar la entidad n de la entemedia ya que una es param
 def postEntidadInterm(data):
     try:
         entidadIntermedia = data.get('entidadIntermedia')
-        codNomenclador = data.get('id') #actividad, recomendación, tipoAnalisis, tipoPlan
+        codNomenclador = data.get('cod') #actividad, recomendación, tipoAnalisis, tipoPlan
         isActiv= True
         parametroJson = data.get ('parametros')
-        parametrosList = parametroJson.get('id')
+        parametrosList = parametroJson.get('cod')
         codParametroList = json.loads(parametrosList)
         
 

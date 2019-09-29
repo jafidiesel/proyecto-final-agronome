@@ -50,9 +50,9 @@ export class ConfiguracionService {
 
   private actividadData = [
     ['Nombre', 'Activo', 'Accion', ''],
-    ['Riego', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar'],
-    ['Cosecha', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar'],
-    ['Siembra', 'Si', '*/configuracion/asociar/editarActividad/:id', '-/Desactivar']
+    ['Riego', 'Si', '*/configuracion/asociar/editarActividad/:cod', '-/Desactivar'],
+    ['Cosecha', 'Si', '*/configuracion/asociar/editarActividad/:cod', '-/Desactivar'],
+    ['Siembra', 'Si', '*/configuracion/asociar/editarActividad/:cod', '-/Desactivar']
 ];
 
   constructor( private http: HttpClient ) { }
@@ -115,7 +115,7 @@ export class ConfiguracionService {
   }
 
 /**
- * @return observable<String [tipoNomenclador] [id]>
+ * @return observable<String [tipoNomenclador] [cod]>
  * Description. Lista de los tipos de nomencladores
  */
   getTiposNomenclador() {
@@ -179,7 +179,7 @@ export class ConfiguracionService {
   
   /**
    * @param tipoNomenclador string
-   * @param id number
+   * @param cod number
    * @return Observable<Object>
    *  
    * Obtiene un nomenclador en especifico
@@ -189,10 +189,10 @@ export class ConfiguracionService {
   }
 
   /**
-   * @param id number
+   * @param cod number
    * @return Observable<Object>
    *  
-   * Obtiene los datos del parametro segun su id
+   * Obtiene los datos del parametro segun su cod
    */
   getParametro(cod: number){
     return this.http.get( `http://localhost:9001/api/configuracion/parametro/${cod}` );
