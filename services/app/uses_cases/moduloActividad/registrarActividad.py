@@ -1,11 +1,14 @@
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit,selectByCod, addObject, selectAll
+from app.repositorio.repositorioRegistrarActividad import selectActivDetalle
+
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 ##borrar
 
 from flask import jsonify
 from app.extensions import db
+from datetime import datetime
 
 def postRegistrarActiv(data):
     try:
@@ -47,18 +50,49 @@ def postRegistrarActiv(data):
         return ResponseException(e)
 
 def getRegistrarActiv(data):
-    #nActividad = hlmodel.Actividad
-    nActividad = getNomencladoCod('actividad',1)
+    actividadDetalleList = selectActivDetalle()
+    dtoDetalleList = []
 
-    objetos = nActividad.activDetalleList 
+    for detalle in actividadDetalleList:
+        dtoDetalle = dict(
+            codActivDetalle=detalle.codActivDetalle,
+            fchActivDetalle= detalle.fchActivDetalle.strftime("%m/%d/%Y, %H:%M:%S"),
+            observacion=detalle.observacion)
+        ##Actividad
+        codActividad = detalle.actividad.cod
+        nombreActividad = detalle.actividad.nombre
+        dtoAuxActividad = dict(codActividad=codActividad,nombreActividad=nombreActividad)
+
+        dtoDetalle['Actividad'] = dtoAuxActividad
+
+        
+
+
+        ##Parametros
+        parametrosList = detalle.paramList    
+        dtoAuxParametroList = []
+        for parametro in parametrosList:
+            parametro.param.cod
+            dtoAuxParametro =dict(codParamtro=parametro.param.cod, nombreParametro=parametro.param.nombre,valor = parametro.valor)
+            dtoAuxParametroList.append(dtoAuxParametro)
+
+        dtoDetalle['Parametros'] = dtoAuxParametroList
+
+        dtoDetalleList.append(dtoDetalle)
+
+
+        
+    #objetos = nActividad.activDetalleList 
 
     #print (nActividad)
     
-    for o in objetos:
-        print(o.observacion)
-        imgs= o.imgList
+    #for o in objetos:
+    #    print(o.observacion)
+    #    imgs= o.imgList
 
-        for i in imgs:
-            print (i.codImg)
-            base64 = i.imgBase64
-    return (base64)
+    #    for i in imgs:
+    #        print (i.codImg)
+    #        base64 = i.imgBase64
+
+
+    return (dict(ActividadDetalle=dtoDetalleList))

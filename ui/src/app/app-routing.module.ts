@@ -71,6 +71,7 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
+  { path: 'home', redirectTo: 'actividades' },
   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
 ];
 

@@ -84,7 +84,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     EditarAnalisisAsociadoComponent,
     ListarPlanComponent,
     AsociarPlanComponent,
-    EditarPlanAsociadoComponent
+    EditarPlanAsociadoComponent,
   ],
   imports: [
     CommonModule,
