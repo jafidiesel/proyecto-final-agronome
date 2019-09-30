@@ -19,6 +19,7 @@ class Recurso(db.Model):
         recurso = Recurso(
             nombre=json.get('nombre'),
             isActiv=json.get('isActiv')
+            
             )
         return recurso
 

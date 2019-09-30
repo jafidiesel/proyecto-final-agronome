@@ -6,6 +6,7 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import json
 from app.repositorio.repositorioParametro import selectAllByParamCod,selectActiveByName,selectByValue,selectAllActiveByParamCod
 from app.model import hlmodel
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 
 modelos = {
 "actividad":hlmodel.Actividad,
@@ -28,12 +29,13 @@ modelos = {
 def postParametro(data): 
     try:
         #Manejo de Json
-        parametroJson = data.get('parametro')
-        tipoParametroJson = data.get('tipoParametro')
-        tipoDatoJson = data.get('tipoDato')
-        opcionJsonList = data.get('opcion')
+        dataLower = obtainDict(data)
+        parametroJson = dataLower.get('parametro')
+        tipoParametroJson = dataLower.get('tipoParametro')
+        tipoDatoJson = dataLower.get('tipoDato')
+        opcionJsonList = dataLower.get('opcion')
         #Lista de claves del Json --> Para obenter el tipo de entidad
-        claves = list(data.keys())
+        claves = list(dataLower.keys())
 
         #Busqueda de entidades a asociar a Parametro
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
@@ -49,11 +51,16 @@ def postParametro(data):
         tipoParametroRst.parametroTipo.append(parametroRst)
         tipoDatoRst.parametroDato.append(parametroRst)
 
-        #Creacion  y asociación de OpcionParametro 
-        codParametro = parametroRst.cod
-        for cod in codOpcionList:
-            parametroOpcion = ParametroOpcion(True,codParametro,cod) 
-            saveEntidadSinCommit(parametroOpcion)           
+        #Relacion intermedia: ParametroOpcion
+        #First: Crear el Padre de la relacion: Parametro
+        #Second: Crear la intermedia con los datos adicionales
+        #Third: Crear el hijo y asociarlo a la intermedia
+        #Fourth: Asociar la intermedia al padre
+        for opcionJson in opcionJsonList:
+            parametroOpcion = ParametroOpcion(True)
+            opcionRst = getNomencladoCod(claves[3], opcionJson.get('cod'))
+            parametroOpcion.opcion = opcionRst
+            parametroRst.paramOpcion.append(parametroOpcion) 
         
         Commit() 
         return ResponseOk()
@@ -69,7 +76,7 @@ def getParametroEstructura(entidad):
         if not tipoParametroRst:
             raise Exception('N','No existe el codigo ingresado')
         #Obtension de Parametros asociados a TipoParametro
-        parametroRstList = selectByValue(hlmodel.Parametro,tipoParametroRst.cod)
+        parametroRstList = tipoParametroRst.parametroTipo
         if not parametroRstList:
             raise Exception('N','No existen parametros asociados')
         dtoParametro = []
@@ -81,7 +88,6 @@ def getParametroEstructura(entidad):
             parametroDto.pop('codTipoDato', None)
             parametroDto.pop('tipoParametroRef', None)
             parametroDto.pop('tipoDatoRef', None)
-            #dtoParametro.append(dict(parametro = parametroDto))
             dtoParametro.append(parametroDto)
         return jsonify(dtoParametro)
     except Exception as e:
@@ -93,8 +99,16 @@ def getParametroById(cod):
     try:
         dtoGeneral= []
         dtoOpcionList = []
+        parametro = selectByCod(hlmodel.Parametro,cod)        
+        #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
+        for parametroOp in parametro.paramOpcion:
+                #opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
+                opcionRst = parametroOp.opcion
+                print(opcionRst)
+                opcionDto = opcionRst.__dict__
+                opcionDto.pop('_sa_instance_state',None)
+                dtoOpcionList.append(opcionDto)
 
-        parametro = selectByCod(hlmodel.Parametro,cod)
         #Creacion dto parametro
         parametroDto = parametro.__dict__
         #Creacion dto tipoParametro
@@ -107,18 +121,11 @@ def getParametroById(cod):
         parametroDto.pop('codTipoDato', None)
         parametroDto.pop('tipoParametroRef', None)
         parametroDto.pop('tipoDatoRef', None)
+        parametroDto.pop('paramOpcion', None)
         tipoDatoDto.pop('_sa_instance_state',None)
         tipoParametroDto.pop('_sa_instance_state',None)
         
-        #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
-        for parametroOp in selectAllByParamCod(parametro.cod):
-                opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
-                opcionDto = opcion.__dict__
-                opcionDto.pop('_sa_instance_state',None)
-                dtoOpcionList.append(opcionDto)
-        
-        dtoGeneral.append(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
-        return jsonify(dtoGeneral)
+        return jsonify(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
     except Exception as e:
         Rollback()
         return ResponseException(e)
@@ -136,6 +143,7 @@ def getAllParametros():
             parametroDto.pop('codTipoDato', None)
             parametroDto.pop('tipoParametroRef', None)
             parametroDto.pop('tipoDatoRef', None)
+            parametroDto.pop('paramOpcion', None)
             dtoParametro.append(parametroDto)
         return jsonify(dtoParametro)
     except Exception as e:
@@ -144,17 +152,17 @@ def getAllParametros():
         
 def updateParametro(data):
     try:
+        dataLower = obtainDict(data)
         #Extraccion de datos    
-        parametroJson = data.get('parametro')
-        tipoParametroJson = data.get('tipoParametro')
-        tipoDatoJson = data.get('tipoDato')
-        opcionJsonList = data.get('opcion')
+        parametroJson = dataLower.get('parametro')
+        tipoParametroJson = dataLower.get('tipoParametro')
+        tipoDatoJson = dataLower.get('tipoDato')
+        opcionJsonList = dataLower.get('opcion')
         #Lista de claves del Json --> Para obtener el tipo de entidad
-        claves = list(data.keys())
+        claves = list(dataLower.keys())
         #Busqueda de entidades a asociar a Parametro
         tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
         tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('cod'))
-
         from app.repositorio.repositorioParametro import updateParam        
         return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
     except Exception as e:
