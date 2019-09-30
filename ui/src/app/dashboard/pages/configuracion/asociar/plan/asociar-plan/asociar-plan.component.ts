@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styles: []
 })
 export class AsociarPlanComponent implements OnInit, OnDestroy {
-  opcionesParametroMockedData: any;
+
   subscriptions : Subscription[] = [];
 
   asociarParametroForm:FormGroup;
@@ -19,15 +19,15 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
 
   // Valores dropdown nomenclador
-  listaNomencladoresActividad: Observable<Object>;
-  listaNomencladoresActividadArray = [];
+  listaNomencladoresPlan: Observable<Object>;
+  listaNomencladoresPlanArray = [];
 
   // Lista con opciones
   tiposParametrosSelect: Observable<object>;
   tiposParametrosSelectArray = [];
   parametrosElegidos = [];
   parametroSeleccionado = {
-    id: null,
+    cod: null,
     nombre: null
   };
 
@@ -41,14 +41,14 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm(this.asociarParametroForm);
+    this.initForm();
 
     this.subscriptions.push(this._configuracionService.getListaAsociacion('tipoPlanParam').subscribe(
       result => {
 
         for (let index = 0; index < result.sinAsociaciones.length; index++) {
           const element = result.sinAsociaciones[index];
-          this.listaNomencladoresActividadArray.push(element);
+          this.listaNomencladoresPlanArray.push(element);
           
         }
       }
@@ -64,13 +64,13 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
 
   }
 
-  initForm(formValues){
+  initForm(){
       
     this.asociarParametroForm = this.fb.group({
       entidadIntermedia: ['tipoPlanParam'],
-      id: [null, Validators.required], // id nomenclador actividad
+      cod: [null, Validators.required], // cod nomenclador actividad
       parametros: this.fb.group({
-        id: [null, Validators.required]
+        cod: [null, Validators.required]
       }),
     });
   }
@@ -81,15 +81,13 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
     this.postErrorMessage = errorResponse.message;
   }
 
-  actualizarNomencladorActividad(event){
+  actualizarNomencladorPlan(event){
     // This is ducktape, do not usit at home
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     this.asociarParametroForm.patchValue({
-      id: attrVal
+      cod: attrVal
     });
-
-    console.log('this.asociarParametroForm',this.asociarParametroForm);
   }
 
   actualizarParametroSeleccionado(event){
@@ -97,15 +95,15 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     
-    this.parametroSeleccionado.id = attrVal;
+    this.parametroSeleccionado.cod = attrVal;
     this.parametroSeleccionado.nombre = inn;
     
   }
 
-  updateOpciones(){
+  updateParametros(){
     this.asociarParametroForm.patchValue({
       parametros: {
-        id: "[" + this.parametrosElegidos.map( element => {return element.id} ) + "]"
+        cod: "[" + this.parametrosElegidos.map( element => {return element.cod} ) + "]"
       }
     });
     
@@ -113,12 +111,12 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
 
   agregarItem(){
     let obj = {
-      id: this.parametroSeleccionado.id,
+      cod: this.parametroSeleccionado.cod,
       nombre: this.parametroSeleccionado.nombre
     }
     this.parametrosElegidos.push(obj);
 
-    this.updateOpciones();
+    this.updateParametros();
 
   }
 
@@ -131,7 +129,7 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
   }
 
   onSubmitAsociacion() {
-    this.updateOpciones();
+    this.updateParametros();
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
       this._configuracionService.postAsociacionForm(this.asociarParametroForm.value).subscribe(
@@ -139,20 +137,16 @@ export class AsociarPlanComponent implements OnInit, OnDestroy {
           console.log('Enviado.');
           this.postSuccess = true;
 
-          this.asociarParametroForm.controls['id'].disable();
-          //this.asociarParametroForm.controls['id'].disable();
+          this.asociarParametroForm.controls['cod'].disable();
+          //this.asociarParametroForm.controls['cod'].disable();
         },
-        error => console.log(error) //this.onHttpError(error)
+        error => this.onHttpError(error)
       );
     } else {
       this.postError = true;
       this.postSuccess = false;
       this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
     }
-  }
-
-  imprimir(){
-    console.warn('this.asociarParametroForm.values',this.asociarParametroForm.value);
   }
 
   ngOnDestroy(){

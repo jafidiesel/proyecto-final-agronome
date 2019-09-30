@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical,  } from '@fortawesome/free-solid-svg-icons';
+import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-registrar-actividad',
@@ -14,19 +16,23 @@ export class RegistrarActividadComponent implements OnInit {
   cancelarClass="btn-danger";
 
   configurationButtons: any[] = [
-    ['Riego'],
-    ['Siembra'],
-    ['Fertilizacion'],
-    ['Preparacion suelo'],
-    ['Tratamiento fitosanitario'],
-    ['Cosecha'],
-    ['Deteccion Fitosanitaria'],
-    ['Deteccion Catastrofe'],
-    ['Fertirrigacion'],
-
+    ['Riego', faCloudRain, true],
+    ['Siembra',faSpinner, true],
+    ['Fertilizacion', faFlask, true],
+    ['Preparacion suelo', faSeedling, true],
+    ['Tratamiento fitosanitario', faBriefcaseMedical, true],
+    ['Cosecha', faLeaf, true],
+    ['Deteccion Fitosanitaria', faSpider, true],
+    ['Deteccion Catastrofe', faFireAlt, true],
+    ['Fertirrigacion', faTint, true],
   ];
 
-  constructor(private router: Router,) { }
+  model: NgbDateStruct;
+  date: {year: number, month: number, day:number};
+
+  constructor(private router: Router,
+    private calendar: NgbCalendar,
+    private modalService: NgbModal) {}
 
   ngOnInit() {
   }
@@ -42,12 +48,12 @@ export class RegistrarActividadComponent implements OnInit {
         this.cancelarClass = "btn-danger";
 
         this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
+        this.guardarClass = "d-none";
         this.step--;        
         break;
       case 2:
-        this.backButtonText = "Volver";
-        this.cancelarClass = "btn-danger";
+        this.backButtonText = "Atrás";
+        this.cancelarClass = "btn-secondary";
 
         this.nextButtonText = "Siguiente";
         this.guardarClass = "btn-primary";
@@ -76,6 +82,13 @@ export class RegistrarActividadComponent implements OnInit {
         this.cancelarClass = "btn-secondary";
         this.step++;
         break;
+      case 1:
+        this.backButtonText = "Atrás";
+        this.nextButtonText = "Siguiente";
+        this.cancelarClass = "btn-secondary";
+        this.guardarClass = "btn-primary";
+        this.step++;
+        break;
       default:
         this.backButtonText = "Atrás";
         this.nextButtonText = "Siguiente";
@@ -88,8 +101,15 @@ export class RegistrarActividadComponent implements OnInit {
   }
 
   registrarActividad(nombreActividad: string){
-    this.step++;
-    console.log(this.step);
+    this.siguiente();
+    console.log(nombreActividad);
   }
 
+  onDateSelection(date: NgbDate) {
+    this.date = date;
+  }
+
+  openVerticallyCentered(content) {
+    this.modalService.open(content, { centered: true });
+  }
 }
