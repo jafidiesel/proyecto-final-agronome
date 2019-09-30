@@ -12,23 +12,20 @@ export class ListarAnalisisComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
   
   // array de rows para table component
-  actividadesTabla = [];
+  analisisTabla = [];
   tableDataHeader = ['Nombre Analisis', 'Editar'];
   mostrarTabla:boolean = false;
   
-  actividadesMockedData: any;
 
-  constructor(private _configuracionService: ConfiguracionService) {
-    //this.actividadesMockedData = this._configuracionService.getActividadData();
-   }
+  constructor(private _configuracionService: ConfiguracionService) {}
 
   ngOnInit() {
     this.subscriptions.push(this._configuracionService.getListaAsociacion('tipoAnalisisParam').subscribe(
       (result:any) => {
-        this.actividadesTabla.push(this.tableDataHeader);
+        this.analisisTabla.push(this.tableDataHeader);
 
         for (let index = 0; index < result.asociaciones.length ; index++) {
-          this.actividadesTabla.push([
+          this.analisisTabla.push([
           `${result.asociaciones[index].nombre}`,
           `*/configuracion/asociar/editarAnalisis/${result.asociaciones[index].cod}`
         ]);

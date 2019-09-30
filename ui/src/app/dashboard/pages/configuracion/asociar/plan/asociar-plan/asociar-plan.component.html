@@ -7,13 +7,13 @@
             
             <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="asociarParametroForm">
 
-                <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
+                <div class="form-group" *ngIf="listaNomencladoresPlan == null" >
                     <label for="parametroInput" class=" col-form-label">Nomenclador Plan * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id" (change)="actualizarNomencladorActividad($event)" >
+                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="cod" (change)="actualizarNomencladorPlan($event)" >
                             <option selected value="null">Seleccione un nomenclador plan</option>
-                            <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.cod" >
-                                {{ nomencladorActividadArray.nombre }}
+                            <option *ngFor="let nomencladorPlanArray of listaNomencladoresPlanArray" [value]="nomencladorPlanArray.cod" >
+                                {{ nomencladorPlanArray.nombre }}
                             </option>
                         </select>
                     </div>

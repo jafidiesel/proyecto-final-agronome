@@ -3,15 +3,16 @@
         <div class="card-header">
             Seleccionar actividad
         </div>
-        <div class="card-body">
-            <div class ="card-deck m-3">
-            <div *ngFor="let button of configurationButtons" class="card border-gray col-3 m-3 text-center" style="min-width: 220px;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ button[0] }}</h5>
-                    <a  class="btn btn-primary" (click) ="registrarActividad(button)">Registrar</a>
-                </div>
-            </div>    
-        </div>        
+        <div class="card-columns">
+            <div *ngFor="let button of configurationButtons" >
+                <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;" >
+                    <div class="card-body" >
+                        <fa-icon class="mb-4" [icon]="button[1]"  size="5x" [styles]="{'stroke': 'green', 'color': 'green'}" ></fa-icon>
+                        <h5 class="card-title">{{ button[0] }}</h5>
+                        <button  class="btn btn-primary text-light" (click) ="registrarActividad(button[0])">Registrar</button>
+                    </div>
+                </div>    
+            </div>
         </div>
     </div>
     <div class="card m-3" *ngSwitchCase="'1'">
@@ -19,24 +20,65 @@
             Datos del campo
         </div>
         <div class="card-body">
-            <form>
-                <div class="form-group">
-                    <label for="colFormLabel" class="col-form-label">Fecha</label>
-                    <input type="date" class="form-control" id="fecha" placeholder="fecha">
+            <div class="form-group row">
+                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha</label>
+                <div class="col-sm-10">
+                    <ngb-datepicker 
+                        #dp (ngModel)="model" 
+                        (select)="onDateSelection($event)"  
+                        (navigate)="date = $event.next"
+                        [minDate]="{year: 2010, month: 1, day: 1}"
+                        [maxDate]="{year: 2048, month: 12, day: 31}"
+                        [markDisabled]="isDisabled">
+                    </ngb-datepicker>
+        
+                    <p>{{date|json}}</p>    
                 </div>
-                <div>
-                    <label for="colFormLabel" class="col-form-label">Libro de campo</label>
+            </div>
+            <div class="form-group row">
+                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
+                <div class="col-sm-10">
                     <select class="custom-select" id="libro">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option selected>Seleccione un libro de campo...</option>
+                        <option value="1">Tres arroyos</option>
+                        <option value="2">La colina</option>
+                        <option value="3">Flia. Benitez</option>
                     </select>
-                    <button type="button" class="btn btn-success mt-4">Añadir parcela</button>
+                    <button class="btn btn-success mt-4" (click)="openVerticallyCentered(content)">Añadir parcela</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Añadir parcela</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group form-check">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="parcela1" name="parcela1" >
+                    <label class="custom-control-label" for="parcela1">Parcela 1</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="parcela2" name="parcela2" >
+                    <label class="custom-control-label" for="parcela2">Parcela 2</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="parcela3" name="parcela3" >
+                    <label class="custom-control-label" for="parcela3">Parcela 3</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+            <button type="button" class="btn btn-success" (click)="modal.close('Ok click')">Agregar</button>
+        </div>
+    </ng-template>
+
     <div class="card m-3" *ngSwitchCase="'2'">
         <div class="card-header">
             Actividad de riego

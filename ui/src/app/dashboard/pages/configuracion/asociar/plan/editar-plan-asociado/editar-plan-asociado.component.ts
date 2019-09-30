@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
   asociarParametroForm:FormGroup;
   
   nombreNomenclador: string;
-  idActividad:number;
+  codPlan:number;
 
   // error flags
   postSuccess = false;
@@ -28,7 +28,7 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
   // Lista con Parametros
   tiposParametrosSelectArray = [];
   parametroSeleccionado = {
-    idParametro: null,
+    codParametro: null,
     nombreParametro: null
   };
 
@@ -39,13 +39,13 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
-      this.idActividad = params['id'];
-      this.subscriptions.push(this._configuracionService.getNomenclador( 'tipoPlan', params['id'] ).subscribe(
+      this.codPlan = params['cod'];
+      this.subscriptions.push(this._configuracionService.getNomenclador( 'tipoPlan', params['cod'] ).subscribe(
         (result:any) => this.nombreNomenclador = result.nombre
       ));
 
 
-      this.subscriptions.push(this._configuracionService.getAsociacionForm( 'tipoPlanParam', params['id'] ).subscribe(
+      this.subscriptions.push(this._configuracionService.getAsociacionForm( 'tipoPlanParam', params['cod'] ).subscribe(
         (result: any) => {
           this.initForm(result);
 
@@ -70,27 +70,19 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
     this.asociarParametroForm = this.fb.group({
       parametros: this.fb.array( result.parametros.map( element => this.crearParametro(element) ))
     });
-    console.log('initform',this.asociarParametroForm)
   }
   
   crearParametro( obj: any){
-    let codigo;
-    if(obj.codParametro == null){
-      codigo = obj.idParametro;
-    }else {
-      codigo = obj.codParametro
-    }
     return this.fb.control({
-          idParametro: codigo,
+          codParametro: obj.codParametro,
           nombreParametro: obj.nombreParametro,
           isActiv: true
-        })
-      ;
+        });
   }
   
   agregarItem(){
     let obj = {
-      idParametro: this.parametroSeleccionado.idParametro,
+      codParametro: this.parametroSeleccionado.codParametro,
       nombreParametro: this.parametroSeleccionado.nombreParametro
     }
     let arr = this.asociarParametroForm.get('parametros')  as FormArray;
@@ -109,7 +101,7 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     
-    this.parametroSeleccionado.idParametro = attrVal;
+    this.parametroSeleccionado.codParametro = attrVal;
     this.parametroSeleccionado.nombreParametro = inn;
     
   }
@@ -125,25 +117,21 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
     console.log(this.asociarParametroForm.value);
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
-      this._configuracionService.putAsociacionForm('tipoPlanParam', this.idActividad ,this.asociarParametroForm.value).subscribe(
+      this._configuracionService.putAsociacionForm('tipoPlanParam', this.codPlan ,this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
           this.postSuccess = true;
 
-          this.asociarParametroForm.controls['id'].disable();
+          this.asociarParametroForm.controls['cod'].disable();
           
         },
-        error => console.log(error) //this.onHttpError(error)
+        error => this.onHttpError(error)
       );
     } else {
       this.postError = true;
       this.postSuccess = false;
       this.postErrorMessage = 'Por favor complete correctamente los campos obligatorios del formulario.';
     }
-  }
-
-  imprimir(){
-    console.warn('this.asociarParametroForm.values',this.asociarParametroForm.value);
   }
 
   ngOnDestroy(){
