@@ -2,6 +2,7 @@ from flask import jsonify
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 import json
 modelos = {
 "actividad":hlmodel.Actividad,
@@ -32,7 +33,8 @@ def getNomenclador(entidad):
 def postNomenclador(data):
     try:
         entidad = data.get('tipoNomenclador')
-        objeto = modelos[entidad].from_json(data)
+        dataLower = toLowerCaseSingle(data)
+        objeto = modelos[entidad].from_json(dataLower)
         saveEntidad(objeto)
         return ResponseOk()
     except Exception as e:
@@ -48,7 +50,8 @@ def getNomencladoCod(entidad,cod):
 
 def putNomenclador(data,entidad,cod):
     try:
-        updateEntidad(modelos[entidad],cod,data)
+        dataLower = toLowerCaseSingle(data)
+        updateEntidad(modelos[entidad],cod,dataLower)
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)

@@ -52,6 +52,9 @@ def Rollback():
 
 def addObject(entidad):
     db.session.add(entidad)
+    print("In ADD")
+    print("Funciones")
+    print(dir(entidad))
     return 'add success'
 
 
