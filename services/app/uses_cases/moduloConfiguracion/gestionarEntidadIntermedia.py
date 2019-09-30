@@ -24,10 +24,10 @@ nomenclador = { ##para detectar la entidad n de la entemedia ya que una es param
 def postEntidadInterm(data):
     try:
         entidadIntermedia = data.get('entidadIntermedia')
-        codNomenclador = data.get('id') #actividad, recomendación, tipoAnalisis, tipoPlan
+        codNomenclador = data.get('cod') #actividad, recomendación, tipoAnalisis, tipoPlan
         isActiv= True
         parametroJson = data.get ('parametros')
-        parametrosList = parametroJson.get('id')
+        parametrosList = parametroJson.get('cod')
         codParametroList = json.loads(parametrosList)
         
 
@@ -48,9 +48,9 @@ def postEntidadInterm(data):
         return ResponseException(e)
 
 
-def getEntidadIntermCod(entidadIntermedia,id):
+def getEntidadIntermCod(entidadIntermedia,cod):
     try:
-        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,id)
+        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,cod)
         dtoParamList = []
 
         for obj in objetos:
@@ -67,9 +67,9 @@ def getEntidadIntermCod(entidadIntermedia,id):
         return ResponseException(e)
 
 
-def putEntidadInterm(data,entidadIntermedia,id):
+def putEntidadInterm(data,entidadIntermedia,cod):
     try:
-        updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,id) 
+        updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,cod) 
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)

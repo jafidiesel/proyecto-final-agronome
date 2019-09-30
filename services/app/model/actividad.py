@@ -22,7 +22,7 @@ class Actividad(db.Model):
 
     def to_json(self):
         return {
-            'id': self.cod,
+            'cod': self.cod,
             'tipoNomenclador': self.nombreNomenclador,
             'nombre': self.nombre,
             'isActiv': self.isActiv

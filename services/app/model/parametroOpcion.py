@@ -7,18 +7,12 @@ class ParametroOpcion(db.Model):
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True, primary_key = True)
     codOpcion = db.Column('fk_cod_opcion',Integer,ForeignKey('opcion.cod_opcion'),index = True,  primary_key = True)
       
-    def __init__(self,isActiv,parametro,opcion):
+    def __init__(self,isActiv):
         self.isActiv = isActiv
-        self.codParametro = parametro
-        self.codOpcion = opcion
         
-    #parametro = relationship(Parametro,backref = "parametroOpcion")
-    #print("Paramtro relationship")
-    
-    #opcion = relationship(Opcion,backref = "parametroOpcion")
-    #print("Opcion relationship")
-
-   
+        
+    opcion = relationship("Opcion")
+    print("Opcion relationship") 
 
     @staticmethod
     #def from_json(json):

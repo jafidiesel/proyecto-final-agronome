@@ -22,12 +22,12 @@ class EntidadIntermHandler(Resource):
         return getEntidadInterm(entidadIntermedia)
 
 
-@entidadInterm.route('/<string:entidadIntermedia>/<int:id>')
+@entidadInterm.route('/<string:entidadIntermedia>/<int:cod>')
 class EntidadIntermHandler(Resource):
-    def get(self, entidadIntermedia,id):
-        return getEntidadIntermCod(entidadIntermedia,id)        
+    def get(self, entidadIntermedia,cod):
+        return getEntidadIntermCod(entidadIntermedia,cod)        
 
 
-    def put(self, entidadIntermedia,id):
+    def put(self, entidadIntermedia,cod):
         data = self.api.payload
-        return putEntidadInterm(data,entidadIntermedia,id) 
+        return putEntidadInterm(data,entidadIntermedia,cod) 
