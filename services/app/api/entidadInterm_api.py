@@ -1,9 +1,8 @@
 from flask import jsonify
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlEntidadInterm
-from app.uses_cases.moduloConfiguracion.gestionarEntidadIntermedia import postEntidadInterm, getEntidadIntermCod, getEntidadInterm, putEntidadInterm
-from app.uses_cases.moduloConfiguracion.gestionarAsociacion import postAsociacion, getAsociacionCod
-#from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador
+from app.uses_cases.moduloConfiguracion.gestionarAsociacion import postAsociacion, getAsociacionCod, getAsociaciones, putAsociacion
+
 
 
 entidadInterm = urlEntidadInterm
@@ -20,15 +19,15 @@ class EntidadIntermHandler(Resource):
 @entidadInterm.route('/<string:entidadIntermedia>')
 class EntidadIntermHandler(Resource):
     def get(self, entidadIntermedia):
-        return getEntidadInterm(entidadIntermedia)
+        return getAsociaciones(entidadIntermedia)
 
 
-@entidadInterm.route('/<string:entidadIntermedia>/<int:id>')
+@entidadInterm.route('/<string:entidadIntermedia>/<int:cod>')
 class EntidadIntermHandler(Resource):
-    def get(self, entidadIntermedia,id):
-        return getAsociacionCod(entidadIntermedia,id)        
+    def get(self, entidadIntermedia,cod):
+        return getAsociacionCod(entidadIntermedia,cod)        
 
 
-    def put(self, entidadIntermedia,id):
+    def put(self, entidadIntermedia,cod):
         data = self.api.payload
-        return putEntidadInterm(data,entidadIntermedia,id) 
+        return putAsociacion(data,entidadIntermedia,cod) 

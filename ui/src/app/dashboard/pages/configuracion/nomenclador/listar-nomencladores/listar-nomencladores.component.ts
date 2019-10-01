@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
-import { async } from '@angular/core/testing';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-listar-nomencladores',
   templateUrl: './listar-nomencladores.component.html'
 })
-export class ListarNomencladoresComponent implements OnInit {
+export class ListarNomencladoresComponent implements OnInit, OnDestroy {
 
+  subscriptions : Subscription[] = [];
   nomencladoresMockedData: any;
   nomencladoresTabla = [];
   tableDataHeader = ['Nombre', 'Activo', 'Tipo Nomenclador', 'Editar'];
@@ -46,29 +46,31 @@ export class ListarNomencladoresComponent implements OnInit {
       for (let index = 0; index < this.tiposNomencladores.length; index++) {
         const element = this.tiposNomencladores[index];
         
-        this._configuracionService.getListaNomencladores(element).subscribe(
+        this.subscriptions.push(this._configuracionService.getListaNomencladores(element).subscribe(
           (result: any) => {
             for (let index = 0; index < result.length ; index++) {
               this.nomencladoresTabla.push([
               `${result[index].nombre}`,
               `${result[index].isActiv}`,
               element, 
-              `*/configuracion/editarNomenclador/${element}/${result[index].id}`
+              `*/configuracion/editarNomenclador/${element}/${result[index].cod}`
             ]);
             }
           },
           error => console.error(error)
-          );
-        }
+          )
+        );
+      }
   }
 
-  imprimir() {
-    console.log(this.nomencladoresTabla);
-  }
 
   onChangePage(nomencladoresTabla: Array<any>) {
     // update current page of items
     this.nomencladoresTabla = nomencladoresTabla;
-}
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
+  }
 
 }

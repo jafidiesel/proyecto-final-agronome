@@ -5,9 +5,7 @@ class Opcion(db.Model):
     cod = db.Column('cod_opcion',Integer, primary_key = True, index=True)
     nombre = db.Column('nombre_opcion',String(80), nullable=False,unique=True)
     isActiv = db.Column('is_activ',Boolean,nullable=True)
-    #Relaciones OneToMany lado Many
     
-
     nombreNomenclador = "opcion"
 
 
@@ -26,7 +24,7 @@ class Opcion(db.Model):
 
     def to_json(self):
         return {
-            'id': self.cod,
+            'cod': self.cod,
             'tipoNomenclador': self.nombreNomenclador,
             'nombre': self.nombre,
             'isActiv': self.isActiv

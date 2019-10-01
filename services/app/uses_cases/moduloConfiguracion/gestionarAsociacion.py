@@ -1,6 +1,6 @@
 from flask import jsonify
-from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll, selectByisActivAUX
-from app.repositorio.DbEntidadIntermedia import selectByCodEspec, updateEntidadInterm
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
+from app.repositorio.repositorioGestionarAsociacion import selectByCodEspec, updateEntidadInterm,selectByisActiv
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -90,7 +90,7 @@ def getAsociacionCod(entidadIntermedia,codNomenclador):
         return ResponseException(e)
 
 
-def putEntidadInterm(data,entidadIntermedia,id):
+def putAsociacion(data,entidadIntermedia,id):
     try:
         updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,id) 
         return ResponseOk()
@@ -99,7 +99,7 @@ def putEntidadInterm(data,entidadIntermedia,id):
 
 
 
-def getEntidadInterm(entidadIntermedia):
+def getAsociaciones(entidadIntermedia):
     helperEntidad= {
         "actividadParametro":hlmodel.Actividad,
         "recomendacionParametro": hlmodel.Recomendacion,
@@ -108,8 +108,7 @@ def getEntidadInterm(entidadIntermedia):
     }
 
     try:
-        #objetos = selectAll(modelos[entidadIntermedia])
-        objetos = selectByisActivAUX(modelos[entidadIntermedia],True)
+        objetos = selectByisActiv(modelos[entidadIntermedia],True)
         entidades = selectAll(helperEntidad[entidadIntermedia])
         dtoAsociacionesList = []
         dtoSinAsociacionesList = []
@@ -132,7 +131,7 @@ def getEntidadInterm(entidadIntermedia):
         
             nomen = getNomencladoCod(entidad,codNomen)
             nombreNomen = nomen.nombre
-            print(nomen.isActiv)
+            #print(nomen.isActiv)
             dtoAux = dict(cod=codNomen,nombre=nombreNomen)
             ##armo la lista con asociaciones
             if not dtoAux in dtoAsociacionesList:

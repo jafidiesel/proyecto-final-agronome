@@ -1,16 +1,19 @@
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit,Rollback,Commit,selectByCod, addObject, selectAll
+from app.repositorio.repositorioRegistrarActividad import selectActivDetalle
+
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 ##borrar
 
 from flask import jsonify
 from app.extensions import db
+from datetime import datetime
 
 def postRegistrarActiv(data):
     try:
         ##datos del json
-        codActiv = data.get('idActividad')
+        codActiv = data.get('codActividad')
         obs = data.get('observacion')
         imagenes = data.get('imagenes')
         parametros = data.get('parametros')
@@ -62,6 +65,8 @@ def getRegistrarActiv(data):
 
         dtoDetalle['Actividad'] = dtoAuxActividad
 
+        
+
 
         ##Parametros
         parametrosList = detalle.paramList    
@@ -88,11 +93,13 @@ def getRegistrarActiv(data):
 
     #print (nActividad)
     
-    for o in objetos:
-        print(o.observacion)
-        imgs= o.imgList
+    #for o in objetos:
+    #    print(o.observacion)
+    #    imgs= o.imgList
 
-        for i in imgs:
-            print (i.codImg)
-            base64 = i.imgBase64
-    return (base64)
+    #    for i in imgs:
+    #        print (i.codImg)
+    #        base64 = i.imgBase64
+
+
+    return (dict(ActividadDetalle=dtoDetalleList))

@@ -10,7 +10,7 @@
                 <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
                     <label for="parametroInput" class=" col-form-label">Nomenclador Actividad * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="id" (change)="actualizarNomencladorActividad($event)" >
+                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="cod" (change)="actualizarNomencladorActividad($event)" >
                             <option selected value="null">Seleccione un nomenclador actividad</option>
                             <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.cod" >
                                 {{ nomencladorActividadArray.nombre }}

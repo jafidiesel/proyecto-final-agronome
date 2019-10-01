@@ -24,8 +24,8 @@ class ParametroHandler(Resource):
     def get(self,tipoNomenclador):
         return getParametroEstructura(tipoNomenclador)
 
-@parametro.route('/<int:id>')
+@parametro.route('/<int:cod>')
 class  ParametroHandler(Resource):
-    def get(self, id):
-        return getParametroById(id)
+    def get(self, cod):
+        return getParametroById(cod)
 

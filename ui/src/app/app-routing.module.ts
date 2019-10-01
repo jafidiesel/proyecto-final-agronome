@@ -50,27 +50,28 @@ const routes: Routes = [
   /* Modulo Configuracion - Asociar */
   { path: 'configuracion/asociar/listarActividades', component: ListarActividadesAsociadasComponent },
   { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
-  { path: 'configuracion/asociar/editarActividad/:id', component: EditarActividadAsociadaComponent },
+  { path: 'configuracion/asociar/editarActividad/:cod', component: EditarActividadAsociadaComponent },
   { path: 'configuracion/asociar/asociarRecomendacion', component: AsociarRecomendacionComponent},
   { path: 'configuracion/asociar/listarRecomendaciones', component: ListarRecomendacionesComponent},
-  { path: 'configuracion/asociar/editarRecomendacion/:id', component: EditarRecomendacionAsociadaComponent},
+  { path: 'configuracion/asociar/editarRecomendacion/:cod', component: EditarRecomendacionAsociadaComponent},
   { path: 'configuracion/asociar/listarAnalisis', component: ListarAnalisisComponent },
   { path: 'configuracion/asociar/asociarAnalisis', component: AsociarAnalisisComponent },
-  { path: 'configuracion/asociar/editarAnalisis/:id', component: EditarAnalisisAsociadoComponent },
+  { path: 'configuracion/asociar/editarAnalisis/:cod', component: EditarAnalisisAsociadoComponent },
   { path: 'configuracion/asociar/listarPlanes', component: ListarPlanComponent },
   { path: 'configuracion/asociar/asociarPlan', component: AsociarPlanComponent },
-  { path: 'configuracion/asociar/editarPlan/:id', component: EditarPlanAsociadoComponent },
+  { path: 'configuracion/asociar/editarPlan/:cod', component: EditarPlanAsociadoComponent },
   /* Modulo Configuracion - Nomencladores */
   { path: 'configuracion/listarNomencladores', component: ListarNomencladoresComponent },
   { path: 'configuracion/crearNomenclador', component: CrearNomencladorComponent },
-  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:id', component: EditarNomencladorComponent },
+  { path: 'configuracion/editarNomenclador/:tipoNomenclador/:cod', component: EditarNomencladorComponent },
   { path: 'configuracion/editarNomenclador', component: EditarNomencladorComponent },
   /* Modulo Configuracion - Parametros */
   { path: 'configuracion/listarParametros', component: ListarParametrosComponent },
   { path: 'configuracion/crearParametro', component: CrearParametroComponent },
-  { path: 'configuracion/editarParametro/:id', component: EditarParametroComponent },
+  { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
+  { path: 'home', redirectTo: 'actividades' },
   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
 ];
 

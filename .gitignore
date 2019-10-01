@@ -8,3 +8,5 @@ app/model/__pycache__/
 migrations/
 services\app\__pycache__
 services/__pycache__/
+services/__pycache__/config.cpython-37.pyc
+

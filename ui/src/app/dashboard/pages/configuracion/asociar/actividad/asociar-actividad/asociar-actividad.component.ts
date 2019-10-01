@@ -25,7 +25,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   tiposParametrosSelectArray = [];
   parametrosElegidos = [];
   parametroSeleccionado = {
-    id: null,
+    cod: null,
     nombre: null
   };
 
@@ -66,9 +66,9 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
       
     this.asociarParametroForm = this.fb.group({
       entidadIntermedia: ['actividadParametro'],
-      id: [null, Validators.required], // id nomenclador actividad
+      cod: [null, Validators.required], // cod nomenclador actividad
       parametros: this.fb.group({
-        id: [null, Validators.required]
+        cod: [null, Validators.required]
       }),
     });
   }
@@ -84,7 +84,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     this.asociarParametroForm.patchValue({
-      id: attrVal
+      cod: attrVal
     });
 
     console.log('this.asociarParametroForm',this.asociarParametroForm);
@@ -95,7 +95,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     
-    this.parametroSeleccionado.id = attrVal;
+    this.parametroSeleccionado.cod = attrVal;
     this.parametroSeleccionado.nombre = inn;
     
   }
@@ -103,7 +103,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
   updateOpciones(){
     this.asociarParametroForm.patchValue({
       parametros: {
-        id: "[" + this.parametrosElegidos.map( element => {return element.id} ) + "]"
+        cod: "[" + this.parametrosElegidos.map( element => {return element.cod} ) + "]"
       }
     });
     
@@ -111,7 +111,7 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
 
   agregarItem(){
     let obj = {
-      id: this.parametroSeleccionado.id,
+      cod: this.parametroSeleccionado.cod,
       nombre: this.parametroSeleccionado.nombre
     }
     this.parametrosElegidos.push(obj);
@@ -137,10 +137,10 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
           console.log('Enviado.');
           this.postSuccess = true;
 
-          this.asociarParametroForm.controls['id'].disable();
-          //this.asociarParametroForm.controls['id'].disable();
+          this.asociarParametroForm.controls['cod'].disable();
+          //this.asociarParametroForm.controls['cod'].disable();
         },
-        error => console.log(error) //this.onHttpError(error)
+        error => this.onHttpError(error)
       );
     } else {
       this.postError = true;

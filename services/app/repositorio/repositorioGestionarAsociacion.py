@@ -59,15 +59,15 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
 
     for param in parametros:
         #isActiv = param.get('isActiv')
-        idParam = param.get('idParametro')
-        objeto = entidadInterm.query.filter(entidadInterm.codParametro==idParam).filter(filtro==cod).first() 
+        codParam = param.get('codParametro')
+        objeto = entidadInterm.query.filter(entidadInterm.codParametro==codParam).filter(filtro==cod).first() 
         if objeto: #si existe, actualizo
-            dtoAux=dict(codParam = idParam, codNomen = cod)
+            dtoAux=dict(codParam = codParam, codNomen = cod)
             objeto.isActiv = True
             dtoActualizadoList.append(dtoAux)
         else: # si no creo
-            dtoAux=dict(codParam = idParam, codNomen = cod)
-            objeto = modelos[entidad](True,idParam,cod)
+            dtoAux=dict(codParam = codParam, codNomen = cod)
+            objeto = modelos[entidad](True,codParam,cod)
             dtoActualizadoList.append(dtoAux)
             saveEntidadSinCommit(objeto)
 
@@ -99,3 +99,9 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
 
     Commit()
     return ()
+
+
+
+def selectByisActiv(entidad,valor):
+    objetos = entidad.query.filter(entidad.isActiv==valor).all()
+    return objetos
