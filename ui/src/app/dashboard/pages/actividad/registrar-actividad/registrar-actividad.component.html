@@ -1,4 +1,5 @@
 <main role="main" class="container mt-4" [ngSwitch]="step">
+    <h1 class="display-4">{{ nombreActividad }}</h1>
     <div class="card m-3" *ngSwitchCase="'0'">
         <div class="card-header">
             Seleccionar actividad
@@ -21,7 +22,7 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha</label>
+                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha de la actividad</label>
                 <div class="col-sm-10">
                     <ngb-datepicker 
                         #dp (ngModel)="model" 
@@ -97,13 +98,13 @@
     </div>
     <div class="card m-3" *ngSwitchCase="'3'">
         <div class="card-header">
-            Recursos
+            Otros datos
         </div>
         <div class="card-body">
-            <blockquote class="blockquote mb-0">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Observaciones</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
         </div>
     </div>
     <h4>{{ step }}</h4>
@@ -111,3 +112,4 @@
     <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()" > {{ nextButtonText }}</button>
 </main>
 
+<p>{{date|json}}</p>  

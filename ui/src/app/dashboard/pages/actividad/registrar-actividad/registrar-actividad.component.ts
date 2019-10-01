@@ -2,12 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical,  } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-registrar-actividad',
   templateUrl: './registrar-actividad.component.html'
 })
 export class RegistrarActividadComponent implements OnInit {
+
+  nombreActividad:string;
+
+  registrarActividadForm:FormGroup;
 
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
@@ -18,13 +23,13 @@ export class RegistrarActividadComponent implements OnInit {
   configurationButtons: any[] = [
     ['Riego', faCloudRain, true],
     ['Siembra',faSpinner, true],
-    ['Fertilizacion', faFlask, true],
-    ['Preparacion suelo', faSeedling, true],
+    ['Fertilización', faFlask, true],
+    ['Preparación suelo', faSeedling, true],
     ['Tratamiento fitosanitario', faBriefcaseMedical, true],
     ['Cosecha', faLeaf, true],
-    ['Deteccion Fitosanitaria', faSpider, true],
-    ['Deteccion Catastrofe', faFireAlt, true],
-    ['Fertirrigacion', faTint, true],
+    ['Detección Fitosanitaria', faSpider, true],
+    ['Detección Catástrofe', faFireAlt, true],
+    ['Fertirrigación', faTint, true],
   ];
 
   model: NgbDateStruct;
@@ -32,9 +37,11 @@ export class RegistrarActividadComponent implements OnInit {
 
   constructor(private router: Router,
     private calendar: NgbCalendar,
-    private modalService: NgbModal) {}
+    private modalService: NgbModal,
+    private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.initForm();
   }
 
   atras(){
@@ -49,6 +56,9 @@ export class RegistrarActividadComponent implements OnInit {
 
         this.nextButtonText = "Siguiente";
         this.guardarClass = "d-none";
+
+        this.nombreActividad = "";
+
         this.step--;        
         break;
       case 2:
@@ -101,6 +111,7 @@ export class RegistrarActividadComponent implements OnInit {
   }
 
   registrarActividad(nombreActividad: string){
+    this.nombreActividad = nombreActividad;
     this.siguiente();
     console.log(nombreActividad);
   }
@@ -111,5 +122,29 @@ export class RegistrarActividadComponent implements OnInit {
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
+  }
+
+
+  initForm(){
+    
+    /* this.registrarActividadForm = this.fb.group({
+      parametro: this.fb.group({
+        cod: [formValues[0].parametro.cod],
+        nombre: [formValues[0].parametro.nombre, Validators.required],
+        isActiv: [formValues[0].parametro.isActiv],
+      }),
+      tipoParametro: this.fb.group({
+        cod: [formValues[0].tipoParametro.cod, Validators.required],
+        nombre: [formValues[0].tipoParametro.nombre],
+        isActiv: [formValues[0].tipoParametro.isActiv],
+      }),
+      tipoDato: this.fb.group({
+        cod: [formValues[0].tipoDato.cod, Validators.required],
+        nombre: [formValues[0].tipoDato.nombre],
+        isActiv: [formValues[0].tipoDato.isActiv],
+      }),
+      opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
+      
+    }); */
   }
 }

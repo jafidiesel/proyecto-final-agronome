@@ -5,7 +5,6 @@
                 <h3 class="display-4" >Asociar Recomendacion</h3>
             </div>
             
-            <h6>{{this.asociarParametroForm.status}}</h6>
             <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="asociarParametroForm">
 
                 <div class="form-group" *ngIf="listaNomencladoresRecomendacion == null" >
