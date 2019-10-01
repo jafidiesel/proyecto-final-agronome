@@ -47,10 +47,44 @@ def postRegistrarActiv(data):
         return ResponseException(e)
 
 def getRegistrarActiv(data):
-    #nActividad = hlmodel.Actividad
-    nActividad = getNomencladoCod('actividad',1)
+    actividadDetalleList = selectActivDetalle()
+    dtoDetalleList = []
 
-    objetos = nActividad.activDetalleList 
+    for detalle in actividadDetalleList:
+        dtoDetalle = dict(
+            codActivDetalle=detalle.codActivDetalle,
+            fchActivDetalle= detalle.fchActivDetalle.strftime("%d/%m/%Y, %H:%M:%S"),
+            observacion=detalle.observacion)
+        ##Actividad
+        codActividad = detalle.actividad.cod
+        nombreActividad = detalle.actividad.nombre
+        dtoAuxActividad = dict(codActividad=codActividad,nombreActividad=nombreActividad)
+
+        dtoDetalle['Actividad'] = dtoAuxActividad
+
+
+        ##Parametros
+        parametrosList = detalle.paramList    
+        dtoAuxParametroList = []
+        for parametro in parametrosList:
+            #parametro.param.cod
+            dtoAuxParametro =dict(codParamtro=parametro.param.cod, nombreParametro=parametro.param.nombre,valor = parametro.valor)
+            dtoAuxParametroList.append(dtoAuxParametro)
+
+        dtoDetalle['Parametros'] = dtoAuxParametroList
+
+        dtoDetalleList.append(dtoDetalle)
+
+        ##Imagenes
+        imagenesList =  detalle.imgList
+        dtoAuxImgList = []
+        for img in imagenesList:
+            dtoAuxImg = dict(dscImg=img.descripImg, base64=img.imgBase64)
+            dtoAuxImgList.append(dtoAuxImg)
+
+        dtoDetalle['Imagenes'] = dtoAuxImgList
+
+        #objetos = nActividad.activDetalleList 
 
     #print (nActividad)
     
