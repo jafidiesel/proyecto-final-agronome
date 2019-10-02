@@ -3,7 +3,7 @@ from app.repositorio.hlDb import Commit, addObject, saveEntidadSinCommit
 #from app.model.hlmodel import 
 from app.model import hlmodel
 
-def selectByCodEspec(entidad,codEspecial,cod): 
+def selectByCodEspec(entidad,codEspecial,cod):  ##DEPRECATED
     if codEspecial=='actividadParametro':
         filtro = entidad.codActividad
     else:
@@ -99,3 +99,9 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
 
     Commit()
     return ()
+
+
+
+def selectByisActiv(entidad,valor):
+    objetos = entidad.query.filter(entidad.isActiv==valor).all()
+    return objetos

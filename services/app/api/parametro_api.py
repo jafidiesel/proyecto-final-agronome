@@ -3,6 +3,7 @@ from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlParametro
 from app.uses_cases.moduloConfiguracion.gestionarParametro import postParametro,getParametroEstructura, getParametroById, updateParametro,getAllParametros
 #from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador
+from app.uses_cases.moduloSeguridad.gestionarUsuarios import postUser
 
 
 parametro = urlParametro
