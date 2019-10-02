@@ -95,6 +95,7 @@ def putAsociacion(data,entidadIntermedia,id):
         updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,id) 
         return ResponseOk()
     except Exception as e:
+        Rollback()
         return ResponseException(e)
 
 
