@@ -63,3 +63,7 @@ def selectByisActivAUX(entidad,valor):
     #if not objetos:
     #    raise Exception('N','No existen objetos con isActiv ingresado')
     return objetos
+
+def deleteObject(entidad):
+    db.session.delete(entidad)
+    return
