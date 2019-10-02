@@ -99,3 +99,9 @@ def updateEntidadInterm(data,entidadInterm,entidad,cod):
 
     Commit()
     return ()
+
+
+
+def selectByisActiv(entidad,valor):
+    objetos = entidad.query.filter(entidad.isActiv==valor).all()
+    return objetos

@@ -13,7 +13,7 @@ from datetime import datetime
 def postRegistrarActiv(data):
     try:
         ##datos del json
-        codActiv = data.get('idActividad')
+        codActiv = data.get('codActividad')
         obs = data.get('observacion')
         imagenes = data.get('imagenes')
         parametros = data.get('parametros')
@@ -56,7 +56,7 @@ def getRegistrarActiv(data):
     for detalle in actividadDetalleList:
         dtoDetalle = dict(
             codActivDetalle=detalle.codActivDetalle,
-            fchActivDetalle= detalle.fchActivDetalle.strftime("%m/%d/%Y, %H:%M:%S"),
+            fchActivDetalle= detalle.fchActivDetalle.strftime("%d/%m/%Y, %H:%M:%S"),
             observacion=detalle.observacion)
         ##Actividad
         codActividad = detalle.actividad.cod
@@ -72,7 +72,7 @@ def getRegistrarActiv(data):
         parametrosList = detalle.paramList    
         dtoAuxParametroList = []
         for parametro in parametrosList:
-            parametro.param.cod
+            #parametro.param.cod
             dtoAuxParametro =dict(codParamtro=parametro.param.cod, nombreParametro=parametro.param.nombre,valor = parametro.valor)
             dtoAuxParametroList.append(dtoAuxParametro)
 
@@ -80,9 +80,16 @@ def getRegistrarActiv(data):
 
         dtoDetalleList.append(dtoDetalle)
 
+        ##Imagenes
+        imagenesList =  detalle.imgList
+        dtoAuxImgList = []
+        for img in imagenesList:
+            dtoAuxImg = dict(dscImg=img.descripImg, base64=img.imgBase64)
+            dtoAuxImgList.append(dtoAuxImg)
 
-        
-    #objetos = nActividad.activDetalleList 
+        dtoDetalle['Imagenes'] = dtoAuxImgList
+
+        #objetos = nActividad.activDetalleList 
 
     #print (nActividad)
     

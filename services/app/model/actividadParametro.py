@@ -8,10 +8,13 @@ class ActividadParametro(db.Model):
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True, primary_key = True)
     codActividad = db.Column('fk_cod_actividad',Integer,ForeignKey('actividad.cod_actividad'),index = True, primary_key = True)
    
-    def __init__(self,isActiv,parametro,actividad):
-        self.isActiv = isActiv
-        self.codParametro = parametro
-        self.codActividad = actividad
+    actividad = relationship("Actividad", backref="actividadParamList") #n->1
+    parametro = relationship("Parametro", backref="paramActividadList") #n->1
+    
+    #def __init__(self,isActiv,parametro,actividad):
+    #    self.isActiv = isActiv
+    #    self.codParametro = parametro
+    #    self.codActividad = actividad
 
     @staticmethod
     def from_json(json):
