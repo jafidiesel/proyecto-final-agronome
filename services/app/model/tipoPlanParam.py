@@ -6,10 +6,14 @@ class TipoPlanParam(db.Model):
     codParametro = db.Column('fk_cod_parametro',Integer,ForeignKey('parametro.cod_parametro'),index = True, primary_key = True)
     codTipoPlan = db.Column('fk_cod_tipo_plan',Integer,ForeignKey('tipo_plan.cod_tipo_plan'),index = True, primary_key = True)
 
-    def __init__(self,isActiv,codParam,codTipoPlan):
-        self.isActiv = isActiv
-        self.codParametro = codParam
-        self.codTipoPlan = codTipoPlan
+    tipoPlan = relationship("TipoPlan", backref="tipoPlanParamList") #n->1
+    parametro = relationship("Parametro", backref="paramTipoPlanList") #n->1
+    
+    
+    #def __init__(self,isActiv,codParam,codTipoPlan):
+    #    self.isActiv = isActiv
+    #    self.codParametro = codParam
+    #    self.codTipoPlan = codTipoPlan
 
     @staticmethod
     def from_json(json):

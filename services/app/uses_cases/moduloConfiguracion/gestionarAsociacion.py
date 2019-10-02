@@ -1,6 +1,6 @@
 from flask import jsonify
-from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll, selectByisActivAUX
-from app.repositorio.DbEntidadIntermedia import selectByCodEspec, updateEntidadInterm
+from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
+from app.repositorio.repositorioGestionarAsociacion import selectByCodEspec, updateEntidadInterm,selectByisActiv
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -21,62 +21,85 @@ nomenclador = { ##para detectar la entidad n de la entemedia ya que una es param
 }
 
 
-def postEntidadInterm(data):
+def postAsociacion(data):
     try:
         entidadIntermedia = data.get('entidadIntermedia')
-        codNomenclador = data.get('cod') #actividad, recomendación, tipoAnalisis, tipoPlan
+        codNomenclador = data.get('id') #actividad, recomendación, tipoAnalisis, tipoPlan
         isActiv= True
         parametroJson = data.get ('parametros')
-        parametrosList = parametroJson.get('cod')
+        parametrosList = parametroJson.get('id')
         codParametroList = json.loads(parametrosList)
-        
 
         if len(codParametroList)==0:
             raise Exception('N','la lista de parametros esta vacia')
 
+        nomencladorObj = getNomencladoCod(nomenclador[entidadIntermedia],codNomenclador) 
 
-        #por cada parametro enviado
-        for  idParam in codParametroList:
-            intermedia = modelos[entidadIntermedia](isActiv,idParam,codNomenclador)
-            saveEntidadSinCommit(intermedia)
-
+        ##por cada parametro
+        for  codParam in codParametroList:
+            param = getNomencladoCod('parametro',codParam)
+            asociacion = modelos[entidadIntermedia](isActiv = isActiv)
+            asociacion.parametro = param #asocio el parametro
+            
+            ##asocio el nomenclador que puede ser actividad, recomendación, tipoAnalisis, tipoPlan
+            if entidadIntermedia == 'actividadParametro':
+                asociacion.actividad = nomencladorObj
+            else:
+                if entidadIntermedia =='recomendacionParametro':
+                    asociacion.recomendacion = nomencladorObj
+                else:
+                    if entidadIntermedia == 'tipoAnalisisParam':
+                        asociacion.tipoAnalisis = nomencladorObj
+                    else:
+                        if entidadIntermedia == 'tipoPlanParam':
+                            asociacion.tipoPlan = nomencladorObj
+            
+            saveEntidadSinCommit(asociacion)
+    
         Commit()
         return ResponseOk()
-
     except Exception as e:
         Rollback()
         return ResponseException(e)
 
 
-def getEntidadIntermCod(entidadIntermedia,cod):
+def getAsociacionCod(entidadIntermedia,codNomenclador):
     try:
-        objetos = selectByCodEspec(modelos[entidadIntermedia],entidadIntermedia,cod)
+        ##recupero la clase intermedia segun el nomenclador
+        nomencladorObj = getNomencladoCod(nomenclador[entidadIntermedia],codNomenclador) 
+        if entidadIntermedia == 'actividadParametro':
+                ParamList = nomencladorObj.actividadParamList
+        else:
+            if entidadIntermedia =='recomendacionParametro':
+                    ParamList = nomencladorObj.recomendacionParamList
+            else:
+                if entidadIntermedia == 'tipoAnalisisParam':
+                        ParamList = nomencladorObj.tipoAnalisisParamList
+                else:
+                    if entidadIntermedia == 'tipoPlanParam':
+                        ParamList = nomencladorObj.tipoPlanParamList
+
         dtoParamList = []
+        for param in ParamList:
+            if param.isActiv: #filtro por activas
+                dtoAuxParam = dict(codParametro = param.parametro.cod, nombreParametro =param.parametro.nombre, isActiv = param.parametro.isActiv)
+                dtoParamList.append(dtoAuxParam)
 
-        for obj in objetos:
-            #print(obj)
-            codParam = obj.codParametro
-            param = getNomencladoCod('parametro',codParam)
-            nombreParam = param.nombre
-
-            dtoAux =dict(codParametro = obj.codParametro, nombreParametro= nombreParam, isActiv= obj.isActiv)
-            dtoParamList.append(dtoAux)
-        # #endfor
         return (dict(parametros=dtoParamList))
     except Exception as e:
         return ResponseException(e)
 
 
-def putEntidadInterm(data,entidadIntermedia,cod):
+def putAsociacion(data,entidadIntermedia,id):
     try:
-        updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,cod) 
+        updateEntidadInterm(data,modelos[entidadIntermedia],entidadIntermedia,id) 
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 
 
 
-def getEntidadInterm(entidadIntermedia):
+def getAsociaciones(entidadIntermedia):
     helperEntidad= {
         "actividadParametro":hlmodel.Actividad,
         "recomendacionParametro": hlmodel.Recomendacion,
@@ -85,8 +108,7 @@ def getEntidadInterm(entidadIntermedia):
     }
 
     try:
-        #objetos = selectAll(modelos[entidadIntermedia])
-        objetos = selectByisActivAUX(modelos[entidadIntermedia],True)
+        objetos = selectByisActiv(modelos[entidadIntermedia],True)
         entidades = selectAll(helperEntidad[entidadIntermedia])
         dtoAsociacionesList = []
         dtoSinAsociacionesList = []
@@ -109,7 +131,7 @@ def getEntidadInterm(entidadIntermedia):
         
             nomen = getNomencladoCod(entidad,codNomen)
             nombreNomen = nomen.nombre
-            print(nomen.isActiv)
+            #print(nomen.isActiv)
             dtoAux = dict(cod=codNomen,nombre=nombreNomen)
             ##armo la lista con asociaciones
             if not dtoAux in dtoAsociacionesList:
