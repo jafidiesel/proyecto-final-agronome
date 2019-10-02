@@ -26,7 +26,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-  format = 'dd/MM/yyyy';
+  format = 'yyyy-MM-dd';
   myDate = new Date();
   locale = 'en-US';
   formattedDate = formatDate(this.myDate, this.format, this.locale);
@@ -85,7 +85,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         email: [null, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
         isActiv: [false],
-        fechaCrea: [this.formattedDate]
+        fchCrea: [this.formattedDate]
       }),
       rol: this.fb.group({
         cod: [this.rolSeleccionado.cod]
