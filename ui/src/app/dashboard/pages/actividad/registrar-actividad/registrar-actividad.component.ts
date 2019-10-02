@@ -42,6 +42,7 @@ export class RegistrarActividadComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    
   }
 
   atras(){

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
 import { formatDate } from "@angular/common";
+import { SeguridadService } from 'src/app/dashboard/services/seguridad.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -31,31 +32,38 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   formattedDate = formatDate(this.myDate, this.format, this.locale);
 
 
-  constructor(private _configuracionService: ConfiguracionService,
+  constructor(private _seguridadService: SeguridadService,
     private fb: FormBuilder) { }
 
-  /*   {
-      "usuario": {
-        "nombre": "usuario1",
-        "email": "",
-        "contraseniaUsuario": "",
-        "fchCrea" = "",
-      },
-      
-      "rol":{
-        "cod": "",
-      }
-    } */
+  /*   
+    {
+  "usuario": {
+    "usuario": "usuario",
+    "nombre": "nombre",
+    "apellido": "adaaf",
+    "email": "dffsgafa@gmail.com",
+    "contraseniaUsuario": "123456",
+    "fchCrea" : "12/03/1990",
+    "isActiv": true
+  },
+  
+  "rol":{
+    "cod": 1
+  }
+}
+ */
 
   ngOnInit() {
     this.initForm();
-    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('rol', true).subscribe(
-      (result: any) => {
-        for (let index = 0; index < result.length; index++) {
-          this.rolesSelectArray.push(result[index]);
+    this.subscriptions.push(
+      this._seguridadService.getListaNomencladoresConFiltro('rol', true).subscribe(
+        (result: any) => {
+          for (let index = 0; index < result.length; index++) {
+            this.rolesSelectArray.push(result[index]);
+          }
         }
-      }
-    ));
+      )
+    );
   }
 
   actualizarRolSeleccionado(event) {
@@ -71,10 +79,13 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   initForm() {
     this.formUsuario = this.fb.group({
       usuario: this.fb.group({
+        usuario: [null, Validators.required],
         nombre: [null, Validators.required],
-        email: [null, [Validators.required,Validators.email] ],
-        contraseniaUsuario: [null, [Validators.required,  Validators.minLength(6)] ],
-        fechaCrea: [this.formattedDate ]
+        apellido: [null, Validators.required],
+        email: [null, [Validators.required, Validators.email]],
+        contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
+        isActiv: [false],
+        fechaCrea: [this.formattedDate]
       }),
       rol: this.fb.group({
         cod: [this.rolSeleccionado.cod]
@@ -83,8 +94,24 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   }
 
-  imprimir(){
-    console.log('formUsuario',this.formUsuario);
+  onSubmitUsuario() {
+    console.warn(this.formUsuario.value);
+
+    if (this.formUsuario.status == 'VALID') {
+      this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
+        result => {
+          this.postSuccess = true;
+          this.postError = false;
+          this.postErrorMessage = '';
+
+
+        },
+        error => this.onHttpError(error)
+      );
+    } else {
+      this.postError = true;
+      this.postErrorMessage = "Ingrese todos los campos obligatorios.";
+    }
   }
 
   onHttpError(errorResponse: any) {

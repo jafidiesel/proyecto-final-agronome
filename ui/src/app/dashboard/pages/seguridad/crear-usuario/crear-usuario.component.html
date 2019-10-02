@@ -4,20 +4,34 @@
             <div>
                 <h3 class="display-4">Nuevo Usuario</h3>
             </div>
-            <form (ngSubmit)="imprimir()" [formGroup]="formUsuario">
+            <form (ngSubmit)="onSubmitUsuario()" [formGroup]="formUsuario">
                 <div formGroupName="usuario">
                     <div class="form-group row">
                         <label for="inputUsuario" class="col-sm-2 col-form-label">Usuario</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputUsuario"
-                                placeholder="Ingrese su nombre de usuario" formControlName="nombre"  />
+                            <input type="text" class="form-control" id="inputUsuario" placeholder="Ingrese su usuario"
+                                formControlName="usuario" />
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail3" class=" col-sm-2 col-form-label">Email</label>
+                        <label for="inputNombre" class="col-sm-2 col-form-label">Nombre</label>
                         <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email"
-                                formControlName="email"  email="true" />
+                            <input type="text" class="form-control" id="inputNombre" placeholder="Ingrese su nombre"
+                                formControlName="nombre" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputApellido" class="col-sm-2 col-form-label">Apellido</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputApellido" placeholder="Ingrese su apellido"
+                                formControlName="apellido" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail" class=" col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email"
+                                formControlName="email" email="true" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -28,16 +42,14 @@
                         </div>
                     </div>
                     <div class="alert alert-light" role="alert">
-                            Debe ingresar una contraseña de 6 caracteres como mínimo.
-                          </div>
+                        Debe ingresar una contraseña de 6 caracteres como mínimo.
+                    </div>
                 </div>
                 <div class="form-group row" *ngIf="rolesSelectArray">
                     <label for="inputRol" class="col-sm-2 col-form-label">Rol</label>
                     <div class="col-sm-10" formGroupName="rol">
                         <select name="selectedRol" class="custom-select" id="inputGroupSelect01"
-                            (change)="actualizarRolSeleccionado($event)" [disabled]="postSuccess" formControlName="cod"
-                            >
-                            <option>Seleccione un Rol</option>
+                            (change)="actualizarRolSeleccionado($event)" [disabled]="postSuccess" formControlName="cod">
                             <option *ngFor="let rolSelectArray of rolesSelectArray" [value]="rolSelectArray.cod">
                                 {{rolSelectArray.nombre}}
                             </option>
@@ -45,16 +57,32 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row" formGroupName="usuario">
+                    <label for="inputIsActive" class=" col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+                        <input type="checkbox" class="custom-control-input" id="isActiv" name="isActiv"
+                            formControlName="isActiv">
+                    </div>
+                </div>
+
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Nomenclador Creado !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear usuario</button>
+                        <button [routerLink]="['/configuracion']" type="button"
+                            class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </main>
-{{ formUsuario.status }}
-{{rolSeleccionado|json}}
-
-{{ formattedDate }}
