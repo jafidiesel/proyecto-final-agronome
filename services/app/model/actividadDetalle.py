@@ -13,4 +13,4 @@ class ActividadDetalle(db.Model):
 
     imgList = relationship('ImgActivDetalle') # 1->N
 
-    paramList = relationship("ActivDetalleParam")   # 1 -> N 
+    paramList = relationship("ActivDetalleParam", backref = "activDetalle")   # 1 -> N 
