@@ -16,9 +16,9 @@
                 <div class="form-group" formGroupName="tipoParametro">
                     <label for="parametroInput" class=" col-form-label">Tipo Parametro * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="id">
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="cod">
                             <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray"
-                                [value]="tipoParametroSelectArray.id">
+                                [value]="tipoParametroSelectArray.cod">
                                 {{ tipoParametroSelectArray.nombre }}
                             </option>
                         </select>
@@ -27,9 +27,9 @@
                 <div class="form-group" formGroupName="tipoDato">
                     <label for="parametroInput" class=" col-form-label">Tipo Dato * </label>
                     <div class="input-group ">
-                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="id">
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="cod">
                             <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray"
-                                [value]="tipoDatoSelectArray.id">
+                                [value]="tipoDatoSelectArray.cod">
                                 {{ tipoDatoSelectArray.nombre }}
                             </option>
                         </select>
@@ -67,7 +67,7 @@
                                 (change)="actualizaropcionSeleccionada($event)">
                                 <option>Seleccione una opcion</option>
                                 <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray"
-                                    [value]="tipoOpcioneSelectArray.id">
+                                    [value]="tipoOpcioneSelectArray.cod">
                                     {{tipoOpcioneSelectArray.nombre}}
                                 </option>
                             </select>

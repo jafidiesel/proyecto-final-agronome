@@ -131,13 +131,13 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
         // Si el elemento no esta dentro de los activos, lo agrega al dropdown
         /* let agregarElemento = true;
         this.tiposDatosSelectArray.forEach(element => {
-          if( element.id == this.originalParametroAEditar.tipoDato.id ){
+          if( element.cod == this.originalParametroAEditar.tipoDato.cod ){
             agregarElemento = false;
           }
         });
         if( agregarElemento ){
           let obj = {
-            id: this.originalParametroAEditar.tipoDato.id,
+            cod: this.originalParametroAEditar.tipoDato.cod,
             isActiv: this.originalParametroAEditar.tipoDato.isActiv,
             nombre: this.originalParametroAEditar.tipoDato.nombre,
           }
