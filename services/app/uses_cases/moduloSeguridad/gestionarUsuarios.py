@@ -6,6 +6,7 @@ from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 import json
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 modelos = {
 "rol":hlmodel.Rol,
@@ -24,7 +25,7 @@ def postUser(data):
         usuario = hlmodel.Usuario.from_json(usuarioJson)
         usuario.contraseniaUsuario = hashed_password
         #Generar codPublic
-        usuario.codPublic = str(uuid.uuid4())
+        usuario.cod = str(uuid.uuid4())
         usuario.rol = rolRst
         saveEntidadSinCommit(usuario)
 
@@ -56,7 +57,7 @@ def getAllUsers():
                 usuarioDto.pop('_sa_instance_state',None)
                 usuarioDto.pop('randomContrasenia', None)
                 usuarioDto.pop('isRecuperarContrasenia', None)
-                usuarioDto.pop('cod', None)
+                usuarioDto.pop('codPrivate', None)
                 usuarioDto.pop('codRol', None)
                 rolDto.pop('_sa_instance_state',None)
                 rolDto.pop('tipoNomenclador', None)
@@ -64,3 +65,12 @@ def getAllUsers():
         return jsonify(usuariosList)
     except Exception as e:
         return ResponseException(e)
+
+#Listar un Usuario
+def getUsuario(codPublic):
+    try:
+        usuarioRst = selectByCod(hlmodel.Usuario, codPublic)
+        return usuarioRst.toJson()
+    except Exception as e:
+        return ResponseException(e)
+#Editar Usuario

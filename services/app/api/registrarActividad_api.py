@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlResgistrarActiv
-from app.uses_cases.moduloActividad.registrarActividad import postRegistrarActiv, getRegistrarActiv, putRegistrarActiv, deleteRegistrarActiv
+from app.uses_cases.moduloActividad.registrarActividad import postRegistrarActiv, getRegistrarActiv, putRegistrarActiv, deleteRegistrarActiv, getRegistrarActivCod
 from app.api.helperApi.hlResponse import ResponseException
 
 registrarActiv = urlResgistrarActiv
@@ -13,16 +13,21 @@ class RegistrarActivHandler(Resource):
         return postRegistrarActiv(data)
 
     def get(self):
-        data = self.api.payload
-        return getRegistrarActiv(data)
+        #data = self.api.payload
+        return getRegistrarActiv()
 
 
-@registrarActiv.route('/<int:codDetalleActividad>')
+@registrarActiv.route('/<int:codActivDetalle>')
 class RegistrarActivHandler(Resource):
-    def put(self,codDetalleActividad):
-        data = self.api.payload
-        return putRegistrarActiv(data,codDetalleActividad)
+    def get(self,codActivDetalle):
+        #data = self.api.payload
+        return getRegistrarActivCod(codActivDetalle)
     
-    def delete(self,codDetalleActividad):
+    
+    def put(self,codActivDetalle):
         data = self.api.payload
-        return deleteRegistrarActiv(data,codDetalleActividad)
+        return putRegistrarActiv(data,codActivDetalle)
+    
+    def delete(self,codActivDetalle):
+        data = self.api.payload
+        return deleteRegistrarActiv(data,codActivDetalle)
