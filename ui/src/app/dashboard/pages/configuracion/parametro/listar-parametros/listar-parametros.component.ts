@@ -8,29 +8,28 @@ import { Subscription } from 'rxjs';
 })
 export class ListarParametrosComponent implements OnInit, OnDestroy {
 
-  subscriptions : Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
-  parametrosMockedData: any;
 
   // array de rows para table component
   nomencladoresTabla = [];
   tableDataHeader = ['Nombre', 'Activo', 'Editar'];
-  mostrarTabla:boolean = false;
+  mostrarTabla: boolean = false;
 
-  constructor( private _configuracionService: ConfiguracionService ) {} 
- 
+  constructor(private _configuracionService: ConfiguracionService) { }
+
   ngOnInit() {
-    //this.parametrosMockedData = this._configuracionService.getParametroData();
+
     this.subscriptions.push(this._configuracionService.getListaParametros().subscribe(
-      (result:any) => {
+      (result: any) => {
         this.nomencladoresTabla.push(this.tableDataHeader);
-        
-        for (let index = 0; index < result.length ; index++) {
+
+        for (let index = 0; index < result.length; index++) {
           this.nomencladoresTabla.push([
-          `${result[index].nombre}`,
-          `${result[index].isActiv}`,
-          `*/configuracion/editarParametro/${result[index].cod}`
-        ]);
+            `${result[index].nombre}`,
+            `${result[index].isActiv}`,
+            `*/configuracion/editarParametro/${result[index].cod}`
+          ]);
         }
         this.mostrarTabla = true;
       },
@@ -38,7 +37,7 @@ export class ListarParametrosComponent implements OnInit, OnDestroy {
     ));
   }
 
-  ngOnDestroy(){
-    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

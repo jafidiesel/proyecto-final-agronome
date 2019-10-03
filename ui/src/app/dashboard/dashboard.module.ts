@@ -46,6 +46,8 @@ import { AsociarPlanComponent } from './pages/configuracion/asociar/plan/asociar
 import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 import { ListarAnalisisComponent } from './pages/configuracion/asociar/analisis/listar-analisis/listar-analisis.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CrearUsuarioComponent } from './pages/seguridad/crear-usuario/crear-usuario.component';
+import { ListarUsuariosComponent } from './pages/seguridad/listar-usuarios/listar-usuarios.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +87,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ListarPlanComponent,
     AsociarPlanComponent,
     EditarPlanAsociadoComponent,
+    CrearUsuarioComponent,
+    ListarUsuariosComponent,
   ],
   imports: [
     CommonModule,
