@@ -29,6 +29,7 @@ import { ListarPlanComponent } from './dashboard/pages/configuracion/asociar/pla
 import { AsociarPlanComponent } from './dashboard/pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
 import { EditarPlanAsociadoComponent } from './dashboard/pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 import { CrearUsuarioComponent } from './dashboard/pages/seguridad/crear-usuario/crear-usuario.component';
+import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usuarios/listar-usuarios.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
   //{ path: 'seguridad', component: SeguridadPageComponent },
+  { path: 'seguridad', component: ListarUsuariosComponent },
   { path: 'seguridad/crear-usuario', component: CrearUsuarioComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },

@@ -40,15 +40,23 @@ export class SeguridadService {
   }
 
   /**
-* @param tipoNomenclador string
-* @param isActiv boolean
-* @return Observable<Object>
+* @param form form
 *  
 * Devuelve todos los nomencladores activos creados del tipo enviado por parámetro
 */
-  postUsuario( json:any ): Observable<String> {
+  postUsuario(json: any): Observable<String> {
 
     return this.http.post<String>(`http://localhost:9001/api/users`, json);
+  }
+
+  /**
+* @return List Observable<Object>
+*  
+* Devuelve todos los nomencladores activos creados del tipo enviado por parámetro
+*/
+  getUsuarios(): Observable<String> {
+
+    return this.http.get<String>(`http://localhost:9001/api/users`);
   }
 
 }
