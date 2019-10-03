@@ -12,7 +12,6 @@ entidadInterm = urlEntidadInterm
 class EntidadIntermHandler(Resource):
     def post(self):
         data = self.api.payload
-        #print(data)
         return postAsociacion(data)
 
 

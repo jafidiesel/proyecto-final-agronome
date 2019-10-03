@@ -2,33 +2,9 @@ from app.extensions import db
 from app.repositorio.hlDb import Commit, addObject, saveEntidadSinCommit
 #from app.model.hlmodel import 
 from app.model import hlmodel
+from app.modelhlmodel import ActividadParametro
 
-def selectByCodEspec(entidad,codEspecial,cod):  ##DEPRECATED
-    if codEspecial=='actividadParametro':
-        filtro = entidad.codActividad
-    else:
-        if codEspecial == 'recomendacionParametro': 
-            filtro = entidad.codRecomendacion
-        else:
-            if codEspecial == 'tipoAnalisisParam':
-                filtro = entidad.codTipoAnalisis  
-            else:
-                if codEspecial == 'tipoAnalisisParam':
-                    filtro = entidad.codTipoPlan  
-                else:
-                     raise Exception('N','No existe el codigo especial ingresado')
-        
-
-    objetos = entidad.query.filter(filtro==cod).filter(entidad.isActiv==True).all()
-    
-    if not objetos:
-        obj = entidad.query.filter(filtro==cod).all()
-        if obj:
-            raise Exception('N','Posee asociaciones pero estan desactivdadas')
-        else:  
-            raise Exception('N','No existe el codigo ' + codEspecial + ' ingresado')
-
-    return (objetos)
+#def asociaciones()
 
 
 def updateEntidadInterm(data,entidadInterm,entidad,cod):

@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.model.hlmodel import ActividadDetalle, Actividad ,ActivDetalleParam, Parametro
+from app.model.hlmodel import ActividadDetalle, ActivDetalleParam, Parametro
 
 def selectActivDetalle(): 
     objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False)
