@@ -2,7 +2,7 @@ from app.extensions import db
 from app.repositorio.hlDb import Commit, addObject, saveEntidadSinCommit
 #from app.model.hlmodel import 
 from app.model import hlmodel
-from app.modelhlmodel import ActividadParametro
+
 
 #def asociaciones()
 

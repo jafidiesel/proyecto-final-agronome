@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
-from app.repositorio.repositorioGestionarAsociacion import selectByCodEspec, updateEntidadInterm,selectByisActiv
+from app.repositorio.repositorioGestionarAsociacion import  updateEntidadInterm,selectByisActiv
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
