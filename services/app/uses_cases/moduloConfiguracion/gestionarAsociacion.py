@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.repositorio.hlDb import saveEntidad, saveEntidadSinCommit, Commit,Rollback ,selectAll
-from app.repositorio.repositorioGestionarAsociacion import selectByCodEspec, updateEntidadInterm,selectByisActiv
+from app.repositorio.repositorioGestionarAsociacion import  updateEntidadInterm,selectByisActiv
 from app.model import hlmodel
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -24,10 +24,10 @@ nomenclador = { ##para detectar la entidad n de la entemedia ya que una es param
 def postAsociacion(data):
     try:
         entidadIntermedia = data.get('entidadIntermedia')
-        codNomenclador = data.get('id') #actividad, recomendación, tipoAnalisis, tipoPlan
+        codNomenclador = data.get('cod') #actividad, recomendación, tipoAnalisis, tipoPlan
         isActiv= True
         parametroJson = data.get ('parametros')
-        parametrosList = parametroJson.get('id')
+        parametrosList = parametroJson.get('cod')
         codParametroList = json.loads(parametrosList)
 
         if len(codParametroList)==0:
