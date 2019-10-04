@@ -2,6 +2,8 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit,deleteObject
 from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 from app.extensions import db
@@ -165,5 +167,26 @@ def deleteRegistrarActiv(data,codActivDetalle):
         saveEntidadSinCommit(activDetalleObj)
         Commit()
         return ResponseOk()
+    except Exception as e:
+        return ResponseException(e)
+
+
+def getParametrosFull(codActividad):
+    try:
+        ##recupero las clases intermedias 
+        actividad = getNomencladoCod('actividad',codActividad)
+        paramListObj = actividad.actividadParamList
+
+        dtoParametroFull = []
+        for param in paramListObj:
+            if param.isActiv: #filtro por activas
+               codParametro = param.parametro.cod
+               dtoAux= getParametroById(codParametro)
+               print('acatoy')
+               print(dtoAux)
+               dtoParametroFull.append(dtoAux)
+        
+
+        return (dict(parametros=dtoParametroFull))
     except Exception as e:
         return ResponseException(e)
