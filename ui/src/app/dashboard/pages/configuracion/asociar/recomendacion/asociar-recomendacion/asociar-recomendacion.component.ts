@@ -11,10 +11,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
 
-  subscriptions : Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
-  asociarParametroForm:FormGroup;
-  
+  asociarParametroForm: FormGroup;
+
   faTrashAlt = faTrashAlt;
 
   // Valores dropdown nomenclador
@@ -48,23 +48,23 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
         for (let index = 0; index < result.sinAsociaciones.length; index++) {
           const element = result.sinAsociaciones[index];
           this.listaNomencladoresRecomendacionArray.push(element);
-          
+
         }
       }
     ));
 
-    this.subscriptions.push( this._configuracionService.getListaParametrosPorTipo('recomendacion').subscribe(
-      (result:any) =>{
+    this.subscriptions.push(this._configuracionService.getListaParametrosPorTipo('recomendacion').subscribe(
+      (result: any) => {
         for (let index = 0; index < result.length; index++) {
           this.tiposParametrosSelectArray.push(result[index]);
         }
       }
-    )); 
+    ));
 
   }
 
-  initForm(){
-      
+  initForm() {
+
     this.asociarParametroForm = this.fb.group({
       entidadIntermedia: ['recomendacionParametro'],
       cod: [null, Validators.required], // cod nomenclador actividad
@@ -74,13 +74,13 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
     });
   }
 
-  onHttpError( errorResponse: any ) {
+  onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
     this.postErrorMessage = errorResponse.message;
   }
 
-  actualizarNomencladorActividad(event){
+  actualizarNomencladorActividad(event) {
     // This is ducktape, do not usit at home
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
@@ -90,26 +90,26 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
 
   }
 
-  actualizarParametroSeleccionado(event){
+  actualizarParametroSeleccionado(event) {
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
-    
+
     this.parametroSeleccionado.cod = attrVal;
     this.parametroSeleccionado.nombre = inn;
-    
+
   }
 
-  updateParametros(){
+  updateParametros() {
     this.asociarParametroForm.patchValue({
       parametros: {
-        cod: "[" + this.parametrosElegidos.map( element => {return element.cod} ) + "]"
+        cod: "[" + this.parametrosElegidos.map(element => { return element.cod }) + "]"
       }
     });
-    
+
   }
 
-  agregarItem(){
+  agregarItem() {
     let obj = {
       cod: this.parametroSeleccionado.cod,
       nombre: this.parametroSeleccionado.nombre
@@ -120,18 +120,18 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
 
   }
 
-  quitarItem(itemARemover){
-    this.parametrosElegidos.forEach( (item, index) => {
-      if(item === itemARemover) {
-        this.parametrosElegidos.splice(index,1);
+  quitarItem(itemARemover) {
+    this.parametrosElegidos.forEach((item, index) => {
+      if (item === itemARemover) {
+        this.parametrosElegidos.splice(index, 1);
       }
-    }); 
+    });
   }
 
   onSubmitAsociacion() {
     this.updateParametros();
 
-    if ( this.asociarParametroForm.status == 'VALID' ) {
+    if (this.asociarParametroForm.status == 'VALID') {
       this._configuracionService.postAsociacionForm(this.asociarParametroForm.value).subscribe(
         result => {
           console.log('Enviado.');
@@ -148,7 +148,7 @@ export class AsociarRecomendacionComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(){
-    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
