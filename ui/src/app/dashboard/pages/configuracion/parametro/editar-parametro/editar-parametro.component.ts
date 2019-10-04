@@ -68,21 +68,22 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this._configuracionService.getParametro(params['cod']).subscribe(
         (result: any) => {
+          console.log('result', result);
           this.initForm(result);
 
-          this.originalParametroAEditar.parametro.cod = result[0].parametro.cod;
-          this.originalParametroAEditar.parametro.nombre = result[0].parametro.nombre;
-          this.originalParametroAEditar.parametro.isActiv = result[0].parametro.isActiv;
+          this.originalParametroAEditar.parametro.cod = result.parametro.cod;
+          this.originalParametroAEditar.parametro.nombre = result.parametro.nombre;
+          this.originalParametroAEditar.parametro.isActiv = result.parametro.isActiv;
 
-          this.originalParametroAEditar.tipoParametro.cod = result[0].tipoParametro.cod;
-          this.originalParametroAEditar.tipoParametro.isActiv = result[0].tipoParametro.isActiv;
-          this.originalParametroAEditar.tipoParametro.nombre = result[0].tipoParametro.nombre;
+          this.originalParametroAEditar.tipoParametro.cod = result.tipoParametro.cod;
+          this.originalParametroAEditar.tipoParametro.isActiv = result.tipoParametro.isActiv;
+          this.originalParametroAEditar.tipoParametro.nombre = result.tipoParametro.nombre;
 
-          this.originalParametroAEditar.tipoDato.cod = result[0].tipoDato.cod;
-          this.originalParametroAEditar.tipoDato.isActiv = result[0].tipoDato.isActiv;
-          this.originalParametroAEditar.tipoDato.nombre = result[0].tipoDato.nombre;
+          this.originalParametroAEditar.tipoDato.cod = result.tipoDato.cod;
+          this.originalParametroAEditar.tipoDato.isActiv = result.tipoDato.isActiv;
+          this.originalParametroAEditar.tipoDato.nombre = result.tipoDato.nombre;
 
-          result[0].opcion.forEach(element => {
+          result.opcion.forEach(element => {
             this.originalParametroAEditar.opcion.push({ cod: `${element.cod}` });
           });
 
@@ -180,25 +181,25 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
     this.editarParametroForm = this.fb.group({
       parametro: this.fb.group({
-        cod: [formValues[0].parametro.cod],
-        nombre: [formValues[0].parametro.nombre, Validators.required],
-        isActiv: [formValues[0].parametro.isActiv],
+        cod: [formValues.parametro.cod],
+        nombre: [formValues.parametro.nombre, Validators.required],
+        isActiv: [formValues.parametro.isActiv],
       }),
       tipoParametro: this.fb.group({
-        cod: [formValues[0].tipoParametro.cod, Validators.required],
-        nombre: [formValues[0].tipoParametro.nombre],
-        isActiv: [formValues[0].tipoParametro.isActiv],
+        cod: [formValues.tipoParametro.cod, Validators.required],
+        nombre: [formValues.tipoParametro.nombre],
+        isActiv: [formValues.tipoParametro.isActiv],
       }),
       tipoDato: this.fb.group({
-        cod: [formValues[0].tipoDato.cod, Validators.required],
-        nombre: [formValues[0].tipoDato.nombre],
-        isActiv: [formValues[0].tipoDato.isActiv],
+        cod: [formValues.tipoDato.cod, Validators.required],
+        nombre: [formValues.tipoDato.nombre],
+        isActiv: [formValues.tipoDato.isActiv],
       }),
-      opcion: this.fb.array(formValues[0].opcion.map(element => this.crearOpcion(element)))
+      opcion: this.fb.array(formValues.opcion.map(element => this.crearOpcion(element)))
 
     });
 
-    formValues[0].opcion.map(element => {
+    formValues.opcion.map(element => {
       this.opcionesElegidas.push({
         cod: element.cod,
         nombre: element.nombre
