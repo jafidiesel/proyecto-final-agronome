@@ -26,7 +26,7 @@ class Usuario(db.Model):
             apellido = json.get('apellido'),
             email=json.get('email'),
             contraseniaUsuario = json.get('contraseniaUsuario'),
-            fchCrea = datetime.strptime(json.get('fchCrea'),'%d/%m/%Y').date(),
+            fchCrea = datetime.strptime(json.get('fchCrea'),'%d-%m-%Y').date(),
             isActiv = json.get('isActiv')
             )
         return usuario
@@ -38,7 +38,7 @@ class Usuario(db.Model):
             'nombre' : self.nombre,
             'apellido' : self.apellido,
             'email' : self.email,
-            'fchCrea' : self.fchCrea.strftime('%d/%m/%Y'),
-            'isActiv' : self.isActiv
+            'fchCrea' : self.fchCrea.strftime('%d-%m-%Y'),
+            'isActiv' : self.isActiv,
         }
     

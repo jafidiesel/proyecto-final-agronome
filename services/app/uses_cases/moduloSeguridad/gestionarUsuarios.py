@@ -44,25 +44,21 @@ def getAllUsers():
             raise Exception('N','No existen Usuarios')
         else:
             for usuarioRst in usuarioRstList:
-                print(usuarioRst.rol)
+                #import pdb; pdb.set_trace()
                 #Armado de diccionario
-                usuarioDto = usuarioRst.__dict__
-                
+                usuarioDto = usuarioRst.toJson()
+                print(usuarioDto)
                 #Buscar Rol asociado a Usuario
                 rolRst = usuarioRst.rol
                 rolDto = rolRst.__dict__
+                
                 #Insertar rolDto
                 usuarioDto['rol'] = rolDto
                 #Eliminacion de datos innecesarios
-                usuarioDto.pop('_sa_instance_state',None)
-                usuarioDto.pop('randomContrasenia', None)
-                usuarioDto.pop('isRecuperarContrasenia', None)
-                usuarioDto.pop('codPrivate', None)
-                usuarioDto.pop('codRol', None)
-                rolDto.pop('_sa_instance_state',None)
-                rolDto.pop('tipoNomenclador', None)
                 usuariosList.append(usuarioDto)
-        return jsonify(usuariosList)
+            rolDto.pop('_sa_instance_state',None)
+            rolDto.pop('tipoNomenclador', None)
+        return usuariosList
     except Exception as e:
         return ResponseException(e)
 
@@ -74,3 +70,7 @@ def getUsuario(codPublic):
     except Exception as e:
         return ResponseException(e)
 #Editar Usuario
+def updateUsuario(codPublic):
+    #Buscar usuario 
+    usuarioRst = selectByCod(hlmodel.Usuario, codPublic)
+    

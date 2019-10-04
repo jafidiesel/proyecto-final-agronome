@@ -125,7 +125,8 @@ def getParametroById(cod):
         tipoDatoDto.pop('_sa_instance_state',None)
         tipoParametroDto.pop('_sa_instance_state',None)
         
-        return jsonify(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
+        #return jsonify(dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
+        return (dict(parametro = parametroDto,tipoParametro = tipoParametroDto,tipoDato = tipoDatoDto,opcion=dtoOpcionList))
     except Exception as e:
         Rollback()
         return ResponseException(e)
