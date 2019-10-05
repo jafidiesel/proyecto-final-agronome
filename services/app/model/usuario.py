@@ -34,11 +34,12 @@ class Usuario(db.Model):
     def toJson(self):
         return {
             'usuario': self.usuario,
-            'contraseniaUsuario' : self.contraseniaUsuario,
+            'cod' : self.cod,
             'nombre' : self.nombre,
             'apellido' : self.apellido,
             'email' : self.email,
             'fchCrea' : self.fchCrea.strftime('%d-%m-%Y'),
             'isActiv' : self.isActiv,
+            'rol': self.rol.to_json_simple(),
         }
     
