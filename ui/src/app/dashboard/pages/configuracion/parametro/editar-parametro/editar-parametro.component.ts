@@ -68,7 +68,6 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
       this.subscriptions.push(this._configuracionService.getParametro(params['cod']).subscribe(
         (result: any) => {
-          console.log('result', result);
           this.initForm(result);
 
           this.originalParametroAEditar.parametro.cod = result.parametro.cod;

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical,faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 
@@ -36,7 +36,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     ['Detección Fitosanitaria', faSpider, true],
     ['Detección Catástrofe', faFireAlt, true],
     ['Fertirrigación', faTint, true],
-    ['new',faPlusSquare, true ]
+    ['new', faPlusSquare, true]
   ];
 
   model: NgbDateStruct;
@@ -50,6 +50,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // Listado de actividades a seleccionar
     this.subscriptions.push(
       this._actividadService.getListaNomencladoresConFiltro('actividad', true).subscribe(
         (result: any) => {
@@ -62,7 +63,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
                 defaultIcon = false;
               }
             });
-            if(defaultIcon){
+            if (defaultIcon) {
               this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv]);
             }
 
@@ -72,16 +73,26 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.initForm();
+    // Obtencion de la estructura de la actividad para crear formulario
+    this.subscriptions.push(
+      this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
+        result => {
+          //console.log('getEstructuraActividad', result);
+          this.initForm(result);
+        },
+        error => console.log('error', error)
+      )
+    );
+
   }
 
-  ciEquals(a:string, b:string) {
+  ciEquals(a: string, b: string) {
     return typeof a === 'string' && typeof b === 'string'
       ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
       : a === b;
   }
 
-  slugify(str:string) {
+  slugify(str: string) {
     var map = {
       '-': ' ',
       'a': 'á|à|ã|â|À|Á|Ã|Â',
@@ -169,7 +180,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   registrarActividad(nombreActividad: string) {
     this.nombreActividad = nombreActividad;
     this.siguiente();
-    console.log(nombreActividad);
   }
 
   onDateSelection(date: NgbDate) {
@@ -180,8 +190,53 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { centered: true });
   }
 
+  crearParametro(obj: any) {
+    return this.fb.control({
+      cod: obj.parametro.cod,
+      nombre: obj.parametro.nombre,
+      isActiv: obj.parametro.isActiv,
+      tipo: obj.tipoDato.nombre.toLowerCase()
+    })
+      ;
+  }
 
-  initForm() {
+  initForm(form) {
+    this.registrarActividadForm = this.fb.group({
+      parametros: this.fb.array(form.parametros.map(element => this.crearParametro(element)))
+
+    });
+
+    console.log('this.registrarActividadForm', this.registrarActividadForm);
+
+    /*  {
+   "codActividad":1,
+   "date time":"asc",
+   "observacion":"Se riega en la finca por segunda vez",
+   "imagenes":[
+      {
+         "dscImg":"descripciónImg1",
+         "base64":"codigo de la imagen en base 64"
+      },
+      {
+         "dscImg":"descripciónImg2",
+         "base64":"codigo de la imagen 2 en base 64 "
+      }
+   ],
+   "parametros":[
+      {
+         "codParam":1,
+         "valor":"Riego por goteo"
+      },
+      {
+         "codParam":4,
+         "valor":"texturado"
+      },
+      {
+         "codParam":5,
+         "valor":20.5
+      }
+   ]
+} */
 
     /* this.registrarActividadForm = this.fb.group({
       parametro: this.fb.group({
@@ -202,6 +257,16 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
       
     }); */
+  }
+
+
+
+  onSubmit() {
+    console.log('form a enviar', this.registrarActividadForm.value);
+  }
+
+  imprimir() {
+    console.warn("imprimir()", this.registrarActividadForm);
   }
 
   ngOnDestroy() {

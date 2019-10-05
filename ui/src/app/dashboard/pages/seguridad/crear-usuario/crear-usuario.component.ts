@@ -26,7 +26,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-  format = 'yyyy-MM-dd';
+  format = 'dd-MM-yyyy';
   myDate = new Date();
   locale = 'en-US';
   formattedDate = formatDate(this.myDate, this.format, this.locale);

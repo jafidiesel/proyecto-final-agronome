@@ -44,6 +44,17 @@ export class ActividadService {
   }
 
   /**
+   * @param codActividad number
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion GET para obtener los parametros que componen la estructura de dicha actividad elegida
+   */
+  getEstructuraActividad(codActividad: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/parametros/${codActividad}`);
+  }
+
+
+  /**
    * @param json any
    * @return Observable<Object>
    *  
