@@ -122,7 +122,7 @@ def putAsociacion(data,entidadIntermedia,codNomenclador):
             paramListObj.append(asociacionNew) 
     
         Commit()
-        return ResponseOk
+        return ResponseOk()
     except Exception as e:
         Rollback()
         return ResponseException(e)
