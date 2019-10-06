@@ -28,3 +28,9 @@ class Rol(db.Model):
             'nombre': self.nombre,
             'isActiv': self.isActiv
         }
+    
+    def to_json_simple(self):
+        return{
+            'cod': self.cod,
+            'nombre': self.nombre
+        }

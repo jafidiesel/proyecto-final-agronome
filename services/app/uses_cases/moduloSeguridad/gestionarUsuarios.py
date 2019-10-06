@@ -7,6 +7,8 @@ import json
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 
 modelos = {
 "rol":hlmodel.Rol,
@@ -15,12 +17,13 @@ modelos = {
 
 def postUser(data):
     try:
-        usuarioJson = data.get('usuario')
-        rolJson = data.get('rol')
+        dataLower = obtainDict(data)
+        usuarioJson = dataLower.get('usuario')
+        rolJson = dataLower.get('rol')
         #Buscar rol seleccionado
         rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
         #Setear pws con hash
-        hashed_password = generate_password_hash(data.get('contraseniaUsuario'), method = 'sha256')
+        hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
         usuario = hlmodel.Usuario.from_json(usuarioJson)
         usuario.contraseniaUsuario = hashed_password
@@ -47,17 +50,7 @@ def getAllUsers():
                 #import pdb; pdb.set_trace()
                 #Armado de diccionario
                 usuarioDto = usuarioRst.toJson()
-                print(usuarioDto)
-                #Buscar Rol asociado a Usuario
-                rolRst = usuarioRst.rol
-                rolDto = rolRst.__dict__
-                
-                #Insertar rolDto
-                usuarioDto['rol'] = rolDto
-                #Eliminacion de datos innecesarios
-                usuariosList.append(usuarioDto)
-            rolDto.pop('_sa_instance_state',None)
-            rolDto.pop('tipoNomenclador', None)
+                usuariosList.append(usuarioDto)           
         return usuariosList
     except Exception as e:
         return ResponseException(e)
@@ -65,12 +58,23 @@ def getAllUsers():
 #Listar un Usuario
 def getUsuario(codPublic):
     try:
-        usuarioRst = selectByCod(hlmodel.Usuario, codPublic)
+        usuarioRst = selectByCod(hlmodel.Usuario, codPublic)        
         return usuarioRst.toJson()
     except Exception as e:
         return ResponseException(e)
 #Editar Usuario
-def updateUsuario(codPublic):
+def updateUsuario(data):
+    dataLower = obtainDict(data)
     #Buscar usuario 
-    usuarioRst = selectByCod(hlmodel.Usuario, codPublic)
+    usuarioJson = dataLower.get('usuario')
+    #Modificaciones por parte del Admin
+    claves = list(dataLower.keys())
+    #Buscar Rol
+    rolJson = dataLower.get('rol')  
+    rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
+    from app.repositorio.repositorioUsuario import updateUser
+    return updateUser(usuarioJson, rolRst)        
+
+
+
     
