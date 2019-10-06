@@ -103,12 +103,12 @@ def getParametroById(cod):
         #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
         for parametroOp in parametro.paramOpcion:
                 #opcion =selectByCod(hlmodel.Opcion,parametroOp.codOpcion)
-                opcionRst = parametroOp.opcion
-                print(opcionRst)
-                opcionDto = opcionRst.__dict__
-                opcionDto.pop('_sa_instance_state',None)
-                dtoOpcionList.append(opcionDto)
-
+                if (parametroOp.isActiv == True):
+                    opcionRst = parametroOp.opcion
+                    if (opcionRst.isActiv == True):
+                        opcionDto = opcionRst.__dict__
+                        opcionDto.pop('_sa_instance_state',None)
+                        dtoOpcionList.append(opcionDto)
         #Creacion dto parametro
         parametroDto = parametro.__dict__
         #Creacion dto tipoParametro
@@ -152,23 +152,21 @@ def getAllParametros():
         return ResponseException(e)
         
 def updateParametro(data):
-    try:
-        dataLower = obtainDict(data)
-        #Extraccion de datos    
-        parametroJson = dataLower.get('parametro')
-        tipoParametroJson = dataLower.get('tipoParametro')
-        tipoDatoJson = dataLower.get('tipoDato')
-        opcionJsonList = dataLower.get('opcion')
-        #Lista de claves del Json --> Para obtener el tipo de entidad
-        claves = list(dataLower.keys())
-        #Busqueda de entidades a asociar a Parametro
-        tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
-        tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('cod'))
-        from app.repositorio.repositorioParametro import updateParam        
-        return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
-    except Exception as e:
-        Rollback()
-        return ResponseException(e)
     
+    dataLower = obtainDict(data)
+    print(dataLower)
+    #Extraccion de datos    
+    parametroJson = dataLower.get('parametro')
+    tipoParametroJson = dataLower.get('tipoParametro')
+    tipoDatoJson = dataLower.get('tipoDato')
+    opcionJsonList = dataLower.get('opcion')
+    #Lista de claves del Json --> Para obtener el tipo de entidad
+    claves = list(dataLower.keys())
+    #Busqueda de entidades a asociar a Parametro
+    tipoParametroRst = getNomencladoCod(claves[1], tipoParametroJson.get('cod'))
+    tipoDatoRst = getNomencladoCod(claves[2], tipoDatoJson.get('cod'))
+    from app.repositorio.repositorioParametro import updateParam        
+    return updateParam(parametroJson,tipoParametroRst,tipoDatoRst,opcionJsonList)
+   
 
     
