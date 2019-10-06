@@ -21,55 +21,52 @@ def selectAllActiveByParamCod(valor):
     return objectList
 
 def updateParam(parametroJson,tipoParametroRst, tipoDatoRst,opcionJsonList):    
-    try:
-        for opcionJson in opcionJsonList:
-            #Limpiar Json, solo queda el Id
-            claves = list(opcionJson.keys())
-            for clave in claves:
-                if clave!="cod":
-                    opcionJson.pop(clave,None)
-                    
-        #Se busca Parametro por id, en caso de existir se actualiza
-        parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('cod')).first()
-        parametro = Parametro.from_json(parametroJson)
-        #Actualizacion datos propios de Parametro        
-        parametroRst.nombre = parametro.nombre
-        parametroRst.isActiv = parametro.isActiv
+    for opcionJson in opcionJsonList:
+        #Limpiar Json, solo queda el Id
+        claves = list(opcionJson.keys())
+        for clave in claves:
+            if clave!="cod":
+                opcionJson.pop(clave,None)
                 
-        # Actualizacion de asociaciones
-        tipoParametroRst.parametroTipo.append(parametroRst)
-        tipoDatoRst.parametroDato.append(parametroRst)
-
-        paramOpList = parametroRst.paramOpcion
-        #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
-        for parametroOp in paramOpList:
-            opcion = parametroOp.opcion            
-            opcionTmp = opcion.to_json()            
-            opcionTmp.pop('tipoNomenclador', None)
-            opcionTmp.pop('nombre', None)
-            opcionTmp.pop('isActiv', None)
+    #Se busca Parametro por id, en caso de existir se actualiza
+    parametroRst = Parametro.query.filter(Parametro.cod == parametroJson.get('cod')).first()
+    parametro = Parametro.from_json(parametroJson)
+    #Actualizacion datos propios de Parametro        
+    parametroRst.nombre = parametro.nombre
+    parametroRst.isActiv = parametro.isActiv
             
-            if (opcionTmp not in opcionJsonList)or(opcionJsonList[0].get("")):
-                #Si ParametroOpcion tiene asociado un codOpcion que NO esta en opcionJsonList, actualizar iSActiv a False
-                parametroOp.isActiv = False
-            elif (opcionTmp in opcionJsonList):
-                parametroOp.isActiv = True
+    # Actualizacion de asociaciones
+    tipoParametroRst.parametroTipo.append(parametroRst)
+    tipoDatoRst.parametroDato.append(parametroRst)
 
-        for opcionJson in opcionJsonList:
-            i = 0
-            for parametroOp in paramOpList:
-                
-                if(opcionJson.get('cod') == parametroOp.codOpcion):      
-                    i += 1
-            from app.model import hlmodel
-            if(i ==0 ):
-                opcionRst = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('cod')).one()
-                parametroOpcion = ParametroOpcion(True)
-                parametroOpcion.opcion = opcionRst
-                parametroRst.paramOpcion.append(parametroOpcion) 
-                saveEntidadSinCommit(parametroOpcion)       
-        Commit()      
-        return ResponseOk()   
-    except Exception as e:
-        Rollback()
-        return ResponseException(e)
+    paramOpList = parametroRst.paramOpcion
+    #Busqueda por ID de entidades Opcion relacionadas a parametroOpcion
+    for parametroOp in paramOpList:
+        opcion = parametroOp.opcion            
+        opcionTmp = opcion.to_json()            
+        opcionTmp.pop('tipoNomenclador', None)
+        opcionTmp.pop('nombre', None)
+        opcionTmp.pop('isActiv', None)
+        
+        if (opcionTmp not in opcionJsonList)or(opcionJsonList[0].get("")):
+            #Si ParametroOpcion tiene asociado un codOpcion que NO esta en opcionJsonList, actualizar iSActiv a False
+            parametroOp.isActiv = False
+        elif (opcionTmp in opcionJsonList):
+            parametroOp.isActiv = True
+
+    for opcionJson in opcionJsonList:
+        i = 0
+        for parametroOp in paramOpList:
+            
+            if(opcionJson.get('cod') == parametroOp.codOpcion):      
+                i += 1
+        from app.model import hlmodel
+        if(i ==0 ):
+            opcionRst = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('cod')).one()
+            parametroOpcion = ParametroOpcion(True)
+            parametroOpcion.opcion = opcionRst
+            parametroRst.paramOpcion.append(parametroOpcion) 
+            saveEntidadSinCommit(parametroOpcion)       
+    Commit()      
+    return ResponseOk()   
+    
