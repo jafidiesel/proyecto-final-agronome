@@ -77,6 +77,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
         result => {
+          console.log('result',result);
           //console.log('getEstructuraActividad', result);
           this.initForm(result);
         },
@@ -199,14 +200,33 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     })
       ;
   }
+  
+  crearParametroConOpcion(obj: any) {
+    console.log('obj.opcion',obj.opcion);
+    return this.fb.control({
+      cod: obj.parametro.cod,
+      nombre: obj.parametro.nombre,
+      isActiv: obj.parametro.isActiv,
+      tipo: obj.tipoDato.nombre.toLowerCase(),
+      opcion: obj.opcion
+    });
+  }
 
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      parametros: this.fb.array(form.parametros.map(element => this.crearParametro(element)))
+      parametros: this.fb.array(form.parametros.map(element => {
+
+        if(element.opcion.length > 0){
+          return this.crearParametroConOpcion(element);
+        }else{
+          return this.crearParametro(element);
+        }
+      }))
 
     });
 
     console.log('this.registrarActividadForm', this.registrarActividadForm);
+  }
 
     /*  {
    "codActividad":1,
@@ -257,7 +277,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
       
     }); */
-  }
 
 
 
