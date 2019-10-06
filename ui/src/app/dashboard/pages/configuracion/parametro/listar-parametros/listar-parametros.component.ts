@@ -10,7 +10,6 @@ export class ListarParametrosComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-
   // array de rows para table component
   nomencladoresTabla = [];
   tableDataHeader = ['Nombre', 'Activo', 'Editar'];

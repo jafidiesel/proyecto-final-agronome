@@ -47,7 +47,7 @@ const routes: Routes = [
   /* Modulo Seguridad */
   //{ path: 'seguridad', component: SeguridadPageComponent },
   { path: 'seguridad', component: ListarUsuariosComponent },
-  { path: 'seguridad/crear-usuario', component: CrearUsuarioComponent },
+  { path: 'seguridad/crearUsuario', component: CrearUsuarioComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },

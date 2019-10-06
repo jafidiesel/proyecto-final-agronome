@@ -5,14 +5,16 @@
             Seleccionar actividad
         </div>
         <div class="card-columns">
-            <div *ngFor="let button of configurationButtons" >
-                <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;" >
-                    <div class="card-body" >
-                        <fa-icon class="mb-4" [icon]="button[1]"  size="5x" [styles]="{'stroke': 'green', 'color': 'green'}" ></fa-icon>
+            <div *ngFor="let button of configurationButtons">
+                <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;">
+                    <div class="card-body">
+                        <fa-icon class="mb-4" [icon]="button[1]" size="5x"
+                            [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
                         <h5 class="card-title">{{ button[0] }}</h5>
-                        <button  class="btn btn-primary text-light" (click) ="registrarActividad(button[0])">Registrar</button>
+                        <button class="btn btn-primary text-light"
+                            (click)="registrarActividad(button[0])">Registrar</button>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
     </div>
@@ -24,16 +26,12 @@
             <div class="form-group row">
                 <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha de la actividad</label>
                 <div class="col-sm-10">
-                    <ngb-datepicker 
-                        #dp (ngModel)="model" 
-                        (select)="onDateSelection($event)"  
-                        (navigate)="date = $event.next"
-                        [minDate]="{year: 2010, month: 1, day: 1}"
-                        [maxDate]="{year: 2048, month: 12, day: 31}"
-                        [markDisabled]="isDisabled">
+                    <ngb-datepicker #dp (ngModel)="model" (select)="onDateSelection($event)"
+                        (navigate)="date = $event.next" [minDate]="{year: 2010, month: 1, day: 1}"
+                        [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled">
                     </ngb-datepicker>
-        
-                    <p>{{date|json}}</p>    
+
+                    <p>{{date|json}}</p>
                 </div>
             </div>
             <div class="form-group row">
@@ -45,7 +43,8 @@
                         <option value="2">La colina</option>
                         <option value="3">Flia. Benitez</option>
                     </select>
-                    <button class="btn btn-success mt-4" (click)="openVerticallyCentered(content)">Añadir parcela</button>
+                    <button class="btn btn-success mt-4" (click)="openVerticallyCentered(content)">Añadir
+                        parcela</button>
                 </div>
             </div>
         </div>
@@ -61,15 +60,15 @@
         <div class="modal-body">
             <div class="form-group form-check">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela1" name="parcela1" >
+                    <input type="checkbox" class="custom-control-input" id="parcela1" name="parcela1">
                     <label class="custom-control-label" for="parcela1">Parcela 1</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela2" name="parcela2" >
+                    <input type="checkbox" class="custom-control-input" id="parcela2" name="parcela2">
                     <label class="custom-control-label" for="parcela2">Parcela 2</label>
                 </div>
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela3" name="parcela3" >
+                    <input type="checkbox" class="custom-control-input" id="parcela3" name="parcela3">
                     <label class="custom-control-label" for="parcela3">Parcela 3</label>
                 </div>
             </div>
@@ -82,18 +81,52 @@
 
     <div class="card m-3" *ngSwitchCase="'2'">
         <div class="card-header">
-            Actividad de riego
+            Actividad {{ nombreActividad }}
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <label for="colFormLabel" class="col-form-label">Tipo de riego</label>
-                <select class="custom-select" id="libro">
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="colFormLabel" class="col-form-label">Fuente de riego</label>
-                <input type="text" class="form-control" id="fuente" placeholder="fuente de riego">
-            </div>
+
+
+            <form [formGroup]="registrarActividadForm" (ngSubmit)="onSubmit()">
+                <div *ngFor="let parametro of registrarActividadForm.get('parametros').controls; let i = index"
+                    formArrayName="parametros">
+                    <div [ngSwitch]="parametro.value.tipo">
+                        <div *ngSwitchCase="'string'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'int'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b></label>
+                            <div class="col-sm-8">
+                                <input class="form-control" type="number" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su numero aqui." />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'enumeration'" class="form-group">
+                            <label
+                                for="{{parametro.value.nombre}}"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b></label>
+                            <div *ngFor="let opcion of parametro.value.opcion; let i = index">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" [id]="i">
+                                    <label class="custom-control-label"
+                                        [for]="i">{{opcion.nombre.charAt(0).toUpperCase() + opcion.nombre.slice(1)}}</label>
+                                </div>
+                            </div>
+                            <!-- <input class="form-control" type="number" id="{{parametro.value.nombre}}"
+                                placeholder="Ingrese su numero aqui." /> -->
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
     <div class="card m-3" *ngSwitchCase="'3'">
@@ -108,8 +141,9 @@
         </div>
     </div>
     <h4>{{ step }}</h4>
-    <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}} </button>
-    <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()" > {{ nextButtonText }}</button>
+    <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}}
+    </button>
+    <input type="button" class="btn btn-warning" (click)="imprimir()" value="imprimir()" />
+    <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
+        {{ nextButtonText }}</button>
 </main>
-
-<p>{{date|json}}</p>  
