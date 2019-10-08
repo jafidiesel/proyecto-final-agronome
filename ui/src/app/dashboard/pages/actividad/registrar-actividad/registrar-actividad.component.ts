@@ -77,7 +77,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
         result => {
-          console.log('result',result);
+          console.log('result', result);
           //console.log('getEstructuraActividad', result);
           this.initForm(result);
         },
@@ -191,20 +191,22 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { centered: true });
   }
 
-  crearParametro(obj: any) {
+  crearParametro(obj: any, index) {
     return this.fb.control({
-      cod: obj.parametro.cod,
+      codParam: obj.parametro.cod,
+      valor: null,
       nombre: obj.parametro.nombre,
       isActiv: obj.parametro.isActiv,
-      tipo: obj.tipoDato.nombre.toLowerCase()
+      tipo: obj.tipoDato.nombre.toLowerCase(),
     })
-      ;
+    ;
   }
   
-  crearParametroConOpcion(obj: any) {
-    console.log('obj.opcion',obj.opcion);
+  crearParametroConOpcion(obj: any, index) {
+    console.log('obj.opcion', obj.opcion);
     return this.fb.control({
-      cod: obj.parametro.cod,
+      codParam: obj.parametro.cod,
+      valor: null,
       nombre: obj.parametro.nombre,
       isActiv: obj.parametro.isActiv,
       tipo: obj.tipoDato.nombre.toLowerCase(),
@@ -212,14 +214,30 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  actualizarValorParametro(event) {
+    const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id;
+    
+    this.registrarActividadForm.get('parametros').value.map( element => {
+      if(id == element.nombre){
+        element.valor = valor;
+      }
+    } );
+  }
+
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      parametros: this.fb.array(form.parametros.map(element => {
-
-        if(element.opcion.length > 0){
-          return this.crearParametroConOpcion(element);
-        }else{
-          return this.crearParametro(element);
+      codActividad : 1,
+      fchActivDetalle: "2019-10-30 22:12:54",
+      observacion:"Se riega en la finca por segunda vez",
+      imagenes:[],
+      parametros: this.fb.array(form.parametros.map((element, index) => {
+        console.log('index', index);
+        if (element.opcion.length > 0) {
+          return this.crearParametroConOpcion(element, index);
+        } else {
+          return this.crearParametro(element, index);
         }
       }))
 
@@ -228,60 +246,18 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     console.log('this.registrarActividadForm', this.registrarActividadForm);
   }
 
-    /*  {
-   "codActividad":1,
-   "date time":"asc",
-   "observacion":"Se riega en la finca por segunda vez",
-   "imagenes":[
-      {
-         "dscImg":"descripciónImg1",
-         "base64":"codigo de la imagen en base 64"
-      },
-      {
-         "dscImg":"descripciónImg2",
-         "base64":"codigo de la imagen 2 en base 64 "
-      }
-   ],
-   "parametros":[
-      {
-         "codParam":1,
-         "valor":"Riego por goteo"
-      },
-      {
-         "codParam":4,
-         "valor":"texturado"
-      },
-      {
-         "codParam":5,
-         "valor":20.5
-      }
-   ]
-} */
-
-    /* this.registrarActividadForm = this.fb.group({
-      parametro: this.fb.group({
-        cod: [formValues[0].parametro.cod],
-        nombre: [formValues[0].parametro.nombre, Validators.required],
-        isActiv: [formValues[0].parametro.isActiv],
-      }),
-      tipoParametro: this.fb.group({
-        cod: [formValues[0].tipoParametro.cod, Validators.required],
-        nombre: [formValues[0].tipoParametro.nombre],
-        isActiv: [formValues[0].tipoParametro.isActiv],
-      }),
-      tipoDato: this.fb.group({
-        cod: [formValues[0].tipoDato.cod, Validators.required],
-        nombre: [formValues[0].tipoDato.nombre],
-        isActiv: [formValues[0].tipoDato.isActiv],
-      }),
-      opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
-      
-    }); */
 
 
 
   onSubmit() {
     console.log('form a enviar', this.registrarActividadForm.value);
+
+    this.subscriptions.push(
+      this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
+        result => console.log('exito'),
+        error => console.error(error)
+      )
+    );
   }
 
   imprimir() {
