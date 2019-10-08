@@ -22,3 +22,10 @@ def updateUser(usuarioJson, rolRst):
     except Exception as e:
         Rollback()
         return ResponseException(e)
+
+def getUsuarioByName(nombre):
+    try:
+        usuario = Usuario.query.filter(Usuario.nombre == nombre).one()
+        return usuario
+    except Exception as e:
+        return ResponseException(e)

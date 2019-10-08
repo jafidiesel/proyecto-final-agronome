@@ -8,8 +8,7 @@ def create_api(environment_name=None):
     app= Flask(__name__)
 
     app.config.from_object(config[environment_name])
-    app.config['SECRET KEY'] = 'secret'
-    
+        
     #CORS(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 

@@ -17,4 +17,5 @@ urlResgistrarActiv = Namespace(URL_MA + 'registrar', description='Registrar Acti
 
 #modulo de seguridad
 URL_MU = 'api/users'
-urlUsuario = Namespace(URL_MU, description = 'Registrar Usuario')
+urlUsuario = Namespace(URL_MU , description = 'Registrar Usuario')
+urlLogin = Namespace(URL_MU +'/login', description = 'Login Usuario')

@@ -21,7 +21,4 @@ class UsersHandler(Resource):
     def get(self, cod):
         return getUsuario(cod)
 
-""" @users.route('/login')
-class UsersHandler(Resource):
-    #auth = request.authorization
- """    
+  

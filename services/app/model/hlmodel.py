@@ -17,6 +17,7 @@ from app.model.tipoPlan import TipoPlan
 from app.model.tipoPlanificacion import TipoPlanificacion
 from app.model.tipoRecurso import TipoRecurso
 from app.model.usuario import Usuario
+from app.model.session import SessionUser
 
 from app.model.actividadParametro import ActividadParametro
 from app.model.tipoPlanParam import TipoPlanParam
