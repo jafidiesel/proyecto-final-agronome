@@ -199,9 +199,9 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       isActiv: obj.parametro.isActiv,
       tipo: obj.tipoDato.nombre.toLowerCase(),
     })
-    ;
+      ;
   }
-  
+
   crearParametroConOpcion(obj: any, index) {
     console.log('obj.opcion', obj.opcion);
     return this.fb.control({
@@ -218,20 +218,20 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const valor = selectEl.value;
     const id = selectEl.id;
-    
-    this.registrarActividadForm.get('parametros').value.map( element => {
-      if(id == element.nombre){
+
+    this.registrarActividadForm.get('parametros').value.map(element => {
+      if (id == element.nombre) {
         element.valor = valor;
       }
-    } );
+    });
   }
 
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      codActividad : 1,
+      codActividad: 1,
       fchActivDetalle: "2019-10-30 22:12:54",
-      observacion:"Se riega en la finca por segunda vez",
-      imagenes:[{}],
+      observacion: "Se riega en la finca por segunda vez",
+      imagenes: [{}],
       parametros: this.fb.array(form.parametros.map((element, index) => {
         console.log('index', index);
         if (element.opcion.length > 0) {

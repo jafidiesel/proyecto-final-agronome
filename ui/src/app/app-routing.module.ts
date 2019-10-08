@@ -30,12 +30,14 @@ import { AsociarPlanComponent } from './dashboard/pages/configuracion/asociar/pl
 import { EditarPlanAsociadoComponent } from './dashboard/pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 import { CrearUsuarioComponent } from './dashboard/pages/seguridad/crear-usuario/crear-usuario.component';
 import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usuarios/listar-usuarios.component';
+import { ListarActividadesComponent } from './dashboard/pages/actividad/listar-actividades/listar-actividades.component';
 
 
 const routes: Routes = [
   /* Modulo Actividades */
   { path: 'actividades', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
+  { path: 'actividades/listarActividades', component: ListarActividadesComponent },
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */
@@ -76,8 +78,8 @@ const routes: Routes = [
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   { path: 'home', redirectTo: 'actividades' },
-  { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
-];
+/*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
+ */];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
