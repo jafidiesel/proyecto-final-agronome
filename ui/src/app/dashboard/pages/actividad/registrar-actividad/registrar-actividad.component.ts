@@ -231,7 +231,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       codActividad : 1,
       fchActivDetalle: "2019-10-30 22:12:54",
       observacion:"Se riega en la finca por segunda vez",
-      imagenes:[],
+      imagenes:[{}],
       parametros: this.fb.array(form.parametros.map((element, index) => {
         console.log('index', index);
         if (element.opcion.length > 0) {
