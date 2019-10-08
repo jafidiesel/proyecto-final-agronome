@@ -23,7 +23,7 @@
                         </div>
                     
                         <p *ngSwitchDefault>
-                            {{ row }}
+                            {{row.charAt(0).toUpperCase() + row.slice(1)}}
                         </p>
                     </span>
 
