@@ -2,9 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-registrar-actividad',
@@ -39,8 +40,19 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     ['new', faPlusSquare, true]
   ];
 
+  format = 'dd-MM-yyyy';
+  locale = 'en-US';
   model: NgbDateStruct;
   date: { year: number, month: number, day: number };
+  //formattedDate = formatDate(this.date, this.format, this.locale);
+  fechaFormateada = "";
+
+  
+
+  // error flags
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
 
   constructor(private router: Router,
     private calendar: NgbCalendar,
@@ -152,6 +164,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     switch (this.step) {
       case 3:
         //this.router.navigate(['/actividades'])
+        this.onSubmit();
         break;
       case 2:
         this.backButtonText = "Atrás";
@@ -184,7 +197,18 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   onDateSelection(date: NgbDate) {
-    this.date = date;
+    console.log('date',date);
+    let dayString = date.day.toString();
+    
+    if( (dayString).length < 2  ) {
+      dayString = "0" + date.day;
+    }
+
+    let fecha = dayString + "-" + date.month + "-" + date.year
+    
+    this.registrarActividadForm.patchValue({
+      fchActivDetalle: fecha ,
+    });
   }
 
   openVerticallyCentered(content) {
@@ -229,11 +253,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
       codActividad: 1,
-      fchActivDetalle: "2019-10-30 22:12:54",
-      observacion: "Se riega en la finca por segunda vez",
+      fchActivDetalle: [ null, Validators.required],
+      observacion: null,
       imagenes: [{}],
       parametros: this.fb.array(form.parametros.map((element, index) => {
-        console.log('index', index);
         if (element.opcion.length > 0) {
           return this.crearParametroConOpcion(element, index);
         } else {
@@ -251,17 +274,29 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     console.log('form a enviar', this.registrarActividadForm.value);
+    if(this.registrarActividadForm.status == 'VALID'){
+      this.subscriptions.push(
+        this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
+          result => {
+            this.postSuccess = true;
+            this.postError = false;
+            this.postErrorMessage = '';
+          },
+          error => this.onHttpError(error)
+        )
+      );
 
-    this.subscriptions.push(
-      this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
-        result => console.log('exito'),
-        error => console.error(error)
-      )
-    );
+    }
   }
 
   imprimir() {
     console.warn("imprimir()", this.registrarActividadForm);
+  }
+
+  onHttpError(errorResponse: any) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
   }
 
   ngOnDestroy() {
