@@ -44,10 +44,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   locale = 'en-US';
   model: NgbDateStruct;
   date: { year: number, month: number, day: number };
-  //formattedDate = formatDate(this.date, this.format, this.locale);
   fechaFormateada = "";
 
-  
+  // flag que comprueba el estado de los comprobados
+  camposParametrosCompletados = false;
 
   // error flags
   postSuccess = false;
@@ -90,7 +90,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
         result => {
           console.log('result', result);
-          //console.log('getEstructuraActividad', result);
           this.initForm(result);
         },
         error => console.log('error', error)
@@ -125,6 +124,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   atras() {
+    this.postError = false;
+    this.postErrorMessage = '';
     switch (this.step) {
       case 0:
         this.router.navigate(['/actividades']);
@@ -161,12 +162,17 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   siguiente() {
+    this.postError = false;
+    this.postErrorMessage = '';
+
     switch (this.step) {
       case 3:
         //this.router.navigate(['/actividades'])
         this.onSubmit();
         break;
       case 2:
+        this.camposParametrosCompletados = this.parametrosCompletados();
+
         this.backButtonText = "Atrás";
         this.nextButtonText = "Guardar";
         this.guardarClass = "btn-success";
@@ -197,17 +203,17 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   onDateSelection(date: NgbDate) {
-    console.log('date',date);
+    console.log('date', date);
     let dayString = date.day.toString();
-    
-    if( (dayString).length < 2  ) {
+
+    if ((dayString).length < 2) {
       dayString = "0" + date.day;
     }
 
     let fecha = dayString + "-" + date.month + "-" + date.year
-    
+
     this.registrarActividadForm.patchValue({
-      fchActivDetalle: fecha ,
+      fchActivDetalle: fecha,
     });
   }
 
@@ -253,7 +259,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
       codActividad: 1,
-      fchActivDetalle: [ null, Validators.required],
+      fchActivDetalle: [null, Validators.required],
       observacion: null,
       imagenes: [{}],
       parametros: this.fb.array(form.parametros.map((element, index) => {
@@ -266,15 +272,20 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     });
 
-    console.log('this.registrarActividadForm', this.registrarActividadForm);
+  }
+
+  parametrosCompletados(){
+    let list = document.querySelectorAll(".input-parametros");
+    for (let index = 0; index < list.length; index++) {
+      const element: any = list[index];
+      if(element.value == "") return false;      
+    }
+    return true;
   }
 
 
-
-
   onSubmit() {
-    console.log('form a enviar', this.registrarActividadForm.value);
-    if(this.registrarActividadForm.status == 'VALID'){
+    if (this.registrarActividadForm.status == 'VALID' && this.parametrosCompletados()) {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
@@ -286,11 +297,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         )
       );
 
+    } else {
+      this.onHttpError({ message: "Complete todos los campos obligatorios." });
     }
   }
 
   imprimir() {
-    console.warn("imprimir()", this.registrarActividadForm);
+    this.parametrosCompletados();
   }
 
   onHttpError(errorResponse: any) {
