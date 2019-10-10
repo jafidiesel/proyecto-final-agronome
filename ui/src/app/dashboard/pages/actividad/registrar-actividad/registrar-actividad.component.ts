@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
@@ -14,6 +14,7 @@ import { formatDate } from '@angular/common';
 export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   nombreActividad: string;
+  codActividad: number;
 
   subscriptions: Subscription[] = [];
 
@@ -58,7 +59,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService) { }
+    private _actividadService: ActividadService,
+    private activatedRoute: ActivatedRoute, ) { }
 
   ngOnInit() {
 
@@ -71,30 +73,31 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             defaultIcon = true;
             this.dummyConfigurationButtons.map(dummyElement => {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
-                this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv]);
+                this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
               }
             });
             if (defaultIcon) {
-              this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv]);
+              this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv, element.cod]);
             }
-
+            console.log('this.configurationButtons',this.configurationButtons);
+            this.codActividad = element.cod;
           });
-
+          
+          // Obtencion de la estructura de la actividad para crear formulario
+          this.subscriptions.push(
+            this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+              result => {
+                this.initForm(result);
+              },
+              error => console.log('error', error)
+            )
+          );
         }
       )
     );
 
-    // Obtencion de la estructura de la actividad para crear formulario
-    this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
-        result => {
-          console.log('result', result);
-          this.initForm(result);
-        },
-        error => console.log('error', error)
-      )
-    );
+
 
   }
 
@@ -131,7 +134,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         this.router.navigate(['/actividades']);
         break;
       case 1:
-        //this.router.navigate(['/actividades']);
         this.backButtonText = "Volver";
         this.cancelarClass = "btn-danger";
 
@@ -167,7 +169,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     switch (this.step) {
       case 3:
-        //this.router.navigate(['/actividades'])
         this.onSubmit();
         break;
       case 2:
@@ -197,8 +198,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  registrarActividad(nombreActividad: string) {
+  registrarActividad(nombreActividad: string, codActividad:number) {
+
     this.nombreActividad = nombreActividad;
+    this.codActividad = codActividad;
     this.siguiente();
   }
 
@@ -258,7 +261,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      codActividad: 1,
+      codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: null,
       imagenes: [{}],
@@ -274,11 +277,11 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  parametrosCompletados(){
+  parametrosCompletados() {
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
-      if(element.value == "") return false;      
+      if (element.value == "") return false;
     }
     return true;
   }

@@ -1,4 +1,4 @@
-<main role="main" class="container mt-4" [ngSwitch]="step">
+<main role="main" class="container mt-4" [ngSwitch]="step" *ngIf="this.codActividad != null" >
     <h1 class="display-4">{{ nombreActividad }}</h1>
     <form [formGroup]="registrarActividadForm" (ngSubmit)="onSubmit()" *ngIf="
     registrarActividadForm != null ">
@@ -14,7 +14,7 @@
                                 [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
                             <h5 class="card-title">{{ button[0] }}</h5>
                             <button class="btn btn-primary text-light"
-                                (click)="registrarActividad(button[0])">Registrar</button>
+                                (click)="registrarActividad(button[0],button[3])">Registrar</button>
                         </div>
                     </div>
                 </div>
