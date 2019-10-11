@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
-import { formatDate } from '@angular/common';
+
 
 @Component({
   selector: 'app-registrar-actividad',
@@ -59,8 +59,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService,
-    private activatedRoute: ActivatedRoute, ) { }
+    private _actividadService: ActividadService ) { }
 
   ngOnInit() {
 
@@ -131,7 +130,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = '';
     switch (this.step) {
       case 0:
-        this.router.navigate(['/actividades']);
+        this.router.navigate(['/actividades/listarActividades']);
         break;
       case 1:
         this.backButtonText = "Volver";

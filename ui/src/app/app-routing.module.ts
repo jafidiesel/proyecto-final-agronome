@@ -31,6 +31,7 @@ import { EditarPlanAsociadoComponent } from './dashboard/pages/configuracion/aso
 import { CrearUsuarioComponent } from './dashboard/pages/seguridad/crear-usuario/crear-usuario.component';
 import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usuarios/listar-usuarios.component';
 import { ListarActividadesComponent } from './dashboard/pages/actividad/listar-actividades/listar-actividades.component';
+import { VerActividadComponent } from './dashboard/pages/actividad/ver-actividad/ver-actividad.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'actividades', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
   { path: 'actividades/listarActividades', component: ListarActividadesComponent },
+  { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */

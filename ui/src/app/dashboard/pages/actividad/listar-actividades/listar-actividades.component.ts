@@ -11,7 +11,7 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   mostrarTabla = false;
-  tableDataHeader = ['Nombre', 'Fecha', 'Observacion', 'Eliminar'];
+  tableDataHeader = ['Nombre', 'Fecha', 'Observacion', 'Ver'];
 
   actividadesArray = [];
 
@@ -30,7 +30,7 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
               element.Actividad.nombreActividad,
               element.fchActivDetalle,
               element.observacion,
-              `-/actividades/editarActividad/${element.codActivDetalle}`
+              `%/actividades/verActividad/${element.codActivDetalle}`,
             ]);
           });
           this.mostrarTabla = true;

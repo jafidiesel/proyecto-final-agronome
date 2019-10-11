@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
-
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
@@ -49,6 +48,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CrearUsuarioComponent } from './pages/seguridad/crear-usuario/crear-usuario.component';
 import { ListarUsuariosComponent } from './pages/seguridad/listar-usuarios/listar-usuarios.component';
 import { ListarActividadesComponent } from './pages/actividad/listar-actividades/listar-actividades.component';
+import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +91,7 @@ import { ListarActividadesComponent } from './pages/actividad/listar-actividades
     CrearUsuarioComponent,
     ListarUsuariosComponent,
     ListarActividadesComponent,
+    VerActividadComponent,
   ],
   imports: [
     CommonModule,
