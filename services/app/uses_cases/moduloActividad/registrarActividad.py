@@ -79,7 +79,7 @@ def getRegistrarActivCod(codActivDetalle):
 
         dtoDetalle = dict(
             codActivDetalle=detalle.codActivDetalle,
-            fchActivDetalle= detalle.fchActivDetalle.strftime("%d/%m/%Y %H:%M:%S"),
+            fchActivDetalle= detalle.fchActivDetalle.strftime("%d-%m-%Y %H:%M:%S"),
             observacion=detalle.observacion)
         ##Actividad
         codActividad = detalle.actividad.cod

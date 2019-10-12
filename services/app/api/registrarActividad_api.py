@@ -1,4 +1,3 @@
-from flask import jsonify
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlResgistrarActiv
 from app.uses_cases.moduloActividad.registrarActividad import postRegistrarActiv, getRegistrarActiv, putRegistrarActiv, deleteRegistrarActiv, getRegistrarActivCod ,getParametrosFull
