@@ -5,9 +5,7 @@ class EstadoPlanificacion(db.Model):
     cod = db.Column('cod_estado_planificacion', Integer,primary_key = True,index = True)
     nombre = db.Column('nombre_estado_planificacion', String(80), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
-    nombreNomenclador = "estadoPlanificacion"
-
-    
+    nombreNomenclador = "estadoPlanificacion"  
 
     def __init__(self, nombre,isActiv):
         
