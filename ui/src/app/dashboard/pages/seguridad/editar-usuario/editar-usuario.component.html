@@ -1,8 +1,8 @@
-<main role="main" class="container mt-4">
+<main role="main" class="container mt-4" *ngIf="formUsuario != null" >
     <div class="card  bg-light">
         <div class="card-body ">
             <div>
-                <h3 class="display-4">Nuevo Usuario</h3>
+                <h3 class="display-4">Editar Usuario</h3>
             </div>
             <form (ngSubmit)="onSubmitUsuario()" [formGroup]="formUsuario">
                 <div formGroupName="usuario">
@@ -66,7 +66,7 @@
                 </div>
 
                 <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
-                    ¡ Usuario Creado !
+                    ¡ Usuario Editado !
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -77,7 +77,7 @@
                         <div [hidden]="!postError" class="alert alert-danger">
                             {{ postErrorMessage }}
                         </div>
-                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear usuario</button>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Editar usuario</button>
                         <button [routerLink]="['/seguridad']" type="button"
                             class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
                     </div>

@@ -2,9 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
+
 
 @Component({
   selector: 'app-registrar-actividad',
@@ -13,6 +14,7 @@ import { ActividadService } from 'src/app/dashboard/services/actividad/actividad
 export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   nombreActividad: string;
+  codActividad: number;
 
   subscriptions: Subscription[] = [];
 
@@ -39,14 +41,25 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     ['new', faPlusSquare, true]
   ];
 
+  format = 'dd-MM-yyyy';
+  locale = 'en-US';
   model: NgbDateStruct;
   date: { year: number, month: number, day: number };
+  fechaFormateada = "";
+
+  // flag que comprueba el estado de los comprobados
+  camposParametrosCompletados = false;
+
+  // error flags
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
 
   constructor(private router: Router,
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService) { }
+    private _actividadService: ActividadService ) { }
 
   ngOnInit() {
 
@@ -59,31 +72,31 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             defaultIcon = true;
             this.dummyConfigurationButtons.map(dummyElement => {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
-                this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv]);
+                this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
               }
             });
             if (defaultIcon) {
-              this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv]);
+              this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv, element.cod]);
             }
-
+            console.log('this.configurationButtons',this.configurationButtons);
+            this.codActividad = element.cod;
           });
-
+          
+          // Obtencion de la estructura de la actividad para crear formulario
+          this.subscriptions.push(
+            this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+              result => {
+                this.initForm(result);
+              },
+              error => console.log('error', error)
+            )
+          );
         }
       )
     );
 
-    // Obtencion de la estructura de la actividad para crear formulario
-    this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(1).subscribe( // reemplazar 1 con codActividad
-        result => {
-          console.log('result',result);
-          //console.log('getEstructuraActividad', result);
-          this.initForm(result);
-        },
-        error => console.log('error', error)
-      )
-    );
+
 
   }
 
@@ -113,12 +126,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   atras() {
+    this.postError = false;
+    this.postErrorMessage = '';
     switch (this.step) {
       case 0:
-        this.router.navigate(['/actividades']);
+        this.router.navigate(['/actividades/listarActividades']);
         break;
       case 1:
-        //this.router.navigate(['/actividades']);
         this.backButtonText = "Volver";
         this.cancelarClass = "btn-danger";
 
@@ -149,11 +163,16 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   siguiente() {
+    this.postError = false;
+    this.postErrorMessage = '';
+
     switch (this.step) {
       case 3:
-        //this.router.navigate(['/actividades'])
+        this.onSubmit();
         break;
       case 2:
+        this.camposParametrosCompletados = this.parametrosCompletados();
+
         this.backButtonText = "Atrás";
         this.nextButtonText = "Guardar";
         this.guardarClass = "btn-success";
@@ -178,33 +197,48 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  registrarActividad(nombreActividad: string) {
+  registrarActividad(nombreActividad: string, codActividad:number) {
+
     this.nombreActividad = nombreActividad;
+    this.codActividad = codActividad;
     this.siguiente();
   }
 
   onDateSelection(date: NgbDate) {
-    this.date = date;
+    console.log('date', date);
+    let dayString = date.day.toString();
+
+    if ((dayString).length < 2) {
+      dayString = "0" + date.day;
+    }
+
+    let fecha = dayString + "-" + date.month + "-" + date.year
+
+    this.registrarActividadForm.patchValue({
+      fchActivDetalle: fecha,
+    });
   }
 
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
 
-  crearParametro(obj: any) {
+  crearParametro(obj: any, index) {
     return this.fb.control({
-      cod: obj.parametro.cod,
+      codParam: obj.parametro.cod,
+      valor: null,
       nombre: obj.parametro.nombre,
       isActiv: obj.parametro.isActiv,
-      tipo: obj.tipoDato.nombre.toLowerCase()
+      tipo: obj.tipoDato.nombre.toLowerCase(),
     })
       ;
   }
-  
-  crearParametroConOpcion(obj: any) {
-    console.log('obj.opcion',obj.opcion);
+
+  crearParametroConOpcion(obj: any, index) {
+    console.log('obj.opcion', obj.opcion);
     return this.fb.control({
-      cod: obj.parametro.cod,
+      codParam: obj.parametro.cod,
+      valor: null,
       nombre: obj.parametro.nombre,
       isActiv: obj.parametro.isActiv,
       tipo: obj.tipoDato.nombre.toLowerCase(),
@@ -212,80 +246,72 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  actualizarValorParametro(event) {
+    const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id;
+
+    this.registrarActividadForm.get('parametros').value.map(element => {
+      if (id == element.nombre) {
+        element.valor = valor;
+      }
+    });
+  }
+
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      parametros: this.fb.array(form.parametros.map(element => {
-
-        if(element.opcion.length > 0){
-          return this.crearParametroConOpcion(element);
-        }else{
-          return this.crearParametro(element);
+      codActividad: this.codActividad,
+      fchActivDetalle: [null, Validators.required],
+      observacion: null,
+      imagenes: [{}],
+      parametros: this.fb.array(form.parametros.map((element, index) => {
+        if (element.opcion.length > 0) {
+          return this.crearParametroConOpcion(element, index);
+        } else {
+          return this.crearParametro(element, index);
         }
       }))
 
     });
 
-    console.log('this.registrarActividadForm', this.registrarActividadForm);
   }
 
-    /*  {
-   "codActividad":1,
-   "date time":"asc",
-   "observacion":"Se riega en la finca por segunda vez",
-   "imagenes":[
-      {
-         "dscImg":"descripciónImg1",
-         "base64":"codigo de la imagen en base 64"
-      },
-      {
-         "dscImg":"descripciónImg2",
-         "base64":"codigo de la imagen 2 en base 64 "
-      }
-   ],
-   "parametros":[
-      {
-         "codParam":1,
-         "valor":"Riego por goteo"
-      },
-      {
-         "codParam":4,
-         "valor":"texturado"
-      },
-      {
-         "codParam":5,
-         "valor":20.5
-      }
-   ]
-} */
-
-    /* this.registrarActividadForm = this.fb.group({
-      parametro: this.fb.group({
-        cod: [formValues[0].parametro.cod],
-        nombre: [formValues[0].parametro.nombre, Validators.required],
-        isActiv: [formValues[0].parametro.isActiv],
-      }),
-      tipoParametro: this.fb.group({
-        cod: [formValues[0].tipoParametro.cod, Validators.required],
-        nombre: [formValues[0].tipoParametro.nombre],
-        isActiv: [formValues[0].tipoParametro.isActiv],
-      }),
-      tipoDato: this.fb.group({
-        cod: [formValues[0].tipoDato.cod, Validators.required],
-        nombre: [formValues[0].tipoDato.nombre],
-        isActiv: [formValues[0].tipoDato.isActiv],
-      }),
-      opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
-      
-    }); */
-
+  parametrosCompletados() {
+    let list = document.querySelectorAll(".input-parametros");
+    for (let index = 0; index < list.length; index++) {
+      const element: any = list[index];
+      if (element.value == "") return false;
+    }
+    return true;
+  }
 
 
   onSubmit() {
-    console.log('form a enviar', this.registrarActividadForm.value);
+    if (this.registrarActividadForm.status == 'VALID' && this.parametrosCompletados()) {
+      this.subscriptions.push(
+        this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
+          result => {
+            this.postSuccess = true;
+            this.postError = false;
+            this.postErrorMessage = '';
+          },
+          error => this.onHttpError(error)
+        )
+      );
+
+    } else {
+      this.onHttpError({ message: "Complete todos los campos obligatorios." });
+    }
   }
 
   imprimir() {
-    console.warn("imprimir()", this.registrarActividadForm);
+    this.parametrosCompletados();
+  }
+
+  onHttpError(errorResponse: any) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { faEdit, faPowerOff } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPowerOff, faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-table',
@@ -10,6 +10,7 @@ export class TableComponent implements OnInit {
   
   faEdit = faEdit;
   faPowerOff = faPowerOff;
+  faEye = faEye;
 
 
   @Input() tableData: any[];

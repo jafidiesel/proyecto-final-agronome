@@ -1,19 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { formatDate } from "@angular/common";
 import { SeguridadService } from 'src/app/dashboard/services/seguridad.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-crear-usuario',
-  templateUrl: './crear-usuario.component.html'
+  selector: 'app-editar-usuario',
+  templateUrl: './editar-usuario.component.html'
 })
-export class CrearUsuarioComponent implements OnInit, OnDestroy {
+export class EditarUsuarioComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
   formUsuario: FormGroup;
+
+  codUsuario: string;
 
   rolesSelectArray = [];
   rolSeleccionado = {
@@ -26,17 +27,13 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-  format = 'dd-MM-yyyy';
-  myDate = new Date();
-  locale = 'en-US';
-  formattedDate = formatDate(this.myDate, this.format, this.locale);
-
-
-  constructor(private _seguridadService: SeguridadService,
+  constructor(private activatedRoute: ActivatedRoute, private _seguridadService: SeguridadService,
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.initForm();
+
+    // Obtener los nomencladores del combo Rol
+
     this.subscriptions.push(
       this._seguridadService.getListaNomencladoresConFiltro('rol', true).subscribe(
         (result: any) => {
@@ -46,6 +43,23 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    // Obtener los datos del usuario
+    this.subscriptions.push(
+      this.activatedRoute.params.subscribe(params => {
+        this.codUsuario = params['cod'];
+
+        this.subscriptions.push(
+          this._seguridadService.getUsuario(params['cod']).subscribe(
+            result => {
+              this.initForm(result);
+            },
+            error => this.onHttpError({ message: "Error message" })
+          )
+        )
+      })
+    );
+
   }
 
   actualizarRolSeleccionado(event) {
@@ -58,19 +72,20 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   }
 
-  initForm() {
+  initForm(form) {
+
     this.formUsuario = this.fb.group({
       usuario: this.fb.group({
-        usuario: [null, Validators.required],
-        nombre: [null, Validators.required],
-        apellido: [null, Validators.required],
-        email: [null, [Validators.required, Validators.email]],
+        usuario: [form.usuario, Validators.required],
+        nombre: [form.nombre, Validators.required],
+        apellido: [form.apellido, Validators.required],
+        email: [form.email, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
-        isActiv: [false],
-        fchCrea: [this.formattedDate]
+        isActiv: form.isActiv,
+        cod: [ parseInt(form.cod) ]
       }),
       rol: this.fb.group({
-        cod: [this.rolSeleccionado.cod]
+        cod: [ parseInt(form.rol.cod) ]
       })
     });
 
@@ -78,7 +93,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   onSubmitUsuario() {
     if (this.formUsuario.status == 'VALID') {
-      this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
+      this._seguridadService.putUsuario(this.codUsuario, this.formUsuario.value).subscribe(
         result => {
           this.postSuccess = true;
           this.postError = false;
@@ -103,4 +118,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
+
+
 }

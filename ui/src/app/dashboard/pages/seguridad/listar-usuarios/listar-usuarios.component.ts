@@ -37,7 +37,7 @@ export class ListarUsuariosComponent implements OnInit, OnDestroy {
             formatDate(`${result[index].fchCrea}`, this.format, this.locale),
             `${result[index].isActiv}`,
             `${result[index].rol.nombre}`,
-            `*/seguridad/editarUsuario/${result[index].codPublic}`
+            `*/seguridad/editarUsuario/${result[index].cod}`
           ]);
         }
         this.mostrarTabla = true;
