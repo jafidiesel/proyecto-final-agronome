@@ -8,7 +8,7 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import uuid
 
 def login(data):
-    try:
+    """ try:
         if not data:
             return('Data vacio')
         #Buscar Usuario 
@@ -41,4 +41,4 @@ def login(data):
             return jsonify({'token' : tokenRst.decode('UTF-8')})
     except Exception as e:
         Rollback()
-        return ResponseException(e)
+        return ResponseException(e) """

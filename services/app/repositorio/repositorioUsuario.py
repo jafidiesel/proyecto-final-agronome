@@ -8,14 +8,14 @@ def updateUser(usuarioJson, rolRst, cod):
     try:
         #Se busca el usuario, en caso de existir se actualiza el mismo
         usuarioRst = Usuario.query.filter(Usuario.cod == cod).one()
-        user = Usuario.from_json(usuarioJson)
+        #user = Usuario.from_json(usuarioJson)
         #Actualizar datos propios de Usuario
-        usuarioRst.nombre = user.nombre
-        usuarioRst.apellido = user.apellido
-        usuarioRst.contraseniaUsuario = user.contrasenia
-        usuarioRst.email = user.email
-        usuarioRst.usuario = user.usuario
-        usuarioRst.isActiv = user.isActiv
+        usuarioRst.nombre = usuarioJson.get('nombre')
+        usuarioRst.apellido = usuarioJson.get('apellido')
+        usuarioRst.contraseniaUsuario =usuarioJson.get('contraseniaUsuario')
+        usuarioRst.email = usuarioJson.get('email')
+        usuarioRst.usuario = usuarioJson.get('usuario')
+        usuarioRst.isActiv = usuarioJson.get('isActiv')
         #Actualizar Rol
         usuarioRst.rol = rolRst
         Commit()
