@@ -77,8 +77,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   }
 
   onSubmitUsuario() {
-    console.warn(this.formUsuario.value);
-
     if (this.formUsuario.status == 'VALID') {
       this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
         result => {

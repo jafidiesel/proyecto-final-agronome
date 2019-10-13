@@ -75,8 +75,8 @@ export class SeguridadService {
   *  
   * Actualiza los datos de un usuario
   */
-  putUsuario(cod:string,json: any): Observable<String> {
+  putUsuario(cod:string, json: any): Observable<String> {
 
-    return this.http.put<String>(`http://localhost:9001/api/users//${cod}`, json);
+    return this.http.put<String>(`http://localhost:9001/api/users/${cod}`, json);
   }
 }

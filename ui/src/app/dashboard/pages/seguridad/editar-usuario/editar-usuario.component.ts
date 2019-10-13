@@ -52,7 +52,6 @@ export class EditarUsuarioComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
           this._seguridadService.getUsuario(params['cod']).subscribe(
             result => {
-              console.log('result', result);
               this.initForm(result);
             },
             error => this.onHttpError({ message: "Error message" })
@@ -63,37 +62,38 @@ export class EditarUsuarioComponent implements OnInit, OnDestroy {
 
   }
 
+  actualizarRolSeleccionado(event) {
+    const selectEl = event.target;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const inn = selectEl.options[selectEl.selectedIndex].innerText;
+
+    this.rolSeleccionado.cod = attrVal;
+    this.rolSeleccionado.nombre = inn;
+
+  }
+
   initForm(form) {
-    /* apellido: "adaaf"
-    cod: "43b5f99e-c23f-4974-9912-55045d4fc09a"
-    email: "dffsgafa@gmail.com"
-    fchCrea: "12-03-1990"
-    isActiv: true
-    nombre: "nombre"
-    rol: { cod: 1, nombre: "administrador" }
-    usuario: "usuario" */
+
     this.formUsuario = this.fb.group({
       usuario: this.fb.group({
         usuario: [form.usuario, Validators.required],
         nombre: [form.nombre, Validators.required],
         apellido: [form.apellido, Validators.required],
-        email: [ form.email , [Validators.required, Validators.email]],
+        email: [form.email, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
-        isActiv: [form.isActiv],
-        cod: [form.cod]
+        isActiv: form.isActiv,
+        cod: [ parseInt(form.cod) ]
       }),
       rol: this.fb.group({
-        cod: [form.rol.cod]
+        cod: [ parseInt(form.rol.cod) ]
       })
     });
 
   }
 
   onSubmitUsuario() {
-    /* console.warn(this.formUsuario.value);
-
     if (this.formUsuario.status == 'VALID') {
-      this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
+      this._seguridadService.putUsuario(this.codUsuario, this.formUsuario.value).subscribe(
         result => {
           this.postSuccess = true;
           this.postError = false;
@@ -106,7 +106,7 @@ export class EditarUsuarioComponent implements OnInit, OnDestroy {
     } else {
       this.postError = true;
       this.postErrorMessage = "Ingrese todos los campos obligatorios.";
-    } */
+    }
   }
 
   onHttpError(errorResponse: any) {
