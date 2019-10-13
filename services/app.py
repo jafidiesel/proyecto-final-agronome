@@ -8,7 +8,6 @@ from app.model import hlmodel
 
 app = create_api(os.getenv('FLASK_CONFIG') or 'default')
 
-
 if __name__ == '__main__':
     manager = Manager(app)
     manager.add_command('db',MigrateCommand)

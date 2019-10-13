@@ -78,7 +78,7 @@ _🚀 Run a la aplicación dentro de  agronome\services>_
 
 ## Impactar cambios en la base de datos  📌
 
-_📌 Para poder verificar los cambios en el modelo de la aplicación se escribir el comando db migrate, este proceso genera un archivo dentro de la carpeta migrations del proyecto, que posee todas las sentias para actualizar las tablas_
+_📌 Para poder verificar los cambios en el modelo de la aplicación se escribir el comando db migrate, este proceso genera un archivo dentro de la carpeta migrations del proyecto, que posee todas las sentencias para actualizar las tablas_
 ```
  app.py db migrate 
 ```
@@ -87,26 +87,41 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
 ```
  app.py db upgrade 
 ```
+ 
+
+## Crear un nuevo end point  📄
+
+_📄 Para poder definir un nuevo end point se deben realizar los siguientes pasos:_
+
+- Crear el archivo base del end point con la siguente nomenclatura: [nombre]_api ejemplo: finca_api
+- Agregar la url en app.api.helperApi.hlUrl 
+- Agregar el namespace en app.api.helperApi.hlNamespaceBackend
+- Correr el servidor http://127.0.0.1:9001/ y verificar si reconoce la url definida 
 
 #
 
-
-## API REST endopints 📄
+## API REST Documents 📖 
 
 - [Actividad](#actividad)
-	- [Crear Actividad](#crear-actividad)
+	- [Registrar Actividad](#registrar-actividad)
+    - [Consultar Actividades](#consultar-actividad)
     - [Consultar Actividad](#consultar-actividad)
-    - [Consultar Actividades](#consultar-actividades)
+    - [Modificar Actividad](#modificar-actividad)
+    - [Eliminar Actividad](#eliminar-actividad)
+    - [Consultar Parametros Full de Actividad](#parametroFull-actividad)
+
+- [Finca](#)
+	- [Crear Finca](#crear-finca)
+    - [Consultar Fincas](#consultar-fincas)
+    - [Consultar Finca](#consultar-finca)
+
 
 - [Planificacion](#)
 	- [Crear Planificacion](#read)
     - [Consultar Planificacion](#read)
     - [Consultar Planificaciones](#read)
     
-- [Finca](#)
-	- [Crear Finca](#read)
-    - [Consultar Finca](#read)
-    - [Consultar Finca](#read)
+
 
 - [Recurso](#)
 	- [Crear Recurso](#read)
@@ -142,9 +157,352 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
     - [Consultar Recomendacion](#read)
     - [Consultar Recomendaciones](#read)
 
+
+
+
+
+# <a name='actividad'></a> Actividad
+
+## <a name='registrar-actividad'></a> Registrar Actividad
+[Back to top](#top)
+
+<p>Registrar una actividad</p>
+
+	POST /api/actividad/registrar
+
+### Body
+```
+{
+	"codActividad": int,
+	"fchActivDetalle": dateString, // "2019-10-30 22:12:54"
+	"observacion": string,
+	"imagenes": [
+		{
+		"dscImg":String,
+		"base64": String de img en base 64
+		}, ..... 
+	],
+
+	"parametros":[
+      {
+      "codParam":int,
+      "valor": "String"
+      }, .....	
+	]
+}
+```
+
+#
+
+## <a name='consultar-actividades'></a> Consultar Actividades
+[Back to top](#top)
+
+<p>Consultar actividades</p>
+
+	GET /api/actividad/registrar
+
+
+
+### Success Response 
+200 Ok
+```
+{
+    "codActivDetalle": int,
+    "fchActivDetalle": dateString,//   "28-09-2019 16:01:34"
+    "observacion": String,
+    "Actividad": {
+        "codActividad": int,
+        "nombreActividad": String
+    },
+    "Parametros": [
+        {
+            "codParamtro": int,
+            "nombreParametro": String,
+            "valor": String
+        },....
+    ],
+
+    "Imagenes": [
+        {
+            "dscImg": String,
+            "base64": String img base 64
+        },...
+        
+      ]
+},
+
+{
+    "codActivDetalle": int,
+    "fchActivDetalle": dateString,//   "28-09-2019 16:01:34"
+    "observacion": String,
+    "Actividad": {
+        "codActividad": int,
+        "nombreActividad": String
+    },
+    "Parametros": [
+        {
+            "codParamtro": int,
+            "nombreParametro": String,
+            "valor": String
+        },....
+    ],
+
+    "Imagenes": [
+        {
+            "dscImg": String,
+            "base64": String img base 64
+        },...
+        
+      ]
+}.....
+    
+```
+
+#
+## <a name='consultar-actividad'></a> Consultar Actividad
+[Back to top](#top)
+
+<p>Consultar una actividad en particular</p>
+
+	GET /api/actividad/registrar/:codDetalleActividad
+
+
+### Success Response 
+200 Ok
+```
+{
+    "codActivDetalle": int,
+    "fchActivDetalle": dateString,//   "28-09-2019 16:01:34"
+    "observacion": String,
+    "Actividad": {
+        "codActividad": int,
+        "nombreActividad": String
+    },
+    "Parametros": [
+        {
+            "codParamtro": int,
+            "nombreParametro": String,
+            "valor": String
+        },....
+    ],
+
+    "Imagenes": [
+        {
+            "dscImg": String,
+            "base64": String img base 64
+        },...
+        
+```
+#
+## <a name='modificar-actividad'></a> Modificar Actividad
+[Back to top](#top)
+
+<p>Modificar una actividad en particular, hay que tener en cuenta que no se puede eliminar un parametro ni agregar uno nuevo, ya que esta planteado que se modifiquen las instancias que ya estan creadas </p>
+
+	PUT /api/actividad/registrar/:codDetalleActividad
+
+```  
+{
+    "codActivDetalle": int,
+    "fchActivDetalle": dateString,//   "28-09-2019 16:01:34"
+    "observacion": String,
+    "Actividad": {
+        "codActividad": int,
+        "nombreActividad": String
+    },
+    "parametros": [
+        {
+            "codParam": int,
+            "valor": String
+        },....
+    ],
+
+    "imagenes": [
+        {
+            "dscImg": String,
+            "base64": String img base 64
+        },...
+        
+```
+#
+## <a name='eliminar-actividad'></a> Eliminar Actividad
+[Back to top](#top)
+
+<p>Eliminar una actividad en particular, coloca "isEliminada" en True, es una eliminación logica </p>
+
+	DELETE /api/actividad/registrar/:codDetalleActividad
+
+#
+
+## <a name='parametroFull-actividad'></a> Consultar Parametros Full de Actividad
+[Back to top](#top)
+
+<p>Consultar los parametros para poder armar el formulario de una actividad en particular, ojo en los parametros se debe ingresar el codigo de la actividad y no el codigo del detalle </p>
+
+	GET /api/actividad/registrar/parametros/:codActividad
+
+### Success Response 
+200 Ok
+```
+{      //por cada parametro  
+    {
+    "parametro": {
+        "cod": int
+        "nombre": String,
+        "isActiv": boolean
+    },
+    "tipoParametro": {
+        "cod": int,
+        "nombre": String,
+        "isActiv": boolean
+    },
+    "tipoDato": {
+        "nombre": String,
+        "cod": int,
+        "isActiv": boolean
+    },
+    "opcion": [
+        {
+            "cod": int,
+            "nombre": String,
+            "isActiv": boolean
+        },
+        {
+            "cod": int,
+            "nombre": String,
+            "isActiv": boolean
+        }
+        ]
+    }
+ ]
+}
+```
+
+#
+
+
+# <a name='finca'></a> Finca
+
+## <a name='crear-finca'></a> Crear Finca
+[Back to top](#top)
+
+<p>Crear una finca</p>
+
+	POST /api/finca
+
+### Body
+```
+{
+    "nombre": String,
+    "superficie": float,
+    "calle": String,
+    "nro": int,
+    "localidad": String,
+    "provincia": String,
+    "parcelas": [
+        {
+            "nombre": String,
+            "superficie": float,
+            "filas": int,
+            "columnas": int
+        },
+        {
+            "nombre": String,
+            "superficie": float,
+            "filas": int,
+            "columnas": int
+        }
+    ]
+}
+```
+#
+## <a name='consultar-fincas'></a> Consultar Fincas
+[Back to top](#top)
+
+<p>Cnsultar todas las fincas</p>
+
+	GET /api/finca
+
+
+
+### Success Response 
+200 Ok
+```
+{
+    "fincas": [
+        //por cada finca
+        { 
+            "codFinca": 2,
+            "nombre": "3 Huertas",
+            "superficie": 12341.23,
+            "isActiv": true,
+            "calle": "Doctor Moreno",
+            "nro": 1805,
+            "localidad": "Las Heras",
+            "provincia": "Mendoza",
+            "urlMaps": "https://www.google.com.ar/maps/place/Doctor+Moreno+1805+Las+Heras+Mendoza"
+        }....
+    ]
+} 
+
+```
+#
+
+## <a name='consulta-finca'></a> Consultar Finca
+[Back to top](#top)
+
+<p>Consultar una finca en particular</p>
+
+	GET /api/finca/:codFinca
+
+```
+    {
+    "finca": {
+        "codFinca": int,
+        "nombre": String,
+        "superficie": float,
+        "isActiv": boolean,
+        "calle": String,
+        "nro": int,
+        "localidad": String,
+        "provincia": String,
+        "urlMaps": Url String,
+        "parcelas": [
+            //por cada parcela
+            {  "codParcela": int,
+                "nombre": String,
+                "superficie": String, //123.4 m
+                "filas": int,
+                "columnas": int,
+                "cantCuadros": int,
+                "cuadros": [
+                    //por cada cuadro
+                    {
+                        "codCuadro": int,
+                        "nombreCuadro": String"
+                    },..
+                ]
+            }
+        ]
+
+```
+
+
+
+
+
+
+#
+
+## <a name='consultar-actividades'></a> Consultar Actividades
+
+
+
+
+#
 # <a name='configuracion'></a> Configuracion
 
-## <a name='crear-nomenclador'></a> Crear Nomenclador
+## <a name='crear-nomenclador'></a>  Nomenclador
 [Back to top](#top)
 
 <p>Crea un nomenclador</p>
@@ -181,7 +539,6 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
 ```
 
 #
-
 
 ## <a name='get-nomenclador'></a> Consultar Nomenclador
 [Back to top](#top)
@@ -424,7 +781,7 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
 ## <a name='get-consultarParametroAsociados'></a> Consultar Parametros asociados
 [Back to top](#top)
 
-<p>Consultar Parametros de actividad, recomendación, tipo analisis o tipo plan que estan activos</p>
+<p>Consultar Parametros de una actividad, recomendación, tipo analisis o tipo plan que estan activos</p>
 
 	GET /api/configuracion/asociar/:entidadIntermedia/:id
 

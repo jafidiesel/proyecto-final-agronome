@@ -63,7 +63,7 @@ def getUsuario(codPublic):
     except Exception as e:
         return ResponseException(e)
 #Editar Usuario
-def updateUsuario(data):
+def updateUsuario(data, cod):
     dataLower = obtainDict(data)
     #Buscar usuario 
     usuarioJson = dataLower.get('usuario')
@@ -73,7 +73,7 @@ def updateUsuario(data):
     rolJson = dataLower.get('rol')  
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
     from app.repositorio.repositorioUsuario import updateUser
-    return updateUser(usuarioJson, rolRst)        
+    return updateUser(usuarioJson, rolRst, cod)        
 
 
 

@@ -1,11 +1,10 @@
 #definiciones de las rutas
 from flask_restplus import Namespace
-
 #modulo de configuraciones"
 URL_MC = 'api/configuracion/'
 urlNomenclador = Namespace(URL_MC + 'nomenclador', description='Modulo de Configuraciones')
-urlParametro = Namespace(URL_MC + 'parametro')
-urlEntidadInterm = Namespace(URL_MC + 'asociar')
+urlParametro = Namespace(URL_MC + 'parametro', description= 'Gestionar Parametros')
+urlEntidadInterm = Namespace(URL_MC + 'asociar', description= 'Gestionar Asociaciones')
 
 #modulo de recursos
 URL_MR = 'api/recurso/'
@@ -17,4 +16,11 @@ urlResgistrarActiv = Namespace(URL_MA + 'registrar', description='Registrar Acti
 
 #modulo de seguridad
 URL_MU = 'api/users'
-urlUsuario = Namespace(URL_MU, description = 'Registrar Usuario')
+urlUsuario = Namespace(URL_MU , description = 'Registrar Usuario')
+urlLogin = Namespace(URL_MU +'/login', description = 'Login Usuario')
+
+
+#modulo de gestion de finca
+URL_MGF = 'api/finca'
+urlFinca = Namespace(URL_MGF, description = 'Gestionar Finca')
+

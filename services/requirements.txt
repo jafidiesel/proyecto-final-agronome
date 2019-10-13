@@ -8,3 +8,5 @@ flask-migrate
 flask-script
 flask-cors
 psycopg2
+pyjwt
+werkzeug
