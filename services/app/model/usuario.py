@@ -43,3 +43,4 @@ class Usuario(db.Model):
             'rol': self.rol.to_json_simple(),
         }
     
+    
