@@ -32,6 +32,7 @@ import { CrearUsuarioComponent } from './dashboard/pages/seguridad/crear-usuario
 import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usuarios/listar-usuarios.component';
 import { ListarActividadesComponent } from './dashboard/pages/actividad/listar-actividades/listar-actividades.component';
 import { VerActividadComponent } from './dashboard/pages/actividad/ver-actividad/ver-actividad.component';
+import { EditarUsuarioComponent } from './dashboard/pages/seguridad/editar-usuario/editar-usuario.component';
 
 
 const routes: Routes = [
@@ -52,6 +53,7 @@ const routes: Routes = [
   //{ path: 'seguridad', component: SeguridadPageComponent },
   { path: 'seguridad', component: ListarUsuariosComponent },
   { path: 'seguridad/crearUsuario', component: CrearUsuarioComponent },
+  { path: 'seguridad/editarUsuario/:cod', component: EditarUsuarioComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },

@@ -49,6 +49,7 @@ import { CrearUsuarioComponent } from './pages/seguridad/crear-usuario/crear-usu
 import { ListarUsuariosComponent } from './pages/seguridad/listar-usuarios/listar-usuarios.component';
 import { ListarActividadesComponent } from './pages/actividad/listar-actividades/listar-actividades.component';
 import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
+import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-usuario.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-activ
     ListarUsuariosComponent,
     ListarActividadesComponent,
     VerActividadComponent,
+    EditarUsuarioComponent,
   ],
   imports: [
     CommonModule,
