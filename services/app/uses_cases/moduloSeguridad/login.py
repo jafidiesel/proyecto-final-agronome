@@ -1,10 +1,11 @@
 from app.model.hlmodel import Usuario, SessionUser
-#import jwt
+import jwt
 import datetime
 from flask import jsonify
 from app.repositorio.repositorioUsuario import getUsuarioByName
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit, Rollback
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+import uuid
 
 def login(data):
     try:
@@ -19,8 +20,9 @@ def login(data):
         if (data.get('contrasenia')==usuarioRst.contraseniaUsuario):
             #Verificar si el Usuario ya existe en Session
             sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
-            #Generar un token y almacenar los datos en la tabla Session
-            payload = {'user': usuarioRst.usuario}
+            #Generar un token y almacenar los datos en la tabla Sessio
+            #Armado de Token
+            payload = {'iss': ,'user': usuarioRst.usuario,'jti':uuid.uuid4()}
             print(payload)
             tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
             print('Token')
