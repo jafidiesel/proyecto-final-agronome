@@ -1,0 +1,80 @@
+from flask import jsonify
+from app.model import hlmodel
+from app.repositorio.hlDb import saveEntidadSinCommit, selectByCod,Commit, selectAll, Rollback
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
+import json
+import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+
+modelos = {
+"rol":hlmodel.Rol,
+"usuario":hlmodel.Usuario,
+}
+
+def postUser(data):
+    try:
+        dataLower = obtainDict(data)
+        usuarioJson = dataLower.get('usuario')
+        rolJson = dataLower.get('rol')
+        #Buscar rol seleccionado
+        rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
+        #Setear pws con hash
+        hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
+        #Crear usuario
+        usuario = hlmodel.Usuario.from_json(usuarioJson)
+        usuario.contraseniaUsuario = hashed_password
+        #Generar codPublic
+        usuario.cod = str(uuid.uuid4())
+        usuario.rol = rolRst
+        saveEntidadSinCommit(usuario)
+
+        Commit()
+        return ResponseOk()
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
+
+#Listar usuarios. Mostrar 
+def getAllUsers():
+    try:
+        usuariosList  = []
+        usuarioRstList = selectAll(hlmodel.Usuario)
+        if not usuarioRstList:
+            raise Exception('N','No existen Usuarios')
+        else:
+            for usuarioRst in usuarioRstList:
+                #import pdb; pdb.set_trace()
+                #Armado de diccionario
+                usuarioDto = usuarioRst.toJson()
+                usuariosList.append(usuarioDto)           
+        return usuariosList
+    except Exception as e:
+        return ResponseException(e)
+
+#Listar un Usuario
+def getUsuario(codPublic):
+    try:
+        usuarioRst = selectByCod(hlmodel.Usuario, codPublic)        
+        return usuarioRst.toJson()
+    except Exception as e:
+        return ResponseException(e)
+#Editar Usuario
+def updateUsuario(data, cod):
+    dataLower = obtainDict(data)
+    #Buscar usuario 
+    usuarioJson = dataLower.get('usuario')
+    #Modificaciones por parte del Admin
+    claves = list(dataLower.keys())
+    #Buscar Rol
+    rolJson = dataLower.get('rol')  
+    rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
+    from app.repositorio.repositorioUsuario import updateUser
+    return updateUser(usuarioJson, rolRst, cod)        
+
+
+
+    

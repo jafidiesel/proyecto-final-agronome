@@ -11,12 +11,12 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 })
 export class EditarParametroComponent implements OnInit, OnDestroy {
 
-  subscriptions : Subscription[] = [];
-  
-  editarParametroForm:FormGroup;
+  subscriptions: Subscription[] = [];
+
+  editarParametroForm: FormGroup;
   faTrashAlt = faTrashAlt;
 
- // json con los datos originales
+  // json con los datos originales
   originalParametroAEditar: any = {
     parametro: {
       cod: 0,
@@ -28,7 +28,7 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
       isActiv: false,
       nombre: ""
     },
-    tipoDato:{
+    tipoDato: {
       cod: 0,
       isActiv: false,
       nombre: ""
@@ -38,11 +38,11 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
 
   // Dropdown tipoParametro
   tiposParametrosSelect: Observable<Object>;
-  tiposParametrosSelectArray =[];
+  tiposParametrosSelectArray = [];
 
   // Dropdown tipoDato
   tiposDatosSelect: Observable<Object>;
-  tiposDatosSelectArray =[];
+  tiposDatosSelectArray = [];
 
   // Lista con opciones
   tiposOpcionesSelect: Observable<object>;
@@ -57,57 +57,57 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
- 
+
   constructor(private activatedRoute: ActivatedRoute,
     private _configuracionService: ConfiguracionService,
-    private fb: FormBuilder) {}
-    
+    private fb: FormBuilder) { }
+
   ngOnInit() {
 
-    this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
-      
-      this.subscriptions.push(this._configuracionService.getParametro( params['cod'] ).subscribe(
+    this.subscriptions.push(this.activatedRoute.params.subscribe(params => {
+
+      this.subscriptions.push(this._configuracionService.getParametro(params['cod']).subscribe(
         (result: any) => {
           this.initForm(result);
-        
-          this.originalParametroAEditar.parametro.cod = result[0].parametro.cod;
-          this.originalParametroAEditar.parametro.nombre = result[0].parametro.nombre;
-          this.originalParametroAEditar.parametro.isActiv = result[0].parametro.isActiv;
-          
-          this.originalParametroAEditar.tipoParametro.cod = result[0].tipoParametro.cod;
-          this.originalParametroAEditar.tipoParametro.isActiv = result[0].tipoParametro.isActiv;
-          this.originalParametroAEditar.tipoParametro.nombre = result[0].tipoParametro.nombre;
-          
-          this.originalParametroAEditar.tipoDato.cod = result[0].tipoDato.cod;
-          this.originalParametroAEditar.tipoDato.isActiv = result[0].tipoDato.isActiv;
-          this.originalParametroAEditar.tipoDato.nombre = result[0].tipoDato.nombre;
 
-          result[0].opcion.forEach(element => {
-            this.originalParametroAEditar.opcion.push( { cod:`${element.cod}` });
+          this.originalParametroAEditar.parametro.cod = result.parametro.cod;
+          this.originalParametroAEditar.parametro.nombre = result.parametro.nombre;
+          this.originalParametroAEditar.parametro.isActiv = result.parametro.isActiv;
+
+          this.originalParametroAEditar.tipoParametro.cod = result.tipoParametro.cod;
+          this.originalParametroAEditar.tipoParametro.isActiv = result.tipoParametro.isActiv;
+          this.originalParametroAEditar.tipoParametro.nombre = result.tipoParametro.nombre;
+
+          this.originalParametroAEditar.tipoDato.cod = result.tipoDato.cod;
+          this.originalParametroAEditar.tipoDato.isActiv = result.tipoDato.isActiv;
+          this.originalParametroAEditar.tipoDato.nombre = result.tipoDato.nombre;
+
+          result.opcion.forEach(element => {
+            this.originalParametroAEditar.opcion.push({ cod: `${element.cod}` });
           });
 
-          
-        },
-      error => console.log(error)
-      ));
-      
-    } ));
 
-    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('tipoParametro',true).subscribe(
+        },
+        error => console.log(error)
+      ));
+
+    }));
+
+    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('tipoParametro', true).subscribe(
       result => {
         for (let index = 0; index < result.length; index++) {
-          const element:any = result[index];
-          this.tiposParametrosSelectArray.push(element);            
+          const element: any = result[index];
+          this.tiposParametrosSelectArray.push(element);
         }
 
         // Si el elemento no esta dentro de los activos, lo agrega al dropdown
         let agregarElemento = true;
         this.tiposParametrosSelectArray.forEach(element => {
-          if( element.cod == this.originalParametroAEditar.tipoParametro.cod ){
+          if (element.cod == this.originalParametroAEditar.tipoParametro.cod) {
             agregarElemento = false;
           }
         });
-        if( agregarElemento ){
+        if (agregarElemento) {
           let obj = {
             cod: this.originalParametroAEditar.tipoParametro.cod,
             isActiv: this.originalParametroAEditar.tipoParametro.isActiv,
@@ -120,24 +120,24 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
     ));
 
 
-    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('tipoDato',true).subscribe(
+    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('tipoDato', true).subscribe(
       result => {
         for (let index = 0; index < result.length; index++) {
-          const element:any = result[index];
+          const element: any = result[index];
           this.tiposDatosSelectArray.push(element);
-          
+
         }
 
         // Si el elemento no esta dentro de los activos, lo agrega al dropdown
         /* let agregarElemento = true;
         this.tiposDatosSelectArray.forEach(element => {
-          if( element.id == this.originalParametroAEditar.tipoDato.id ){
+          if( element.cod == this.originalParametroAEditar.tipoDato.cod ){
             agregarElemento = false;
           }
         });
         if( agregarElemento ){
           let obj = {
-            id: this.originalParametroAEditar.tipoDato.id,
+            cod: this.originalParametroAEditar.tipoDato.cod,
             isActiv: this.originalParametroAEditar.tipoDato.isActiv,
             nombre: this.originalParametroAEditar.tipoDato.nombre,
           }
@@ -146,116 +146,118 @@ export class EditarParametroComponent implements OnInit, OnDestroy {
       }
     ));
 
-    this.subscriptions.push( this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
-      result =>{
+    this.subscriptions.push(this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
+      result => {
         //this.tiposOpcionesSelectArray.push(result);
         for (let index = 0; index < result.length; index++) {
           this.tiposOpcionesSelectArray.push(result[index]);
         }
       }
-    ));  
+    ));
 
   }
-  onHttpError( errorResponse: any ) {
-    this.postError = true;
-    this.postSuccess = false;
-    this.postErrorMessage = errorResponse.message;
-  }
+
 
   onSubmitParametro() {
 
     console.warn(this.editarParametroForm.value);
 
-    if( this.editarParametroForm.status == 'VALID' ){
+    if (this.editarParametroForm.status == 'VALID') {
       this._configuracionService.putParametroForm(this.editarParametroForm.value).subscribe(
         result => {
           this.postSuccess = true;
           this.postError = false;
           this.postErrorMessage = '';
-          
+
         },
         error => this.onHttpError(error)
       );
     }
   }
-  
 
-  initForm(formValues){
-    
+
+  initForm(formValues) {
+
     this.editarParametroForm = this.fb.group({
       parametro: this.fb.group({
-        cod: [formValues[0].parametro.cod],
-        nombre: [formValues[0].parametro.nombre, Validators.required],
-        isActiv: [formValues[0].parametro.isActiv],
+        cod: [formValues.parametro.cod],
+        nombre: [formValues.parametro.nombre, Validators.required],
+        isActiv: [formValues.parametro.isActiv],
       }),
       tipoParametro: this.fb.group({
-        cod: [formValues[0].tipoParametro.cod, Validators.required],
-        nombre: [formValues[0].tipoParametro.nombre],
-        isActiv: [formValues[0].tipoParametro.isActiv],
+        cod: [formValues.tipoParametro.cod, Validators.required],
+        nombre: [formValues.tipoParametro.nombre],
+        isActiv: [formValues.tipoParametro.isActiv],
       }),
       tipoDato: this.fb.group({
-        cod: [formValues[0].tipoDato.cod, Validators.required],
-        nombre: [formValues[0].tipoDato.nombre],
-        isActiv: [formValues[0].tipoDato.isActiv],
+        cod: [formValues.tipoDato.cod, Validators.required],
+        nombre: [formValues.tipoDato.nombre],
+        isActiv: [formValues.tipoDato.isActiv],
       }),
-      opcion: this.fb.array( formValues[0].opcion.map( element => this.crearOpcion(element) ) ) 
-      
+      opcion: this.fb.array(formValues.opcion.map(element => this.crearOpcion(element)))
+
     });
 
-    formValues[0].opcion.map( element => {
+    formValues.opcion.map(element => {
       this.opcionesElegidas.push({
         cod: element.cod,
         nombre: element.nombre
       });
-    } );
+    });
 
   }
 
-  crearOpcion( obj: any){
+  crearOpcion(obj: any) {
     return this.fb.control({
-          cod: obj.cod,
-          nombre: obj.nombre,
-          isActiv: obj.isActiv
-        })
+      cod: obj.cod,
+      nombre: obj.nombre,
+      isActiv: obj.isActiv
+    })
       ;
   }
 
-    
-  updateOpciones(){
+
+  updateOpciones() {
     this.editarParametroForm.patchValue({
-      opcion: this.fb.array( this.opcionesElegidas.map( element => this.crearOpcion(element) ) ).value
+      opcion: this.fb.array(this.opcionesElegidas.map(element => this.crearOpcion(element))).value
     });
   }
 
-  agregarItem(){
+  agregarItem() {
     let obj = {
       cod: this.opcionSeleccionada.cod,
       nombre: this.opcionSeleccionada.nombre
     }
     this.opcionesElegidas.push(obj);
 
-    let arr = this.editarParametroForm.get('opcion')  as FormArray;
+    let arr = this.editarParametroForm.get('opcion') as FormArray;
     arr.push(this.crearOpcion(obj))
 
   }
 
-  actualizaropcionSeleccionada(event){
+  actualizaropcionSeleccionada(event) {
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     this.opcionSeleccionada.cod = attrVal;
     this.opcionSeleccionada.nombre = inn;
-    
+
   }
 
-  quitarItem(index){
-    let arr = this.editarParametroForm.get('opcion')  as FormArray;
+  quitarItem(index) {
+    let arr = this.editarParametroForm.get('opcion') as FormArray;
     if (index > -1) {
       arr.removeAt(index);
     }
   }
 
-  ngOnDestroy(){
-    this.subscriptions.forEach( (subscription) => subscription.unsubscribe() );
+  onHttpError(errorResponse: any) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
-
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
@@ -46,6 +45,11 @@ import { AsociarPlanComponent } from './pages/configuracion/asociar/plan/asociar
 import { EditarPlanAsociadoComponent } from './pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
 import { ListarAnalisisComponent } from './pages/configuracion/asociar/analisis/listar-analisis/listar-analisis.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CrearUsuarioComponent } from './pages/seguridad/crear-usuario/crear-usuario.component';
+import { ListarUsuariosComponent } from './pages/seguridad/listar-usuarios/listar-usuarios.component';
+import { ListarActividadesComponent } from './pages/actividad/listar-actividades/listar-actividades.component';
+import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
+import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-usuario.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +89,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ListarPlanComponent,
     AsociarPlanComponent,
     EditarPlanAsociadoComponent,
+    CrearUsuarioComponent,
+    ListarUsuariosComponent,
+    ListarActividadesComponent,
+    VerActividadComponent,
+    EditarUsuarioComponent,
   ],
   imports: [
     CommonModule,

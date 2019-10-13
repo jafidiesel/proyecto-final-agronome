@@ -8,7 +8,11 @@ def saveEntidad(entidad):
 
 
 def selectAll(entidad):
-    objList=entidad.query.all()
+    objList=entidad.query.order_by(entidad.cod).all()
+    return objList
+
+def selectAllisActiv(entidad):
+    objList=entidad.query.filter(entidad.isActiv==True).order_by(entidad.cod).all()
     return objList
 
 def selectByCod(entidad,cod): ##si el codigo se llama cod
@@ -21,7 +25,7 @@ def selectByCod(entidad,cod): ##si el codigo se llama cod
 
 def updateEntidad(entidad,cod,data): ##solo update nomencladores
     obj = entidad.query.filter(entidad.cod==cod).first() 
-    if not obj: ## si el objeto no existe lanzo la exeption
+    if not obj: ## si el objeto no existe lanzo la exception
         raise Exception('N','No existe el codigo ingresado')
     
     obj.nombre = data.get('nombre')
@@ -57,9 +61,6 @@ def addObject(entidad):
     print(dir(entidad))
     return 'add success'
 
-
-def selectByisActivAUX(entidad,valor):
-    objetos = entidad.query.filter(entidad.isActiv==valor).all()
-    #if not objetos:
-    #    raise Exception('N','No existen objetos con isActiv ingresado')
-    return objetos
+def deleteObject(entidad):
+    db.session.delete(entidad)
+    return

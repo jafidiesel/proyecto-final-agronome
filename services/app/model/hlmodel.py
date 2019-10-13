@@ -16,6 +16,11 @@ from app.model.tipoParametro import TipoParametro
 from app.model.tipoPlan import TipoPlan
 from app.model.tipoPlanificacion import TipoPlanificacion
 from app.model.tipoRecurso import TipoRecurso
+from app.model.usuario import Usuario
+from app.model.session import SessionUser
+from app.model.finca import Finca
+from app.model.parcela import Parcela
+from app.model.cuadro import Cuadro
 
 
 from app.model.actividadParametro import ActividadParametro
@@ -26,3 +31,4 @@ from app.model.recomendacionParametro import RecomendacionParametro
 from app.model.actividadDetalle import ActividadDetalle
 from app.model.imgActivDetalle import ImgActivDetalle
 from app.model.activDetalleParam import ActivDetalleParam
+

@@ -1,113 +1,177 @@
-<main role="main" class="container mt-4" [ngSwitch]="step">
-    <div class="card m-3" *ngSwitchCase="'0'">
-        <div class="card-header">
-            Seleccionar actividad
-        </div>
-        <div class="card-columns">
-            <div *ngFor="let button of configurationButtons" >
-                <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;" >
-                    <div class="card-body" >
-                        <fa-icon class="mb-4" [icon]="button[1]"  size="5x" [styles]="{'stroke': 'green', 'color': 'green'}" ></fa-icon>
-                        <h5 class="card-title">{{ button[0] }}</h5>
-                        <button  class="btn btn-primary text-light" (click) ="registrarActividad(button[0])">Registrar</button>
+<main role="main" class="container mt-4" [ngSwitch]="step" *ngIf="this.codActividad != null" >
+    <h1 class="display-4">{{ nombreActividad }}</h1>
+    <form [formGroup]="registrarActividadForm" (ngSubmit)="onSubmit()" *ngIf="
+    registrarActividadForm != null ">
+        <div class="card m-3" *ngSwitchCase="'0'">
+            <div class="card-header">
+                Seleccionar actividad
+            </div>
+            <div class="card-columns">
+                <div *ngFor="let button of configurationButtons">
+                    <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;">
+                        <div class="card-body">
+                            <fa-icon class="mb-4" [icon]="button[1]" size="5x"
+                                [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
+                            <h5 class="card-title">{{ button[0] }}</h5>
+                            <button class="btn btn-primary text-light"
+                                (click)="registrarActividad(button[0],button[3])">Registrar</button>
+                        </div>
                     </div>
-                </div>    
-            </div>
-        </div>
-    </div>
-    <div class="card m-3" *ngSwitchCase="'1'">
-        <div class="card-header">
-            Datos del campo
-        </div>
-        <div class="card-body">
-            <div class="form-group row">
-                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha</label>
-                <div class="col-sm-10">
-                    <ngb-datepicker 
-                        #dp (ngModel)="model" 
-                        (select)="onDateSelection($event)"  
-                        (navigate)="date = $event.next"
-                        [minDate]="{year: 2010, month: 1, day: 1}"
-                        [maxDate]="{year: 2048, month: 12, day: 31}"
-                        [markDisabled]="isDisabled">
-                    </ngb-datepicker>
-        
-                    <p>{{date|json}}</p>    
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
-                <div class="col-sm-10">
-                    <select class="custom-select" id="libro">
-                        <option selected>Seleccione un libro de campo...</option>
-                        <option value="1">Tres arroyos</option>
-                        <option value="2">La colina</option>
-                        <option value="3">Flia. Benitez</option>
-                    </select>
-                    <button class="btn btn-success mt-4" (click)="openVerticallyCentered(content)">Añadir parcela</button>
                 </div>
             </div>
         </div>
+        <div class="card m-3" *ngSwitchCase="'1'">
+            <div class="card-header">
+                Datos del campo
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha de la
+                        actividad *</label>
+                    <div class="col-sm-10">
+                        <ngb-datepicker #dp (ngModel)="model" (select)="onDateSelection($event)"
+                            (navigate)="date = $event.next" [minDate]="{year: 2010, month: 1, day: 1}"
+                            [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled">
+                        </ngb-datepicker>
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select" id="libro" disabled>
+                            <option selected>Seleccione un libro de campo...</option>
+                            <option value="1">Tres arroyos</option>
+                            <option value="2">La colina</option>
+                            <option value="3">Flia. Benitez</option>
+                        </select>
+                        <button type="button" class="btn btn-success mt-4" (click)="openVerticallyCentered(content)"
+                            disabled>Añadir
+                            parcela</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #content let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir parcela</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group form-check">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="parcela1" name="parcela1">
+                        <label class="custom-control-label" for="parcela1">Parcela 1</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="parcela2" name="parcela2">
+                        <label class="custom-control-label" for="parcela2">Parcela 2</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="parcela3" name="parcela3">
+                        <label class="custom-control-label" for="parcela3">Parcela 3</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
+                <button type="button" class="btn btn-success" (click)="modal.close('Ok click')">Agregar</button>
+            </div>
+        </ng-template>
+
+        <div class="card m-3" *ngSwitchCase="'2'">
+            <div class="card-header">
+                Actividad {{ nombreActividad }}
+            </div>
+            <div class="card-body">
+
+
+                <div *ngFor="let parametro of registrarActividadForm.get('parametros').controls; let i = index"
+                    formArrayName="parametros">
+                    <div [ngSwitch]="parametro.value.tipo">
+                        <div *ngSwitchCase="'string'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b>
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'int'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b></label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="number" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su numero aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'enumeration'" class="form-group">
+                            <label
+                                for="{{parametro.value.nombre}}"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b></label>
+                            <div *ngFor="let opcion of parametro.value.opcion; let i = index">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input input-parametros" [id]="i"
+                                        (value)="parametro.value.valor">
+                                    <label class="custom-control-label"
+                                        [for]="i">{{opcion.nombre.charAt(0).toUpperCase() + opcion.nombre.slice(1)}}</label>
+                                </div>
+                            </div>
+                            <!-- <input class="form-control" type="number" id="{{parametro.value.nombre}}"
+                                placeholder="Ingrese su numero aqui." /> -->
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card m-3" *ngSwitchCase="'3'">
+            <div class="card-header">
+                Otros datos
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Observaciones</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                        formControlName="observacion" required></textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="alert alert-info italic" role="alert">
+        Los campos marcados con * son obligatorios.
     </div>
 
-    <ng-template #content let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title">Añadir parcela</h4>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
+    <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+        ¡ Actividad Registrada exitosamente !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <div [hidden]="!postError" class="alert alert-danger">
+                {{ postErrorMessage }}
+            </div>
+            <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}}
             </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group form-check">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela1" name="parcela1" >
-                    <label class="custom-control-label" for="parcela1">Parcela 1</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela2" name="parcela2" >
-                    <label class="custom-control-label" for="parcela2">Parcela 2</label>
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="parcela3" name="parcela3" >
-                    <label class="custom-control-label" for="parcela3">Parcela 3</label>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancelar</button>
-            <button type="button" class="btn btn-success" (click)="modal.close('Ok click')">Agregar</button>
-        </div>
-    </ng-template>
-
-    <div class="card m-3" *ngSwitchCase="'2'">
-        <div class="card-header">
-            Actividad de riego
-        </div>
-        <div class="card-body">
-            <div class="form-group">
-                <label for="colFormLabel" class="col-form-label">Tipo de riego</label>
-                <select class="custom-select" id="libro">
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="colFormLabel" class="col-form-label">Fuente de riego</label>
-                <input type="text" class="form-control" id="fuente" placeholder="fuente de riego">
-            </div>
+            <button type="button" class="btn btn-lg float-left btn-warning" (click)="imprimir()">imprimir()</button>
+            <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
+                {{ nextButtonText }}</button>
         </div>
     </div>
-    <div class="card m-3" *ngSwitchCase="'3'">
-        <div class="card-header">
-            Recursos
-        </div>
-        <div class="card-body">
-            <blockquote class="blockquote mb-0">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-            <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-            </blockquote>
-        </div>
-    </div>
-    <h4>{{ step }}</h4>
-    <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}} </button>
-    <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()" > {{ nextButtonText }}</button>
 </main>
+{{ this.fechaFormateada |json }}
+<div *ngIf="this.registrarActividadForm != null">
+    {{ this.registrarActividadForm.status | json }}
 
+</div>

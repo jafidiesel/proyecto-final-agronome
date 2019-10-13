@@ -28,12 +28,19 @@ import { EditarAnalisisAsociadoComponent } from './dashboard/pages/configuracion
 import { ListarPlanComponent } from './dashboard/pages/configuracion/asociar/plan/listar-plan/listar-plan.component';
 import { AsociarPlanComponent } from './dashboard/pages/configuracion/asociar/plan/asociar-plan/asociar-plan.component';
 import { EditarPlanAsociadoComponent } from './dashboard/pages/configuracion/asociar/plan/editar-plan-asociado/editar-plan-asociado.component';
+import { CrearUsuarioComponent } from './dashboard/pages/seguridad/crear-usuario/crear-usuario.component';
+import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usuarios/listar-usuarios.component';
+import { ListarActividadesComponent } from './dashboard/pages/actividad/listar-actividades/listar-actividades.component';
+import { VerActividadComponent } from './dashboard/pages/actividad/ver-actividad/ver-actividad.component';
+import { EditarUsuarioComponent } from './dashboard/pages/seguridad/editar-usuario/editar-usuario.component';
 
 
 const routes: Routes = [
   /* Modulo Actividades */
   { path: 'actividades', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
+  { path: 'actividades/listarActividades', component: ListarActividadesComponent },
+  { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */
@@ -43,7 +50,10 @@ const routes: Routes = [
   /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
-  { path: 'seguridad', component: SeguridadPageComponent },
+  //{ path: 'seguridad', component: SeguridadPageComponent },
+  { path: 'seguridad', component: ListarUsuariosComponent },
+  { path: 'seguridad/crearUsuario', component: CrearUsuarioComponent },
+  { path: 'seguridad/editarUsuario/:cod', component: EditarUsuarioComponent },
   /* Modulo Configuracion */
   { path: 'configuracion', component: ConfiguracionPageComponent },
   { path: 'configuracion/listarRecomendaciones', component: ListarRecomendacionesComponent },
@@ -72,8 +82,8 @@ const routes: Routes = [
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   { path: 'home', redirectTo: 'actividades' },
-  { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
-];
+/*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
+ */];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
