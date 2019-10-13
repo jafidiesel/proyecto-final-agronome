@@ -12,6 +12,7 @@ def updateUser(usuarioJson, rolRst, cod):
         #Actualizar datos propios de Usuario
         usuarioRst.nombre = user.nombre
         usuarioRst.apellido = user.apellido
+        usuarioRst.contraseniaUsuario = user.contrasenia
         usuarioRst.email = user.email
         usuarioRst.usuario = user.usuario
         usuarioRst.isActiv = user.isActiv
