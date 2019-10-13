@@ -2,7 +2,7 @@ from app.extensions import db
 from app.model.hlmodel import ActividadDetalle, ActivDetalleParam, Parametro
 
 def selectActivDetalle(): 
-    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False)
+    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).order_by(ActividadDetalle.fchActivDetalle).all()
     return  objetos 
 
 def selectActivDetalleCod(codActivDetalle):
