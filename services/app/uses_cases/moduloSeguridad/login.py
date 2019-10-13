@@ -1,5 +1,5 @@
 from app.model.hlmodel import Usuario, SessionUser
-import jwt
+#import jwt
 import datetime
 from flask import jsonify
 from app.repositorio.repositorioUsuario import getUsuarioByName

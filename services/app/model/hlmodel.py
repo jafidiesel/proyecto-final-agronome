@@ -18,6 +18,10 @@ from app.model.tipoPlanificacion import TipoPlanificacion
 from app.model.tipoRecurso import TipoRecurso
 from app.model.usuario import Usuario
 from app.model.session import SessionUser
+from app.model.finca import Finca
+from app.model.parcela import Parcela
+from app.model.cuadro import Cuadro
+
 
 from app.model.actividadParametro import ActividadParametro
 from app.model.tipoPlanParam import TipoPlanParam
