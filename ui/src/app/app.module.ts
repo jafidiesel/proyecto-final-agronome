@@ -12,10 +12,12 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginModule } from './login/login.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { PantallaComponent } from './pantalla/pantalla.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    PantallaComponent,
   ],
   imports: [
     BrowserModule,
