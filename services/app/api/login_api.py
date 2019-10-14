@@ -1,12 +1,12 @@
 #/login
 from app.api.helperApi.hlUrl import urlLogin
 from flask_restplus import Resource
-from app.uses_cases.moduloSeguridad.login import login,logout
+from app.uses_cases.moduloSeguridad.login import login,logout, solicitarReinicioPsw, resetPsw
 from app.api.shared.tokenHandler import token_required
+from flask import jsonify
 
 loginUser = urlLogin
 @loginUser.route('')
-
 class LoginHandler(Resource):
     def post(self):
         data = self.api.payload
@@ -14,6 +14,17 @@ class LoginHandler(Resource):
         return login(data)
     @token_required
     def delete(self,dataUser):
-        userCode = self.cod
-        print(userCode)
-        return logout(userCode)
+        if (self.rol.nombre=='administrador'):            
+            userCode = self.cod
+            return logout(userCode)
+        else:
+            return jsonify({'message:':'No posee permisos para realizar esta acción'})
+
+@loginUser.route('/reset')
+class LoginHandler(Resource):
+    def post(self):
+        data = self.api.payload
+        return solicitarReinicioPsw(data)
+    def get(self):
+        data = self.api.payload
+        return resetPsw(data)
