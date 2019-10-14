@@ -4,18 +4,21 @@ from app.api.helperApi.hlUrl import urlParametro
 from app.uses_cases.moduloConfiguracion.gestionarParametro import postParametro,getParametroEstructura, getParametroById, updateParametro,getAllParametros
 #from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador
 from app.uses_cases.moduloSeguridad.gestionarUsuarios import postUser
-
+from app.api.shared.tokenHandler import token_required
 
 parametro = urlParametro
 
 @parametro.route('')
 class ParametroHandler(Resource):
-    def post(self):
+    @token_required
+    def post(self,currentUser):
         data = self.api.payload
         return postParametro(data)
-    def get(self):
+    @token_required
+    def get(self,currentUser):
         return getAllParametros() 
-    def put(self):
+    @token_required
+    def put(self,currentUser):
         data = self.api.payload
         return updateParametro(data)
 

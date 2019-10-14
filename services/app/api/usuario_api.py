@@ -8,20 +8,40 @@ users = urlUsuario
 
 @users.route('')
 class UsersHandler(Resource):
-    def post(self):
-        data = self.api.payload
-        return postUser(data)
+    @token_required
+    def post(self,currentUser):
+        if (self.rol.nombre=='administrador'):            
+            data = self.api.payload
+            return postUser(data)
+        else:
+            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
-    #@token_required
-    def get(self):
-        return getAllUsers()
-    
+    @token_required
+    def get(self,currentUser):
+        if (self.rol.nombre=='administrador'):            
+            return getAllUsers()
+        else:
+            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+
 @users.route('/<string:cod>')
 class UsersHandler(Resource):
-    def get(self, cod):
-        return getUsuario(cod)
-    def put(self, cod):
-        data = self.api.payload
-        return updateUsuario(data, cod)
+    @token_required
+    def get(self, currentUser,cod):
+        if (self.rol.nombre=='administrador'):            
+            return getUsuario(cod)  
+        else:
+            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+
+    @token_required
+    def put(self,currentUser,cod):
+        if (self.rol.nombre=='administrador'):            
+            data = self.api.payload
+            return updateUsuario(data, cod)
+        else:
+            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+
+""" @users.route('/current')
+class UsersHandler(Resource):
+    def get(self, currentUser): """
 
   
