@@ -18,7 +18,7 @@ class LoginHandler(Resource):
             userCode = self.cod
             return logout(userCode)
         else:
-            return jsonify({'message:':'No posee permisos para realizar esta acción'})
+            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
 @loginUser.route('/reset')
 class LoginHandler(Resource):
