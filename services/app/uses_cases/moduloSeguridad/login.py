@@ -15,7 +15,6 @@ def login(data):
         #Buscar Usuario 
         usuarioRst = getUsuarioByName(data.get('usuario'))
         # contraseniaCheck = check_password_hash(data.get('contraseniaUsuario'),contraseniaRst)
-        # print(contraseniaCheck)
         if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
             print('EN IF')
             #Generar un token y almacenar los datos en la tabla Session
@@ -31,15 +30,14 @@ def login(data):
             except Exception as e:
                 #Si no se encontro sesion, crear objeto Session
                 session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
-                saveEntidadSinCommit(session)
-            
+                saveEntidadSinCommit(session)         
             
             """ if sessionUserRst:
                 sessionUserRst.token = tokenRst
                 saveEntidadSinCommit(sessionUserRst) """
            
             Commit()
-            return jsonify({'token' : tokenRst.decode('UTF-8')})
+            return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
         else:
             return jsonify({'message': 'User or Password invalid'})
     except Exception as e:
@@ -55,3 +53,25 @@ def logout(userCode):
     except Exception as e:
         Rollback()
         return ResponseException(e)
+
+def solicitarReinicioPsw(data):
+    #Comprobar que el usuario existe
+    usuarioRst = getUsuarioByName(data.get('usuario'))
+    # Si existe se comprueba el email
+    if (data.get('email')== usuarioRst.email):
+        usuarioRst.isRecuperarContrasenia = True
+        #Generar contraseña random
+        import string
+        import random
+        usuarioRst.randomContrasenia = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(20))    
+        #Generar token de 24hs para reestablecer contraseña
+        payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}
+        tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+        Commit()
+        return jsonify({'contrasenia': usuarioRst.randomContrasenia })
+    else:
+        return jsonify({'message': 'El e-mail ingresado no es válido'})
+
+def resetPsw(data):
+    #Verificar que el token no expiro
+    return True
