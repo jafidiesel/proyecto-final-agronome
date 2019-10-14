@@ -1,7 +1,7 @@
 from app.model.hlmodel import Usuario, SessionUser
 import jwt
 import datetime
-from flask import jsonify
+from flask import jsonify,make_response
 from app.repositorio.repositorioUsuario import getUsuarioByName
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit, Rollback,deleteObject
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -39,7 +39,7 @@ def login(data):
             Commit()
             return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
         else:
-            return jsonify({'message': 'User or Password invalid'})
+            return make_response(jsonify({'message': 'User or Password invalid'}),400)
     except Exception as e:
         Rollback()
         return ResponseException(e)
@@ -70,7 +70,7 @@ def solicitarReinicioPsw(data):
         Commit()
         return jsonify({'contrasenia': usuarioRst.randomContrasenia })
     else:
-        return jsonify({'message': 'El e-mail ingresado no es válido'})
+        return make_response(jsonify({'message': 'El e-mail ingresado no es válido'}),400)
 
 def resetPsw(data):
     #Verificar que el token no expiro

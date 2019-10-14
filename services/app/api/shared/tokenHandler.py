@@ -14,16 +14,16 @@ def token_required(f):
             
         if not token:
             message = json.dumps({'message': 'Token is missing'})   
-            return jsonify(message)
+            return make_response(jsonify(message),400)
         try:
             data = jwt.decode(token,'AgronomeKey')
             currentUser = Usuario.query.filter(Usuario.usuario == data.get('user')).first()    
         except jwt.ExpiredSignatureError:
-            return jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'})
+            return make_response(jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'}),400)
         except jwt.InvalidTokenError:
-            return jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'})
+            return make_response(jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'}),400)
         except:
-            return jsonify({'message': 'Usuario no encontrado'})      
+            return make_response(jsonify({'message': 'Usuario no encontrado'}),400)      
         return f(currentUser, *args, **kargs)
     return decorated
 
