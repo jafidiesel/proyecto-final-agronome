@@ -11,9 +11,8 @@ class UsersHandler(Resource):
     def post(self):
         data = self.api.payload
         return postUser(data)
-
-    #@token_required
-    def get(self):
+    @token_required
+    def get(self,currentUser):
         return getAllUsers()
     
 @users.route('/<string:cod>')
@@ -23,5 +22,9 @@ class UsersHandler(Resource):
     def put(self, cod):
         data = self.api.payload
         return updateUsuario(data, cod)
+
+""" @users.route('/current')
+class UsersHandler(Resource):
+    def get(self, currentUser): """
 
   

@@ -3,6 +3,8 @@ from app.repositorio.hlDb import Commit, saveEntidadSinCommit, Rollback
 from app.model.hlmodel import Usuario, Rol
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+from sqlalchemy.orm import exc
+
 
 def updateUser(usuarioJson, rolRst, cod):
     try:
@@ -28,5 +30,7 @@ def getUsuarioByName(nombre):
     try:
         usuario = Usuario.query.filter(Usuario.usuario == nombre).one()
         return usuario
+    except exc.NoResultFound:
+        raise Exception('N', 'Usuario no encontrado')
     except Exception as e:
         return ResponseException(e)
