@@ -9,6 +9,10 @@ class ActividadDetalle(db.Model):
     isEliminado = db.Column('is_eliminado', Boolean, default = False, nullable = False)
     
     codActividad = db.Column('fk_cod_actividad',Integer,ForeignKey('actividad.cod_actividad'), nullable = False) #relación
+ 
+    codRecomDetalle = db.Column('fk_cod_recom_detalle',Integer,ForeignKey('recomendacion_detalle.cod_recom_detalle'), nullable = True, index = True)
+
+
     actividad = relationship("Actividad", backref="activDetalleList") # N -> 1  &&  1->N (activiDetalleList)
 
     imgList = relationship('ImgActivDetalle') # 1->N
