@@ -11,27 +11,19 @@ def token_required(f):
         token = None
         if 'Authorization' in request.headers.keys():
             token = get_token(request.headers.get('Authorization')) 
-            print('TOKEN')
-            print(token)
-            print('EN if')
-        
+            
         if not token:
             message = json.dumps({'message': 'Token is missing'})   
-            return jsonify(message, status = 401)
-
+            return jsonify(message)
         try:
-            print('EN TRY')
             data = jwt.decode(token,'AgronomeKey')
-            print(data)
-            currentUser = Usuario.query.filter(Usuario.cod == data.get('cod')).first()
+            currentUser = Usuario.query.filter(Usuario.usuario == data.get('user')).first()    
         except jwt.ExpiredSignatureError:
-            return 'Signature expired, Please sign in again'
+            return jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'})
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please sign in again' 
+            return jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'})
         except:
-            message = json.dumps({'message': 'Token is invalid'})
-            return jsonify(message,status=401)
-        
+            return jsonify({'message': 'Usuario no encontrado'})      
         return f(currentUser, *args, **kargs)
     return decorated
 
