@@ -1,25 +1,77 @@
 from app.model.hlmodel import Usuario, SessionUser
-#import jwt
+import jwt
 import datetime
-from flask import jsonify
+from flask import jsonify,make_response
 from app.repositorio.repositorioUsuario import getUsuarioByName
+from app.repositorio.hlDb import saveEntidadSinCommit,Commit, Rollback,deleteObject
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+import uuid
+from werkzeug.security import check_password_hash
 
 def login(data):
-    if not data:
-        return('Data vacio')
+    try:
+        if not data:
+            raise Exception('N', 'Data vacio')
+        #Buscar Usuario 
+        usuarioRst = getUsuarioByName(data.get('usuario'))
+        # contraseniaCheck = check_password_hash(data.get('contraseniaUsuario'),contraseniaRst)
+        if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
+            print('EN IF')
+            #Generar un token y almacenar los datos en la tabla Session
+            #Armado de Token            
+            payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
+            tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+            #Verificar si el Usuario ya existe en Session
+            try:
+                sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
+                #Si el usuario ya tiene sesion, actualizar token
+                sessionUserRst.token = tokenRst
+                saveEntidadSinCommit(sessionUserRst)
+            except Exception as e:
+                #Si no se encontro sesion, crear objeto Session
+                session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
+                saveEntidadSinCommit(session)         
+            
+            """ if sessionUserRst:
+                sessionUserRst.token = tokenRst
+                saveEntidadSinCommit(sessionUserRst) """
+           
+            Commit()
+            return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
+        else:
+            return make_response(jsonify({'message': 'User or Password invalid'}),400)
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
 
-    usuario = getUsuarioByName(data.get('usuario'))
-    token = jwt.encode({usuario.cod, datetime.datetime.utcnow() + datetime.timedelta(minutes=5)}, 'secret')
-    print(token)
-    if not usuario:
-        return ('Usuario no existente')
+def logout(userCode): 
+    try:   
+        sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == userCode).one()
+        deleteObject(sessionUserRst) 
+        Commit()
+        return jsonify({'message' : 'Logout exitoso'})
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)
 
+def solicitarReinicioPsw(data):
+    #Comprobar que el usuario existe
+    usuarioRst = getUsuarioByName(data.get('usuario'))
+    # Si existe se comprueba el email
+    if (data.get('email')== usuarioRst.email):
+        usuarioRst.isRecuperarContrasenia = True
+        #Generar contraseña random
+        import string
+        import random
+        usuarioRst.randomContrasenia = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(20))    
+        #Generar token de 24hs para reestablecer contraseña
+        payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}
+        tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+        Commit()
+        return jsonify({'contrasenia': usuarioRst.randomContrasenia })
+    else:
+        return make_response(jsonify({'message': 'El e-mail ingresado no es válido'}),400)
 
-    if (data.get('contrasenia')==usuario.contraseniaUsuario):
-        #Generar un token y almacenar los datos en la tabla Session
-        token = jwt.encode({usuario.cod, datetime.datetime.utcnow() + datetime.timedelta(minutes=5)}, 'secret')
-        #Crear objeto Session
-        SessionUser(codPublic = usuario.cod, usuario = usuario.nombre, token = token, rol = usuario.rol.nombre)
-        return jsonify({'token' : token.decode('UTF-8')})
-
+def resetPsw(data):
+    #Verificar que el token no expiro
     return True

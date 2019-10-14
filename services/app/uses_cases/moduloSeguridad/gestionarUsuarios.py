@@ -23,10 +23,10 @@ def postUser(data):
         #Buscar rol seleccionado
         rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
         #Setear pws con hash
-        hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
+        #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
         usuario = hlmodel.Usuario.from_json(usuarioJson)
-        usuario.contraseniaUsuario = hashed_password
+        usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
         #Generar codPublic
         usuario.cod = str(uuid.uuid4())
         usuario.rol = rolRst
@@ -63,7 +63,7 @@ def getUsuario(codPublic):
     except Exception as e:
         return ResponseException(e)
 #Editar Usuario
-def updateUsuario(data):
+def updateUsuario(data, cod):
     dataLower = obtainDict(data)
     #Buscar usuario 
     usuarioJson = dataLower.get('usuario')
@@ -73,7 +73,7 @@ def updateUsuario(data):
     rolJson = dataLower.get('rol')  
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
     from app.repositorio.repositorioUsuario import updateUser
-    return updateUser(usuarioJson, rolRst)        
+    return updateUser(usuarioJson, rolRst, cod)        
 
 
 
