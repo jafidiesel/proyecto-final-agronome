@@ -18,8 +18,6 @@ modelos = {
 def postUser(data):
     try:
         dataLower = obtainDict(data)
-        print('Contrse')
-        print(dataLower.get('contraseniaUsuario'))
         usuarioJson = dataLower.get('usuario')
         rolJson = dataLower.get('rol')
         #Buscar rol seleccionado
@@ -28,8 +26,6 @@ def postUser(data):
         #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
         usuario = hlmodel.Usuario.from_json(usuarioJson)
-        print('Contrse')
-        print(dataLower.get('contraseniaUsuario'))
         usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
         #Generar codPublic
         usuario.cod = str(uuid.uuid4())

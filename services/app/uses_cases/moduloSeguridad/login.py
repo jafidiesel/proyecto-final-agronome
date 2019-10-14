@@ -17,22 +17,27 @@ def login(data):
         # contraseniaCheck = check_password_hash(data.get('contraseniaUsuario'),contraseniaRst)
         # print(contraseniaCheck)
         if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
-            #Verificar si el Usuario ya existe en Session
-            sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
+            print('EN IF')
             #Generar un token y almacenar los datos en la tabla Session
             #Armado de Token            
             payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
             tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
-
-            #Si el usuario ya tiene sesion, actualizar token
-            if sessionUserRst:
+            #Verificar si el Usuario ya existe en Session
+            try:
+                sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
+                #Si el usuario ya tiene sesion, actualizar token
                 sessionUserRst.token = tokenRst
                 saveEntidadSinCommit(sessionUserRst)
-           
-            #Si no se encontro sesion, crear objeto Session
-            if not sessionUserRst:
+            except Exception as e:
+                #Si no se encontro sesion, crear objeto Session
                 session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
                 saveEntidadSinCommit(session)
+            
+            
+            """ if sessionUserRst:
+                sessionUserRst.token = tokenRst
+                saveEntidadSinCommit(sessionUserRst) """
+           
             Commit()
             return jsonify({'token' : tokenRst.decode('UTF-8')})
         else:
