@@ -46,8 +46,12 @@ def login(data):
         Rollback()
         return ResponseException(e)
 
-def logout(userCode):
-    
-    userRst = Usuario.query.filter(Usuario.cod == userCode).one()
-    deleteObject(userRst) 
-    return jsonify({'message' : 'Logout exitoso'})
+def logout(userCode): 
+    try:   
+        sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == userCode).one()
+        deleteObject(sessionUserRst) 
+        Commit()
+        return jsonify({'message' : 'Logout exitoso'})
+    except Exception as e:
+        Rollback()
+        return ResponseException(e)

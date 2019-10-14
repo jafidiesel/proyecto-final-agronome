@@ -13,7 +13,7 @@ class LoginHandler(Resource):
         print(data)
         return login(data)
     @token_required
-    def get(self,dataUser):
+    def delete(self,dataUser):
         userCode = self.cod
         print(userCode)
         return logout(userCode)
