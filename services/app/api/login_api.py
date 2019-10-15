@@ -3,7 +3,7 @@ from app.api.helperApi.hlUrl import urlLogin
 from flask_restplus import Resource
 from app.uses_cases.moduloSeguridad.login import login,logout, solicitarReinicioPsw, resetPsw
 from app.api.shared.tokenHandler import token_required
-from flask import jsonify
+from flask import jsonify,make_response
 
 loginUser = urlLogin
 @loginUser.route('')

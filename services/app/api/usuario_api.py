@@ -10,9 +10,9 @@ users = urlUsuario
 class UsersHandler(Resource):
     @token_required
     def post(self,currentUser):
-        if (self.rol.nombre=='administrador'):            
-            data = self.api.payload
-            return postUser(data)
+        if (currentUser.rol.nombre =='administrador'):            
+            print(self.keys())
+            return postUser(self)
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
@@ -27,7 +27,7 @@ class UsersHandler(Resource):
 class UsersHandler(Resource):
     @token_required
     def get(self, currentUser,cod):
-        if (self.rol.nombre=='administrador'):            
+        if (currentUser.rol.nombre=='administrador'):            
             return getUsuario(cod)  
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
