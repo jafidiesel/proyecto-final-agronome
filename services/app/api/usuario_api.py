@@ -1,24 +1,25 @@
 from app.api.helperApi.hlUrl import urlUsuario
-from flask import jsonify, request, make_response
+from flask import request,make_response,jsonify
 from flask_restplus import Resource
 from app.uses_cases.moduloSeguridad.gestionarUsuarios import postUser,getAllUsers, getUsuario, updateUsuario
+from app.uses_cases.moduloSeguridad.checkUrl import checkUrl
 from app.api.shared.tokenHandler import token_required
-
+from app.api.helperApi.hlResponse import notCheck
 users = urlUsuario
 
 @users.route('')
 class UsersHandler(Resource):
     @token_required
-    def post(self,currentUser):
+    def post(data,currentUser):
         if (currentUser.rol.nombre =='administrador'):            
-            print(self.keys())
-            return postUser(self)
+            return postUser(data)
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
     @token_required
-    def get(self,currentUser):
-        if (self.rol.nombre=='administrador'):            
+    def get(data,currentUser):
+        #isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
+        if (currentUser.rol.nombre =='administrador'):                         
             return getAllUsers()
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
@@ -26,16 +27,15 @@ class UsersHandler(Resource):
 @users.route('/<string:cod>')
 class UsersHandler(Resource):
     @token_required
-    def get(self, currentUser,cod):
+    def get(data,currentUser,cod):
         if (currentUser.rol.nombre=='administrador'):            
             return getUsuario(cod)  
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
     @token_required
-    def put(self,currentUser,cod):
-        if (self.rol.nombre=='administrador'):            
-            data = self.api.payload
+    def put(data,currentUser,cod):
+        if  (currentUser.rol.nombre=='administrador'):            
             return updateUsuario(data, cod)
         else:
             return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)

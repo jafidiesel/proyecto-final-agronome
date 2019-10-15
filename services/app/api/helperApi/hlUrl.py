@@ -24,3 +24,10 @@ urlLogin = Namespace(URL_MU +'/login', description = 'Login Usuario')
 URL_MGF = 'api/finca'
 urlFinca = Namespace(URL_MGF, description = 'Gestionar Finca')
 
+#modulo de recomendacion
+URL_MR = 'api/recomendacion/'
+urlRegistrarRecom = Namespace (URL_MR + 'registrar', description = 'Registrar Recomendación')
+
+
+
+

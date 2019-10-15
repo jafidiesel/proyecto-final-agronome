@@ -5,6 +5,7 @@ from app.api.registrarActividad_api import registrarActiv
 from app.api.usuario_api import users
 from app.api.login_api import loginUser
 from app.api.finca_api import finca
+from app.api.registrarRecomendacion_api import registrarRecom
 NAMESPACES = [
     nomenclador,
     parametro,
@@ -12,5 +13,7 @@ NAMESPACES = [
     registrarActiv,
     users,
     loginUser,
-    finca
+    finca,
+    registrarRecom
+
 ]

@@ -8,10 +8,8 @@ from flask_restplus import Resource
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kargs):
-        print(kargs)
-        print(request.headers.items)
-        print(request.headers.get('Authorization'))
-        
+        print('estoy en el decorador')
+        payload = request.json
         token = None
         if 'Authorization' in request.headers.keys():
             token = get_token(request.headers.get('Authorization')) 
@@ -29,14 +27,15 @@ def token_required(f):
             return make_response(jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'}),400)
         except:
             return make_response(jsonify({'message': 'Usuario no encontrado'}),400)      
-        return f(payload,currentUser, **kargs)
+        #return f(data,currentUser, *args, **kargs)
+        return f(payload,currentUser,**kargs)
     return decorated
 
 PREFIX = 'Bearer'
 
 def get_token(header):
-    print('HEADER')
-    print(header)
+    #print('HEADER')
+    #print(header)
     bearer, _, token = header.partition(' ')
     if bearer != PREFIX:
         raise ValueError('Invalid token')

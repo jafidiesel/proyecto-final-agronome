@@ -39,6 +39,15 @@ def ResponseOk():
     response.headers['Content-Type'] = contentType
     return response
 
+def notCheck():
+    flag = 'N'
+    msg ='No posee permisos para realizar esta acción'
+    msgResponse = dict(flag=flag, message = msg)
+    response= make_response(msgResponse,404)
+    response.headers['Server'] = server
+    response.headers['Content-Type'] = contentType
+    return response
+
 def definirCauses(msg):
     msgAux = 'X' #incializo x 
     llaves=errors.keys()
