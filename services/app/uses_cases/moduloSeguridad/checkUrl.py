@@ -5,13 +5,16 @@ def checkUrl(method,pat,rol):
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
     url = re.sub(nro,"",urlAux)
     isCheck = False
-    
+    print(url)
     #Modulo Configuracion
     #nomenclador
+    """  try:
+        if url.index('/api/configuracion/nomenclador')>0: 
+            ##macheamos la url con el post y el get ya que la url se reutiliza para todas las entidades
+            url = 'GET/api/configuracion/nomenclador/'
+    except Exception as e:
+        pass """
 
-    if url.index('/api/configuracion/nomenclador/')>0: 
-        ##macheamos la url con el post y el get ya que la url se reutiliza para todas las entidades
-        url = 'GET/api/configuracion/nomenclador/'
     MCNOM = '/' + urlNomenclador.name
     MCNOM_POST = 'POST' + MCNOM
     MCNOM_GETS = 'GET' + MCNOM
@@ -59,11 +62,11 @@ def checkUrl(method,pat,rol):
     MSLOG_DELETE = 'DELETE' + MSLOG
 
 
-    print(MCNOM_GET)
+    print(MCPAR_GET)
 
 
     administrador = (MSUSU_POST,MSUSU_GETS,MSUSU_GET,MSUSU_PUT,MSLOG_DELETE,
-        MCPAR_POST,MCPAR_GETS,
+        MCPAR_POST,MCPAR_GETS,MCPAR_GET,MCPAR_PUT,
         MAREG_GET,MAREG_PUT,
         MCNOM_POST,MCNOM_GETS,MCNOM_GET,MCNOM_PUT)
     
