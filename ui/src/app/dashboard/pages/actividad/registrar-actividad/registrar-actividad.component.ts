@@ -304,10 +304,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
   }
 
-  imprimir() {
-    this.parametrosCompletados();
-  }
-
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
