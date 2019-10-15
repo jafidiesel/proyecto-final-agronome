@@ -60,9 +60,7 @@ export class SeguridadService {
   */
   getUsuarios(): Observable<String> {
 
-    return this.http.get<String>(`http://localhost:9001/api/users`, {headers: new HttpHeaders({
-      "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoidXN1YXJpbzQiLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwianRpIjoiMTNmYzkxNTItODExMy00MWMzLTg1NWEtMDEzOTNiZjMxYjQ1IiwiZXhwIjoxNTcxMDk3MjY4fQ.fRb8Qg8WXzCuXaPq2aM0i4XNMzY8fmNvhf9N5aEmtZs"
-    })} );
+    return this.http.get<String>(`http://localhost:9001/api/users` );
   }
 
   /**
