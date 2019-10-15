@@ -31,7 +31,6 @@ def login(data):
                 #Si no se encontro sesion, crear objeto Session
                 session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
                 saveEntidadSinCommit(session)         
-            
             """ if sessionUserRst:
                 sessionUserRst.token = tokenRst
                 saveEntidadSinCommit(sessionUserRst) """
