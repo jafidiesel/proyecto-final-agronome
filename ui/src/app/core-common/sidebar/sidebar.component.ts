@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 @Component({
@@ -9,6 +10,8 @@ import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMark
 })
 export class SidebarComponent implements OnInit {
 
+  rol: string;
+  
   faEdit = faEdit;
   faListAlt = faListAlt;
   faFileMedical = faFileMedical;
@@ -17,9 +20,10 @@ export class SidebarComponent implements OnInit {
   faCogs = faCogs;
   faMapMarkedAlt = faMapMarkedAlt;
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
+    this.rol = this.auth.getRol();
   }
 
 }

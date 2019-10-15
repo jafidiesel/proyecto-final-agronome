@@ -24,11 +24,11 @@
             <fa-icon [icon]="faChartPie" class="mr-1" ></fa-icon> Reportes
         </button>
         <button type="button" routerLink="/seguridad" routerLinkActive="active"
-            class="list-group-item list-group-item-action">
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'" >
             <fa-icon [icon]="faLock" class="mr-1" ></fa-icon> <b> Seguridad</b>
         </button>
         <button type="button" routerLink="/configuracion" routerLinkActive="active"
-            class="list-group-item list-group-item-action">
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
             <fa-icon [icon]="faCogs" class="mr-1"></fa-icon> <b> Configuración</b>
         </button>
     </div>
