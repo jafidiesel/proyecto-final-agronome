@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { UsuarioModel } from 'src/app/login/models/usuario.model';
+import { UsuarioModel } from 'src/app/models/usuario.model';
 import Swal from 'sweetalert2';
-import { AuthService } from 'src/app/login/services/auth.service';
+import { AuthService } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
