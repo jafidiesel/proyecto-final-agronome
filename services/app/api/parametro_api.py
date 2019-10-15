@@ -22,8 +22,8 @@ class ParametroHandler(Resource):
             return notCheck()
     @token_required
     def get(data,currentUser):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
+
+        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'): 
             return getAllParametros() 
         else:
             return notCheck()
@@ -36,20 +36,18 @@ class ParametroHandler(Resource):
             return updateParametro(data)
         else:
             return notCheck() """
-
         #Esto SI funciona
         if (currentUser.rol.nombre =='administrador'):            
             return updateParametro(data)
         else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+            return notCheck()
 
 
 @parametro.route('/<string:tipoNomenclador>')
 class ParametroHandler(Resource):
     @token_required
     def get(data,currentUser,tipoNomenclador):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
+        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'):
             return getParametroEstructura(tipoNomenclador)
         else:
             return notCheck()
@@ -58,8 +56,7 @@ class ParametroHandler(Resource):
 class  ParametroHandler(Resource):
     @token_required
     def get(data,currentUser, cod):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
+        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'):
             return getParametroById(cod)
         else:
             return notCheck()
