@@ -55,6 +55,12 @@ constructor( private http : HttpClient ) {
     }
   }
 
+  getRol(){
+    if( localStorage.getItem('rol') ){
+      return localStorage.getItem('rol');
+    }
+  }
+
   private guardarRol( rol: string){
     localStorage.setItem('rol',rol);
   }
