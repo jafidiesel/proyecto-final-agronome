@@ -21,6 +21,8 @@ def token_required(f):
             data = jwt.decode(token,'AgronomeKey')
             currentUser = Usuario.query.filter(Usuario.usuario == data.get('user')).first()   
             payload = request.json 
+
+            #logica try
         except jwt.ExpiredSignatureError:
             return make_response(jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'}),400)
         except jwt.InvalidTokenError:

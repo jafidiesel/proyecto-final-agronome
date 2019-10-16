@@ -5,6 +5,8 @@ import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
+import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -74,6 +76,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
                 this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
+                
               }
             });
             if (defaultIcon) {
@@ -198,6 +201,16 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   registrarActividad(nombreActividad: string, codActividad:number) {
+    console.log(codActividad);
+
+    this.subscriptions.push(
+      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+        result => {
+          this.initForm(result);
+        },
+        error => console.log('error', error)
+      )
+    );
 
     this.nombreActividad = nombreActividad;
     this.codActividad = codActividad;
@@ -294,6 +307,26 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             this.postSuccess = true;
             this.postError = false;
             this.postErrorMessage = '';
+
+            //prodn
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success ml-1',
+              },
+              buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+              title: '¡Exito!',
+              text: 'Se registro la actividad correctamente.',
+              type: 'warning',
+              confirmButtonText: 'Salir',
+              reverseButtons: true
+            }).then((result) => {
+              if (result.value) {
+                this.router.navigate(['actividades/listarActividades']);
+              }}
+            )
           },
           error => this.onHttpError(error)
         )

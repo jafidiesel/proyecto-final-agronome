@@ -48,6 +48,10 @@ def notCheck():
     response.headers['Content-Type'] = contentType
     return response
 
+
+#def notCheckmsg(msg):
+
+
 def definirCauses(msg):
     msgAux = 'X' #incializo x 
     llaves=errors.keys()

@@ -16,7 +16,7 @@ export class ListarUsuariosComponent implements OnInit, OnDestroy {
   tableDataHeader = ['Usuario', 'Nombre', 'Apellido', 'Email', 'Fecha Creación', 'Activo', 'Rol', 'Editar'];
   mostrarTabla: boolean = false;
 
-  format = 'yyyy-MM-dd';
+  format = 'MM-dd-yyyy';
   locale = 'en-US';
   
 
@@ -29,12 +29,14 @@ export class ListarUsuariosComponent implements OnInit, OnDestroy {
         this.usuariosTabla.push(this.tableDataHeader);
 
         for (let index = 0; index < result.length; index++) {
+          console.log(result[index].fchCrea);
           this.usuariosTabla.push([
             `${result[index].usuario}`,
             `${result[index].nombre}`,
             `${result[index].apellido}`,
             `${result[index].email}`,
-            formatDate(`${result[index].fchCrea}`, this.format, this.locale),
+            /* formatDate(`${result[index].fchCrea}`, this.format, this.locale), */
+            `${result[index].fchCrea}`,
             `${result[index].isActiv}`,
             `${result[index].rol.nombre}`,
             `*/seguridad/editarUsuario/${result[index].cod}`

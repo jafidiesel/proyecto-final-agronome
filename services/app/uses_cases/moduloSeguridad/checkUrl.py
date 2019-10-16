@@ -9,7 +9,7 @@ def checkUrl(method,pat,rol):
     #Modulo Configuracion
     #nomenclador
     """  try:
-        if url.index('/api/configuracion/nomenclador')>0: 
+        if url.('/api/configuracion/nomenclador')>0: 
             ##macheamos la url con el post y el get ya que la url se reutiliza para todas las entidades
             url = 'GET/api/configuracion/nomenclador/'
     except Exception as e:
