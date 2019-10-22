@@ -43,7 +43,6 @@ def checkUrl(method,pat,rol):
 
 
     #Modulo Actividades
-    #Registrar Actividades
     MAREG = '/' + urlResgistrarActiv.name
     MAREG_POST = 'POST' + MAREG
     MAREG_GETS = 'GET' + MAREG
@@ -64,8 +63,7 @@ def checkUrl(method,pat,rol):
     
     
     
-    
-    
+
     #PERMISOS:
 
     default = (

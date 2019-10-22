@@ -15,11 +15,8 @@ def postFinca(data):
         provincia = data.get('provincia')
 
         isActiv = True
-        urlMaps = 'https://www.google.com.ar/maps/place/' + calle + '+' + str(nro) + '+' + localidad + '+' + provincia
-
-        urlMaps = urlMaps.replace(' ','+')
-
-        finca = Finca(nombreFinca = nombreFinca, superficie = superficie ,isActiv = isActiv, calle=calle, nro=nro, localidad=localidad, provincia = provincia, urlMaps = urlMaps )
+       
+        finca = Finca(nombreFinca = nombreFinca, superficie = superficie ,isActiv = isActiv, calle=calle, nro=nro, localidad=localidad, provincia = provincia)
         
         for parcelaItem in parcelaList:
             nombreParcela = parcelaItem.get('nombre')
@@ -51,11 +48,10 @@ def getFinca():
     dtoFincaList = []
 
     for finca in fincaList:
-        dtoFincaAux = dict(codFinca = finca.codFinca, nombre = finca.nombreFinca, superficie = finca.superficie, isActiv = finca.isActiv, calle= finca.calle, nro = finca.nro, localidad=finca.localidad, provincia=finca.provincia, urlMaps = finca.urlMaps)
-
+        dtoFincaAux = fincaToDicc(finca)
         dtoFincaList.append(dtoFincaAux)
 
-    return dict(fincas=dtoFincaList)
+    return dict(finca=dtoFincaList)
 
 def getFincaCod(codFinca):
     try:    
@@ -63,8 +59,7 @@ def getFincaCod(codFinca):
         if not finca: 
             raise Exception('N','No existe finca con código ' + str(codFinca))
 
-        dtoFinca = dict(codFinca = finca.codFinca, nombre = finca.nombreFinca, superficie = finca.superficie, isActiv = finca.isActiv, calle= finca.calle, nro = finca.nro, localidad=finca.localidad, provincia=finca.provincia, urlMaps = finca.urlMaps)
-
+        dtoFinca = fincaToDicc(finca)
         parcelaList = finca.parcelaList
         dtoParcelaList = []
 
@@ -74,7 +69,6 @@ def getFincaCod(codFinca):
             cuadroList = parcela.cuadroList
             dtoCuadroList = []
             for cuadro in cuadroList:
-                print(cuadro)
                 dtoCuadroAux = dict(codCuadro = cuadro.codCuadro, nombreCuadro = cuadro.nombreCuadro)    
                 dtoCuadroList.append(dtoCuadroAux)
 
@@ -83,8 +77,24 @@ def getFincaCod(codFinca):
 
         dtoFinca['parcelas'] = dtoParcelaList
 
-            
-
         return (dict(finca=dtoFinca))       
     except Exception as e:
         return ResponseException(e)
+
+
+
+def fincaToDicc(finca):
+    calle = finca.calle
+    nro = finca.nro
+    localidad = finca.localidad
+    provincia = finca.provincia
+    urlMaps = adapterUrl(calle,nro,localidad,provincia)
+
+    dtoFinca = dict(codFinca = finca.codFinca, nombre = finca.nombreFinca, superficie = finca.superficie, isActiv = finca.isActiv, calle= calle, nro = nro, localidad=localidad, provincia=provincia, urlMaps = urlMaps)
+    return dtoFinca
+
+
+def adapterUrl(calle,nro,localidad,provincia):
+    urlMaps = 'https://www.google.com.ar/maps/place/' + calle + '+' + str(nro) + '+' + localidad + '+' + provincia
+    urlMaps = urlMaps.replace(' ','+')
+    return urlMaps
