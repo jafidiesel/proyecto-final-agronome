@@ -13,33 +13,28 @@ entidadInterm = urlEntidadInterm
 class EntidadIntermHandler(Resource):
     @token_required
     def post(data,currentUser):
-        if (currentUser.rol.nombre =='administrador'): 
-           return postAsociacion(data) 
-        else:
-            return notCheck()
+        return postAsociacion(data) 
+     
         
 @entidadInterm.route('/<string:entidadIntermedia>')
 class EntidadIntermHandler(Resource):
     @token_required
     def get(data,currentUser, entidadIntermedia):
-        if (currentUser.rol.nombre =='administrador'): 
-            return getAsociaciones(entidadIntermedia)
-        else:
-            return notCheck()
+        return getAsociaciones(entidadIntermedia)
+        
+            
 
 
 @entidadInterm.route('/<string:entidadIntermedia>/<int:cod>')
 class EntidadIntermHandler(Resource):
     @token_required
     def get(data,currentUser,entidadIntermedia,cod):
-        if (currentUser.rol.nombre =='administrador'): 
-            return getAsociacionCod(entidadIntermedia,cod)        
-        else:
-            return notCheck()
+        return getAsociacionCod(entidadIntermedia,cod)        
+        
+            
 
     @token_required
     def put(data,currentUser, entidadIntermedia,cod):
-        if (currentUser.rol.nombre =='administrador'): 
-            return putAsociacion(data,entidadIntermedia,cod) 
-        else:
-            return notCheck()
+        return putAsociacion(data,entidadIntermedia,cod) 
+        
+            

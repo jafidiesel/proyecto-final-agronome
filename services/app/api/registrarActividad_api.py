@@ -10,47 +10,32 @@ registrarActiv = urlResgistrarActiv
 class RegistrarActivHandler(Resource):
     @token_required
     def post(data,currentUser):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ): 
-            return postRegistrarActiv(data)
-        else:
-            return notCheck()
+        return postRegistrarActiv(data)
 
     @token_required
     def get(data,currentUser):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ): 
-            return getRegistrarActiv()
-        else:
-            return notCheck()
+        return getRegistrarActiv()
 
 
 @registrarActiv.route('/<int:codActivDetalle>')
 class RegistrarActivHandler(Resource):
     @token_required
     def get(data,currentUser,codActivDetalle):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ):
-            return getRegistrarActivCod(codActivDetalle)
-        else:
-            return notCheck()
+        return getRegistrarActivCod(codActivDetalle)
+        
 
     @token_required
     def put(data,currentUser,codActivDetalle):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ):
-            return putRegistrarActiv(data,codActivDetalle)
-        else:
-            return notCheck() 
+        return putRegistrarActiv(data,codActivDetalle)
+        
 
     @token_required
     def delete(data,currentUser,codActivDetalle):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ):
-            return deleteRegistrarActiv(data,codActivDetalle)
-        else:
-            return notCheck()
+        return deleteRegistrarActiv(data,codActivDetalle)
 
 @registrarActiv.route('/parametros/<int:codActividad>')
 class RegistrarActivHandler(Resource):
     @token_required
     def get(data,currentUser,codActividad):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca' ):
-            return getParametrosFull(codActividad)
-        else:
-            return notCheck()
+        return getParametrosFull(codActividad)
+      

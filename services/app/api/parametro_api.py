@@ -15,49 +15,28 @@ parametro = urlParametro
 class ParametroHandler(Resource):
     @token_required
     def post(data,currentUser):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return postParametro(data)
-        else:
-            return notCheck()
-    @token_required
-    def get(data,currentUser):
+        return postParametro(data)
 
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'): 
-            return getAllParametros() 
-        else:
-            return notCheck()
+    @token_required
+    def get(data,currentUser): 
+        return getAllParametros() 
+       
         
     @token_required
-    def put(data,currentUser):
-        #Tira un 404 a pesar de que las url coinciden.
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return updateParametro(data)
-        else:
-            return notCheck() """
-        #Esto SI funciona
-        if (currentUser.rol.nombre =='administrador'):            
-            return updateParametro(data)
-        else:
-            return notCheck()
-
+    def put(data,currentUser):           
+        return updateParametro(data)
+     
 
 @parametro.route('/<string:tipoNomenclador>')
 class ParametroHandler(Resource):
     @token_required
     def get(data,currentUser,tipoNomenclador):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'):
-            return getParametroEstructura(tipoNomenclador)
-        else:
-            return notCheck()
-
+        return getParametroEstructura(tipoNomenclador)
+        
 @parametro.route('/<int:cod>')
 class  ParametroHandler(Resource):
     @token_required
     def get(data,currentUser, cod):
-        if (currentUser.rol.nombre =='administrador' or currentUser.rol.nombre =='encargadofinca'):
-            return getParametroById(cod)
-        else:
-            return notCheck()
+        return getParametroById(cod)
+        
 

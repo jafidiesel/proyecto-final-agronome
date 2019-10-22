@@ -10,35 +10,24 @@ users = urlUsuario
 @users.route('')
 class UsersHandler(Resource):
     @token_required
-    def post(data,currentUser):
-        if (currentUser.rol.nombre =='administrador'):            
-            return postUser(data)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
-
+    def post(data,currentUser):           
+        return postUser(data)
+    
     @token_required
-    def get(data,currentUser):
-        #isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if (currentUser.rol.nombre =='administrador'):                         
-            return getAllUsers()
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+    def get(data,currentUser):                 
+        return getAllUsers()
+        
 
 @users.route('/<string:cod>')
 class UsersHandler(Resource):
     @token_required
     def get(data,currentUser,cod):
-        if (currentUser.rol.nombre=='administrador'):            
-            return getUsuario(cod)  
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
-
+        return getUsuario(cod)  
+        
     @token_required
-    def put(data,currentUser,cod):
-        if  (currentUser.rol.nombre=='administrador'):            
-            return updateUsuario(data, cod)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+    def put(data,currentUser,cod):            
+        return updateUsuario(data, cod)
+     
 
 """ @users.route('/current')
 class UsersHandler(Resource):
