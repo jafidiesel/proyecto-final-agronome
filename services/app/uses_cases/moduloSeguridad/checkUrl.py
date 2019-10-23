@@ -56,7 +56,7 @@ def checkUrl(method,pat,rol):
     MGF_POST =  'POST' + MGF 
     MGF_GETS = 'GET' + MGF
     MGF_GET = MGF_GETS  + '/'
-    
+    MGF_PUT = 'PUT' + MGF + '/'
     
     
     
@@ -76,12 +76,12 @@ def checkUrl(method,pat,rol):
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST                                      #Modulo de finca
+        MGF_POST,MGF_PUT,                            #Modulo de finca
     ) + default
     
     encargadofinca = (
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST                                      #Modulo de finca
+        MGF_POST,MGF_PUT                              #Modulo de finca
          ) + default
     
     ingeniero = (  
@@ -102,7 +102,7 @@ def checkUrl(method,pat,rol):
     }
 
     isCheck = url in roles[rol]
-
+    print(url)
     return isCheck
        
  

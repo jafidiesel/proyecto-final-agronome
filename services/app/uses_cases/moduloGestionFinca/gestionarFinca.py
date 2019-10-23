@@ -1,10 +1,10 @@
 from app.api.helperApi.hlResponse import ResponseException
-from app.model.hlmodel import Finca, Parcela, Cuadro
-from app.repositorio.hlDb import saveEntidadSinCommit, Commit
+from app.model.hlmodel import Finca, Parcela, Cuadro, FincaUsuario
+from app.repositorio.hlDb import saveEntidadSinCommit, Commit , deleteObject
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
-from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 
-def postFinca(data):
+def postFinca(data,currentUser):
     try:
         nombreFinca =data.get('nombre')
         superficie = data.get('superficie')
@@ -36,6 +36,16 @@ def postFinca(data):
 
             finca.parcelaList.append(parcela) #asociacion de finca -> parcela
         
+
+        ##asignación de usuario con finca, esto se hace solo con el encargado, ya que el admin tambien puede crear finca, pero asignarce no puede
+        rol = currentUser.rol.nombre
+
+        if rol == 'encargadofinca':
+            fincaUsuario = FincaUsuario() # creo la finca usuario
+            fincaUsuario.finca = finca #asociación de finca
+            currentUser.fincaUsuarioList.append(fincaUsuario) # asociación
+
+
         saveEntidadSinCommit(finca)
         Commit()
 
@@ -80,6 +90,65 @@ def getFincaCod(codFinca):
         return (dict(finca=dtoFinca))       
     except Exception as e:
         return ResponseException(e)
+
+def putFinca(data,codFinca):
+    try:
+        nombreFinca =data.get('nombre')
+        superficie = data.get('superficie')
+        parcelaListIn = data.get('parcelas')
+        calle = data.get('calle')
+        nro = data.get('nro')
+        localidad = data.get('localidad')
+        provincia = data.get('provincia')
+        
+        finca = selectFincaCod(codFinca)
+
+        finca.nombreFinca = nombreFinca
+        finca.superficie = superficie
+        finca.calle = calle
+        finca.nro = nro
+        finca.localidad = localidad
+        finca.provincia = provincia
+        
+        if True: #aca tengo que poner la logica para detectar si no esta en planificación
+            parcelaList = finca.parcelaList
+            for parcela in parcelaList:
+                cuadroList = parcela.cuadroList
+                for cuadro in cuadroList:
+                    deleteObject(cuadro)
+                deleteObject(parcela)
+            
+            Commit() #se hace este commit para eliminar fisicamente los registros
+
+            #Creacion de parcelas y cuadros nuevos, esto se repite en el post
+            for parcelaItem in parcelaListIn:
+                nombreParcela = parcelaItem.get('nombre')
+                superficieParcela = parcelaItem.get('superficie')
+                filas = parcelaItem.get('filas')
+                columnas = parcelaItem.get('columnas')
+
+                parcela = Parcela(nombrePacela = nombreParcela, superficieParcela=superficieParcela, filas =filas,columnas=columnas)
+                
+                #Cuadros
+                for i in range(1,(filas+1)):
+                    for j in range(1,(columnas+1)):
+                        nombreCuadro = nombreParcela + str(i) + str(j)
+                        cuadro = Cuadro(nombreCuadro=nombreCuadro)    
+                        
+                        parcela.cuadroList.append(cuadro) #asociacion de parcela -> cuadro
+                finca.parcelaList.append(parcela) #asociacion de finca -> parcela
+        
+            #saveEntidadSinCommit(finca)
+            Commit()
+            return ResponseOkmsg('Se han modificados los datos generales de la finca, con sus cuadros y parcelas ya que no se encuentran en uso')
+        else:
+            saveEntidadSinCommit(finca)
+            Commit()
+            return ResponseOkmsg('Se han modificados los datos generales de la finca, ya que los cuadros y parcelas se encuentran en uso')
+    except Exception as e:
+        return ResponseException(e)
+    
+
 
 
 
