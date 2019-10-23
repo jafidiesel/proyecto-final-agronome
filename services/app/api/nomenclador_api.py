@@ -12,77 +12,31 @@ nomenclador = urlNomenclador
 class NomencladorsHandler(Resource):
     @token_required
     def post(data,currentUser):
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return postNomenclador(data) 
-        else:
-            return notCheck() """
-        if (currentUser.rol.nombre =='administrador'):            
-            return postNomenclador(data)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+        return postNomenclador(data) 
+       
 
 @nomenclador.route('/<string:tipoNomenclador>')
 class NomencladorsHandler(Resource):
     @token_required
-    def get(data,currentUser,tipoNomenclador):
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return getNomenclador(tipoNomenclador)
-        else:
-            return notCheck() """
+    def get(data,currentUser,tipoNomenclador): 
+        return getNomenclador(tipoNomenclador)
 
-        if (currentUser.rol.nombre =='administrador'):            
-            return getNomenclador(tipoNomenclador)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
 
     @token_required
-    def post(data,currentUser,tipoNomenclador):
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return getNomencladorFilter(data,tipoNomenclador)
-        else:
-            return notCheck() """
-
-        if (currentUser.rol.nombre =='administrador'):            
-            return getNomencladorFilter(data,tipoNomenclador)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+    def post(data,currentUser,tipoNomenclador):      
+        return getNomencladorFilter(data,tipoNomenclador)
 
 @nomenclador.route('/<string:tipoNomenclador>/<int:cod>')
 class  NomencladorHandler(Resource):
     @token_required    
     def get(data,currentUser,tipoNomenclador,cod):
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-        ##tengo que agregar una exceptión ya que el .to_json es parte del objeto, y no puedo econtrar la exceptión primaraia si no encuentro la que to_json no es una funcion de un objeto vacio
-            try:    
-                obj = getNomencladoCod(tipoNomenclador,cod)
-                return (obj.to_json())
-            except Exception as e:
-                return ResponseException(e)
-        else:
-            return notCheck() """
-
-        if (currentUser.rol.nombre =='administrador'):            
-            try:    
-                obj = getNomencladoCod(tipoNomenclador,cod)
-                return (obj.to_json())
-            except Exception as e:
-                return ResponseException(e)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+        try:    
+            obj = getNomencladoCod(tipoNomenclador,cod)
+            return (obj.to_json())
+        except Exception as e:
+            return ResponseException(e)
+       
     @token_required 
-    def put(data,currentUser,tipoNomenclador,cod):
-        """ isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return putNomenclador(data,tipoNomenclador,cod)
-        else:
-            return notCheck() """
-
-        if (currentUser.rol.nombre =='administrador'):            
-            return putNomenclador(data,tipoNomenclador,cod)
-        else:
-            return make_response(jsonify({'message:':'No posee permisos para realizar esta acción'}),404)
+    def put(data,currentUser,tipoNomenclador,cod):            
+        return putNomenclador(data,tipoNomenclador,cod)
     

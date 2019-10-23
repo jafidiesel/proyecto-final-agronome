@@ -13,10 +13,12 @@ class Usuario(db.Model):
     fchCrea = db.Column('fchCrea_usuario', Date)
     randomContrasenia = db.Column('random_contrasenia_usuario', String(80))
     isRecuperarContrasenia = db.Column('is_recuperar', Boolean)
-    codRol = db.Column('fk_cod_rol',Integer,ForeignKey('rol.cod_rol'),index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
+    codRol = db.Column('fk_cod_rol',Integer,ForeignKey('rol.cod_rol'),index = True)
     rol = relationship('Rol', backref ='usuario')
+    fincaUsuarioList = relationship('FincaUsuario')
+
     
     @staticmethod
     def from_json(json):
