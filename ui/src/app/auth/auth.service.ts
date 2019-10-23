@@ -31,6 +31,7 @@ constructor( private http : HttpClient ) {
       map( resp => {
         this.guardarToken( resp['token'] );
         this.guardarRol( resp['rol'] );
+        this.guardarNombre( resp['nombre']);
         return resp;
       })
     );
@@ -63,5 +64,15 @@ constructor( private http : HttpClient ) {
 
   private guardarRol( rol: string){
     localStorage.setItem('rol',rol);
+  }
+
+  private guardarNombre( nombre: string){
+    localStorage.setItem('nombre',nombre);
+  }
+
+  getNombre(){
+    if( localStorage.getItem('nombre') ){
+      return localStorage.getItem('nombre');
+    }
   }
 }

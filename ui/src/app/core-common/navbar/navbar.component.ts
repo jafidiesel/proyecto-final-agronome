@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 export class NavbarComponent implements OnInit {
 
   rol:string;
+  nombre:string;
   @Output() ValidateTokenFather2 = new EventEmitter();
 
 
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
   
   ngOnInit() {
     this.rol = localStorage.getItem('rol');
+    this.nombre = localStorage.getItem('nombre');
   }
   
   logout(){
