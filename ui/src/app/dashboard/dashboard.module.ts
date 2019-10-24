@@ -9,7 +9,6 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
 import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
-import { FincasPageComponent } from './pages/fincas-page/fincas-page.component';
 import { RecomendacionesPageComponent } from './pages/recomendaciones-page/recomendaciones-page.component';
 import { SeguridadPageComponent } from './pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
@@ -50,13 +49,13 @@ import { ListarUsuariosComponent } from './pages/seguridad/listar-usuarios/lista
 import { ListarActividadesComponent } from './pages/actividad/listar-actividades/listar-actividades.component';
 import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
 import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-usuario.component';
+import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.component';
 
 @NgModule({
   declarations: [
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
-    FincasPageComponent,
     RecomendacionesPageComponent,
     SeguridadPageComponent,
     ConfiguracionPageComponent,
@@ -94,6 +93,7 @@ import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-
     ListarActividadesComponent,
     VerActividadComponent,
     EditarUsuarioComponent,
+    CrearFincaComponent,
   ],
   imports: [
     CommonModule,
@@ -109,7 +109,6 @@ import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-
     PlanificacionPageComponent,
     RecursosPageComponent,
     DashboardPageComponent,
-    FincasPageComponent,
     RecomendacionesPageComponent,
     SeguridadPageComponent,
     ConfiguracionPageComponent,

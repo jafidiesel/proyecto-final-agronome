@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { FincasPageComponent } from './dashboard/pages/fincas-page/fincas-page.component';
 import { RecomendacionesPageComponent } from './dashboard/pages/recomendaciones-page/recomendaciones-page.component';
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
@@ -37,6 +36,7 @@ import { LoginComponent } from './login/pages/login/login.component';
 import { DashboardPageComponent } from './dashboard/pages/dashboard-page/dashboard-page.component';
 import { PantallaComponent } from './pantalla/pantalla.component';
 import { LoginPageComponent } from './login/login-page/login-page.component';
+import { CrearFincaComponent } from './dashboard/pages/finca/crear-finca/crear-finca.component';
 
 
 const routes: Routes = [
@@ -53,7 +53,7 @@ const routes: Routes = [
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */
-  { path: 'finca', component: FincasPageComponent },
+  { path: 'finca/listarFinca', component: CrearFincaComponent },
   /* Modulo Recomendaciones */
   { path: 'recomendaciones', component: RecomendacionesPageComponent },
   /* Modulo Gestionar Recursos */
