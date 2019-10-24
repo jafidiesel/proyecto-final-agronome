@@ -1,32 +1,41 @@
 from functools import wraps
-from flask import jsonify, request, make_response
+from flask import request
 import jwt
 from app.model.hlmodel import Usuario
-import json
-from flask_restplus import Resource
+# import json
+#from flask_restplus import Resource
+from app.uses_cases.moduloSeguridad.checkUrl import checkUrl
+from app.api.helperApi.hlResponse import ResponseException, notCheck
 
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kargs):
-        print('estoy en el decorador')
         payload = request.json
         token = None
         if 'Authorization' in request.headers.keys():
             token = get_token(request.headers.get('Authorization')) 
             
         if not token:
-            message = json.dumps({'message': 'Token is missing'})   
-            return make_response(jsonify(message),400)
+            return notCheck('Token is Empty')
         try:
             data = jwt.decode(token,'AgronomeKey')
             currentUser = Usuario.query.filter(Usuario.usuario == data.get('user')).first()   
             payload = request.json 
+            #control de permisos
+            isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
+            if not isCheck:
+                raise Exception('N','No posee permisos para realizar esta acción')
+
+        #manejo de exceptiones del token
         except jwt.ExpiredSignatureError:
-            return make_response(jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'}),400)
+            return notCheck('Sesion caducada. Por favor, inicie sesion nuevamente')
+
         except jwt.InvalidTokenError:
-            return make_response(jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'}),400)
-        except:
-            return make_response(jsonify({'message': 'Usuario no encontrado'}),400)      
+            return notCheck('Token invalido.Por favor, inicie sesion nuevamente')
+
+        #manejo de la exeption del control de permisos    
+        except Exception as e:
+            return ResponseException(e)       
         #return f(data,currentUser, *args, **kargs)
         return f(payload,currentUser,**kargs)
     return decorated

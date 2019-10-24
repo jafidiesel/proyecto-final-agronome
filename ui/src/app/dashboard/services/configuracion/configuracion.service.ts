@@ -212,7 +212,7 @@ export class ConfiguracionService {
   }
 
   /**
-   * @param nomencladorJson any
+   * @param parametroJson any
    * @return Observable<Object>
    *  
    * Realiza una peticion put para modificar un parametro

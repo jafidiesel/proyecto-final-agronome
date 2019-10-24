@@ -11,6 +11,5 @@ class Finca(db.Model):
     nro= db.Column('nro_finca', Integer, nullable = True)
     localidad = db.Column('localidad_finca', String(50), nullable = True)
     provincia = db.Column('provincia_finca', String(50), nullable = True)
-    urlMaps= db.Column('urlmaps_finca', String(512), nullable = True)
 
     parcelaList = relationship("Parcela", backref = "fincaParcela") #1->N

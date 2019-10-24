@@ -23,10 +23,10 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
       isActiv: false,
     },
     tipoParametro: {
-      id: 0
+      cod: 0
     },
     tipoDato: {
-      id: 0
+      cod: 0
     },
     opcion: []
   };
@@ -44,7 +44,7 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
   tiposOpcionesSelectArray = [];
   opcionesElegidas = [];
   opcionSeleccionada = {
-    id: null,
+    cod: null,
     nombre: null
   };
 
@@ -127,17 +127,17 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
         isActiv: [false],
       }),
       tipoParametro: this.fb.group({
-        id: [null, Validators.required],
+        cod: [null, Validators.required],
         nombre: [''],
         isActiv: [false],
       }),
       tipoDato: this.fb.group({
-        id: [null, Validators.required],
+        cod: [null, Validators.required],
         nombre: [''],
         isActiv: [false],
       }),
       opcion: [this.fb.control({
-        id: null,
+        cod: null,
         nombre: "",
         isActiv: false
       })]
@@ -148,7 +148,7 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
 
   crearOpcion(obj: any) {
     return this.fb.control({
-      id: obj.id,
+      cod: obj.cod,
       nombre: obj.nombre,
     })
       ;
@@ -158,7 +158,7 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
-    this.opcionSeleccionada.id = attrVal;
+    this.opcionSeleccionada.cod = attrVal;
     this.opcionSeleccionada.nombre = inn;
 
   }
@@ -171,7 +171,7 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
 
   agregarItem() {
     this.opcionesElegidas.push({
-      id: this.opcionSeleccionada.id,
+      cod: this.opcionSeleccionada.cod,
       nombre: this.opcionSeleccionada.nombre
     });
   }

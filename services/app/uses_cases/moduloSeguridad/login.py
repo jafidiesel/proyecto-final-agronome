@@ -33,9 +33,24 @@ def login(data):
             """ if sessionUserRst:
                 sessionUserRst.token = tokenRst
                 saveEntidadSinCommit(sessionUserRst) """
-           
             Commit()
-            return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
+            nombre =  usuarioRst.nombre + ' ' + usuarioRst.apellido 
+            rol = usuarioRst.rol.nombre
+            dtoUsuario = dict(nombre=nombre, rol = rol, token = tokenRst.decode('UTF-8'))
+
+            if not rol =="administrador":
+                fincaUsuarioList = usuarioRst.fincaUsuarioList
+                dtoFincaList = []
+
+                for fincaUsuario in fincaUsuarioList:
+                    dtoFincaAux= dict(codFinca=fincaUsuario.finca.codFinca, nombreFinca= fincaUsuario.finca.nombreFinca)
+                    dtoFincaList.append(dtoFincaAux)
+
+                dtoUsuario['finca'] = dtoFincaList
+
+            
+            return dtoUsuario
+            #return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
         else:
             return make_response(jsonify({'message': 'User or Password invalid'}),400)
     except Exception as e:

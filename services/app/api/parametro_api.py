@@ -15,43 +15,28 @@ parametro = urlParametro
 class ParametroHandler(Resource):
     @token_required
     def post(data,currentUser):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return postParametro(data)
-        else:
-            return notCheck()
+        return postParametro(data)
+
     @token_required
-    def get(data,currentUser):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return getAllParametros() 
-        else:
-            return notCheck()
+    def get(data,currentUser): 
+        return getAllParametros() 
+       
         
     @token_required
-    def put(data,currentUser):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return updateParametro(data)
-        else:
-            return notCheck()
-
+    def put(data,currentUser):           
+        return updateParametro(data)
+     
 
 @parametro.route('/<string:tipoNomenclador>')
 class ParametroHandler(Resource):
+    @token_required
     def get(data,currentUser,tipoNomenclador):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return getParametroEstructura(tipoNomenclador)
-        else:
-            return notCheck()
-
+        return getParametroEstructura(tipoNomenclador)
+        
 @parametro.route('/<int:cod>')
 class  ParametroHandler(Resource):
+    @token_required
     def get(data,currentUser, cod):
-        isCheck = checkUrl(request.method,request.path,currentUser.rol.nombre)
-        if isCheck:
-            return getParametroById(cod)
-        else:
-            return notCheck()
+        return getParametroById(cod)
+        
 

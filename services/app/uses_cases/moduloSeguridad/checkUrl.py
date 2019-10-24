@@ -1,88 +1,108 @@
 import re
-from app.api.helperApi.hlUrl import urlNomenclador,urlEntidadInterm, urlParametro, urlEntidadInterm,urlResgistrarActiv,  urlUsuario, urlLogin
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
     url = re.sub(nro,"",urlAux)
     isCheck = False
-    
-    #Modulo Configuracion
-    #nomenclador
 
-    if url.index('/api/configuracion/nomenclador/')>0: 
-        ##macheamos la url con el post y el get ya que la url se reutiliza para todas las entidades
-        url = 'GET/api/configuracion/nomenclador/'
+
+    #Mudolo de configuración 
+
+    #Nomencladores
     MCNOM = '/' + urlNomenclador.name
-    MCNOM_POST = 'POST' + MCNOM
     MCNOM_GETS = 'GET' + MCNOM
-    MCNOM_GET = MCNOM_GETS  + '/'
-    MCNOM_PUT = 'PUT' + MCNOM + '/'
+    MCNOM_POST_FILTER = 'POST' + MCNOM + '/'
+    isGetNomenclador = False
+    isPostFilterNomenclador = False
 
-    #parametro
-    MCPAR = '/' + urlParametro.name
-    MCPAR_POST = 'POST' + MCPAR
-    MCPAR_GETS = 'GET' + MCPAR
-    MCPAR_GET = MCPAR_GETS  + '/'
-    MCPAR_PUT = 'PUT' + MCPAR + '/'
+    if url.count(MCNOM_GETS)>0:
+        url = MCNOM_GETS
+        isGetNomenclador = True
 
-    #entidad Intermedia Asociaciones 
-    #if url.index('/api/configuracion/asociar/')>0: 
-        ##macheamos la url con el post y el get ya que la url se reutiliza para todas las entidades
-    #    url = 'GET/api/configuracion/asociar/'
+    if url.count(MCNOM_POST_FILTER)>0:
+        url = MCNOM_POST_FILTER
+        isPostFilterNomenclador = True
+ 
+    #configuración de parametros y asociaciones
+    MC = URL_MC
+    if url.count(URL_MC)> 0 and not isGetNomenclador and not isPostFilterNomenclador:
+        url = MC
     
-    MCASO = '/'  + urlEntidadInterm.name
-    MCASO_POST = 'POST' + MCASO
-    MCASO_GETS = 'GET' + MCASO
-    MCASO_GET = MCASO_GETS  + '/'
-    MCASO_PUT = 'PUT' + MCASO + '/'
-    
+
+    #Modulo de seguridad  
+    isLogin=False 
+    MSLOG = urlLogin.name #login     
+    if url.count(MSLOG)>0:
+        isLogin = True
+        url = MSLOG
+
+    MSUSU =  urlUsuario.name  #usuario
+    if url.count(MSUSU)>0 and not isLogin: #tengo que hacer esta logica porque comparten url con el login
+        url = MSUSU
+
 
     #Modulo Actividades
-    #Registrar Actividades
     MAREG = '/' + urlResgistrarActiv.name
     MAREG_POST = 'POST' + MAREG
     MAREG_GETS = 'GET' + MAREG
     MAREG_GET = MAREG_GETS  + '/'
     MAREG_PUT = 'PUT' + MAREG + '/'
+    MAREG_DELETE = 'DELETE' + MAREG + '/'
+    MAREG_PARAM = 'GET' + MAREG + '/parametros/'
 
+    #Modulo de Gestion de Finca
+    MGF = '/' + urlFinca.name
+    MGF_POST =  'POST' + MGF 
+    MGF_GETS = 'GET' + MGF
+    MGF_GET = MGF_GETS  + '/'
+    MGF_PUT = 'PUT' + MGF + '/'
+    
+    
+    
+    
+    
+    
 
-    ##Modulo Seguridad
-    #usuario
-    MSUSU = '/' + urlUsuario.name
-    MSUSU_POST = 'POST' + MSUSU
-    MSUSU_GETS = 'GET' + MSUSU
-    MSUSU_GET = MSUSU_GETS + '/'
-    MSUSU_PUT = 'PUT' + MSUSU + '/' 
+    #PERMISOS:
 
-    #Login
-    MSLOG = '/' + urlLogin.name
-    MSLOG_DELETE = 'DELETE' + MSLOG
+    default = (
+        MSLOG,
+        MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
+        MGF_GETS, MGF_GET                             #Modulo de finca
+        ) #todos
 
-
-    print(MCNOM_GET)
-
-
-    administrador = (MSUSU_POST,MSUSU_GETS,MSUSU_GET,MSUSU_PUT,MSLOG_DELETE,
-        MCPAR_POST,MCPAR_GETS,
-        MAREG_GET,MAREG_PUT,
-        MCNOM_POST,MCNOM_GETS,MCNOM_GET,MCNOM_PUT)
+    administrador = (
+        MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
+        MSUSU,                                        #Modulo de seguridad
+        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MGF_POST,MGF_PUT,                            #Modulo de finca
+    ) + default
     
     encargadofinca = (
-        MSUSU_POST,MSUSU_GETS,MSUSU_GET,MSUSU_PUT, #MS
-        MCNOM_POST,
-        MCNOM_GET
-        )
-
-
-
-    if rol == 'administrador':
-        isCheck = url in administrador
-    else:
-        if rol == 'encargadofinca':
-            isCheck = url in encargadofinca
-
-    print('url auxiliar: ' + urlAux)
-    print ('url sin numeros: ' + url)
-
-    return isCheck
+        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MGF_POST,MGF_PUT                              #Modulo de finca
+         ) + default
     
+    ingeniero = (  
+        MAREG_GETS, MAREG_GET,                        #Modulo de actividad
+         )+ default
+
+    supervisor = (  
+        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT  #Modulo de actividad
+         )+ default
+
+
+    #CHECK FINAL
+    roles= {
+    "administrador":administrador ,
+    "encargadofinca":encargadofinca,
+    "ingeniero":ingeniero,
+    "supervisor": supervisor,
+    }
+
+    isCheck = url in roles[rol]
+    print(url)
+    return isCheck
+       
+ 

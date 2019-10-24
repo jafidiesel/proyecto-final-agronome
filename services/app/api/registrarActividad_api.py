@@ -1,36 +1,41 @@
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlResgistrarActiv
 from app.uses_cases.moduloActividad.registrarActividad import postRegistrarActiv, getRegistrarActiv, putRegistrarActiv, deleteRegistrarActiv, getRegistrarActivCod ,getParametrosFull
-from app.api.helperApi.hlResponse import ResponseException
+from app.api.helperApi.hlResponse import ResponseException, notCheck
+from app.api.shared.tokenHandler import token_required
 
 registrarActiv = urlResgistrarActiv
 
 @registrarActiv.route('')
 class RegistrarActivHandler(Resource):
-    def post(self):
-        data = self.api.payload
+    @token_required
+    def post(data,currentUser):
         return postRegistrarActiv(data)
 
-    def get(self):
-        #data = self.api.payload
+    @token_required
+    def get(data,currentUser):
         return getRegistrarActiv()
 
 
 @registrarActiv.route('/<int:codActivDetalle>')
 class RegistrarActivHandler(Resource):
-    def get(self,codActivDetalle):
+    @token_required
+    def get(data,currentUser,codActivDetalle):
         return getRegistrarActivCod(codActivDetalle)
-    
-    
-    def put(self,codActivDetalle):
-        data = self.api.payload
+        
+
+    @token_required
+    def put(data,currentUser,codActivDetalle):
         return putRegistrarActiv(data,codActivDetalle)
-    
-    def delete(self,codActivDetalle):
-        data = self.api.payload
+        
+
+    @token_required
+    def delete(data,currentUser,codActivDetalle):
         return deleteRegistrarActiv(data,codActivDetalle)
 
 @registrarActiv.route('/parametros/<int:codActividad>')
 class RegistrarActivHandler(Resource):
-     def get(self,codActividad):
+    @token_required
+    def get(data,currentUser,codActividad):
         return getParametrosFull(codActividad)
+      

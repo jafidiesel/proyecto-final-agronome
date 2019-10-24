@@ -33,4 +33,4 @@ from app.model.imgActivDetalle import ImgActivDetalle
 from app.model.activDetalleParam import ActivDetalleParam
 from app.model.recomendacionDetalle import RecomendacionDetalle
 from app.model.recomDetalleParam import RecomDetalleParam
-
+from app.model.fincaUsuario import FincaUsuario

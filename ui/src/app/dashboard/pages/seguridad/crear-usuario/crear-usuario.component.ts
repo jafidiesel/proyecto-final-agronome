@@ -26,7 +26,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-  format = 'yyyy-MM-dd';
+  format = 'dd-MM-yyyy';
   myDate = new Date();
   locale = 'en-US';
   formattedDate = formatDate(this.myDate, this.format, this.locale);
@@ -34,24 +34,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   constructor(private _seguridadService: SeguridadService,
     private fb: FormBuilder) { }
-
-  /*   
-    {
-  "usuario": {
-    "usuario": "usuario",
-    "nombre": "nombre",
-    "apellido": "adaaf",
-    "email": "dffsgafa@gmail.com",
-    "contraseniaUsuario": "123456",
-    "fchCrea" : "12/03/1990",
-    "isActiv": true
-  },
-  
-  "rol":{
-    "cod": 1
-  }
-}
- */
 
   ngOnInit() {
     this.initForm();
@@ -95,8 +77,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   }
 
   onSubmitUsuario() {
-    console.warn(this.formUsuario.value);
-
     if (this.formUsuario.status == 'VALID') {
       this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
         result => {
