@@ -14,7 +14,9 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
   fincaForm: FormGroup;
 
   provinciasArray = [];
-  municipiosArray = [];
+  provinciaName: string;
+  municipiosArray = [{ nombre: "Seleccione una provincia", id: "0" }];
+  municipioName: string;
 
   // error flags
   postSuccess = false;
@@ -30,8 +32,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._fincaService.getProvincias().subscribe(
         (result: any) => {
-          console.log(result.provincias);
-          result.provincias.map( provincia =>{
+          result.provincias.map(provincia => {
             this.provinciasArray.push({ nombre: provincia.nombre, id: provincia.id })
 
           });
@@ -39,7 +40,6 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
         error => console.log('error', error)
       )
     );
-
 
   }
 
@@ -72,25 +72,34 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
       superficie: [null, Validators.required],
       calle: [null, Validators.required],
       nro: [null, Validators.required],
-      provincia: [],
-      localidad: [null, Validators.required],
+      provincia: [null],
+      provinciaCod: [null],
+      localidad: [null],
+      localidadCod: [null],
       parcelas: [null]
 
     });
 
   }
 
-  actualizarLocalidades(event){
+  seleccionProvincia(event) {
     this.municipiosArray = [];
     const selectEl = event.target;
     const optionValue = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const optionDataNombre = selectEl.options[selectEl.selectedIndex].getAttribute('data-nombre');
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    this.fincaForm.patchValue({
+      provinciaCod: optionValue,
+      provincia: optionDataNombre
+    });
+    this.provinciaName = optionText;
 
     this.subscriptions.push(
       this._fincaService.getMunicipios(optionValue).subscribe(
-        (result:any) => {
-          result.municipios.map( municipio => {
-            this.municipiosArray.push({nombre: municipio.nombre, id: municipio.id})
+        (result: any) => {
+          result.municipios.map(municipio => {
+            this.municipiosArray.push({ nombre: municipio.nombre, id: municipio.id })
           })
         },
         error => this.onHttpError(error)
@@ -99,10 +108,26 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
 
   }
 
+  seleccionMunicipio(event) {
+    const selectEl = event.target;
+    const optionValue = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    this.municipioName = optionText;
+    this.fincaForm.patchValue({
+      localidad: optionText,
+      localidadCod: optionValue
+    });
+  }
+
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
     this.postErrorMessage = errorResponse.message;
+  }
+
+  imprimir() {
+    console.warn('fincaForm', this.fincaForm.value);
   }
 
   ngOnDestroy() {
