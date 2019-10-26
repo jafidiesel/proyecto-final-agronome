@@ -8,13 +8,16 @@ def selectRecomCod(codRecomDetalle):
 
 
 def selectRecomenActiv(): ## tiene que venir el libro de campo
-    codFitosanitaria = 5
-    codCatastrofe = 3
+    codFitosanitaria = 8
+    codCatastrofe = 7
     actividadFitosanitaria = Actividad.query.filter(Actividad.cod==codFitosanitaria).first()
     actividadCatastrofe = Actividad.query.filter(Actividad.cod==codCatastrofe).first()
-    
-    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadFitosanitaria or ActividadDetalle.actividad == actividadFitosanitaria==actividadCatastrofe).all()
-    
+
+    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadCatastrofe).order_by(ActividadDetalle.fchActivDetalle).all()
+
+    auxObj = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadFitosanitaria).order_by(ActividadDetalle.fchActivDetalle).all()
+
+    objetos.extend(auxObj) #union de las 2 listas
     return  objetos     
 
 

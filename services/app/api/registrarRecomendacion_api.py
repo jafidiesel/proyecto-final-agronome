@@ -25,5 +25,5 @@ class RegistrarRecomHandler(Resource):
 @registrarRecom.route('/actividad')
 class RegistrarRecomActivHandler(Resource):
     @token_required
-    def post(data,currentUser):
-        return recomendacionActividad()
+    def get(data,currentUser): #aca del usaurio puedo sacar las fincas
+        return recomendacionActividad(currentUser)
