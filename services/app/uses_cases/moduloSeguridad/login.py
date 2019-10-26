@@ -19,7 +19,7 @@ def login(data):
             print('EN IF')
             #Generar un token y almacenar los datos en la tabla Session
             #Armado de Token            
-            payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
+            payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}
             tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
             #Verificar si el Usuario ya existe en Session
             try:
