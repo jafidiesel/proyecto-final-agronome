@@ -6,3 +6,4 @@ class FincaUsuario(db.Model):
     codUsuario=  db.Column('fk_cod_usuario',Integer,ForeignKey('usuario.cod_usuario_private'), primary_key = True)
     fchIni = db.Column('fch_ini', DateTime, default=datetime.datetime.now) 
     finca = relationship("Finca") #N->1
+    

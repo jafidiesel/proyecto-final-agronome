@@ -1,12 +1,12 @@
 from app.extensions import db
 from app.repositorio.hlDb import Commit, saveEntidadSinCommit, Rollback
-from app.model.hlmodel import Usuario, Rol
+from app.model.hlmodel import Usuario, Rol, FincaUsuario,Finca
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from sqlalchemy.orm import exc
 
 
-def updateUser(usuarioJson, rolRst, cod):
+def updateUser(usuarioJson, rolRst, cod, listFincaRst):
     try:
         #Se busca el usuario, en caso de existir se actualiza el mismo
         usuarioRst = Usuario.query.filter(Usuario.cod == cod).one()
@@ -20,6 +20,12 @@ def updateUser(usuarioJson, rolRst, cod):
         usuarioRst.isActiv = usuarioJson.get('isActiv')
         #Actualizar Rol
         usuarioRst.rol = rolRst
+        #Actualizar Fincas
+        #Verificar si las Fincas asociadas al usuario de la BD, son iguales o no, a las Fincas del Json
+        #Si la Finca traida de la Bd no se encuentra en el Json, setear isActiv = False
+        fincaUsuarioListRst = usuarioRst.fincaUsuarioList
+        for fincaUsuarioRst in fincaUsuarioListRst:
+            fincaRst = fincaUsuarioRst.finca
         Commit()
         return ResponseOk()   
     except Exception as e:

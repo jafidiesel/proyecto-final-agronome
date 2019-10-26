@@ -21,7 +21,6 @@ class Usuario(db.Model):
     codRol = db.Column('fk_cod_rol',Integer,ForeignKey('rol.cod_rol'),index = True)
     rol = relationship('Rol', backref ='usuario')
     fincaUsuarioList = relationship('FincaUsuario')
-
     
     @staticmethod
     def from_json(json):
@@ -49,8 +48,8 @@ class Usuario(db.Model):
         }
 
 
-    def getToken(self,expirationTime): 
-        payload = {'user': self.usuario,'rol': self.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=expirationTime)}
+    def getToken(self): 
+        payload = {'user': self.usuario,'rol': self.rol.nombre,'jti':str(uuid.uuid4())}
         tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
         return tokenRst
 

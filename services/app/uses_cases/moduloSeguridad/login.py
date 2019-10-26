@@ -8,18 +8,18 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import uuid
 from werkzeug.security import check_password_hash
 
+
+
 def login(data):
     try:
         if not data:
             raise Exception('N', 'Data vacio')
         #Buscar Usuario 
         usuarioRst = getUsuarioByName(data.get('usuario'))
-        # contraseniaCheck = check_password_hash(data.get('contraseniaUsuario'),contraseniaRst)
         if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
-            print('EN IF')
             #Generar un token y almacenar los datos en la tabla Session
             #Armado de Token        
-            tokenRst = usuarioRst.getToken(5) 
+            tokenRst = usuarioRst.getToken() 
             #Verificar si el Usuario ya existe en Session
             try:
                 sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()

@@ -29,6 +29,16 @@ def postUser(data):
         usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
         #Generar codPublic
         usuario.cod = str(uuid.uuid4())
+        #Asociar Finca
+        #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
+        if ((rolRst == 'supervisor') or (rolRst == 'ingeniero')):
+            listFincaRst = dataLower.get('finca')
+            for finca in listFincaRst:
+                #Buscar finca para verificar que existe y asociarla al usuario
+                from app.repositorio.repositorioGestionarFinca import selectFincaCod
+                fincaRst = selectFincaCod(finca.get('codFinca'))
+                usuario.fincaUsuarioList.append(fincaRst)
+        #Asociar rol
         usuario.rol = rolRst
         saveEntidadSinCommit(usuario)
 
@@ -62,6 +72,7 @@ def getUsuario(codPublic):
         return usuarioRst.toJson()
     except Exception as e:
         return ResponseException(e)
+
 #Editar Usuario
 def updateUsuario(data, cod):
     dataLower = obtainDict(data)
@@ -72,8 +83,12 @@ def updateUsuario(data, cod):
     #Buscar Rol
     rolJson = dataLower.get('rol')  
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
+    #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
+    if ((rolRst == 'supervisor') or (rolRst == 'ingeniero')):
+        listFincaRst = dataLower.get('finca')         
+
     from app.repositorio.repositorioUsuario import updateUser
-    return updateUser(usuarioJson, rolRst, cod)        
+    return updateUser(usuarioJson, rolRst, cod, listFincaRst)        
 
 
 

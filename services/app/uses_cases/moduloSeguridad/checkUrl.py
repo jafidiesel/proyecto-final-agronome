@@ -1,5 +1,6 @@
 import re
 from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca
+
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -58,12 +59,6 @@ def checkUrl(method,pat,rol):
     MGF_GET = MGF_GETS  + '/'
     MGF_PUT = 'PUT' + MGF + '/'
     
-    
-    
-    
-    
-    
-
     #PERMISOS:
 
     default = (
@@ -104,5 +99,4 @@ def checkUrl(method,pat,rol):
     isCheck = url in roles[rol]
     print(url)
     return isCheck
-       
- 
+    
