@@ -1,3 +1,5 @@
+from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById 
+
 ##Parametro
 def parametroToDict(parametro):
     dtoParametro = dict(
@@ -14,6 +16,17 @@ def parametroListToDict(paramList):
         dtoParametro = parametroToDict(parametro)
         dtoParametroList.append(dtoParametro)
     return dtoParametroList
+
+
+def parametroListFullToDict(paramList):
+    dtoParametroList = []
+    for param in paramList:
+        if param.isActiv:
+            codParametro = param.parametro.cod
+            dtoAuxParam  = getParametroById(codParametro)
+            dtoParametroList.append(dtoAuxParam)
+    return dtoParametroList
+
 
 ##Actividad
 def actividadToDict(actividad):

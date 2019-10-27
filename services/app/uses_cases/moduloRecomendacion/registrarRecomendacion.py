@@ -4,7 +4,7 @@ from app.model.hlmodel import RecomendacionDetalle, RecomDetalleParam, Parametro
 from app.repositorio.repositorioRegistrarActividad import selectActivDetalleCod
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv, selectRecomCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
-from app.uses_cases.hlToDict import recomDetalleFullToDict, activDetalleToDict
+from app.uses_cases.hlToDict import recomDetalleFullToDict, activDetalleToDict, parametroListFullToDict
 def postRegistrarRecom(data,currentUser):
     try:
         codRecom = data.get('codRecomendacion')
@@ -75,6 +75,10 @@ def recomendacionActividad(currentUser):
     result= (dict(actvidadesArecomendar = dtoListActivSin, actividadesRecomendadas=dtoListActivRecom))
     return result
 
-
+def getParametrosRecomFull(codRecomendacion):
+    recomendacion = getNomencladoCod('recomendacion',codRecomendacion)
+    paramListObj  = recomendacion.recomendacionParamList
+    dtoParametroFull = parametroListFullToDict(paramListObj) 
+    return (dict(parametros=dtoParametroFull)) 
 
 

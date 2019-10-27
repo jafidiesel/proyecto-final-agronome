@@ -5,7 +5,7 @@ from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, se
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
-from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict
+from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict, parametroListFullToDict
 from app.extensions import db
 from datetime import datetime
 
@@ -136,18 +136,9 @@ def deleteRegistrarActiv(data,codActivDetalle):
 
 def getParametrosFull(codActividad):
     try:
-        ##recupero las clases intermedias 
         actividad = getNomencladoCod('actividad',codActividad)
         paramListObj = actividad.actividadParamList
-
-        dtoParametroFull = []
-        for param in paramListObj:
-            if param.isActiv: #filtro por activas
-               codParametro = param.parametro.cod
-               dtoAux= getParametroById(codParametro)
-               dtoParametroFull.append(dtoAux)
-        
-
+        dtoParametroFull = parametroListFullToDict(paramListObj) 
         return (dict(parametros=dtoParametroFull))
     except Exception as e:
         return ResponseException(e)
