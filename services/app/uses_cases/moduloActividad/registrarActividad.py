@@ -5,24 +5,25 @@ from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, se
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
-
+from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict
 from app.extensions import db
 from datetime import datetime
 
-def postRegistrarActiv(data):
+def postRegistrarActiv(data,currentUser):
     try:
         ##datos del json
         codActiv = data.get('codActividad')
         obs = data.get('observacion')
-        imagenes = data.get('imagenes')
-        parametros = data.get('parametros')
+        imagenes = data.get('imagen')
+        parametros = data.get('parametro')
         fch = data.get('fchActivDetalle')
 
         activ = getNomencladoCod('actividad',codActiv)
         ##creación de la actividadDetalle
         detalleActiv = hlmodel.ActividadDetalle(observacion = obs,fchActivDetalle=fch)
         detalleActiv.actividad = activ #asociación con actividad
-
+        #asociacion con usuario
+        detalleActiv.usuario = currentUser
         ##Parametros
         for param in parametros:
             codParam = param.get('codParam')
@@ -54,17 +55,7 @@ def getRegistrarActiv():
         dtoDetalleList = []
 
         for detalle in actividadDetalleList:
-            dtoDetalle = dict(
-                codActivDetalle=detalle.codActivDetalle,
-                fchActivDetalle= detalle.fchActivDetalle.strftime("%d/%m/%Y %H:%M:%S"),
-                observacion=detalle.observacion)
-            ##Actividad
-            codActividad = detalle.actividad.cod
-            nombreActividad = detalle.actividad.nombre
-            dtoAuxActividad = dict(codActividad=codActividad,nombreActividad=nombreActividad)
-
-            dtoDetalle['Actividad'] = dtoAuxActividad
-
+            dtoDetalle = activDetalleToDict(detalle)
             dtoDetalleList.append(dtoDetalle)
 
         return (dict(ActividadDetalle=dtoDetalleList))
@@ -76,50 +67,19 @@ def getRegistrarActivCod(codActivDetalle):
         detalle = selectActivDetalleCod(codActivDetalle)
         if not detalle:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
-
-        dtoDetalle = dict(
-            codActivDetalle=detalle.codActivDetalle,
-            fchActivDetalle= detalle.fchActivDetalle.strftime("%d-%m-%Y %H:%M:%S"),
-            observacion=detalle.observacion)
-        ##Actividad
-        codActividad = detalle.actividad.cod
-        nombreActividad = detalle.actividad.nombre
-        dtoAuxActividad = dict(codActividad=codActividad,nombreActividad=nombreActividad)
-
-        dtoDetalle['Actividad'] = dtoAuxActividad
-
-        ##Parametros
-        parametrosList = detalle.paramList    
-        dtoAuxParametroList = []
-        for parametro in parametrosList:
-            #parametro.param.cod
-            dtoAuxParametro =dict(codParamtro=parametro.param.cod, nombreParametro=parametro.param.nombre,valor = parametro.valor)
-            dtoAuxParametroList.append(dtoAuxParametro)
-        dtoDetalle['Parametros'] = dtoAuxParametroList
-
-        ##Imagenes
-        imagenesList =  detalle.imgList
-        dtoAuxImgList = []
-        for img in imagenesList:
-            dtoAuxImg = dict(dscImg=img.descripImg, base64=img.imgBase64)
-            dtoAuxImgList.append(dtoAuxImg)
-        dtoDetalle['Imagenes'] = dtoAuxImgList
-
-
-        ##futuros datos que necesitmos  dtoDetalle['Futuros'] = x
-
+        dtoDetalle = activDetalleFullToDict(detalle)
 
         return (dict(dtoDetalle))      
     except Exception as e:
         return ResponseException(e)
 
 
-def putRegistrarActiv(data,codActivDetalle):
+def putRegistrarActiv(data,currentUser,codActivDetalle):
     try:
         fchNew = data.get('fchActivDetalle')
         observacionNew = data.get('observacion')
-        imagenesNew = data.get('imagenes')
-        paramListNew = data.get('parametros')
+        imagenesNew = data.get('imagen')
+        paramListNew = data.get('parametro')
 
         activDetalleObj = selectActivDetalleCod(codActivDetalle)
         if not activDetalleObj:
@@ -131,6 +91,9 @@ def putRegistrarActiv(data,codActivDetalle):
         if not activDetalleObj.observacion == observacionNew:
             activDetalleObj.observacion = observacionNew
         
+        if not activDetalleObj.usuario == currentUser:
+            activDetalleObj.usuario = currentUser
+
         for param in paramListNew:
             codParam = param.get('codParam')
             valorNew = param.get('valor')
@@ -182,8 +145,6 @@ def getParametrosFull(codActividad):
             if param.isActiv: #filtro por activas
                codParametro = param.parametro.cod
                dtoAux= getParametroById(codParametro)
-               print('acatoy')
-               print(dtoAux)
                dtoParametroFull.append(dtoAux)
         
 

@@ -10,7 +10,7 @@ registrarActiv = urlResgistrarActiv
 class RegistrarActivHandler(Resource):
     @token_required
     def post(data,currentUser):
-        return postRegistrarActiv(data)
+        return postRegistrarActiv(data,currentUser)
 
     @token_required
     def get(data,currentUser):
@@ -26,7 +26,7 @@ class RegistrarActivHandler(Resource):
 
     @token_required
     def put(data,currentUser,codActivDetalle):
-        return putRegistrarActiv(data,codActivDetalle)
+        return putRegistrarActiv(data,currentUser,codActivDetalle)
         
 
     @token_required

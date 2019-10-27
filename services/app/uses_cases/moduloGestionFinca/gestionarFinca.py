@@ -41,7 +41,7 @@ def postFinca(data,currentUser):
         rol = currentUser.rol.nombre
 
         if rol == 'encargadofinca':
-            fincaUsuario = FincaUsuario() # creo la finca usuario
+            fincaUsuario = FincaUsuario(isActiv=True) # creo la finca usuario
             fincaUsuario.finca = finca #asociación de finca
             currentUser.fincaUsuarioList.append(fincaUsuario) # asociación
 

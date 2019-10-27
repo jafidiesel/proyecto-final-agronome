@@ -11,6 +11,11 @@ class RecomendacionDetalle(db.Model):
 
     codRecomendacion = db.Column('fk_cod_recomendacion',Integer,ForeignKey('recomendacion.cod_recomendacion'), nullable = False) #relación
 
+    codUsuario=  db.Column('fk_cod_usuario',Integer,ForeignKey('usuario.cod_usuario_private'), nullable = False)
+
+
     recomendacion = relationship("Recomendacion", backref="recomDetalleList") # N -> 1  &&  1->N 
     activDetalle = relationship("ActividadDetalle", backref = "recomendacionDetalle") # 1->1 fk en actividad
     paramList = relationship("RecomDetalleParam", backref = "recomDetalle")   # 1 -> N
+    
+    usuario = relationship("Usuario", backref = "recomDetalleUsuario") # N -> 1

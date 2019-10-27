@@ -6,10 +6,10 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from sqlalchemy.orm import exc
 
 
-def updateUser(usuarioJson, rolRst, cod, listFincaRst):
+def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
     try:
         #Se busca el usuario, en caso de existir se actualiza el mismo
-        usuarioRst = Usuario.query.filter(Usuario.cod == cod).one()
+        usuarioRst = Usuario.query.filter(Usuario.cod == codUsuario).one()
         #user = Usuario.from_json(usuarioJson)
         #Actualizar datos propios de Usuario
         usuarioRst.nombre = usuarioJson.get('nombre')
@@ -21,11 +21,41 @@ def updateUser(usuarioJson, rolRst, cod, listFincaRst):
         #Actualizar Rol
         usuarioRst.rol = rolRst
         #Actualizar Fincas
+        #Limpiar Json de Fincas, solo queda el id de Finca
+        for fincaJson in listFincaJson:
+            #Limpiar Json, solo queda el Id
+            claves = list(fincaJson.keys())
+            for clave in claves:
+                if clave!="codFinca":
+                    fincaJson.pop(clave,None)
         #Verificar si las Fincas asociadas al usuario de la BD, son iguales o no, a las Fincas del Json
         #Si la Finca traida de la Bd no se encuentra en el Json, setear isActiv = False
         fincaUsuarioListRst = usuarioRst.fincaUsuarioList
         for fincaUsuarioRst in fincaUsuarioListRst:
-            fincaRst = fincaUsuarioRst.finca
+            finca = fincaUsuarioRst.finca
+            fincaTmp = dict(codFinca=finca.codFinca)
+            if (fincaTmp not in listFincaJson)or(listFincaJson[0].get("")):
+            #Si FincaUsuario tiene asociado un codFinca que NO esta en listFincaJson, actualizar iSActiv a False
+            # y fchFin con fecha actual
+                fincaUsuarioRst.isActiv = False
+                fincaUsuarioRst.fchFin = 
+            elif (fincaTmp in listFincaJson):
+                #SE ACTUALIZAN LAS FECHAS??? COMO???
+                fincaUsuarioRst.isActiv = True
+        #En caso de NO 
+        for opcionJson in opcionJsonList:
+        i = 0
+        for parametroOp in paramOpList:
+            
+            if(opcionJson.get('cod') == parametroOp.codOpcion):      
+                i += 1
+        from app.model import hlmodel
+        if(i ==0 ):
+            opcionRst = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('cod')).one()
+            parametroOpcion = ParametroOpcion(True)
+            parametroOpcion.opcion = opcionRst
+            parametroRst.paramOpcion.append(parametroOpcion) 
+            saveEntidadSinCommit(parametroOpcion)     
         Commit()
         return ResponseOk()   
     except Exception as e:

@@ -1,6 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca
-
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -59,6 +58,11 @@ def checkUrl(method,pat,rol):
     MGF_GET = MGF_GETS  + '/'
     MGF_PUT = 'PUT' + MGF + '/'
     
+    #Modulo de Recomendaciones
+    MRREG = '/' + urlRegistrarRecom.name
+    MRREG_POST =  'POST' + MRREG + '/registrar'
+    MRRECOMACTIV_POST = 'POST' + MRREG + '/actividad' 
+    MRREG_GET = 'GET' + MRREG + '/'
     #PERMISOS:
 
     default = (
@@ -72,6 +76,7 @@ def checkUrl(method,pat,rol):
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                            #Modulo de finca
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST     #Modulo de recomendaciones
     ) + default
     
     encargadofinca = (
