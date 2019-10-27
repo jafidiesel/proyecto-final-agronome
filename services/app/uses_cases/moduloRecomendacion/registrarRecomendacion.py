@@ -4,8 +4,7 @@ from app.model.hlmodel import RecomendacionDetalle, RecomDetalleParam, Parametro
 from app.repositorio.repositorioRegistrarActividad import selectActivDetalleCod
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv, selectRecomCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
-#from app.uses_cases.hlEntidadToDict import parametroToDict, recomDetalleToDictFull
-from app.uses_cases.hlToDict import recomDetalleFullToDict
+from app.uses_cases.hlToDict import recomDetalleFullToDict, activDetalleToDict
 def postRegistrarRecom(data,currentUser):
     try:
         codRecom = data.get('codRecomendacion')
@@ -35,10 +34,6 @@ def postRegistrarRecom(data,currentUser):
             recomDetalleParam.param = parametro
             detalleRecom.paramList.append(recomDetalleParam)
 
-       
-     
-
-
         saveEntidadSinCommit(detalleRecom)  
         Commit()
         return ResponseOk()
@@ -47,24 +42,28 @@ def postRegistrarRecom(data,currentUser):
 
 
 def getRecomDetalle(codRecomDetalle):
-    #try:
+    try:
         recomDetalle = selectRecomCod(codRecomDetalle)
         if not recomDetalle:
             raise Exception('N','No existe actividad detalle con código ' + str(codRecomDetalle))
         result = recomDetalleFullToDict(recomDetalle)
         return result
+    except Exception as e:
+        return ResponseException(e)
 
-
-
-
-def recomendacionActividad():
+def recomendacionActividad(currentUser):
+    ##sacar del usuario las fincas 
     actividadDetalleList = selectRecomenActiv() #pasarle el libro de campo
     dtoListActivSin = []
     dtoListActivRecom= []
     
     for actividadDetalle in actividadDetalleList:
-        #def activDetalleToDicc(actividad) cuando pueda
-        dtoAux = dict(codActivDetalle = actividadDetalle.codActivDetalle,fchActivDetalle =actividadDetalle.fchActivDetalle.strftime("%d/%m/%Y %H:%M:%S"), observacion = actividadDetalle.observacion)
+        dtoAux=activDetalleToDict(actividadDetalle)
+
+        dtoFinca = dict(codFinca=1,nombreFinca='3 Huert.JArcode')
+
+
+        dtoAux['finca'] = dtoFinca
 
         codRecomDetalle = actividadDetalle.codRecomDetalle
 

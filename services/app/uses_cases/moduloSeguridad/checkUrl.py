@@ -61,10 +61,12 @@ def checkUrl(method,pat,rol):
     #Modulo de Recomendaciones
     MRREG = '/' + urlRegistrarRecom.name
     MRREG_POST =  'POST' + MRREG + '/registrar'
-    MRRECOMACTIV_POST = 'POST' + MRREG + '/actividad' 
+    MRRECOMACTIV_GET = 'GET' + MRREG + '/actividad' 
     MRREG_GET = 'GET' + MRREG + '/'
+   
+   
+   
     #PERMISOS:
-
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
@@ -76,7 +78,7 @@ def checkUrl(method,pat,rol):
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                            #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST     #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET      #Modulo de recomendaciones
     ) + default
     
     encargadofinca = (
@@ -85,7 +87,8 @@ def checkUrl(method,pat,rol):
          ) + default
     
     ingeniero = (  
-        MAREG_GETS, MAREG_GET,                        #Modulo de actividad
+        MAREG_GETS, MAREG_GET,                         #Modulo de actividad
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET        #Modulo de recomendaciones
          )+ default
 
     supervisor = (  
