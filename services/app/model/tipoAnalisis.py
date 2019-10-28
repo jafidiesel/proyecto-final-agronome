@@ -6,7 +6,7 @@ class TipoAnalisis(db.Model):
     nombre = db.Column('nombre_tipo_analisis',String(80), nullable = False,  unique = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     #Relaciones OneToMany lado Many
-    tipoAnalisisParam = relationship("TipoAnalisisParam")
+    #tipoAnalisisParam = relationship("TipoAnalisisParam") # aca no va comentario de franco
     nombreNomenclador = "tipoAnalisis"
 
 

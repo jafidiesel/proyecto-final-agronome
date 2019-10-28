@@ -19,7 +19,7 @@ def selectByCod(entidad,cod): ##si el codigo se llama cod
     obj = entidad.query.filter(entidad.cod==cod).first()
     if not obj:
         #print('no hay objeto')
-        raise Exception('N','No existe el codigo ingresado')
+        raise Exception('N','No existe el codigo ingresado de ' + entidad.__name__)
 
     return (obj)
 
