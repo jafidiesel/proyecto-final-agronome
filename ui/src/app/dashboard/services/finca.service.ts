@@ -19,4 +19,15 @@ export class FincaService {
     return this.http.get<String>(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${idProvincia}&campos=id,nombre&max=100`);
   }
 
+  /**
+   * @param json any
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion post para crear una finca
+   */
+  
+  postFinca(json:any){
+    return this.http.post(`http://localhost:9001/api/finca`, json);
+  }
+
 }

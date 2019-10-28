@@ -36,8 +36,14 @@
                                 class="list-group-item list-group-item-action">{{ row.substr(2) }}</button>
                         </div>
 
+                        <div *ngSwitchCase=" row.charAt(0) == 0 || row.charAt(0) == 1 || row.charAt(0) == 2 || row.charAt(0) == 3 || row.charAt(0) == 4 || row.charAt(0) == 5 || row.charAt(0) == 6 || row.charAt(0) == 7 || row.charAt(0) == 8 || row.charAt(0) == 9 ">
+                            {{row}}
+                        </div>
+
                         <p *ngSwitchDefault>
+                            
                             {{row.charAt(0).toUpperCase() + row.slice(1)}}
+                            
                         </p>
                     </span>
 

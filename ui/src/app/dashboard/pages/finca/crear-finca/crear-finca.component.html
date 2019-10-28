@@ -1,7 +1,7 @@
 <main role="main" class="container mt-4">
     <h1 class="display-4">Crear Finca</h1>
 
-    <form [formGroup]="fincaForm">
+    <form [formGroup]="fincaForm" (ngSubmit)="onSubmit()">
         <div class="card m-3">
             <div class="card-header">
                 Datos del campo
@@ -9,34 +9,35 @@
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="nombreFinca">Nombre de la finca</label>
+                        <label for="nombreFinca">Nombre de la finca <b>*</b></label>
                         <input type="text" class="form-control" id="nombreFinca"
                             placeholder="Ingrese el nombre de su finca." formControlName="nombre">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="superficieFinca">Superficie</label>
+                        <label for="superficieFinca">Superficie <b>*</b></label>
                         <input type="number" class="form-control" id="superficieFinca"
                             placeholder="Ingrese la superficie de su finca" formControlName="superficie">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="nombreFinca">Calle</label>
+                        <label for="nombreFinca">Calle <b>*</b></label>
                         <input type="text" class="form-control" id="calleFinca"
                             placeholder="Ingrese la calle de su finca." formControlName="calle">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="nroFinca">Número </label>
-                        <input type="text" class="form-control" id="nroFinca"
+                        <label for="nroFinca">Número <b>*</b></label>
+                        <input type="number" class="form-control" id="nroFinca"
                             placeholder="Ingrese el número de su finca" formControlName="nro">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="provinciaFinca">Provincia</label>
+                        <label for="provinciaFinca">Provincia <b>*</b></label>
                         <select class="custom-select" id="provinciaFinca" formControlName="provinciaCod"
                             (change)="seleccionProvincia($event)" *ngIf="provinciasArray != '' else loading1">
-                            <option *ngFor="let provincia of provinciasArray" [value]="provincia.id" [attr.data-nombre]="provincia.nombre" >
+                            <option *ngFor="let provincia of provinciasArray" [value]="provincia.id"
+                                [attr.data-nombre]="provincia.nombre">
                                 {{provincia.nombre}}</option>
                         </select>
                         <ng-template #loading1>
@@ -48,7 +49,7 @@
                         </ng-template>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="localidadFinca">Localidad</label>
+                        <label for="localidadFinca">Localidad <b>*</b></label>
                         <select class="custom-select" id="localidadFinca" formControlName="localidadCod"
                             *ngIf="municipiosArray != '' else loading2" (change)="seleccionMunicipio($event)">
                             <option *ngFor="let municipio of municipiosArray " [value]="municipio.id">
@@ -63,65 +64,52 @@
                         </ng-template>
                     </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <button type="submit" class="btn btn-success float-right">Guardar</button>
-                </div>
+                </div> -->
             </div>
         </div>
 
-        <button class="btn btn-warning" (click)="imprimir()">imprimir</button>
 
-        <!-- <div class="card m-3">
+        <div class="card m-3">
             <div class="card-header">
-                Distribución de la finca
+                Distribución de la finca <b>*</b>
             </div>
             <div class="card-body">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="inputPassword4">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                <div class="row animated fadeIn">
+                    <div class="col">
+                        <app-table [tableData]="parcelasTabla" *ngIf="mostrarTabla"></app-table>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputAddress">Address</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress2">Address 2</label>
-                    <input type="text" class="form-control" id="inputAddress2"
-                        placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="inputCity">City</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputState">State</label>
-                        <select id="inputState" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Zip</label>
-                        <input type="text" class="form-control" id="inputZip">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="gridCheck">
-                        <label class="form-check-label" for="gridCheck">
-                            Check me out
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button class="btn btn-primary  animated fadeIn " type="button" disabled *ngIf="!mostrarTabla">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Actualizando...
+                </button>
+                <button type="button" class="btn btn-primary" (click)="agregarParcelas()" *ngIf="mostrarTabla">Agregar
+                    parcela</button>
             </div>
-        </div> -->
+        </div>
+
+        <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+            ¡ Finca creada exitosamente !
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <div [hidden]="!postError" class="alert alert-danger">
+                    {{ postErrorMessage }}
+                </div>
+                <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear finca</button>
+                <button [routerLink]="['/seguridad']" type="button"
+                    class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+            </div>
+        </div>
     </form>
+    <button type="button" class="btn btn-warning" (click)="transformArrayToJson()">transformArrayToJson</button>
 </main>
+<pre>
+    {{ parcelasTabla | json}}
+
+</pre>
