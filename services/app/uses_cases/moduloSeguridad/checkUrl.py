@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -66,11 +66,28 @@ def checkUrl(method,pat,rol):
     MRREG_PARAM = 'GET' + MRREG + '/parametros/'
    
    
+    #Helper
+    #-analisis
+    HLA = '/' + urlAnalisis.name
+    HLA_POST = 'POST' + HLA
+    HLA_GET  = 'GET' + HLA + '/'
+
+    #-plan
+    HLP = '/' + urlPlan.name
+    HLP_POST = 'POST' + HLP
+    HLP_GET  = 'GET' + HLP + '/'
+
+
+
+
+
+
     #PERMISOS:
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
-        MGF_GETS, MGF_GET                             #Modulo de finca
+        MGF_GETS, MGF_GET,                            #Modulo de finca
+        HLA_GET, HLA_POST, HLP_POST, HLP_GET                                      #Helper
         ) #todos
 
     administrador = (

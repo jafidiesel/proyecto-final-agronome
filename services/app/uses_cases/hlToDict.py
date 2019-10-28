@@ -1,5 +1,4 @@
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById 
-
 ##Parametro
 def parametroToDict(parametro):
     dtoParametro = dict(
@@ -18,7 +17,7 @@ def parametroListToDict(paramList):
     return dtoParametroList
 
 
-def parametroListFullToDict(paramList):
+def parametroListFullToDict(paramList): #este solo se usa para la estructura ojo
     dtoParametroList = []
     for param in paramList:
         if param.isActiv:
@@ -87,6 +86,7 @@ def recomDetalleFullToDict(recomDetalle):
     dtoRecomDetalle = recomDetalleToDict(recomDetalle)
     dtoRecomDetalle['parametro']     = parametroListToDict(recomDetalle.paramList)
     dtoRecomDetalle['usuario']       = usuarioToDict(recomDetalle.usuario) 
+    dtoRecomDetalle['analisis']      = analisisListFullToDicc(recomDetalle.analisisList)
     
     return dtoRecomDetalle
 
@@ -99,3 +99,62 @@ def usuarioToDict(usuario):
         nombreUsuario = usuario.nombre + ' ' +usuario.apellido
     )
     return dtoUsuario
+
+
+
+#Analisis
+def tipoAnalisisToDict(tipoAnalisis):
+    dtoTipoAnalisis = dict( 
+        codTipoAnalisis    = tipoAnalisis.cod,
+        nombreTipoAnalisis = tipoAnalisis.nombre
+    )
+    return dtoTipoAnalisis
+
+def analisisToDicc(analisis):
+    dtoAnalisis= dict(
+        codAnalisis = analisis.codAnalisis,
+        fhcAnalisis = analisis.fchAnalisis.strftime("%d-%m-%Y %H:%M:%S"),
+    )
+
+    dtoAnalisis['tipoAnalsis'] = tipoAnalisisToDict(analisis.tipoAnalisis)
+    return dtoAnalisis
+
+def analisisFullToDicc(analisis):
+    dtoAnalisis = analisisToDicc(analisis)
+    dtoAnalisis['parametro'] = parametroListToDict(analisis.paramList)
+    dtoAnalisis['usuario']   = usuarioToDict(analisis.usuario)
+    return dtoAnalisis
+
+def analisisListFullToDicc(analisisList):
+    dtoAnalisisList=[]
+    for analisis in analisisList:
+        dtoAnalisis = analisisFullToDicc(analisis)
+        dtoAnalisisList.append(dtoAnalisis)
+    
+    return dtoAnalisisList
+
+
+#Plan
+def tipoPlanToDict(tipoPlan):
+    dtoTipoPlan = dict(
+        codTipoPlan    = tipoPlan.cod,
+        nombreTipoPlan = tipoPlan.nombre
+    )  
+    return dtoTipoPlan
+
+
+def planToDict(plan):
+    dtoPlan = dict(
+        codPlan     = plan.codPlan,
+        fhcPlan = plan.fchPlan.strftime("%d-%m-%Y %H:%M:%S"),
+    )
+    dtoPlan['tipoPlan'] = tipoPlanToDict(plan.tipoPlan)
+
+    return dtoPlan
+
+
+def planFullToDict(plan):
+    dtoPlan = planToDict(plan)
+    dtoPlan ['parametro'] = parametroListToDict(plan.paramList)
+    dtoPlan ['usuario']   = usuarioToDict(plan.usuario)
+    return dtoPlan

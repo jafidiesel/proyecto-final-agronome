@@ -1,5 +1,6 @@
 #definiciones de las rutas
 from flask_restplus import Namespace
+
 #modulo de configuraciones"
 URL_MC = 'api/configuracion/'
 urlNomenclador = Namespace(URL_MC + 'nomenclador', description='Modulo de Configuraciones')
@@ -28,6 +29,11 @@ urlFinca = Namespace(URL_MGF, description = 'Gestionar Finca')
 URL_MR = 'api/recomendacion'
 urlRegistrarRecom = Namespace (URL_MR, description = 'Registrar Recomendación')
 
-
+#modulo de helper 
+URL_HL = 'api/hl'
+#helperAnalisis
+urlAnalisis = Namespace (URL_HL + '/analisis', description = 'Helper analisis')
+#helperPlan
+urlPlan = Namespace (URL_HL + '/plan', description = 'Helper plan')
 
 

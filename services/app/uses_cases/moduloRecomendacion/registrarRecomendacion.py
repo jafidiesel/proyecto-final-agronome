@@ -5,14 +5,17 @@ from app.repositorio.repositorioRegistrarActividad import selectActivDetalleCod
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv, selectRecomCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from app.uses_cases.hlToDict import recomDetalleFullToDict, activDetalleToDict, parametroListFullToDict
+from app.uses_cases.analisis.hlAnalisis import createAnalisis
+
 def postRegistrarRecom(data,currentUser):
     try:
         codRecom = data.get('codRecomendacion')
         codActivDetalle = data.get('codActividadDetalle')
         obs = data.get('observacion')
-        parametros = data.get('parametros')
+        parametroList = data.get('parametro')
         fch = data.get('fchRecomDetalle')
-        
+        analisisList = data.get('analisis')
+
         recomendacion = getNomencladoCod('recomendacion',codRecom)
         activDetalle = selectActivDetalleCod(codActivDetalle)
         ##creacion del detalle recomendacion
@@ -25,7 +28,12 @@ def postRegistrarRecom(data,currentUser):
         ##asociacion de usuario
         detalleRecom.usuario = currentUser
 
-        for param in parametros:
+        ##asociacion de analisis
+        for analisisJson in analisisList:
+            analisis = createAnalisis(analisisJson,currentUser)
+            detalleRecom.analisisList.append(analisis)
+
+        for param in parametroList:
             codParam = param.get('codParam')
             valor = param.get('valor')
             parametro = getNomencladoCod('parametro',codParam)

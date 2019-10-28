@@ -34,3 +34,7 @@ from app.model.activDetalleParam import ActivDetalleParam
 from app.model.recomendacionDetalle import RecomendacionDetalle
 from app.model.recomDetalleParam import RecomDetalleParam
 from app.model.fincaUsuario import FincaUsuario
+from app.model.analisis import Analisis
+from app.model.analisisParam import AnalisisParam
+from app.model.plan import Plan
+from app.model.planParam import PlanParam

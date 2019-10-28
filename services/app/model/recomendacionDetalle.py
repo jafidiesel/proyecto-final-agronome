@@ -19,3 +19,5 @@ class RecomendacionDetalle(db.Model):
     paramList = relationship("RecomDetalleParam", backref = "recomDetalle")   # 1 -> N
     
     usuario = relationship("Usuario", backref = "recomDetalleUsuario") # N -> 1
+
+    analisisList = relationship("Analisis") #1 -> N
