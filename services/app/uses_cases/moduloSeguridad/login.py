@@ -8,19 +8,18 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 import uuid
 from werkzeug.security import check_password_hash
 
+
+
 def login(data):
     try:
         if not data:
             raise Exception('N', 'Data vacio')
         #Buscar Usuario 
         usuarioRst = getUsuarioByName(data.get('usuario'))
-        # contraseniaCheck = check_password_hash(data.get('contraseniaUsuario'),contraseniaRst)
         if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
-            print('EN IF')
             #Generar un token y almacenar los datos en la tabla Session
-            #Armado de Token            
-            payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
-            tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+            #Armado de Token        
+            tokenRst = usuarioRst.getToken() 
             #Verificar si el Usuario ya existe en Session
             try:
                 sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
@@ -79,7 +78,7 @@ def solicitarReinicioPsw(data):
         import random
         usuarioRst.randomContrasenia = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(20))    
         #Generar token de 24hs para reestablecer contraseña
-        payload = {'user': usuarioRst.usuario,'rol': usuarioRst.rol.nombre,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}
+        payload = {'user': usuarioRst.usuario,'jti':str(uuid.uuid4()), 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=2)}
         tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
         Commit()
         return jsonify({'contrasenia': usuarioRst.randomContrasenia })
@@ -87,5 +86,7 @@ def solicitarReinicioPsw(data):
         return make_response(jsonify({'message': 'El e-mail ingresado no es válido'}),400)
 
 def resetPsw(data):
+    #Buscar el usuario del token
+    #
     #Verificar que el token no expiro
     return True

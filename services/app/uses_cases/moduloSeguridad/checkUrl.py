@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -58,18 +58,36 @@ def checkUrl(method,pat,rol):
     MGF_GET = MGF_GETS  + '/'
     MGF_PUT = 'PUT' + MGF + '/'
     
-    
-    
-    
-    
-    
+    #Modulo de Recomendaciones
+    MRREG = '/' + urlRegistrarRecom.name
+    MRREG_POST =  'POST' + MRREG + '/registrar'
+    MRRECOMACTIV_GET = 'GET' + MRREG + '/actividad' 
+    MRREG_GET = 'GET' + MRREG + '/'
+    MRREG_PARAM = 'GET' + MRREG + '/parametros/'
+   
+   
+    #Helper
+    #-analisis
+    HLA = '/' + urlAnalisis.name
+    HLA_POST = 'POST' + HLA
+    HLA_GET  = 'GET' + HLA + '/'
+
+    #-plan
+    HLP = '/' + urlPlan.name
+    HLP_POST = 'POST' + HLP
+    HLP_GET  = 'GET' + HLP + '/'
+
+
+
+
+
 
     #PERMISOS:
-
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
-        MGF_GETS, MGF_GET                             #Modulo de finca
+        MGF_GETS, MGF_GET,                            #Modulo de finca
+        HLA_GET, HLA_POST, HLP_POST, HLP_GET                                      #Helper
         ) #todos
 
     administrador = (
@@ -77,6 +95,7 @@ def checkUrl(method,pat,rol):
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                            #Modulo de finca
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
     ) + default
     
     encargadofinca = (
@@ -85,7 +104,8 @@ def checkUrl(method,pat,rol):
          ) + default
     
     ingeniero = (  
-        MAREG_GETS, MAREG_GET,                        #Modulo de actividad
+        MAREG_GETS, MAREG_GET,                         #Modulo de actividad
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
          )+ default
 
     supervisor = (  
@@ -103,6 +123,6 @@ def checkUrl(method,pat,rol):
 
     isCheck = url in roles[rol]
     print(url)
+
     return isCheck
-       
- 
+    

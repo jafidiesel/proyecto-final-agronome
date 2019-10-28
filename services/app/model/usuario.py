@@ -1,6 +1,9 @@
 from app.model.modelImport import *
 from datetime import datetime
-
+import jwt
+import uuid
+from flask import jsonify, request, make_response
+import json
 class Usuario(db.Model):
     __tablename__ = 'usuario'
     codPrivate = db.Column('cod_usuario_private',Integer,primary_key = True,index = True)
@@ -18,7 +21,6 @@ class Usuario(db.Model):
     codRol = db.Column('fk_cod_rol',Integer,ForeignKey('rol.cod_rol'),index = True)
     rol = relationship('Rol', backref ='usuario')
     fincaUsuarioList = relationship('FincaUsuario')
-
     
     @staticmethod
     def from_json(json):
@@ -44,5 +46,47 @@ class Usuario(db.Model):
             'isActiv' : self.isActiv,
             'rol': self.rol.to_json_simple(),
         }
+
+
+    def getToken(self): 
+        payload = {'user': self.usuario,'rol': self.rol.nombre,'jti':str(uuid.uuid4())}
+        tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+        return tokenRst
+
+    def getResetToken(self, expirationTime):
+        payload = {'user': self.usuario,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=expirationTime)}
+        tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
+        return tokenRst
+
+    @staticmethod
+    def verify_reset_token(token):
+        token = None
+        if 'Authorization' in request.headers.keys():
+            token = Usuario.get_token(request.headers.get('Authorization')) 
+        if not token:
+            message = json.dumps({'message': 'Token is missing'})   
+            return make_response(jsonify(message),400)
+        try:
+            data = jwt.decode(token,'AgronomeKey')
+            currentUser = Usuario.query.filter(Usuario.usuario == data.get('user')).first()   
+        except jwt.ExpiredSignatureError:
+            return make_response(jsonify({'message':'Sesion caducada. Por favor, inicie sesion nuevamente'}),400)
+        except jwt.InvalidTokenError:
+            return make_response(jsonify({'message':'Token invalido.Por favor, inicie sesion nuevamente'}),400)
+        except:
+            return make_response(jsonify({'message': 'Usuario no encontrado'}),400)
+        return currentUser    
+
+    @staticmethod
+    def get_token(header):
+        PREFIX = 'Bearer' 
+        #print('HEADER')
+        #print(header)
+        bearer, _, token = header.partition(' ')
+        if bearer != PREFIX:
+            raise ValueError('Invalid token')
+        return token
+
     
+
     

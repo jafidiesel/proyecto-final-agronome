@@ -13,3 +13,5 @@ class Finca(db.Model):
     provincia = db.Column('provincia_finca', String(50), nullable = True)
 
     parcelaList = relationship("Parcela", backref = "fincaParcela") #1->N
+
+    
