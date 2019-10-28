@@ -63,7 +63,7 @@ def checkUrl(method,pat,rol):
     MRREG_POST =  'POST' + MRREG + '/registrar'
     MRRECOMACTIV_GET = 'GET' + MRREG + '/actividad' 
     MRREG_GET = 'GET' + MRREG + '/'
-   
+    MRREG_PARAM = 'GET' + MRREG + '/parametros/'
    
    
     #PERMISOS:
@@ -78,7 +78,7 @@ def checkUrl(method,pat,rol):
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                            #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET      #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
     ) + default
     
     encargadofinca = (
@@ -88,7 +88,7 @@ def checkUrl(method,pat,rol):
     
     ingeniero = (  
         MAREG_GETS, MAREG_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET        #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
          )+ default
 
     supervisor = (  
@@ -106,5 +106,6 @@ def checkUrl(method,pat,rol):
 
     isCheck = url in roles[rol]
     print(url)
+
     return isCheck
     
