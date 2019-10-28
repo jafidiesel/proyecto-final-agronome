@@ -23,13 +23,14 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
         usuarioRst.rol = rolRst
         #Actualizar Fincas
         #Limpiar Json de Fincas, solo queda el id de Finca
-        for fincaJson in listFincaJson:
-            #Limpiar Json, solo queda el Id
-            claves = list(fincaJson.keys())
-            for clave in claves:
-                if clave!="codFinca":
-                    fincaJson.pop(clave,None)
-        
+        if listFincaJson:
+            for fincaJson in listFincaJson:
+                #Limpiar Json, solo queda el Id
+                claves = list(fincaJson.keys())
+                for clave in claves:
+                    if clave!="codFinca":
+                        fincaJson.pop(clave,None)
+            
         fincaUsuarioListRst = usuarioRst.fincaUsuarioList
         if fincaUsuarioListRst:
             #Por cada FincaUsuario buscar Finca
