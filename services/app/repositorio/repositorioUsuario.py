@@ -8,6 +8,7 @@ import datetime
 
 def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
     try:
+        from app.model import hlmodel
         #Se busca el usuario, en caso de existir se actualiza el mismo
         usuarioRst = Usuario.query.filter(Usuario.cod == codUsuario).one()
         #user = Usuario.from_json(usuarioJson)
@@ -30,34 +31,49 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
                     fincaJson.pop(clave,None)
         
         fincaUsuarioListRst = usuarioRst.fincaUsuarioList
-        #Por cada FincaUsuario buscar Finca
-        for fincaUsuarioRst in fincaUsuarioListRst:
-            finca = fincaUsuarioRst.finca
-            fincaTmp = dict(codFinca=finca.codFinca)
-            if (fincaTmp not in listFincaJson)or(listFincaJson[0].get("")):
-            #Si FincaUsuario tiene asociado un codFinca que NO esta en listFincaJson, actualizar iSActiv a False
-            # y fchFin con fecha actual
-                fincaUsuarioRst.isActiv = False
-                fincaUsuarioRst.fchFin = datetime.datetime.now
-                
-        #En caso de ser una asociacion nueva/repetida
-        for fincaJson in listFincaJson:
-            i = 0
-            for fincaUsr in fincaUsuarioListRst:
-                
-                if(fincaJson.get('codFinca') == fincaUsr.codFinca):      
-                    i += 1
-            from app.model import hlmodel
-            if(i ==0 ):
+        if fincaUsuarioListRst:
+            #Por cada FincaUsuario buscar Finca
+            for fincaUsuarioRst in fincaUsuarioListRst:
+                finca = fincaUsuarioRst.finca
+                fincaTmp = dict(codFinca=finca.codFinca)
+                if (fincaTmp not in listFincaJson)or(listFincaJson[0].get("")):
+                #Si FincaUsuario tiene asociado un codFinca que NO esta en listFincaJson, actualizar iSActiv a False
+                # y fchFin con fecha actual
+                    fincaUsuarioRst.isActiv = False
+                    fincaUsuarioRst.fchFin = datetime.datetime.now
+                elif (fincaTmp in listFincaJson)and(fincaUsuarioRst.isActiv==False):
+                    fincaRst = Finca.query.filter(hlmodel.Finca.codFinca == fincaJson.get('codFinca')).one()
+                    #Crear FincaUsario
+                    fincaUsuario = hlmodel.FincaUsuario()
+                    fincaUsuario.isActiv = True
+                    #Asociar Finca a ficnaUsuario
+                    fincaUsuario.finca = fincaRst
+                    #Asociar usuario a fincaUsuario
+                    usuarioRst.fincaUsuarioList.append(fincaUsuario)                
+                    
+            #En caso de ser una asociacion nueva
+            for fincaJson in listFincaJson:
+                i = 0
+                for fincaUsr in fincaUsuarioListRst:
+                    if(fincaJson.get('codFinca') == fincaUsr.codFinca):      
+                        i += 1
+                if(i ==0 ):
+                    fincaRst = Finca.query.filter(hlmodel.Finca.codFinca == fincaJson.get('codFinca')).one()
+                    fincaUsuario = hlmodel.FincaUsuario()
+                    fincaUsuario.isActiv = True
+                    fincaUsuario.finca = fincaRst
+                    usuarioRst.fincaUsuarioList.append(fincaUsuario)
+                    saveEntidadSinCommit(fincaUsuario)    
+
+        elif (not fincaUsuarioListRst) and (listFincaJson):
+            for fincaJson in listFincaJson:
                 fincaRst = Finca.query.filter(hlmodel.Finca.codFinca == fincaJson.get('codFinca')).one()
-                #Crear FincaUsario
                 fincaUsuario = hlmodel.FincaUsuario()
                 fincaUsuario.isActiv = True
-                #Asociar usuario a fincaUsuario
-                usuarioRst.fincaUsuarioList.append(fincaUsuario)
-                #Asociar Finca a ficnaUsuario
                 fincaUsuario.finca = fincaRst
-        Commit()
+                usuarioRst.fincaUsuarioList.append(fincaUsuario)
+                saveEntidadSinCommit(fincaUsuario)              
+        Commit()      
         return ResponseOk()   
     except Exception as e:
         Rollback()

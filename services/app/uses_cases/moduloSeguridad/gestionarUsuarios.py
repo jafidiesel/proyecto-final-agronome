@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify,make_response
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidadSinCommit, selectByCod,Commit, selectAll, Rollback
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -20,8 +20,10 @@ def postUser(data):
         dataLower = obtainDict(data)
         usuarioJson = dataLower.get('usuario')
         rolJson = dataLower.get('rol')
+        print(rolJson)
         #Buscar rol seleccionado
         rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
+        fincaListJson =  dataLower.get('finca')
         #Setear pws con hash
         #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
@@ -31,7 +33,14 @@ def postUser(data):
         usuario.cod = str(uuid.uuid4())
         #Asociar Finca
         #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
-        if ((rolRst == 'supervisor') or (rolRst == 'ingeniero')):
+        if ((rolRst.nombre == 'supervisor') or (rolRst.nombre == 'ingeniero')):
+            print('En roles')
+            #Si la lista de finca essta vacia, msj de error
+            print(fincaListJson)
+            if not fincaListJson:
+                print('en finca vacio')
+                return make_response(jsonify({'message:':'El usuario debe estar asociado a una Finca'}),404)
+
             listFincaRst = dataLower.get('finca')
             for finca in listFincaRst:
                 #Buscar finca para verificar que existe,crear intermedia FincaUsuario y asociarla al usuario
@@ -40,14 +49,14 @@ def postUser(data):
                 #Crear FincaUsario
                 fincaUsuario = hlmodel.FincaUsuario()
                 fincaUsuario.isActiv = True
-                #Asociar usuario a fincaUsuario
-                usuario.fincaUsuarioList.append(fincaUsuario)
                 #Asociar Finca a ficnaUsuario
                 fincaUsuario.finca = fincaRst
+                #Asociar usuario a fincaUsuario
+                usuario.fincaUsuarioList.append(fincaUsuario)            
+                
         #Asociar rol
         usuario.rol = rolRst
         saveEntidadSinCommit(usuario)
-
         Commit()
         return ResponseOk()
     except Exception as e:
@@ -90,9 +99,7 @@ def updateUsuario(data, cod):
     rolJson = dataLower.get('rol')  
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
     #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
-    if ((rolRst == 'supervisor') or (rolRst == 'ingeniero')):
-        listFincaRst = dataLower.get('finca')         
-
+    listFincaRst = dataLower.get('finca')         
     from app.repositorio.repositorioUsuario import updateUser
     return updateUser(usuarioJson, rolRst, cod, listFincaRst)        
 
