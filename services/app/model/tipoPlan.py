@@ -8,7 +8,7 @@ class TipoPlan(db.Model):
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
     #Relaciones OneToMany lado Many
-    tipoPlanParam = relationship("TipoPlanParam")
+    #tipoPlanParam = relationship("TipoPlanParam") #no se usa no va aca comentario de franco
     nombreNomenclador = "tipoPlan"
 
     def __init__(self, nombre, isActiv):

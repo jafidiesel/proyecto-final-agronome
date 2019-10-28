@@ -44,7 +44,7 @@ def postNomenclador(data):
 def getNomencladoCod(entidad,cod):
         objeto = selectByCod(modelos[entidad],cod)
         if not objeto:
-            raise Exception('N','No existe el codigo ingresado') #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
+            raise Exception('N','No existe el codigo ingresado de: ' + modelos[entidad].__name__) #lanzo la exepcion de nuevo porque algunos casos de usos las necesitan y no llega por la cantidad de llamadas
         return objeto
 
 

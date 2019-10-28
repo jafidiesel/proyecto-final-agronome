@@ -11,10 +11,12 @@ class ActividadDetalle(db.Model):
     codActividad = db.Column('fk_cod_actividad',Integer,ForeignKey('actividad.cod_actividad'), nullable = False) #relación
  
     codRecomDetalle = db.Column('fk_cod_recom_detalle',Integer,ForeignKey('recomendacion_detalle.cod_recom_detalle'), nullable = True, index = True)
-
+    codUsuario = db.Column('fk_cod_usuario', Integer, ForeignKey('usuario.cod_usuario_private'), nullable = False)
 
     actividad = relationship("Actividad", backref="activDetalleList") # N -> 1  &&  1->N (activiDetalleList)
 
     imgList = relationship('ImgActivDetalle') # 1->N
 
     paramList = relationship("ActivDetalleParam", backref = "activDetalle")   # 1 -> N 
+
+    usuario = relationship('Usuario', backref = "activDetalleUsuario") # N->1
