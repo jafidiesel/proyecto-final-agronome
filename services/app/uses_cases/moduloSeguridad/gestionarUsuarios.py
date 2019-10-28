@@ -34,10 +34,16 @@ def postUser(data):
         if ((rolRst == 'supervisor') or (rolRst == 'ingeniero')):
             listFincaRst = dataLower.get('finca')
             for finca in listFincaRst:
-                #Buscar finca para verificar que existe y asociarla al usuario
+                #Buscar finca para verificar que existe,crear intermedia FincaUsuario y asociarla al usuario
                 from app.repositorio.repositorioGestionarFinca import selectFincaCod
                 fincaRst = selectFincaCod(finca.get('codFinca'))
-                usuario.fincaUsuarioList.append(fincaRst)
+                #Crear FincaUsario
+                fincaUsuario = hlmodel.FincaUsuario()
+                fincaUsuario.isActiv = True
+                #Asociar usuario a fincaUsuario
+                usuario.fincaUsuarioList.append(fincaUsuario)
+                #Asociar Finca a ficnaUsuario
+                fincaUsuario.finca = fincaRst
         #Asociar rol
         usuario.rol = rolRst
         saveEntidadSinCommit(usuario)

@@ -4,7 +4,7 @@ from app.model.hlmodel import Usuario, Rol, FincaUsuario,Finca
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from sqlalchemy.orm import exc
-
+import datetime
 
 def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
     try:
@@ -28,9 +28,9 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
             for clave in claves:
                 if clave!="codFinca":
                     fincaJson.pop(clave,None)
-        #Verificar si las Fincas asociadas al usuario de la BD, son iguales o no, a las Fincas del Json
-        #Si la Finca traida de la Bd no se encuentra en el Json, setear isActiv = False
+        
         fincaUsuarioListRst = usuarioRst.fincaUsuarioList
+        #Por cada FincaUsuario buscar Finca
         for fincaUsuarioRst in fincaUsuarioListRst:
             finca = fincaUsuarioRst.finca
             fincaTmp = dict(codFinca=finca.codFinca)
@@ -38,24 +38,25 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
             #Si FincaUsuario tiene asociado un codFinca que NO esta en listFincaJson, actualizar iSActiv a False
             # y fchFin con fecha actual
                 fincaUsuarioRst.isActiv = False
-                fincaUsuarioRst.fchFin = 
-            elif (fincaTmp in listFincaJson):
-                #SE ACTUALIZAN LAS FECHAS??? COMO???
-                fincaUsuarioRst.isActiv = True
-        #En caso de NO 
-        for opcionJson in opcionJsonList:
-        i = 0
-        for parametroOp in paramOpList:
-            
-            if(opcionJson.get('cod') == parametroOp.codOpcion):      
-                i += 1
-        from app.model import hlmodel
-        if(i ==0 ):
-            opcionRst = Opcion.query.filter(hlmodel.Opcion.cod == opcionJson.get('cod')).one()
-            parametroOpcion = ParametroOpcion(True)
-            parametroOpcion.opcion = opcionRst
-            parametroRst.paramOpcion.append(parametroOpcion) 
-            saveEntidadSinCommit(parametroOpcion)     
+                fincaUsuarioRst.fchFin = datetime.datetime.now
+                
+        #En caso de ser una asociacion nueva/repetida
+        for fincaJson in listFincaJson:
+            i = 0
+            for fincaUsr in fincaUsuarioListRst:
+                
+                if(fincaJson.get('codFinca') == fincaUsr.codFinca):      
+                    i += 1
+            from app.model import hlmodel
+            if(i ==0 ):
+                fincaRst = Finca.query.filter(hlmodel.Finca.codFinca == fincaJson.get('codFinca')).one()
+                #Crear FincaUsario
+                fincaUsuario = hlmodel.FincaUsuario()
+                fincaUsuario.isActiv = True
+                #Asociar usuario a fincaUsuario
+                usuarioRst.fincaUsuarioList.append(fincaUsuario)
+                #Asociar Finca a ficnaUsuario
+                fincaUsuario.finca = fincaRst
         Commit()
         return ResponseOk()   
     except Exception as e:
