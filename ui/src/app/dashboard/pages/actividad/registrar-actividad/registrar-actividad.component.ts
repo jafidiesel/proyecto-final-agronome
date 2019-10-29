@@ -5,6 +5,8 @@ import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
+import Swal from 'sweetalert2';
+
 
 
 @Component({
@@ -74,6 +76,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
                 this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
+                
               }
             });
             if (defaultIcon) {
@@ -199,13 +202,21 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   registrarActividad(nombreActividad: string, codActividad:number) {
 
+    this.subscriptions.push(
+      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+        result => {
+          this.initForm(result);
+        },
+        error => console.log('error', error)
+      )
+    );
+
     this.nombreActividad = nombreActividad;
     this.codActividad = codActividad;
     this.siguiente();
   }
 
   onDateSelection(date: NgbDate) {
-    console.log('date', date);
     let dayString = date.day.toString();
 
     if ((dayString).length < 2) {
@@ -235,7 +246,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   crearParametroConOpcion(obj: any, index) {
-    console.log('obj.opcion', obj.opcion);
     return this.fb.control({
       codParam: obj.parametro.cod,
       valor: null,
@@ -277,6 +287,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   parametrosCompletados() {
+    debugger; 
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -287,13 +298,33 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    if (this.registrarActividadForm.status == 'VALID' && this.parametrosCompletados()) {
+    if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
             this.postSuccess = true;
             this.postError = false;
             this.postErrorMessage = '';
+
+            //prodn
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success ml-1',
+              },
+              buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+              title: '¡Exito!',
+              text: 'Se registro la actividad correctamente.',
+              type: 'warning',
+              confirmButtonText: 'Salir',
+              reverseButtons: true
+            }).then((result) => {
+              if (result.value) {
+                this.router.navigate(['actividades/listarActividades']);
+              }}
+            )
           },
           error => this.onHttpError(error)
         )
@@ -302,10 +333,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     } else {
       this.onHttpError({ message: "Complete todos los campos obligatorios." });
     }
-  }
-
-  imprimir() {
-    this.parametrosCompletados();
   }
 
   onHttpError(errorResponse: any) {

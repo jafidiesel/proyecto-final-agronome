@@ -1,44 +1,42 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlNomenclador
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclador, getNomencladoCod, postNomenclador, putNomenclador, getNomencladorFilter
-from app.api.helperApi.hlResponse import ResponseException
+from app.api.shared.tokenHandler import token_required
+from app.api.helperApi.hlResponse import ResponseException, notCheck
+from app.uses_cases.moduloSeguridad.checkUrl import checkUrl
 
 nomenclador = urlNomenclador
 
 @nomenclador.route('')
-@nomenclador.doc(params={
-    "tipoNomenclador": "nombre del nomenclador",
-    "nombre": "string",
-    "isActiv": "boolean"
-},responses={202: 'Flag s', 404: 'Flag:n'})
-
 class NomencladorsHandler(Resource):
-    def post(self):
-        data = self.api.payload
-        return postNomenclador(data)
-
+    @token_required
+    def post(data,currentUser):
+        return postNomenclador(data) 
+       
 
 @nomenclador.route('/<string:tipoNomenclador>')
 class NomencladorsHandler(Resource):
-    def get(self,tipoNomenclador):
+    @token_required
+    def get(data,currentUser,tipoNomenclador): 
         return getNomenclador(tipoNomenclador)
 
-    def post(self,tipoNomenclador):
-        data = self.api.payload
+
+    @token_required
+    def post(data,currentUser,tipoNomenclador):      
         return getNomencladorFilter(data,tipoNomenclador)
 
 @nomenclador.route('/<string:tipoNomenclador>/<int:cod>')
 class  NomencladorHandler(Resource):
-    def get(self,tipoNomenclador,cod):
-        ##tengo que agregar una exceptión ya que el .to_json es parte del objeto, y no puedo econtrar la exceptión primaraia si no encuentro la que to_json no es una funcion de un objeto vacio
+    @token_required    
+    def get(data,currentUser,tipoNomenclador,cod):
         try:    
             obj = getNomencladoCod(tipoNomenclador,cod)
             return (obj.to_json())
         except Exception as e:
             return ResponseException(e)
-         
-    def put(self,tipoNomenclador,cod):
-        data = self.api.payload
+       
+    @token_required 
+    def put(data,currentUser,tipoNomenclador,cod):            
         return putNomenclador(data,tipoNomenclador,cod)
     

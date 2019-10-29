@@ -164,14 +164,8 @@
             </div>
             <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}}
             </button>
-            <button type="button" class="btn btn-lg float-left btn-warning" (click)="imprimir()">imprimir()</button>
             <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
                 {{ nextButtonText }}</button>
         </div>
     </div>
 </main>
-{{ this.fechaFormateada |json }}
-<div *ngIf="this.registrarActividadForm != null">
-    {{ this.registrarActividadForm.status | json }}
-
-</div>

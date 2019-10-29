@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { FincasPageComponent } from './dashboard/pages/fincas-page/fincas-page.component';
 import { RecomendacionesPageComponent } from './dashboard/pages/recomendaciones-page/recomendaciones-page.component';
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
@@ -33,9 +32,19 @@ import { ListarUsuariosComponent } from './dashboard/pages/seguridad/listar-usua
 import { ListarActividadesComponent } from './dashboard/pages/actividad/listar-actividades/listar-actividades.component';
 import { VerActividadComponent } from './dashboard/pages/actividad/ver-actividad/ver-actividad.component';
 import { EditarUsuarioComponent } from './dashboard/pages/seguridad/editar-usuario/editar-usuario.component';
+import { LoginComponent } from './login/pages/login/login.component';
+import { DashboardPageComponent } from './dashboard/pages/dashboard-page/dashboard-page.component';
+import { PantallaComponent } from './pantalla/pantalla.component';
+import { LoginPageComponent } from './login/login-page/login-page.component';
+import { CrearFincaComponent } from './dashboard/pages/finca/crear-finca/crear-finca.component';
 
 
 const routes: Routes = [
+  
+  /* Modulo Login */
+  { path: '', component: PantallaComponent },
+  { path: 'home', component: DashboardPageComponent },
+  { path: 'login', component: LoginPageComponent },
   /* Modulo Actividades */
   { path: 'actividades', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
@@ -44,7 +53,8 @@ const routes: Routes = [
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */
-  { path: 'finca', component: FincasPageComponent },
+  { path: 'finca/listarFinca', component: CrearFincaComponent },
+  { path: 'finca/crearFinca', component: CrearFincaComponent },
   /* Modulo Recomendaciones */
   { path: 'recomendaciones', component: RecomendacionesPageComponent },
   /* Modulo Gestionar Recursos */
@@ -81,7 +91,6 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
-  { path: 'home', redirectTo: 'actividades' },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */];
 
