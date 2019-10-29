@@ -99,6 +99,16 @@ export class AuthService {
       let obj: any;
       obj = JSON.parse(localStorage.getItem('fincas'));
       return obj.nombreFinca;
+    }else{
+      return false;
+    }
+  }
+
+  getcodFinca(): number {
+    if (localStorage.getItem('fincas') != "undefined") {
+      let obj: any;
+      obj = JSON.parse(localStorage.getItem('fincas'));
+      return obj.codFinca;
     }
   }
 
