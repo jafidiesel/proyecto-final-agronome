@@ -45,6 +45,9 @@ export class NavbarComponent implements OnInit {
         this.ValidateTokenFather2.emit('logout');
         localStorage.removeItem('rol');
         localStorage.removeItem('token');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('cantFincas');
+        localStorage.removeItem('fincas');
         swalWithBootstrapButtons.fire({
           title: '¡Exito!',
           text: 'Se cerró sesión correctamente.',

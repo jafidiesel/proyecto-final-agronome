@@ -14,7 +14,6 @@ export class PantallaComponent implements OnInit {
       this.tokenExist = true;
       this.router.navigateByUrl('/home');
     }
-    console.log(this.tokenExist);
 
   }
 
@@ -23,12 +22,16 @@ export class PantallaComponent implements OnInit {
   }
 
   validateToken(event){
-    console.log(event);
 
     if( localStorage.getItem('token') ){
       this.tokenExist = true;
       //this.router.navigateByUrl('/actividades');
-      this.router.navigate(['/actividades/listarActividades']);
+      if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0 ) {
+        console.log('crear la finca');
+        this.router.navigate(['/finca/crearFinca']);        
+      }else{
+        this.router.navigate(['/actividades/listarActividades']);
+      }
     }else{
       this.tokenExist = false;
     }

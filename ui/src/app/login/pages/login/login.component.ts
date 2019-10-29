@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
           Swal.close();
           this.ValidateTokenFather.emit('login');
 
-          this.router.navigate(['/home']);
+          //this.router.navigate(['/home']);
 
         },
         err => {

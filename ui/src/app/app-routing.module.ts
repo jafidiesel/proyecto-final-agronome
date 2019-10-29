@@ -54,6 +54,7 @@ const routes: Routes = [
   { path: 'planificacion', component: PlanificacionPageComponent },
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
+  { path: 'finca/crearFinca', component: CrearFincaComponent },
   /* Modulo Recomendaciones */
   { path: 'recomendaciones', component: RecomendacionesPageComponent },
   /* Modulo Gestionar Recursos */
