@@ -82,7 +82,7 @@ export class EditarUsuarioComponent implements OnInit, OnDestroy {
         email: [form.email, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
         isActiv: form.isActiv,
-        cod: [ parseInt(form.cod) ]
+        cod: [ form.cod ]
       }),
       rol: this.fb.group({
         cod: [ parseInt(form.rol.cod) ]
