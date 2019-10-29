@@ -33,7 +33,8 @@ export class AuthService {
         this.guardarRol(resp['rol']);
         this.guardarNombre(resp['nombre']);
 
-        this.guardarFinca(resp['finca'], resp['finca'].length, resp['rol']);
+        let fincaLength = (resp['finca'] != null) ? resp['finca'].length : 0;
+        this.guardarFinca(resp['finca'], fincaLength , resp['rol']);
 
 
 
@@ -77,7 +78,13 @@ export class AuthService {
 
   private guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
     localStorage.setItem('cantFincas', cantFincas.toString());
-    (rol == 'ingeniero') ? localStorage.setItem('fincas', JSON.stringify(arrayFinca)) : localStorage.setItem('fincas', JSON.stringify(arrayFinca[0])) ;
+    if(rol == 'ingeniero'){
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
+    }else if(rol == 'administrador'){
+      localStorage.setItem('fincas', "0") 
+    }else{
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
+    }
 
   }
 
@@ -89,7 +96,6 @@ export class AuthService {
 
   getNombreFinca(){
     if (localStorage.getItem('fincas').length>0) {
-      console.log(JSON.parse(localStorage.getItem('fincas')));
       let obj:any;
       obj = JSON.parse(localStorage.getItem('fincas'));
       return obj.nombreFinca ;
