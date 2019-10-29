@@ -9,6 +9,8 @@ class Planificacion(db.Model):
     codEstadoPlanificacion = db.Column('fk_cod_estado_planificacion',Integer,ForeignKey('estado_planificacion.cod'),index = True)
     codFinca = db.Column('fk_cod_finca',Integer,ForeignKey('finca.codFinca'),index = True)
     codGrupoPlanificacion = db.Column('fk_cod_grupo_planificacion',Integer,ForeignKey('grupo_planificacion.cod'),index = True)
+    codUsuario = db.Column('fk_cod_usuario', Integer, ForeignKey('usuario.cod_usuario_private'), nullable=False)
+
     #Relationships
     tipoPlanificacion = relationship('TipoPlanificacion',uselist = False)
     estadoPlanificacion = relationship('EstadoPlanificacion', uselist = False)
