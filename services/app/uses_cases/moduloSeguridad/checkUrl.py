@@ -71,12 +71,12 @@ def checkUrl(method,pat,rol):
     HLA = '/' + urlAnalisis.name
     HLA_POST = 'POST' + HLA
     HLA_GET  = 'GET' + HLA + '/'
-
+    HLA_PARAM = 'GET' + HLA + '/parametros/'
     #-plan
     HLP = '/' + urlPlan.name
     HLP_POST = 'POST' + HLP
     HLP_GET  = 'GET' + HLP + '/'
-
+    HLP_PARAM = 'GET' + HLP + '/parametros/'
 
 
 
@@ -86,16 +86,16 @@ def checkUrl(method,pat,rol):
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
-        MGF_GETS, MGF_GET,                            #Modulo de finca
-        HLA_GET, HLA_POST, HLP_POST, HLP_GET                                      #Helper
+        MGF_GETS, MGF_GET                            #Modulo de finca
         ) #todos
 
     administrador = (
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT,                            #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MGF_POST,MGF_PUT,                             #Modulo de finca
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
     ) + default
     
     encargadofinca = (
@@ -105,7 +105,8 @@ def checkUrl(method,pat,rol):
     
     ingeniero = (  
         MAREG_GETS, MAREG_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
          )+ default
 
     supervisor = (  

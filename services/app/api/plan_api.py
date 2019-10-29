@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlPlan
-from app.uses_cases.plan.gestionarPlan import postPlan, getPlanCod
+from app.uses_cases.plan.gestionarPlan import postPlan, getPlanCod, getParamPlanFull
 from app.api.shared.tokenHandler import token_required
 ## ESTE OBJETO ES UN HELPER;
 
@@ -18,3 +18,9 @@ class PlanHandler(Resource):
     @token_required
     def get(data,currentUser,codPlan):
         return getPlanCod(data,codPlan)
+
+@plan.route('/parametros/<int:codTipoPlan>')
+class PlanParamHandler(Resource):
+    @token_required
+    def get(data,currentUser,codTipoPlan):
+        return getParamPlanFull(data,codTipoPlan)
