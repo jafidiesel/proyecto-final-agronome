@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class SidebarComponent implements OnInit {
 
   rol: string;
+  nombreFinca: string;
   
   faEdit = faEdit;
   faListAlt = faListAlt;
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.rol = this.auth.getRol();
+    this.nombreFinca = this.auth.getNombreFinca();
   }
 
 }

@@ -201,7 +201,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   registrarActividad(nombreActividad: string, codActividad:number) {
-    console.log(codActividad);
 
     this.subscriptions.push(
       this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
@@ -218,7 +217,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   onDateSelection(date: NgbDate) {
-    console.log('date', date);
     let dayString = date.day.toString();
 
     if ((dayString).length < 2) {
@@ -248,7 +246,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   crearParametroConOpcion(obj: any, index) {
-    console.log('obj.opcion', obj.opcion);
     return this.fb.control({
       codParam: obj.parametro.cod,
       valor: null,
@@ -290,6 +287,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   parametrosCompletados() {
+    debugger; 
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -300,7 +298,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    if (this.registrarActividadForm.status == 'VALID' && this.parametrosCompletados()) {
+    if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {

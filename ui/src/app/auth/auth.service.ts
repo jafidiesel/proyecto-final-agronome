@@ -18,50 +18,88 @@ export class AuthService {
 
   userToken: string;
 
-constructor( private http : HttpClient ) { 
-  this.leerToken();
- }
+  constructor(private http: HttpClient) {
+    this.leerToken();
+  }
 
-  logout(){
+  logout() {
 
   }
 
-  login( usuario: UsuarioModel ){
+  login(usuario: UsuarioModel) {
     return this.http.post(this.url, usuario).pipe(
-      map( resp => {
-        this.guardarToken( resp['token'] );
-        this.guardarRol( resp['rol'] );
+      map(resp => {
+        this.guardarToken(resp['token']);
+        this.guardarRol(resp['rol']);
+        this.guardarNombre(resp['nombre']);
+
+        let fincaLength = (resp['finca'] != null) ? resp['finca'].length : 0;
+        this.guardarFinca(resp['finca'], fincaLength , resp['rol']);
+
+
+
         return resp;
       })
     );
   }
 
-  private guardarToken( idToken: string){
+  private guardarToken(idToken: string) {
     this.userToken = idToken;
-    localStorage.setItem('token',idToken);
+    localStorage.setItem('token', idToken);
   }
 
-  leerToken(  ){
-    if( localStorage.getItem('token') ){
+  leerToken() {
+    if (localStorage.getItem('token')) {
       this.userToken = localStorage.getItem('token');
-    }else{
-      this.userToken = ''; 
+    } else {
+      this.userToken = '';
     }
   }
 
-  getToken(){
-    if( localStorage.getItem('token') ){
+  getToken() {
+    if (localStorage.getItem('token')) {
       return localStorage.getItem('token');
     }
   }
 
-  getRol(){
-    if( localStorage.getItem('rol') ){
+  getRol() {
+    if (localStorage.getItem('rol')) {
       return localStorage.getItem('rol');
     }
   }
 
-  private guardarRol( rol: string){
-    localStorage.setItem('rol',rol);
+  private guardarRol(rol: string) {
+    localStorage.setItem('rol', rol);
   }
+
+  private guardarNombre(nombre: string) {
+    localStorage.setItem('nombre', nombre);
+  }
+
+  private guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
+    localStorage.setItem('cantFincas', cantFincas.toString());
+    if(rol == 'ingeniero'){
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
+    }else if(rol == 'administrador'){
+      localStorage.setItem('fincas', "0") 
+    }else{
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
+    }
+
+  }
+
+  getNombre() {
+    if (localStorage.getItem('nombre')) {
+      return localStorage.getItem('nombre');
+    }
+  }
+
+  getNombreFinca(){
+    if (localStorage.getItem('fincas').length>0) {
+      let obj:any;
+      obj = JSON.parse(localStorage.getItem('fincas'));
+      return obj.nombreFinca ;
+    }
+  }
+  
 }
