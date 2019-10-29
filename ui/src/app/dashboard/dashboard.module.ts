@@ -50,6 +50,7 @@ import { ListarActividadesComponent } from './pages/actividad/listar-actividades
 import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
 import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-usuario.component';
 import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.component';
+import { VerFincaComponent } from './pages/finca/ver-finca/ver-finca.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.compo
     VerActividadComponent,
     EditarUsuarioComponent,
     CrearFincaComponent,
+    VerFincaComponent,
   ],
   imports: [
     CommonModule,
