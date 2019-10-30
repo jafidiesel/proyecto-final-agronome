@@ -23,7 +23,9 @@ def postUser(data):
         print(rolJson)
         #Buscar rol seleccionado
         rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
+        print(rolRst)
         fincaListJson =  dataLower.get('finca')
+        print(fincaListJson)
         #Setear pws con hash
         #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
@@ -31,6 +33,7 @@ def postUser(data):
         usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
         #Generar codPublic
         usuario.cod = str(uuid.uuid4())
+        print(usuario.cod)
         #Asociar Finca
         #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
         if ((rolRst.nombre == 'supervisor') or (rolRst.nombre == 'ingeniero')):
