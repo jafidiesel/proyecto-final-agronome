@@ -46,7 +46,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
 
           });
         },
-        error =>  this.onHttpError({ message: "Ocurrió un error al obtener las provincias de la api del gobierno de Mendoza." })
+        error => this.onHttpError({ message: "Ocurrió un error al obtener las provincias de la api del gobierno de Mendoza." })
       )
     );
 
@@ -92,7 +92,6 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
         error => this.onHttpError(error)
       )
     );
-
   }
 
   seleccionMunicipio(event) {
