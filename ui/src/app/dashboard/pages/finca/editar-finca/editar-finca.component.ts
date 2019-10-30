@@ -91,9 +91,11 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
                 let muniCod = resultMunicipio.municipios[0].id;
 
                 let parcelas = form.parcelas;
+                let index = 0;
                 parcelas.map(parcela => {
                   let cantCuadros = parseInt(parcela.filas) * parseInt(parcela.columnas);
-                  this.parcelasTabla = [...this.parcelasTabla, [parcela.nombre, parcela.superficie, String(parcela.columnas), String(parcela.filas), String(cantCuadros)]];
+                  this.parcelasTabla = [...this.parcelasTabla, [parcela.nombre, parcela.superficie, String(parcela.columnas), String(parcela.filas), String(cantCuadros), `./${index}`]];
+                  index++;
                 });
 
                 this.fincaForm = this.fb.group({
@@ -227,8 +229,8 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
     if (formValues) {
       let cantCuadros = formValues.cantFilas * formValues.cantColumnas;
-      this.parcelasTabla = [...this.parcelasTabla, [formValues.nombre, formValues.superficie, formValues.cantFilas, formValues.cantColumnas, String(cantCuadros)]];
-
+      this.parcelasTabla = [...this.parcelasTabla, [formValues.nombre, formValues.superficie, formValues.cantFilas, formValues.cantColumnas, String(cantCuadros), "./" + (parseInt(this.parcelasTabla[this.parcelasTabla.length - 1][5][2]) + 1) ]];
+      console.log(this.parcelasTabla);
     }
 
     this.mostrarTabla = true;
@@ -255,6 +257,21 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
       parcelas: parcelas
     });
 
+
+  }
+  quitarFila(event){
+    console.log(event);
+    let index=0;
+    this.parcelasTabla.map( parcela =>{
+      if(parcela[5][2] == event) {
+        this.mostrarTabla = false;
+        console.log(this.parcelasTabla.splice(index,1));
+        setTimeout(() => {
+          this.habilitarTabla();
+        }, 500);
+      }
+      index++;
+    });
 
   }
 
@@ -296,6 +313,10 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
     } else {
       this.onHttpError({ message: "Complete todos los campos obligatorios." });
     }
+  }
+
+  habilitarTabla(){
+    this.mostrarTabla = true;
   }
 
   onHttpError(errorResponse: any) {

@@ -76,7 +76,7 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">Ubicación de la finca en google maps.</h5>
-                                    <p class="card-text">Aqui puede encontrar la ubicación de su finca generada automáticamente acorde a su dirección ingresada.</p>
+                                    <p class="card-text">Clickeando el ícono puede encontrar la ubicación de su finca generada automáticamente acorde a su dirección ingresada.</p>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
             <div class="card-body">
                 <div class="row animated fadeIn">
                     <div class="col">
-                        <app-table [tableData]="parcelasTabla" *ngIf="mostrarTabla"></app-table>
+                        <app-table [tableData]="parcelasTabla" (eventClick)="quitarFila($event)" *ngIf="mostrarTabla"></app-table>
                     </div>
                 </div>
                 <button class="btn btn-primary  animated fadeIn " type="button" disabled *ngIf="!mostrarTabla">
