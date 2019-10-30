@@ -81,10 +81,13 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
         return ResponseException(e)
 
 def getUsuarioByName(nombre):
-    try:
+    #try:
+        print(nombre)
+        #usuario = Usuario.query.filter(Usuario.usuario == nombre).first()
         usuario = Usuario.query.filter(Usuario.usuario == nombre).one()
+        print(usuario)
         return usuario
-    except exc.NoResultFound:
-        raise Exception('N', 'Usuario no encontrado')
-    except Exception as e:
-        return ResponseException(e)
+    #except exc.NoResultFound:
+        #raise Exception('N', 'Usuario no encontrado')
+    #except Exception as e:
+        #return ResponseException(e)
