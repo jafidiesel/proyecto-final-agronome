@@ -37,6 +37,7 @@ import { DashboardPageComponent } from './dashboard/pages/dashboard-page/dashboa
 import { PantallaComponent } from './pantalla/pantalla.component';
 import { LoginPageComponent } from './login/login-page/login-page.component';
 import { CrearFincaComponent } from './dashboard/pages/finca/crear-finca/crear-finca.component';
+import { EditarFincaComponent } from './dashboard/pages/finca/editar-finca/editar-finca.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,7 @@ const routes: Routes = [
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
+  { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
   { path: 'recomendaciones', component: RecomendacionesPageComponent },
   /* Modulo Gestionar Recursos */

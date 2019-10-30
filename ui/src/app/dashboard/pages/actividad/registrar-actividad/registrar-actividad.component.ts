@@ -15,13 +15,17 @@ import Swal from 'sweetalert2';
 })
 export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
+  // variables utilizadas para mostrar info
   nombreActividad: string;
   codActividad: number;
 
+  // array usado para limpiar las subscripciones
   subscriptions: Subscription[] = [];
 
+  // formgroup
   registrarActividadForm: FormGroup;
 
+  // variables usadas para manejar la redireccion
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
   nextButtonText = "Siguiente";
@@ -30,6 +34,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   configurationButtons: any[] = [];
 
+  // mock data
   dummyConfigurationButtons: any[] = [
     ['Riego', faCloudRain, true],
     ['Siembra', faSpinner, true],
@@ -43,6 +48,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     ['new', faPlusSquare, true]
   ];
 
+  // variables para manejar el formato de las fechas
   format = 'dd-MM-yyyy';
   locale = 'en-US';
   model: NgbDateStruct;
@@ -52,7 +58,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // flag que comprueba el estado de los comprobados
   camposParametrosCompletados = false;
 
-  // error flags
+  // banderas de error
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
@@ -88,7 +94,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
           
           // Obtencion de la estructura de la actividad para crear formulario
           this.subscriptions.push(
-            this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+            this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
               result => {
                 this.initForm(result);
               },
@@ -103,12 +109,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
+  // metodo para comparar dos strings 
   ciEquals(a: string, b: string) {
     return typeof a === 'string' && typeof b === 'string'
       ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
       : a === b;
   }
 
+  // metodo para convertir strings con may, min y caracteres especiales
   slugify(str: string) {
     var map = {
       '-': ' ',
@@ -128,6 +136,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     return str;
   }
 
+  // metodo para manejar la navegacion hacia atras
   atras() {
     this.postError = false;
     this.postErrorMessage = '';
@@ -165,6 +174,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
   }
 
+  // metodo para manejar la navegacion hacia adelante
   siguiente() {
     this.postError = false;
     this.postErrorMessage = '';
@@ -200,10 +210,11 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
+  // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad:number) {
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( 
         result => {
           this.initForm(result);
         },
@@ -216,6 +227,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.siguiente();
   }
 
+  // metodo para asignar la fecha seleccionada
   onDateSelection(date: NgbDate) {
     let dayString = date.day.toString();
 
@@ -230,10 +242,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  // metodo para abrir el modal
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
 
+
+  // creacion del parametro para formgroup
   crearParametro(obj: any, index) {
     return this.fb.control({
       codParam: obj.parametro.cod,
@@ -245,6 +260,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       ;
   }
 
+  // creacion del parametro para formgroup con opciones
   crearParametroConOpcion(obj: any, index) {
     return this.fb.control({
       codParam: obj.parametro.cod,
@@ -256,6 +272,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  // actualizacion del valor del parametro
   actualizarValorParametro(event) {
     const selectEl = event.target;
     const valor = selectEl.value;
@@ -268,6 +285,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  // inicializador del formgroup
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
       codActividad: this.codActividad,
@@ -286,8 +304,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
+  // verificador si los parametros de la actividad fueron completados
   parametrosCompletados() {
-    debugger; 
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -297,6 +315,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
 
+  // envio de form
   onSubmit() {
     if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
       this.subscriptions.push(
@@ -335,6 +354,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
   }
 
+  // metodo custom para mostrar mensajes de error
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;

@@ -10,40 +10,52 @@
                 <td *ngFor="let row of dataRow">
 
                     <span [ngSwitch]="row[0]">
+                        <!-- editar -->
                         <div *ngSwitchCase="'*'">
                             <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active"
                                 class="btn btn-primary btn-sm">
                                 <fa-icon [icon]="faEdit"></fa-icon>
                             </button>
                         </div>
-
+                        <!--  -->
                         <div *ngSwitchCase="'-'">
                             <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active"
                                 class="btn btn-primary btn-sm">
                                 <fa-icon [icon]="faPowerOff"></fa-icon>
                             </button>
                         </div>
-
+                        <!-- visualizar -->
                         <div *ngSwitchCase="'%'">
                             <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active"
                                 class="btn btn-primary btn-sm">
                                 <fa-icon [icon]="faEye"></fa-icon>
                             </button>
                         </div>
-
+                        <!-- delete element -->
+                        <div *ngSwitchCase="'.'">
+                            <button type="button" (click)="clickEvent(row[2])"
+                                class="btn btn-primary btn-sm">
+                                <fa-icon [icon]="faTrashAlt"></fa-icon>
+                            </button>
+                        </div>
+                        
+                        <!-- convertir ruta en boton -->
                         <div *ngSwitchCase="'#'">
                             <button type="button" routerLink="{{ row.substr(1) }}" routerLinkActive="active"
                                 class="list-group-item list-group-item-action">{{ row.substr(2) }}</button>
                         </div>
 
-                        <div *ngSwitchCase=" row.charAt(0) == 0 || row.charAt(0) == 1 || row.charAt(0) == 2 || row.charAt(0) == 3 || row.charAt(0) == 4 || row.charAt(0) == 5 || row.charAt(0) == 6 || row.charAt(0) == 7 || row.charAt(0) == 8 || row.charAt(0) == 9 ">
+                        <!-- numeros -->
+                        <div
+                            *ngSwitchCase=" row.charAt(0) == 0 || row.charAt(0) == 1 || row.charAt(0) == 2 || row.charAt(0) == 3 || row.charAt(0) == 4 || row.charAt(0) == 5 || row.charAt(0) == 6 || row.charAt(0) == 7 || row.charAt(0) == 8 || row.charAt(0) == 9 ">
                             {{row}}
                         </div>
 
+                        <!-- texto -->
                         <p *ngSwitchDefault>
-                            
+
                             {{row.charAt(0).toUpperCase() + row.slice(1)}}
-                            
+
                         </p>
                     </span>
 
