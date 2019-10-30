@@ -34,7 +34,7 @@ export class AuthService {
         this.guardarNombre(resp['nombre']);
 
         let fincaLength = (resp['finca'] != null) ? resp['finca'].length : 0;
-        this.guardarFinca(resp['finca'], fincaLength , resp['rol']);
+        this.guardarFinca(resp['finca'], fincaLength, resp['rol']);
 
 
 
@@ -56,6 +56,26 @@ export class AuthService {
     }
   }
 
+  private guardarRol(rol: string) {
+    localStorage.setItem('rol', rol);
+  }
+
+  private guardarNombre(nombre: string) {
+    localStorage.setItem('nombre', nombre);
+  }
+
+  private guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
+    localStorage.setItem('cantFincas', cantFincas.toString());
+    if (rol == 'ingeniero') {
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
+    } else if (rol == 'administrador') {
+      localStorage.setItem('fincas', "0")
+    } else {
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
+    }
+
+  }
+
   getToken() {
     if (localStorage.getItem('token')) {
       return localStorage.getItem('token');
@@ -68,38 +88,30 @@ export class AuthService {
     }
   }
 
-  private guardarRol(rol: string) {
-    localStorage.setItem('rol', rol);
-  }
-
-  private guardarNombre(nombre: string) {
-    localStorage.setItem('nombre', nombre);
-  }
-
-  private guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
-    localStorage.setItem('cantFincas', cantFincas.toString());
-    if(rol == 'ingeniero'){
-      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
-    }else if(rol == 'administrador'){
-      localStorage.setItem('fincas', "0") 
-    }else{
-      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
-    }
-
-  }
-
   getNombre() {
     if (localStorage.getItem('nombre')) {
       return localStorage.getItem('nombre');
     }
   }
 
-  getNombreFinca(){
-    if (localStorage.getItem('fincas').length>0) {
-      let obj:any;
+  getNombreFinca() {
+    if (localStorage.getItem('fincas') != "undefined") {
+      let obj: any;
       obj = JSON.parse(localStorage.getItem('fincas'));
-      return obj.nombreFinca ;
+      return obj.nombreFinca;
+    }else{
+      return false;
     }
   }
-  
+
+  getcodFinca(): number {
+    if (localStorage.getItem('fincas') != "undefined") {
+      let obj: any;
+      obj = JSON.parse(localStorage.getItem('fincas'));
+      return obj.codFinca;
+    }
+  }
+
+
+
 }
