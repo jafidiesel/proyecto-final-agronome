@@ -1,7 +1,7 @@
 <main role="main" class="container mt-4" *ngIf="fincaForm != null">
     <h1 class="display-4">Finca: <i>{{nombreFinca}}</i></h1>
 
-    <form [formGroup]="fincaForm">
+    <form [formGroup]="fincaForm" (ngSubmit)="onSubmit()">
         <div class="card m-3">
             <div class="card-header">
                 Datos del campo
@@ -64,6 +64,24 @@
                         </ng-template>
                     </div>
                 </div>
+                <div class="form-row">
+                    
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <a [href]="urlMap" target="_blank">
+                                    <fa-icon class="ml-3  fa-7x" [icon]="faMapMarkedAlt"></fa-icon>
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Ubicación de la finca en google maps.</h5>
+                                    <p class="card-text">Aqui puede encontrar la ubicación de su finca generada automáticamente acorde a su dirección ingresada.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- <div class="form-group">
                     <button type="submit" class="btn btn-success float-right">Guardar</button>
                 </div> -->
@@ -91,7 +109,7 @@
         </div>
 
         <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
-            ¡ Finca creada exitosamente !
+            ¡ Finca editada exitosamente !
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -102,10 +120,7 @@
                     {{ postErrorMessage }}
                 </div>
                 <button type="submit" class="btn btn-success btn-lg float-right mr-5">Editar finca</button>
-                <button [routerLink]="['/seguridad']" type="button"
-                    class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
             </div>
         </div>
     </form>
-    <button type="button" class="btn btn-warning" (click)="transformArrayToJson()">transformArrayToJson</button>
 </main>

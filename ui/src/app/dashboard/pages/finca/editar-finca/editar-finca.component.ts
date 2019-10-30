@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import Swal from 'sweetalert2';
+import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 
 @Component({
@@ -14,6 +16,9 @@ import Swal from 'sweetalert2';
 export class EditarFincaComponent implements OnInit, OnDestroy {
 
   nombreFinca: string;
+  codFinca: number;
+  urlMap:string;
+  faMapMarkedAlt = faMapMarkedAlt;
 
   subscriptions: Subscription[] = [];
 
@@ -71,17 +76,25 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
   initForm(form) {
     this.nombreFinca = form.nombre;
+    this.codFinca = parseInt(form.codFinca);
+    this.urlMap = form.urlMaps;
 
     this.subscriptions.push(
       this._fincaService.getProvincia(form.provincia).subscribe(
         (resultProvincia: any) => {
           let provCod = resultProvincia.provincias[0].id;
-          this.seleccionProvinciaPorId( form.provincia,parseInt(provCod));
+          this.seleccionProvinciaPorId(form.provincia, parseInt(provCod));
 
           this.subscriptions.push(
             this._fincaService.getMunicipio(provCod, form.localidad).subscribe(
               (resultMunicipio: any) => {
                 let muniCod = resultMunicipio.municipios[0].id;
+
+                let parcelas = form.parcelas;
+                parcelas.map(parcela => {
+                  let cantCuadros = parseInt(parcela.filas) * parseInt(parcela.columnas);
+                  this.parcelasTabla = [...this.parcelasTabla, [parcela.nombre, parcela.superficie, String(parcela.columnas), String(parcela.filas), String(cantCuadros)]];
+                });
 
                 this.fincaForm = this.fb.group({
                   nombre: [form.nombre, Validators.required],
@@ -243,6 +256,46 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
     });
 
 
+  }
+
+  onSubmit() {
+    this.formatFormToJson();
+
+    if (this.fincaForm.status == 'VALID') {
+      this.subscriptions.push(
+        this._fincaService.putFinca(this.fincaForm.value, this.codFinca).subscribe(
+          result => {
+            this.postSuccess = true;
+            this.postError = false;
+            this.postErrorMessage = '';
+
+            const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                confirmButton: 'btn btn-success ml-1',
+              },
+              buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+              title: '¡Exito!',
+              text: 'Se editó la finca correctamente.',
+              type: 'warning',
+              confirmButtonText: 'Salir',
+              reverseButtons: true
+            }).then((result) => {
+              if (result.value) {
+                //this.router.navigate(['actividades/listarActividades']);
+              }
+            }
+            )
+          },
+          error => this.onHttpError(error)
+        )
+      );
+
+    } else {
+      this.onHttpError({ message: "Complete todos los campos obligatorios." });
+    }
   }
 
   onHttpError(errorResponse: any) {

@@ -47,4 +47,14 @@ export class FincaService {
     return this.http.get<string>(`http://localhost:9001/api/finca/${codFinca}`);
   }
 
+    /**
+   * @param json any
+   * @return Observable<Object>
+   *  
+   * Realiza una peticion post para crear una finca
+   */
+  putFinca(json: any, id:number) {
+    return this.http.put(`http://localhost:9001/api/finca/${id}`, json);
+  }
+
 }
