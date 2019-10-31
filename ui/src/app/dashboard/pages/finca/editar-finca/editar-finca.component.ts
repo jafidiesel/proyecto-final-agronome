@@ -17,7 +17,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
   nombreFinca: string;
   codFinca: number;
-  urlMap:string;
+  urlMap: string;
   faMapMarkedAlt = faMapMarkedAlt;
 
   subscriptions: Subscription[] = [];
@@ -194,11 +194,11 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
         '<p for="swal-input1">Nombre de la parcela</p>' +
         '<input id="swal-input1" class="swal2-input">' +
         '<p for="swal-input2">Superficie</p>' +
-        '<input id="swal-input2" class="swal2-input" type="number">' +
+        '<input id="swal-input2" min="1" class="swal2-input" type="number">' +
         '<p for="swal-input3">Cantidad de filas</p>' +
-        '<input id="swal-input3" class="swal2-input" type="number">' +
+        '<input id="swal-input3" min="1" class="swal2-input" type="number">' +
         '<p for="swal-input4">Cantidad de columnas</p>' +
-        '<input id="swal-input4" class="swal2-input" type="number">'
+        '<input id="swal-input4" min="1" class="swal2-input" type="number">'
       ,
       focusConfirm: false,
       confirmButtonText: 'Agregar',
@@ -208,11 +208,19 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
       preConfirm: () => {
 
         if (
+          !(<HTMLInputElement>document.getElementById('swal-input2')).checkValidity() &&
+          !(<HTMLInputElement>document.getElementById('swal-input3')).checkValidity() &&
+          !(<HTMLInputElement>document.getElementById('swal-input4')).checkValidity()
+        ) {
+          Swal.showValidationMessage("Valores negativos: Debe ingresar valores mayores a cero para poder agregar una parcela.")
+        } else if (
           (<HTMLInputElement>document.getElementById('swal-input1')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input2')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input3')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input4')).value == ''
         ) {
+          console.log('value', (<HTMLInputElement>document.getElementById('swal-input4')).value);
+          console.log('checkValidity()	', (<HTMLInputElement>document.getElementById('swal-input4')).checkValidity());
           Swal.showValidationMessage("Campos incompletos: Debe ingresar todos los valores para poder agregar una parcela.")
           return false;
         } else {
@@ -229,7 +237,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
     if (formValues) {
       let cantCuadros = formValues.cantFilas * formValues.cantColumnas;
-      this.parcelasTabla = [...this.parcelasTabla, [formValues.nombre, formValues.superficie, formValues.cantFilas, formValues.cantColumnas, String(cantCuadros), "./" + (parseInt(this.parcelasTabla[this.parcelasTabla.length - 1][5][2]) + 1) ]];
+      this.parcelasTabla = [...this.parcelasTabla, [formValues.nombre, formValues.superficie, formValues.cantFilas, formValues.cantColumnas, String(cantCuadros), "./" + (parseInt(this.parcelasTabla[this.parcelasTabla.length - 1][5][2]) + 1)]];
       console.log(this.parcelasTabla);
     }
 
@@ -259,13 +267,13 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
 
   }
-  quitarFila(event){
+  quitarFila(event) {
     console.log(event);
-    let index=0;
-    this.parcelasTabla.map( parcela =>{
-      if(parcela[5][2] == event) {
+    let index = 0;
+    this.parcelasTabla.map(parcela => {
+      if (parcela[5][2] == event) {
         this.mostrarTabla = false;
-        console.log(this.parcelasTabla.splice(index,1));
+        console.log(this.parcelasTabla.splice(index, 1));
         setTimeout(() => {
           this.habilitarTabla();
         }, 500);
@@ -315,7 +323,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
     }
   }
 
-  habilitarTabla(){
+  habilitarTabla() {
     this.mostrarTabla = true;
   }
 
