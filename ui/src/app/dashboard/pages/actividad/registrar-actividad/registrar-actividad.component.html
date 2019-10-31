@@ -26,14 +26,16 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha de la
+                    <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Fecha y hora de la
                         actividad *</label>
-                    <div class="col-10">
+                    <div class="col-3">
+                        <ngb-timepicker formControlName="tempHora"></ngb-timepicker>
+                    </div>
+                    <div class="col-7">
                         <ngb-datepicker #dp formControlName="tempFecha" (select)="onDateSelection($event)"
                             (navigate)="date = $event.next" [minDate]="{year: 2010, month: 1, day: 1}"
                             [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled">
                         </ngb-datepicker>
-                        <ngb-timepicker formControlName="tempHora" ></ngb-timepicker>
                     </div>
                 </div>
                 <div class="form-group row">
