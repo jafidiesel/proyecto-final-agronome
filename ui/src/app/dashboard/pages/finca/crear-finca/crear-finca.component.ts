@@ -144,8 +144,6 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
           (<HTMLInputElement>document.getElementById('swal-input3')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input4')).value == ''
         ) {
-          console.log('value', (<HTMLInputElement>document.getElementById('swal-input4')).value);
-          console.log('checkValidity()	', (<HTMLInputElement>document.getElementById('swal-input4')).checkValidity());
           Swal.showValidationMessage("Campos incompletos: Debe ingresar todos los valores para poder agregar una parcela.")
           return false;
         } else {
@@ -214,7 +212,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
             swalWithBootstrapButtons.fire({
               title: '¡Exito!',
               text: 'Se creo la finca correctamente.',
-              type: 'warning',
+              type: 'success',
               confirmButtonText: 'Salir',
               reverseButtons: true
             }).then((result) => {

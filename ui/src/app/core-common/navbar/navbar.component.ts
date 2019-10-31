@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
         swalWithBootstrapButtons.fire({
           title: '¡Exito!',
           text: 'Se cerró sesión correctamente.',
-          type: 'warning',
+          type: 'success',
           confirmButtonText: 'Salir',
           reverseButtons: true
         })

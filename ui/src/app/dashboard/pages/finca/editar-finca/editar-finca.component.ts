@@ -109,7 +109,6 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
                   localidadCod: [muniCod, Validators.required],
                   parcelas: [null, Validators.required]
                 });
-                console.warn(this.fincaForm);
               },
               error => this.onHttpError({ message: `Ocurrio un error al tratar de obtener los datos de ${form.localidad}` })
             )
@@ -219,8 +218,6 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
           (<HTMLInputElement>document.getElementById('swal-input3')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input4')).value == ''
         ) {
-          console.log('value', (<HTMLInputElement>document.getElementById('swal-input4')).value);
-          console.log('checkValidity()	', (<HTMLInputElement>document.getElementById('swal-input4')).checkValidity());
           Swal.showValidationMessage("Campos incompletos: Debe ingresar todos los valores para poder agregar una parcela.")
           return false;
         } else {
@@ -238,7 +235,6 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
     if (formValues) {
       let cantCuadros = formValues.cantFilas * formValues.cantColumnas;
       this.parcelasTabla = [...this.parcelasTabla, [formValues.nombre, formValues.superficie, formValues.cantFilas, formValues.cantColumnas, String(cantCuadros), "./" + (parseInt(this.parcelasTabla[this.parcelasTabla.length - 1][5][2]) + 1)]];
-      console.log(this.parcelasTabla);
     }
 
     this.mostrarTabla = true;
@@ -268,12 +264,10 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
 
   }
   quitarFila(event) {
-    console.log(event);
     let index = 0;
     this.parcelasTabla.map(parcela => {
       if (parcela[5][2] == event) {
         this.mostrarTabla = false;
-        console.log(this.parcelasTabla.splice(index, 1));
         setTimeout(() => {
           this.habilitarTabla();
         }, 500);
@@ -304,7 +298,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
             swalWithBootstrapButtons.fire({
               title: '¡Exito!',
               text: 'Se editó la finca correctamente.',
-              type: 'warning',
+              type: 'success',
               confirmButtonText: 'Salir',
               reverseButtons: true
             }).then((result) => {
