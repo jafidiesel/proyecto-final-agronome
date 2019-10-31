@@ -309,7 +309,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                //this.router.navigate(['actividades/listarActividades']);
+                this.router.navigate(['home']);
               }
             }
             )
