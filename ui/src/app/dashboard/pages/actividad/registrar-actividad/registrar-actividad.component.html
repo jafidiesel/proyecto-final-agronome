@@ -90,16 +90,15 @@
             </div>
             <div class="card-body">
 
-
                 <div *ngFor="let parametro of registrarActividadForm.get('parametros').controls; let i = index"
                     formArrayName="parametros">
                     <div [ngSwitch]="parametro.value.tipo">
                         <div *ngSwitchCase="'string'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
                                     placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
                                     (change)="actualizarValorParametro($event)" required />
@@ -108,10 +107,10 @@
                         </div>
                         <div *ngSwitchCase="'time'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
                                     placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
                                     (change)="actualizarValorParametro($event)" required />
@@ -120,10 +119,10 @@
                         </div>
                         <div *ngSwitchCase="'date'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b>
                             </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
                                     placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
                                     (change)="actualizarValorParametro($event)" required />
@@ -132,9 +131,9 @@
                         </div>
                         <div *ngSwitchCase="'int'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b></label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="number"
                                     id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
                                     [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
@@ -144,9 +143,9 @@
                         </div>
                         <div *ngSwitchCase="'double'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b></label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="number"
                                     id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
                                     [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
@@ -156,9 +155,9 @@
                         </div>
                         <div *ngSwitchCase="'float'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
-                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b></label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7">
                                 <input class="form-control input-parametros" type="number"
                                     id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
                                     [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
@@ -222,3 +221,5 @@
         </div>
     </div>
 </main>
+{{ this.registrarActividadForm.status | json }}
+{{ this.camposParametrosCompletados | json }}

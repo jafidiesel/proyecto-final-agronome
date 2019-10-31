@@ -294,7 +294,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       tempHora: this.time ,
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
-      observacion: null,
+      observacion: " ",
       imagenes: [{}],
       parametros: this.fb.array(form.parametros.map((element, index) => {
         if (element.opcion.length > 0) {
