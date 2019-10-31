@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
@@ -52,8 +52,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   format = 'dd-MM-yyyy';
   locale = 'en-US';
   model: NgbDateStruct;
-  date: { year: number, month: number, day: number };
+  date: { year: 2019, month: 10, day: 12 };
   fechaFormateada = "";
+
+  time = { hour: 13, minute: 30 };
 
   // flag que comprueba el estado de los comprobados
   camposParametrosCompletados = false;
@@ -67,7 +69,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService ) { }
+    private _actividadService: ActividadService) { }
 
   ngOnInit() {
 
@@ -82,23 +84,22 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
                 this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
-                
+
               }
             });
             if (defaultIcon) {
               this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv, element.cod]);
             }
-            console.log('this.configurationButtons',this.configurationButtons);
             this.codActividad = element.cod;
           });
-          
+
           // Obtencion de la estructura de la actividad para crear formulario
           this.subscriptions.push(
             this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
               result => {
                 this.initForm(result);
               },
-              error => console.log('error', error)
+              error => this.onHttpError({ message: "Error al recuperar el formulario de la actividad" })
             )
           );
         }
@@ -211,14 +212,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   }
 
   // inicializador de registrar
-  registrarActividad(nombreActividad: string, codActividad:number) {
+  registrarActividad(nombreActividad: string, codActividad: number) {
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( 
+      this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
         result => {
           this.initForm(result);
         },
-        error => console.log('error', error)
+        error => this.onHttpError({ message: "Error al obtener la estructura de la actividad." })
       )
     );
 
@@ -235,7 +236,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       dayString = "0" + date.day;
     }
 
-    let fecha = dayString + "-" + date.month + "-" + date.year
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
 
     this.registrarActividadForm.patchValue({
       fchActivDetalle: fecha,
@@ -288,6 +290,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // inicializador del formgroup
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
+      tempFecha: this.date,
+      tempHora: this.time ,
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: null,
@@ -342,7 +346,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             }).then((result) => {
               if (result.value) {
                 this.router.navigate(['actividades/listarActividades']);
-              }}
+              }
+            }
             )
           },
           error => this.onHttpError(error)
