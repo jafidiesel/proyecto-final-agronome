@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
   
   ngOnInit() {
     this.rol = localStorage.getItem('rol');
+    if(this.rol === "encargadofinca") this.rol = "Encargado de Finca";
+    if(this.rol === "ingeniero") this.rol = "Ingeniero Agrónomo";
     this.nombre = localStorage.getItem('nombre');
   }
   
