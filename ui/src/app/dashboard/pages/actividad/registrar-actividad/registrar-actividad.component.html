@@ -103,7 +103,49 @@
                             </div>
                             <!-- formControlName="{{parametro.codParam}}" -->
                         </div>
+                        <div *ngSwitchCase="'time'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b>
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'date'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b>
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
                         <div *ngSwitchCase="'int'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b></label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="number" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su numero aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'double'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b></label>
+                            <div class="col-sm-8">
+                                <input class="form-control input-parametros" type="number" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su numero aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'float'" class="form-group row">
                             <label for="{{parametro.value.nombre}}"
                                 class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}} *</b></label>
                             <div class="col-sm-8">
