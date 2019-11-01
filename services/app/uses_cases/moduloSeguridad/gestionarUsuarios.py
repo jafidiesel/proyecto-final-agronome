@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+from app.repositorio.repositorioUsuario import updateUser,selectAllUser
 
 modelos = {
 "rol":hlmodel.Rol,
@@ -70,7 +71,7 @@ def postUser(data):
 def getAllUsers():
     try:
         usuariosList  = []
-        usuarioRstList = selectAll(hlmodel.Usuario)
+        usuarioRstList = selectAllUser()
         if not usuarioRstList:
             raise Exception('N','No existen Usuarios')
         else:
@@ -103,7 +104,6 @@ def updateUsuario(data, cod):
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
     #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
     listFincaRst = dataLower.get('finca')         
-    from app.repositorio.repositorioUsuario import updateUser
     return updateUser(usuarioJson, rolRst, cod, listFincaRst)        
 
 

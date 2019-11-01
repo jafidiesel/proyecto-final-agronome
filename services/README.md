@@ -91,7 +91,7 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
 ## Backup de la base de datos ⚙️
 _Para poder realizar un backup completo de las tablas y datos se deben realizar los siguientes pasos_
 
-⚙️Abrir el cmd como administrador e ir al path bin donde esta instalado pgadmin
+⚙️Abrir el cmd como administrador e ir al path bin donde esta instalado postgres
 ```
 cd C:\Program Files\PostgreSQL\9.6\bin
 ```
