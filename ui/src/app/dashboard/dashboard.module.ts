@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './../auth/token.interceptor';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
@@ -58,7 +60,6 @@ import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-rec
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
-    RecomendacionesPageComponent,
     SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
@@ -108,15 +109,20 @@ import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-rec
     ReactiveFormsModule,
     NgbModule
   ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   exports: [
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
     DashboardPageComponent,
-    RecomendacionesPageComponent,
     SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent
-  ]
+  ],
 })
 export class DashboardModule { }

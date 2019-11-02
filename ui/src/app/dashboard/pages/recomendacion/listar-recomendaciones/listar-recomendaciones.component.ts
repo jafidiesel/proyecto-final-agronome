@@ -11,11 +11,13 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
 
-  mostrarTabla = false;
+  tableDataHeaderReco = ['Nombre', 'Fecha', 'Observacion', 'Recomendar'];
   tableDataHeader = ['Nombre', 'Fecha', 'Observacion', 'Ver'];
-
+  
   aRecomendarArray = [];
+  mostrarTablaARecomendar = false;
   recomendadasArray = [];
+  mostrarTablaRecomendadas = false;
 
 
   constructor(private _recomendacionService: RecomendacionService) { }
@@ -25,6 +27,8 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._recomendacionService.getListasActividad().subscribe(
         (result: any) => {
+          this.aRecomendarArray.push(this.tableDataHeaderReco);
+          console.log('result.actvidadesARecomendar',result.actvidadesARecomendar.length);
           result.actvidadesARecomendar.map((actividad: any) => {
             this.aRecomendarArray.push([
               actividad.actividad.nombreActividad,
@@ -34,7 +38,10 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
             ]);
           });
           console.log('aRecomendarArray',this.aRecomendarArray);
+          this.mostrarTablaARecomendar = true;
           
+          this.recomendadasArray.push(this.tableDataHeader);
+          console.log('result.actividadesRecomendadas',result.actividadesRecomendadas.length);
           result.actividadesRecomendadas.map((actividad: any) => {
             this.recomendadasArray.push([
               actividad.actividad.nombreActividad,
@@ -44,10 +51,9 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
             ]);
           });
           console.log('recomendadasArray',this.recomendadasArray);
-
+          this.mostrarTablaRecomendadas = true;
 
           
-          this.mostrarTabla = true;
         },
         error => console.log(error)
       ));

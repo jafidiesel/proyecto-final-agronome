@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    //console.log('request',request);
+    //console.log('token',`Bearer ${this.auth.getToken()}`);
     
     request = request.clone({
       setHeaders: {

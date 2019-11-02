@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { RecomendacionesPageComponent } from './dashboard/pages/recomendaciones-page/recomendaciones-page.component';
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
@@ -59,7 +58,6 @@ const routes: Routes = [
   { path: 'finca/crearFinca', component: CrearFincaComponent },
   { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
-  { path: 'recomendaciones', component: RecomendacionesPageComponent },
   { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
   /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
