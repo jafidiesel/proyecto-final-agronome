@@ -1,4 +1,4 @@
-from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv
+from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv,Commit()
 from app.model.hlmodel import Cultivo,TipoCultivo,TipoPlanificacion,Planificacion,GrupoPlanificacion,Finca, Parcela, Cuadro, EstadoPlanificacion, GrupoCuadro, CuadroCultivo, Cuadro
 from app.uses_cases.moduloPlanificacion.shared.sharedFunctions import tipoCultivoListToDict
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
@@ -66,7 +66,7 @@ def iniciarPlanificacion(data):
     return jsonify(dtoParcelas)
 
 
-def crearPlanificacionInicial(data):
+def crearPlanificacionInicial(data,currentUser):
     #Crear instancia GrupoPlanificacion 
     nombreGrupoJson = data.get("nombreGrupo")
     comentarioJson = data.get("comentario")
@@ -97,6 +97,9 @@ def crearPlanificacionInicial(data):
                 cuadroCultivo.cultivo = cultivoObj
                 cuadroCultivo.cuadro = cuadroRst
                 grupoCuadro.cuadroCultivoList.append(cuadroRst)
-    usuarioRst = selectByCod(hlmodel.Usuario, codUsuario)        
+    
+    planificacionInicial.usuario = currentUser
+    #Agregar los save correspodientes
+    Commit()
 
         

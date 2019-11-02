@@ -15,4 +15,4 @@ class Planificacion(db.Model):
     tipoPlanificacion = relationship('TipoPlanificacion',uselist = False)
     estadoPlanificacion = relationship('EstadoPlanificacion', uselist = False)
     grupoCuadroList = relationship('GrupoCuadro', uselist = True)
-
+    usuario = relationship('Usuario', uselist = False)
