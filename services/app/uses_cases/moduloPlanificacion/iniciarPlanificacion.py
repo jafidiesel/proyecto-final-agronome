@@ -2,6 +2,7 @@ from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, sele
 from app.model.hlmodel import Cultivo,TipoCultivo,TipoPlanificacion,Planificacion,GrupoPlanificacion,Finca, Parcela, Cuadro, EstadoPlanificacion, GrupoCuadro, CuadroCultivo, Cuadro
 from app.uses_cases.moduloPlanificacion.shared.sharedFunctions import tipoCultivoListToDict
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
+from app.repositorio.repositorioPlanificacion import getCuadroByCod, getParcelaByCod
 from flask import jsonify
 
 #{'codFinca': cod }
@@ -48,7 +49,7 @@ def getParcelasLibres(data):
         
 def iniciarPlanificacion(data):
     parcelaLibreList = getParcelasLibres(data)
-    dtoParcelaLibre = []
+    dtoParcelasLibres = []
     for parcelaLibre in parcelaLibreList:        
         dtoCuadrosLibre = []
         for cuadroLibre in parcelaLibre.__getitem__(1):
@@ -58,17 +59,11 @@ def iniciarPlanificacion(data):
             cuadroDto.pop('codParcela', None)
             dtoCuadrosLibre.append(cuadroDto)
         parcela = parcelaLibre.__getitem__(0)
-        dtoParcelaAux = dict(codParcela = parcela.codParcela, nombre = parcela.nombrePacela, superficie = str(parcela.superficieParcela) + ' m', filas= parcela.filas, columnas = parcela.columnas, cantCuadros = parcela.filas * parcela.columnas)
-        dtoParcelaAux['cuadros'] = dtoCuadrosLibre
-        dtoParcelaLibre.append(dtoParcelaAux)
-    print(dtoParcelaLibre)
-    return jsonify(dtoParcelaLibre)
-
-    #Comparar las listas de parcelas con los cuadros
-    #Si la parcela no esta en la lista de planificaion, se agregan todos sus cuadros al dto final --> Comparar
-    #elementos de lista general contra lista de planificacion
-    #Si la parcela esta en la lista, se agregan al dto final, los cuadros que no se encuentren en la lista
-    #Comparar elementos de lista planificacion contra lista general
+        dtoParcelaAux = dict(codParcela = parcela.codParcela, nombre = parcela.nombrePacela, superficie = str(parcela.superficieParcela) + ' m', filas= parcela.filas, columnas = parcela.columnas, cantCuadros = parcela.filas * parcela.columnas, cuadros = dtoCuadrosLibre)
+        #dtoParcelaAux['cuadros'] = dtoCuadrosLibre
+        dtoParcelasLibres.append(dtoParcelaAux)
+    dtoParcelas = dict(parcelas = dtoParcelasLibres)
+    return jsonify(dtoParcelas)
 
 
 def crearPlanificacionInicial(data):
@@ -76,6 +71,7 @@ def crearPlanificacionInicial(data):
     nombreGrupoJson = data.get("nombreGrupo")
     comentarioJson = data.get("comentario")
     datosCultivosJsonList = data.get("cultivo")
+    parcelaListJson = data.get("parcelas")
     grupoPlanificacion = GrupoPlanificacion(nombreGrupoPlanificacion = nombreGrupoJson)
     #Buscar entidades asociadas a la Planificacion
     estadoPlanificacionRst = selectActiveByName(EstadoPlanificacion, data.get("en curso"))
@@ -90,6 +86,17 @@ def crearPlanificacionInicial(data):
     for datosCultivoJson in datosCultivosJsonList:
         tipoCultivoRst = selectActiveByName(TipoCultivo,datosCultivoJson.get("nombreTipoCultivo"))
         cultivoObj = Cultivo(cantidadCultivo = datosCultivoJson.get("cantidadCultivo"), produccionEsperada = datosCultivoJson.get("produccionEsperada"),variedadCultivo=datosCultivoJson.get("variedadCultivo"),cicloUnico=datosCultivoJson.get("cicloUnico"))
-        cuadroCultivo = CuadroCultivo()
-        cuadroCultivo.cultivo = cultivoObj
+        cultivoObj.tipoCultivo.append(tipoCultivoRst)
+        for parcelaJson in parcelaListJson:
+            parcelaRst = getParcelaByCod(parcelaJson.get('codParcela'))
+            grupoCuadro = GrupoCuadro()
+            grupoCuadro.parcela = parcelaRst
+            for cuadroJson in parcelaJson.get('cuadros'):
+                cuadroRst = getCuadroByCod(cuadroJson.get('codCuadro'))
+                cuadroCultivo = CuadroCultivo()
+                cuadroCultivo.cultivo = cultivoObj
+                cuadroCultivo.cuadro = cuadroRst
+                grupoCuadro.cuadroCultivoList.append(cuadroRst)
+    usuarioRst = selectByCod(hlmodel.Usuario, codUsuario)        
+
         
