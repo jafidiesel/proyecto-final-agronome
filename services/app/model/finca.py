@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Finca(db.Model):
     __tablename__ = 'finca'
     codFinca = db.Column('cod_finca',Integer,primary_key = True,index = True)
-    nombreFinca =   db.Column('nombre_finca', String(256), nullable = False)
+    nombreFinca =   db.Column('nombre_finca', String(256), nullable = False,index = True)
     superficie = db.Column('superficie', Float, nullable = False)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 

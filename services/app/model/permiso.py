@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Permiso(db.Model):
     __tablename__ = 'permiso'
     cod = db.Column('cod_permiso',  Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_permiso', String(80), nullable = False,  unique = True)
+    nombre = db.Column('nombre_permiso', String(80), nullable = False,  unique = True,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     
     nombreNomenclador = "permiso"

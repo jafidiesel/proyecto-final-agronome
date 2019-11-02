@@ -49,7 +49,9 @@ def postFinca(data,currentUser):
         saveEntidadSinCommit(finca)
         Commit()
 
-        return ResponseOk()
+        dtoResult = dict(codFinca=finca.codFinca, nombreFinca = finca.nombreFinca)
+
+        return ResponseOkmsg(dtoResult)
     except Exception as e:
         return ResponseException(e)
 

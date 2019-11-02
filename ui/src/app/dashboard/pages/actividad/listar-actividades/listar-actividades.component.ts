@@ -27,7 +27,7 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
           console.log('result.ActividadDetalle',result.ActividadDetalle);
           result.ActividadDetalle.map( (element) => {
             this.actividadesArray.push([
-              element.Actividad.nombreActividad,
+              element.actividad.nombreActividad,
               element.fchActivDetalle,
               element.observacion,
               `%/actividades/verActividad/${element.codActivDetalle}`,

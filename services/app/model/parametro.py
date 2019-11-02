@@ -2,7 +2,7 @@ from app.model.modelImport import *
 class Parametro(db.Model):
     __tablename__ = 'parametro'
     cod = db.Column('cod_parametro',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_parametro', String(80), nullable = False)
+    nombre = db.Column('nombre_parametro', String(80), nullable = False,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     codTipoParametro = db.Column('fk_cod_tipo_parametro',Integer,ForeignKey('tipo_parametro.cod_tipo_parametro'),index = True)
     codTipoDato = db.Column('fk_cod_tipo_dato',Integer,ForeignKey('tipo_dato.cod_tipo_dato'),index = True)

@@ -1,8 +1,9 @@
 from app.extensions import db
 from app.model.hlmodel import ActividadDetalle, ActivDetalleParam, Parametro
+from sqlalchemy import desc
 
 def selectActivDetalle(): 
-    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).order_by(ActividadDetalle.fchActivDetalle).all()
+    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
     return  objetos 
 
 def selectActivDetalleCod(codActivDetalle):

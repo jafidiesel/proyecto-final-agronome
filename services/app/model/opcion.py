@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Opcion(db.Model):
     __tablename__ = 'opcion'
     cod = db.Column('cod_opcion',Integer, primary_key = True, index=True)
-    nombre = db.Column('nombre_opcion',String(80), nullable=False,unique=True)
+    nombre = db.Column('nombre_opcion',String(80), nullable=False,unique=True,index = True)
     isActiv = db.Column('is_activ',Boolean,nullable=True)
     
     nombreNomenclador = "opcion"

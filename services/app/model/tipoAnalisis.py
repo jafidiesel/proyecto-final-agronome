@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class TipoAnalisis(db.Model):
     __tablename__ = 'tipo_analisis'
     cod = db.Column('cod_tipo_analisis',  Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_tipo_analisis',String(80), nullable = False,  unique = True)
+    nombre = db.Column('nombre_tipo_analisis',String(80), nullable = False,  unique = True,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     #Relaciones OneToMany lado Many
     #tipoAnalisisParam = relationship("TipoAnalisisParam") # aca no va comentario de franco
