@@ -280,7 +280,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     const valor = selectEl.value;
     const id = selectEl.id;
 
-    this.registrarActividadForm.get('parametros').value.map(element => {
+    this.registrarActividadForm.get('parametro').value.map(element => {
       if (id == element.nombre) {
         element.valor = valor;
       }
@@ -291,12 +291,12 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
       tempFecha: this.date,
-      tempHora: this.time ,
+      tempHora: this.time,
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: " ",
-      imagenes: [{}],
-      parametros: this.fb.array(form.parametros.map((element, index) => {
+      imagen: [{}],
+      parametro: this.fb.array(form.parametros.map((element, index) => {
         if (element.opcion.length > 0) {
           return this.crearParametroConOpcion(element, index);
         } else {
@@ -318,19 +318,22 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  procesarOpciones(event){
+  procesarOpciones(event) {
 
     const selectEl = event.target;
+    const attrValue = selectEl.options[selectEl.selectedIndex].getAttribute('value');
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    if (attrValue == null) return false;
 
     let formValues: any;
     formValues = this.registrarActividadForm.value;
-    
-    formValues.parametros.map( element => {
+
+    formValues.parametros.map(element => {
       if (element.opcion != null) {
-        element.opcion.map( opc => {
-          if( this.ciEquals( this.slugify(opc.nombre), this.slugify(optionText) ) ){
-            element.valor = this.slugify( optionText);
+        element.opcion.map(opc => {
+          if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
+            element.valor = this.slugify(optionText);
           }
         });
       }
@@ -359,7 +362,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             swalWithBootstrapButtons.fire({
               title: '¡Exito!',
               text: 'Se registro la actividad correctamente.',
-              type: 'warning',
+              type: 'success',
               confirmButtonText: 'Salir',
               reverseButtons: true
             }).then((result) => {
@@ -376,9 +379,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     } else {
       this.onHttpError({ message: "Complete todos los campos obligatorios." });
     }
-  }
-  imprimirForm(){
-    console.warn(this.registrarActividadForm.value);
   }
 
   // metodo custom para mostrar mensajes de error
