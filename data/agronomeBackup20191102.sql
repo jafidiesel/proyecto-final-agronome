@@ -1460,6 +1460,61 @@ ALTER TABLE ONLY public.usuario ALTER COLUMN cod_usuario_private SET DEFAULT nex
 --
 
 COPY public.activ_detalle_param (fk_cod_activ_detalle, fk_cod_parametro, valor) FROM stdin;
+2	74	tormenta
+3	45	goteo
+3	46	pileta
+3	47	23,2
+3	48	1231,2
+3	49	10
+4	50	plantin
+4	51	tomate perita
+4	52	2,2
+4	53	2019-12-15
+4	54	10
+4	55	8
+5	56	flor hoja crecimiento
+5	57	fertifox
+5	58	5
+5	59	mm3
+6	61	arada
+6	62	10
+6	63	9
+7	65	0
+7	67	Insecticida
+7	68	Glacoxan Cipermetrina
+7	58	3
+7	59	cm3
+7	70	2019-09-30
+8	71	100900
+9	74	granizo
+11	45	goteo
+11	46	pileta
+11	47	10
+11	48	100
+11	49	3
+7	66	pulgón
+10	73	pulgón
+8	72	no
+7	64	no
+1	73	desconocida
+12	50	plantin
+12	51	tomate perita
+12	52	2,2
+12	53	2019-12-15
+12	55	8
+13	50	plantin
+13	51	tomate perita
+13	52	2,2
+13	53	2019-12-15
+13	55	8
+13	54	20
+12	54	30
+14	50	semilla
+14	51	tomate perita
+14	52	2,2
+14	53	2019-12-15
+14	54	99
+14	55	8
 \.
 
 
@@ -1471,12 +1526,12 @@ COPY public.actividad (cod_actividad, nombre_actividad, is_activ) FROM stdin;
 1	riego	t
 2	siembra	t
 3	fertilización	t
-7	detección catastrofe	t
-8	detección fitosanitaria	t
 4	preparación suelo	t
 6	cosecha	t
 5	tratamiento fitosanitario	t
 9	fertirrigación	t
+8	detección fitosanitaria	t
+7	detección catastrofe	t
 \.
 
 
@@ -1492,6 +1547,20 @@ SELECT pg_catalog.setval('public.actividad_cod_actividad_seq', 9, true);
 --
 
 COPY public.actividad_detalle (cod_activ_detalle, fch_activ_detalle, observacion, is_eliminado, fk_cod_actividad, fk_cod_recom_detalle, fk_cod_usuario) FROM stdin;
+1	2019-10-01 10:45:00	Las hojas tienen perforaciones	f	8	\N	2
+3	2019-10-09 12:30:00		f	1	\N	2
+4	2019-05-09 12:30:00		f	2	\N	2
+5	2019-06-09 09:30:00	Fertilización completa	f	3	\N	2
+6	2019-04-20 13:30:00	Se comienza con el arado de lo determinado en la planificación	f	4	\N	2
+7	2019-09-20 16:00:00	Se realizo un tratamiento preventivo para los pulgones	f	5	\N	2
+8	2019-12-20 16:00:00	Se realizo un tratamiento preventivo para los pulgones	f	6	\N	2
+9	2019-10-29 15:30:00	granizo, pequeño	f	7	\N	2
+10	2019-11-02 20:45:00	Las hojas tienen pulgones	f	8	\N	2
+2	2019-09-29 15:30:00	Lluvia torrencial, daña varios cultivos	f	7	1	2
+11	2019-11-02 13:30:00	ultimo riego del día	f	1	\N	1
+12	2019-06-09 13:30:00		f	2	\N	2
+13	2019-06-16 12:30:00		f	2	\N	2
+14	2019-05-09 12:30:00		f	2	\N	2
 \.
 
 
@@ -1499,7 +1568,7 @@ COPY public.actividad_detalle (cod_activ_detalle, fch_activ_detalle, observacion
 -- Name: actividad_detalle_cod_activ_detalle_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.actividad_detalle_cod_activ_detalle_seq', 1, true);
+SELECT pg_catalog.setval('public.actividad_detalle_cod_activ_detalle_seq', 14, true);
 
 
 --
@@ -1522,7 +1591,6 @@ t	56	3
 t	57	3
 t	58	3
 t	59	3
-t	60	3
 t	61	4
 t	62	4
 t	63	4
@@ -1531,13 +1599,10 @@ t	65	5
 t	66	5
 t	67	5
 t	68	5
-t	69	5
 t	59	5
 t	70	5
 t	71	6
 t	72	6
-t	73	7
-t	74	8
 t	75	9
 t	76	9
 t	77	9
@@ -1547,6 +1612,9 @@ t	80	9
 t	81	9
 t	82	9
 t	49	9
+t	73	8
+t	74	7
+t	58	5
 \.
 
 
@@ -1555,7 +1623,7 @@ t	49	9
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-87bc280ec04a
+3dcafe72553e
 \.
 
 
@@ -1703,6 +1771,36 @@ COPY public.cuadro (cod_cuadro, nombre_cuadro, fk_cod_parcela) FROM stdin;
 213	A21	68
 214	A22	68
 215	A23	68
+216	A11	69
+217	A12	69
+218	A21	69
+219	A22	69
+220	A31	69
+221	A32	69
+222	A41	69
+223	A42	69
+224	B11	70
+225	B21	70
+226	B31	70
+227	B41	70
+228	B51	70
+229	B61	70
+230	B71	70
+231	A11	71
+232	A12	71
+233	A21	71
+234	A22	71
+235	A31	71
+236	A32	71
+237	A41	71
+238	A42	71
+239	B11	72
+240	B21	72
+241	B31	72
+242	B41	72
+243	B51	72
+244	B61	72
+245	B71	72
 \.
 
 
@@ -1710,7 +1808,7 @@ COPY public.cuadro (cod_cuadro, nombre_cuadro, fk_cod_parcela) FROM stdin;
 -- Name: cuadro_cod_cuadro_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.cuadro_cod_cuadro_seq', 215, true);
+SELECT pg_catalog.setval('public.cuadro_cod_cuadro_seq', 245, true);
 
 
 --
@@ -1773,6 +1871,8 @@ COPY public.finca (cod_finca, nombre_finca, superficie, is_activ, calle_finca, n
 9	nueva finca 4 Huertas	12341	t	Alvarez	2024	Las heras	Mendoza
 10	nueva finca 5 Huertas	12341	t	Alvarez	2024	Las heras	Mendoza
 11	nueva finca de prueba	1234123	t	mazza	199	 Las Heras	Mendoza
+12	nuva finca fanco	12341	t	Alvarez	2024	Las heras	Mendoza
+13	nuva finca fanco3	12341	t	Alvarez	2024	Las heras	Mendoza
 \.
 
 
@@ -1780,7 +1880,7 @@ COPY public.finca (cod_finca, nombre_finca, superficie, is_activ, calle_finca, n
 -- Name: finca_cod_finca_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.finca_cod_finca_seq', 11, true);
+SELECT pg_catalog.setval('public.finca_cod_finca_seq', 13, true);
 
 
 --
@@ -1790,6 +1890,8 @@ SELECT pg_catalog.setval('public.finca_cod_finca_seq', 11, true);
 COPY public.finca_usuario (fk_cod_finca, fk_cod_usuario, fch_ini, fch_fin, is_activ) FROM stdin;
 9	2	2019-10-26 00:31:34.527149	\N	t
 11	10	2019-10-30 19:03:22.347794	\N	t
+12	2	2019-11-01 03:11:10.294107	\N	t
+13	2	2019-11-01 03:14:20.473109	\N	t
 \.
 
 
@@ -1849,6 +1951,31 @@ COPY public.opcion (cod_opcion, nombre_opcion, is_activ) FROM stdin;
 4	abono	t
 5	goteo	t
 6	aspersion	t
+7	si	t
+8	no	t
+9	trips	t
+10	pulgón	t
+11	mosca blanca	t
+12	araña roja	t
+13	oruga	t
+14	minadores de hojas	t
+15	grillos, saltamontes y langostas	t
+16	caracoles y babosas	t
+17	cochinillas	t
+18	nemátodos	t
+19	mildiu	t
+20	oídio	t
+21	fusarium oxysporum	t
+22	sclerotinia	t
+23	fitóftora o phytophtora	t
+24	pythium	t
+25	rhizoctonia	t
+26	desconocida	t
+27	arada	t
+28	disqueada	t
+29	encanterada	t
+30	colocación de riego	t
+31	otra	t
 \.
 
 
@@ -1856,7 +1983,7 @@ COPY public.opcion (cod_opcion, nombre_opcion, is_activ) FROM stdin;
 -- Name: opcion_cod_opcion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.opcion_cod_opcion_seq', 6, true);
+SELECT pg_catalog.setval('public.opcion_cod_opcion_seq', 31, true);
 
 
 --
@@ -1923,7 +2050,6 @@ COPY public.parametro (cod_parametro, nombre_parametro, is_activ, fk_cod_tipo_pa
 57	marca	t	1	1
 58	dosis	t	1	3
 59	unidades (Ámbito) unidad de medida de la dosis	t	1	3
-60	dosis	t	1	2
 61	actividad	t	1	6
 62	profundidad (Cm)	t	1	3
 63	velocidad (Km/h)	t	1	3
@@ -1932,7 +2058,6 @@ COPY public.parametro (cod_parametro, nombre_parametro, is_activ, fk_cod_tipo_pa
 66	enfermedad o Plaga	t	1	6
 67	producto	t	1	1
 68	marca	t	1	1
-69	dosis	t	1	3
 70	plazo de seguridad	t	1	5
 71	producción cosechada (cantidad)	t	1	3
 72	finalización de cultivo	t	1	6
@@ -1970,8 +2095,59 @@ SELECT pg_catalog.setval('public.parametro_cod_parametro_seq', 91, true);
 --
 
 COPY public.parametro_opcion (is_activ, fk_cod_parametro, fk_cod_opcion) FROM stdin;
+t	45	5
+t	45	6
 t	50	1
 t	50	2
+t	34	5
+t	34	6
+t	64	7
+t	64	8
+t	72	7
+t	72	8
+t	73	9
+t	73	10
+t	73	11
+t	73	12
+t	73	13
+t	73	14
+t	73	15
+t	73	16
+t	73	17
+t	73	18
+t	73	19
+t	73	20
+t	73	21
+t	73	22
+t	73	23
+t	73	24
+t	73	25
+t	73	26
+t	90	9
+t	90	10
+t	90	11
+t	90	12
+t	90	13
+t	90	14
+t	90	15
+t	90	16
+t	90	17
+t	90	18
+t	90	19
+t	90	20
+t	90	21
+t	90	22
+t	90	23
+t	90	24
+t	90	25
+t	90	26
+t	61	27
+t	61	28
+t	61	29
+t	61	30
+t	61	31
+t	90	31
+t	73	31
 \.
 
 
@@ -1997,6 +2173,10 @@ COPY public.parcela (cod_parcela, nombre_parcela, superficie_parcela, filas, col
 66	B	12097.299999999999	1	7	9
 67	c	22	2	2	9
 68	A	123	2	3	11
+69	A	123.3	4	2	12
+70	B	12097.299999999999	7	1	12
+71	A	123.3	4	2	13
+72	B	12097.299999999999	7	1	13
 \.
 
 
@@ -2004,7 +2184,7 @@ COPY public.parcela (cod_parcela, nombre_parcela, superficie_parcela, filas, col
 -- Name: parcela_cod_parcela_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.parcela_cod_parcela_seq', 68, true);
+SELECT pg_catalog.setval('public.parcela_cod_parcela_seq', 72, true);
 
 
 --
@@ -2067,6 +2247,7 @@ SELECT pg_catalog.setval('public.planificacion_cod_planificacion_seq', 1, false)
 --
 
 COPY public.recom_detalle_param (fk_cod_recom_detalle, fk_cod_parametro, valor) FROM stdin;
+1	91	Tormenta grado 3
 \.
 
 
@@ -2092,11 +2273,7 @@ SELECT pg_catalog.setval('public.recomendacion_cod_recomendacion_seq', 2, true);
 --
 
 COPY public.recomendacion_detalle (cod_recom_detalle, fch_recom_detalle, observacion, is_eliminado, is_aplicada, fk_cod_recomendacion, fk_cod_usuario) FROM stdin;
-9	2019-10-13 19:35:54	Se aconseja que todo se deje como esta ING AGRONOMO	f	f	1	1
-25	2019-10-13 19:35:54	Se aconseja que todo se deje como esta ING AGRONOMO	f	f	1	1
-26	2019-10-13 19:35:54	Se aconseja que todo se deje como esta ING AGRONOMO	f	f	1	1
-27	2019-10-13 19:35:54	Se aconseja que todo se deje como esta ING AGRONOMO	f	f	1	3
-28	2019-10-13 19:35:54	Se aconseja que todo se deje como esta ING AGRONOMO	f	f	1	3
+1	2019-10-01 19:35:54	Se aconseja que el riego diario se desminuya en un 5%	f	f	2	3
 \.
 
 
@@ -2104,7 +2281,7 @@ COPY public.recomendacion_detalle (cod_recom_detalle, fch_recom_detalle, observa
 -- Name: recomendacion_detalle_cod_recom_detalle_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.recomendacion_detalle_cod_recom_detalle_seq', 28, true);
+SELECT pg_catalog.setval('public.recomendacion_detalle_cod_recom_detalle_seq', 1, true);
 
 
 --
@@ -2166,10 +2343,12 @@ COPY public."sessionUser" ("cod_sessionUser", "cod_public_sessionUser", usuario,
 5	6eafa182-8f5e-485b-8b68-bca1d689ae1b	pepito	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f69634756776158527649697769636d3973496a6f696157356e5a5735705a584a7649697769616e5270496a6f695a4755334d545532595759744e57497a4f5330304d47466a4c5467324f5451744d5451794e6d49305a5752694d7a5579496977695a586877496a6f784e5463784f4441324d546b7766512e35524873304c386b4b4f7861686c71384d47306656614b584e694f6f4871754259516f5450654d63364e55	encargadofinca
 4	ad2a4ea8-1def-4616-9473-af7efb06ba7a	prueba	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f69616d466d61534973496e4a7662434936496e4e3163475679646d6c7a623349694c434a7164476b694f694a69596d4a6a4f544e6b4d4330354d4459324c5451794f4749744f57597a4e79316a4d44686c4e325668596a426a4d6a416966512e5f492d7157346c6e6448526d714856666a335a737143756b4644334f6b763559455f58504f774d35505367	encargadofinca
 6	7d9f914e-cf49-485e-9bc8-22cb0dec1ccc	nedamo	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f69626d566b5957317649697769636d3973496a6f695a57356a59584a6e595752765a6d6c75593245694c434a7164476b694f694931593252684d54526a5a6930795a6d59794c54526d5a44457459544a695a5330335a546c6c5a546c69596d49344d6d4d694c434a6c654841694f6a45314e7a457a4e5459304e6a64392e5857675463595633387a6730384a5832334d32726654586b4a4b417930364a6461554f445830357536566b	encargadofinca
-1	1	admin	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f6959575274615734694c434a79623277694f694a685a473170626d6c7a64484a685a47397949697769616e5270496a6f694e544d314e4755795a4467744e3259354d7930304d6a497a4c574a6a5a5445744e6a45324d6d55334f57466b4d546779496e302e7a5674477941495734434736753367444741517a7a6c612d31557874784a4a7476374475496f4238334a77	administrador
-2	5102c661-d783-4dfb-a32e-d5f4f1fc319e	melisa	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f696257567361584e6849697769636d3973496a6f695a57356a59584a6e595752765a6d6c75593245694c434a7164476b694f694a69595463334f44526d4d7930774d7a51304c54526c596d4d745954457a4e79307a5a5746695954426a4e446330596a496966512e6e53574b52474a554f38702d7478486f354a6a693779746f5674616c42717248364a4a5767425868666d59	encargadofinca
 7	1a225bf5-8d73-47ba-b95c-b3a51477f0da	otra	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f696233527959534973496e4a7662434936496d5675593246795a32466b62325a70626d4e6849697769616e5270496a6f6959325a695a6a686c4e6a6b744e5745775a5330304f54426d4c546c6a4e4445744d47466b4d54526d596d5a6b4d574535496e302e3743754a4f77386275645256555a657047484e42575f657163346a5a38442d6b6b33354d4e6c4b59574759	encargadofinca
 3	f6e8acbb-fec8-4c9d-ae7f-4402e94b4a7e	jafi	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f695a6e4a68626d4e7649697769636d3973496a6f696157356e5a5735705a584a7649697769616e5270496a6f69597a67324f4451784e446374595756694d4330304f574d324c5467314f546774595445335a446b7a4e7a566a4e446c69496e302e486d5a6b6439346567796c354e446e303844567a6d7577746c32486e70306a725336343252596357666b45	administrador
+2	5102c661-d783-4dfb-a32e-d5f4f1fc319e	melisa	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f696257567361584e6849697769636d3973496a6f695a57356a59584a6e595752765a6d6c75593245694c434a7164476b694f694a6a4e7a45334d6a4e694e7930304d6a63344c5452684f4463744f5759774d5330784f5451304e6a686a5a6d45314e32596966512e3872616f7765794a4478353378364135642d664577564c6c58682d39666b476e34397767754d6c68734d38	encargadofinca
+8	959b8453-acaf-4407-b10b-468abcabb68f	david	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f695a474632615751694c434a79623277694f694a6c626d4e68636d64685a47396d6157356a59534973496d703061534936496a466a4f575178596d4d314c5749354f5449744e44526d596930344e6d4d354c546c6a5a445932597a63355a6d46685a694a392e597353396d542d3174387a4934365155307849573844624e7153556b4255697477726c42444a7473396130	encargadofinca
+1	1	admin	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f6959575274615734694c434a79623277694f694a685a473170626d6c7a64484a685a47397949697769616e5270496a6f694d57457859544d304d5745744f575a6c4d7930304f5467794c5468684f574574595449304f4755794e57566d4f574669496e302e346653526f785034373041726b61724468446a426a39527744386b6245394f7178435246717250464c4845	administrador
+14	1b299b6b-0363-495f-a804-216d1cf228bf	nacho	\\x65794a30655841694f694a4b563151694c434a68624763694f694a49557a49314e694a392e65794a3163325679496a6f69626d466a614738694c434a79623277694f694a6c626d4e68636d64685a47396d6157356a59534973496d703061534936496a6c694e7a45345a44566d4c574e694d3245744e474a694e7931684e7a49314c5441314e5467334e6a51795a4752684f434a392e45386938685a6a6b5f3857576c694d584f666b4c6f4e326d576b53515664514a6a387138664b524d504334	encargadofinca
 \.
 
 
@@ -2177,7 +2356,7 @@ COPY public."sessionUser" ("cod_sessionUser", "cod_public_sessionUser", usuario,
 -- Name: sessionUser_cod_sessionUser_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."sessionUser_cod_sessionUser_seq"', 7, true);
+SELECT pg_catalog.setval('public."sessionUser_cod_sessionUser_seq"', 14, true);
 
 
 --
@@ -2376,6 +2555,8 @@ COPY public.usuario (cod_usuario_private, cod_usuario, usuario, nombre_usuario, 
 4	ad2a4ea8-1def-4616-9473-af7efb06ba7a	jafi	javier	bravin	prueba@gmil.com	1234567	2019-10-15	\N	\N	4	f
 9	1278eeab-b303-47a0-b914-d2a9f5e1618b	franco2	fran	san	franco@gmail.com	12345678	2019-10-30	\N	\N	1	t
 10	1a225bf5-8d73-47ba-b95c-b3a51477f0da	otra	otra	otra	otra@gmail.com	12345678	2019-10-30	\N	\N	2	t
+12	99c01459-6296-4e86-8c9a-e429133498c7	david	david	sanchez	davic@gmail.com	admin1234	2019-11-02	\N	\N	2	t
+13	1b299b6b-0363-495f-a804-216d1cf228bf	nacho	nacho	nacho	nacho@gmail.com	12345678	2019-11-02	\N	\N	2	t
 \.
 
 
@@ -2383,7 +2564,7 @@ COPY public.usuario (cod_usuario_private, cod_usuario, usuario, nombre_usuario, 
 -- Name: usuario_cod_usuario_private_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_cod_usuario_private_seq', 10, true);
+SELECT pg_catalog.setval('public.usuario_cod_usuario_private_seq', 13, true);
 
 
 --
@@ -2400,14 +2581,6 @@ ALTER TABLE ONLY public.activ_detalle_param
 
 ALTER TABLE ONLY public.actividad_detalle
     ADD CONSTRAINT actividad_detalle_pkey PRIMARY KEY (cod_activ_detalle);
-
-
---
--- Name: actividad actividad_nombre_actividad_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.actividad
-    ADD CONSTRAINT actividad_nombre_actividad_key UNIQUE (nombre_actividad);
 
 
 --
@@ -2475,14 +2648,6 @@ ALTER TABLE ONLY public.cultivo
 
 
 --
--- Name: estado_planificacion estado_planificacion_nombre_estado_planificacion_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.estado_planificacion
-    ADD CONSTRAINT estado_planificacion_nombre_estado_planificacion_key UNIQUE (nombre_estado_planificacion);
-
-
---
 -- Name: estado_planificacion estado_planificacion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2539,14 +2704,6 @@ ALTER TABLE ONLY public.img_activ_detalle
 
 
 --
--- Name: opcion opcion_nombre_opcion_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.opcion
-    ADD CONSTRAINT opcion_nombre_opcion_key UNIQUE (nombre_opcion);
-
-
---
 -- Name: opcion opcion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2576,14 +2733,6 @@ ALTER TABLE ONLY public.parametro
 
 ALTER TABLE ONLY public.parcela
     ADD CONSTRAINT parcela_pkey PRIMARY KEY (cod_parcela);
-
-
---
--- Name: permiso permiso_nombre_permiso_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.permiso
-    ADD CONSTRAINT permiso_nombre_permiso_key UNIQUE (nombre_permiso);
 
 
 --
@@ -2635,14 +2784,6 @@ ALTER TABLE ONLY public.recomendacion_detalle
 
 
 --
--- Name: recomendacion recomendacion_nombre_recomendacion_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.recomendacion
-    ADD CONSTRAINT recomendacion_nombre_recomendacion_key UNIQUE (nombre_recomendacion);
-
-
---
 -- Name: recomendacion_parametro recomendacion_parametro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2675,14 +2816,6 @@ ALTER TABLE ONLY public.recurso
 
 
 --
--- Name: rol rol_nombre_rol_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.rol
-    ADD CONSTRAINT rol_nombre_rol_key UNIQUE (nombre_rol);
-
-
---
 -- Name: rol rol_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2707,14 +2840,6 @@ ALTER TABLE ONLY public."sessionUser"
 
 
 --
--- Name: tipo_analisis tipo_analisis_nombre_tipo_analisis_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_analisis
-    ADD CONSTRAINT tipo_analisis_nombre_tipo_analisis_key UNIQUE (nombre_tipo_analisis);
-
-
---
 -- Name: tipo_analisis_param tipo_analisis_param_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2731,27 +2856,11 @@ ALTER TABLE ONLY public.tipo_analisis
 
 
 --
--- Name: tipo_cultivo tipo_cultivo_nombre_tipo_cultivo_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_cultivo
-    ADD CONSTRAINT tipo_cultivo_nombre_tipo_cultivo_key UNIQUE (nombre_tipo_cultivo);
-
-
---
 -- Name: tipo_cultivo tipo_cultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.tipo_cultivo
     ADD CONSTRAINT tipo_cultivo_pkey PRIMARY KEY (cod_tipo_cultivo);
-
-
---
--- Name: tipo_dato tipo_dato_nombre_tipo_dato_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_dato
-    ADD CONSTRAINT tipo_dato_nombre_tipo_dato_key UNIQUE (nombre_tipo_dato);
 
 
 --
@@ -2763,27 +2872,11 @@ ALTER TABLE ONLY public.tipo_dato
 
 
 --
--- Name: tipo_parametro tipo_parametro_nombre_tipo_parametro_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_parametro
-    ADD CONSTRAINT tipo_parametro_nombre_tipo_parametro_key UNIQUE (nombre_tipo_parametro);
-
-
---
 -- Name: tipo_parametro tipo_parametro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.tipo_parametro
     ADD CONSTRAINT tipo_parametro_pkey PRIMARY KEY (cod_tipo_parametro);
-
-
---
--- Name: tipo_plan tipo_plan_nombre_tipo_plan_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_plan
-    ADD CONSTRAINT tipo_plan_nombre_tipo_plan_key UNIQUE (nombre_tipo_plan);
 
 
 --
@@ -2800,14 +2893,6 @@ ALTER TABLE ONLY public.tipo_plan_param
 
 ALTER TABLE ONLY public.tipo_plan
     ADD CONSTRAINT tipo_plan_pkey PRIMARY KEY (cod_tipo_plan);
-
-
---
--- Name: tipo_planificacion tipo_planificacion_nombre_tipo_planificacion_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tipo_planificacion
-    ADD CONSTRAINT tipo_planificacion_nombre_tipo_planificacion_key UNIQUE (nombre_tipo_planificacion);
 
 
 --
@@ -2876,6 +2961,13 @@ CREATE INDEX ix_actividad_detalle_fch_activ_detalle ON public.actividad_detalle 
 --
 
 CREATE INDEX ix_actividad_detalle_fk_cod_recom_detalle ON public.actividad_detalle USING btree (fk_cod_recom_detalle);
+
+
+--
+-- Name: ix_actividad_nombre_actividad; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_actividad_nombre_actividad ON public.actividad USING btree (nombre_actividad);
 
 
 --
@@ -2956,6 +3048,13 @@ CREATE INDEX ix_cuadro_cultivo_fk_cod_grupo_cuadro ON public.cuadro_cultivo USIN
 
 
 --
+-- Name: ix_cuadro_nombre_cuadro; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_cuadro_nombre_cuadro ON public.cuadro USING btree (nombre_cuadro);
+
+
+--
 -- Name: ix_cultivo_cod_cultivo; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2984,10 +3083,24 @@ CREATE INDEX ix_estado_planificacion_cod_estado_planificacion ON public.estado_p
 
 
 --
+-- Name: ix_estado_planificacion_nombre_estado_planificacion; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_estado_planificacion_nombre_estado_planificacion ON public.estado_planificacion USING btree (nombre_estado_planificacion);
+
+
+--
 -- Name: ix_finca_cod_finca; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX ix_finca_cod_finca ON public.finca USING btree (cod_finca);
+
+
+--
+-- Name: ix_finca_nombre_finca; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_finca_nombre_finca ON public.finca USING btree (nombre_finca);
 
 
 --
@@ -3040,6 +3153,13 @@ CREATE INDEX ix_opcion_cod_opcion ON public.opcion USING btree (cod_opcion);
 
 
 --
+-- Name: ix_opcion_nombre_opcion; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_opcion_nombre_opcion ON public.opcion USING btree (nombre_opcion);
+
+
+--
 -- Name: ix_parametro_cod_parametro; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -3058,6 +3178,13 @@ CREATE INDEX ix_parametro_fk_cod_tipo_dato ON public.parametro USING btree (fk_c
 --
 
 CREATE INDEX ix_parametro_fk_cod_tipo_parametro ON public.parametro USING btree (fk_cod_tipo_parametro);
+
+
+--
+-- Name: ix_parametro_nombre_parametro; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_parametro_nombre_parametro ON public.parametro USING btree (nombre_parametro);
 
 
 --
@@ -3082,10 +3209,24 @@ CREATE INDEX ix_parcela_cod_parcela ON public.parcela USING btree (cod_parcela);
 
 
 --
+-- Name: ix_parcela_nombre_parcela; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX ix_parcela_nombre_parcela ON public.parcela USING btree (nombre_parcela);
+
+
+--
 -- Name: ix_permiso_cod_permiso; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX ix_permiso_cod_permiso ON public.permiso USING btree (cod_permiso);
+
+
+--
+-- Name: ix_permiso_nombre_permiso; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_permiso_nombre_permiso ON public.permiso USING btree (nombre_permiso);
 
 
 --
@@ -3166,6 +3307,13 @@ CREATE INDEX ix_recomendacion_detalle_fch_recom_detalle ON public.recomendacion_
 
 
 --
+-- Name: ix_recomendacion_nombre_recomendacion; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_recomendacion_nombre_recomendacion ON public.recomendacion USING btree (nombre_recomendacion);
+
+
+--
 -- Name: ix_recomendacion_parametro_fk_cod_parametro; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -3201,6 +3349,13 @@ CREATE INDEX ix_rol_cod_rol ON public.rol USING btree (cod_rol);
 
 
 --
+-- Name: ix_rol_nombre_rol; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_rol_nombre_rol ON public.rol USING btree (nombre_rol);
+
+
+--
 -- Name: ix_sessionUser_cod_sessionUser; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -3212,6 +3367,13 @@ CREATE INDEX "ix_sessionUser_cod_sessionUser" ON public."sessionUser" USING btre
 --
 
 CREATE INDEX ix_tipo_analisis_cod_tipo_analisis ON public.tipo_analisis USING btree (cod_tipo_analisis);
+
+
+--
+-- Name: ix_tipo_analisis_nombre_tipo_analisis; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_analisis_nombre_tipo_analisis ON public.tipo_analisis USING btree (nombre_tipo_analisis);
 
 
 --
@@ -3236,10 +3398,24 @@ CREATE INDEX ix_tipo_cultivo_cod_tipo_cultivo ON public.tipo_cultivo USING btree
 
 
 --
+-- Name: ix_tipo_cultivo_nombre_tipo_cultivo; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_cultivo_nombre_tipo_cultivo ON public.tipo_cultivo USING btree (nombre_tipo_cultivo);
+
+
+--
 -- Name: ix_tipo_dato_cod_tipo_dato; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX ix_tipo_dato_cod_tipo_dato ON public.tipo_dato USING btree (cod_tipo_dato);
+
+
+--
+-- Name: ix_tipo_dato_nombre_tipo_dato; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_dato_nombre_tipo_dato ON public.tipo_dato USING btree (nombre_tipo_dato);
 
 
 --
@@ -3250,10 +3426,24 @@ CREATE INDEX ix_tipo_parametro_cod_tipo_parametro ON public.tipo_parametro USING
 
 
 --
+-- Name: ix_tipo_parametro_nombre_tipo_parametro; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_parametro_nombre_tipo_parametro ON public.tipo_parametro USING btree (nombre_tipo_parametro);
+
+
+--
 -- Name: ix_tipo_plan_cod_tipo_plan; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX ix_tipo_plan_cod_tipo_plan ON public.tipo_plan USING btree (cod_tipo_plan);
+
+
+--
+-- Name: ix_tipo_plan_nombre_tipo_plan; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_plan_nombre_tipo_plan ON public.tipo_plan USING btree (nombre_tipo_plan);
 
 
 --
@@ -3275,6 +3465,13 @@ CREATE INDEX ix_tipo_plan_param_fk_cod_tipo_plan ON public.tipo_plan_param USING
 --
 
 CREATE INDEX ix_tipo_planificacion_cod_tipo_planificacion ON public.tipo_planificacion USING btree (cod_tipo_planificacion);
+
+
+--
+-- Name: ix_tipo_planificacion_nombre_tipo_planificacion; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX ix_tipo_planificacion_nombre_tipo_planificacion ON public.tipo_planificacion USING btree (nombre_tipo_planificacion);
 
 
 --
