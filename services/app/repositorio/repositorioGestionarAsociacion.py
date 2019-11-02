@@ -20,6 +20,6 @@ def cantAsociaciones(entidad,entidadInterm):
             if entidadInterm == 'tipoAnalisisParam':
                 cantidad = TipoAnalisisParam.query.filter(TipoAnalisisParam.tipoAnalisis==entidad).filter(ActividadParametro.isActiv==True).count() 
             else:
-                if entidadInterm == 'tipoAnalisisParam':
+                if entidadInterm == 'tipoPlanParam':
                     cantidad = TipoPlanParam.query.filter(TipoPlanParam.tipoPlan==entidad).filter(ActividadParametro.isActiv==True).count() 
     return cantidad
