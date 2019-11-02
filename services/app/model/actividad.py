@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Actividad(db.Model):
     __tablename__ = 'actividad'
     cod = db.Column('cod_actividad',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_actividad', String(80), nullable = False, unique = True)
+    nombre = db.Column('nombre_actividad', String(80), nullable = False, unique = True,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     nombreNomenclador = "actividad"
 

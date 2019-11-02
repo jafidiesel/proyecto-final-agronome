@@ -8,11 +8,11 @@ def saveEntidad(entidad):
 
 
 def selectAll(entidad):
-    objList=entidad.query.order_by(entidad.cod).all()
+    objList=entidad.query.order_by(entidad.nombre).all()
     return objList
 
 def selectAllisActiv(entidad):
-    objList=entidad.query.filter(entidad.isActiv==True).order_by(entidad.cod).all()
+    objList=entidad.query.filter(entidad.isActiv==True).order_by(entidad.nombre).all()
     return objList
 
 def selectByCod(entidad,cod): ##si el codigo se llama cod

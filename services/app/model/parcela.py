@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Parcela(db.Model):
     __tablename__ = 'parcela'
     codParcela = db.Column('cod_parcela',Integer,primary_key = True,index = True)
-    nombrePacela =   db.Column('nombre_parcela', String(256), nullable = False)
+    nombrePacela =   db.Column('nombre_parcela', String(256), nullable = False,index = True)
     superficieParcela =  db.Column('superficie_parcela', Float, nullable = False)
     filas = db.Column('filas',Integer, nullable = False)
     columnas = db.Column('columnas',Integer, nullable = False)

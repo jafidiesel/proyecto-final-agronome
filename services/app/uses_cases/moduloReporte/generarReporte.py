@@ -1,4 +1,4 @@
-from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB
+from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB , siembraGfBarDB
 
 def actividadGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
@@ -36,4 +36,12 @@ def recomendacionGfPie(data,currentUser):
     dtoAux=dict(number=number)
 
     dtoReporte= dict(dataset=dtoAux,label=labelPpal)
+    return dtoReporte
+
+
+def siembraGfBar(data,currentUser):
+    fchDesde = data.get('fchDesde')
+    fchHasta = data.get('fchHasta')
+    parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta)
+    dtoReporte=siembraGfBarDB(parmIn)
     return dtoReporte

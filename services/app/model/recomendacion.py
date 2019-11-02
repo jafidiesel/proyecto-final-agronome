@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class Recomendacion(db.Model):
     __tablename__ = 'recomendacion'
     cod = db.Column('cod_recomendacion',Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_recomendacion', String(80), nullable = False, unique = True)
+    nombre = db.Column('nombre_recomendacion', String(80), nullable = False, unique = True,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
 
     nombreNomenclador = "recomendacion"
