@@ -321,19 +321,18 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   procesarOpciones(event) {
 
     const selectEl = event.target;
-    const attrValue = selectEl.options[selectEl.selectedIndex].getAttribute('value');
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-
-    if (attrValue == null) return false;
 
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
-    formValues.parametros.map(element => {
+    formValues.parametro.map(element => {
       if (element.opcion != null) {
         element.opcion.map(opc => {
+          console.log(opc.nombre,optionText);
           if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
             element.valor = this.slugify(optionText);
+            console.log(this.slugify(optionText));
           }
         });
       }
