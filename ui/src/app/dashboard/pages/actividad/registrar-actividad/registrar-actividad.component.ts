@@ -120,7 +120,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // metodo para convertir strings con may, min y caracteres especiales
   slugify(str: string) {
     var map = {
-      '-': ' ',
+      '': ' ',
       'a': 'á|à|ã|â|À|Á|Ã|Â',
       'e': 'é|è|ê|É|È|Ê',
       'i': 'í|ì|î|Í|Ì|Î',
@@ -318,6 +318,25 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  procesarOpciones(event){
+
+    const selectEl = event.target;
+    const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    let formValues: any;
+    formValues = this.registrarActividadForm.value;
+    
+    formValues.parametros.map( element => {
+      if (element.opcion != null) {
+        element.opcion.map( opc => {
+          if( this.ciEquals( this.slugify(opc.nombre), this.slugify(optionText) ) ){
+            element.valor = this.slugify( optionText);
+          }
+        });
+      }
+    });
+  }
+
 
   // envio de form
   onSubmit() {
@@ -357,6 +376,9 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     } else {
       this.onHttpError({ message: "Complete todos los campos obligatorios." });
     }
+  }
+  imprimirForm(){
+    console.warn(this.registrarActividadForm.value);
   }
 
   // metodo custom para mostrar mensajes de error
