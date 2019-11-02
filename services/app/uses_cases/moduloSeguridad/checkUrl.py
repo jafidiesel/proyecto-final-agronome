@@ -82,14 +82,14 @@ def checkUrl(method,pat,rol):
     MREPOR = 'POST/' + urlReporte.name #son todos POST
     MREPOR_ACTIVBAR = MREPOR + '/actividadGfBar'
     MREPOR_RECOMPIE = MREPOR + '/recomendacionGfPie'
-    MREPOR_SIEMBBAR = MREPOR + '/siembraGfBar'
+    MREPOR_ACTIVDUALBAR = MREPOR + '/actividadDualGfBar'
 
     #PERMISOS:
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_SIEMBBAR                              #Modulo de reporte
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR                              #Modulo de reporte
         ) #todos
 
     administrador = (
