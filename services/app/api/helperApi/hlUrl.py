@@ -36,4 +36,7 @@ urlAnalisis = Namespace (URL_HL + '/analisis', description = 'Helper analisis')
 #helperPlan
 urlPlan = Namespace (URL_HL + '/plan', description = 'Helper plan')
 
+#modulo de planificacion
+URL_MP = 'api/planificacion'
+urlPlanificacion = Namespace(URL_MP ,desciption = 'Gestionar planificacion ')
 
