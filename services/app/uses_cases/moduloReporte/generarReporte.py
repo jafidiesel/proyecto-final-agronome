@@ -1,4 +1,4 @@
-from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB , siembraGfBarDB
+from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB , actividadDualGfBarDB
 
 def actividadGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
@@ -39,9 +39,24 @@ def recomendacionGfPie(data,currentUser):
     return dtoReporte
 
 
-def siembraGfBar(data,currentUser):
+def actividadDualGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
-    parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta)
-    dtoReporte=siembraGfBarDB(parmIn)
+    codActividad = data.get('codActividad')
+    codParamComboDual = data.get('codParamComboDual')
+    codOpcionOne = data.get('codOpcionOne')
+    codOpcionTwo = data.get('codOpcionTwo')
+    codParamIndicador = data.get('codParamIndicador')
+
+
+    parmIn = dict(
+        fchDesde = fchDesde,
+        fchHasta = fchHasta,
+        codActividad = codActividad,
+        codParamComboDual = codParamComboDual,
+        codParamIndicador = codParamIndicador,
+        codOpcionOne = codOpcionOne,
+        codOpcionTwo = codOpcionTwo
+        )
+    dtoReporte=actividadDualGfBarDB(parmIn)
     return dtoReporte

@@ -61,3 +61,7 @@ def addObject(entidad):
 def deleteObject(entidad):
     db.session.delete(entidad)
     return
+
+def selectActiveByName(entidad,valor):
+    obj = entidad.query.filter(entidad.nombre == valor).filter(entidad.isActiv == True).first()
+    return obj
