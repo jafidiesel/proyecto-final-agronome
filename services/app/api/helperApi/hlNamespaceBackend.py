@@ -22,7 +22,6 @@ NAMESPACES = [
     registrarRecom,
     analisis,
     plan,
-    planificacion
-
+    planificacion,
     reporte
 ]
