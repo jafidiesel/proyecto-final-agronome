@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class TipoParametro(db.Model):
     __tablename__ = 'tipo_parametro'
     cod= db.Column('cod_tipo_parametro',Integer,primary_key = True,index = True)
-    nombre= db.Column('nombre_tipo_parametro', String(80), nullable = False, unique = True)
+    nombre= db.Column('nombre_tipo_parametro', String(80), nullable = False, unique = True,index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     nombreNomenclador = "tipoParametro"
     parametroTipo = relationship("Parametro", backref="tipoParametroRef",uselist=True)

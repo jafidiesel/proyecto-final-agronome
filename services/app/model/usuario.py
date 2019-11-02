@@ -8,7 +8,7 @@ class Usuario(db.Model):
     __tablename__ = 'usuario'
     codPrivate = db.Column('cod_usuario_private',Integer,primary_key = True,index = True)
     cod = db.Column('cod_usuario', String(40), nullable = False)
-    usuario = db.Column('usuario', String(80), nullable = False, unique = True)
+    usuario = db.Column('usuario', String(80), nullable = False, unique = True, index=True)
     nombre = db.Column('nombre_usuario', String(80), nullable = False)
     apellido = db.Column('apellido_usuario', String(80), nullable = False)
     email = db.Column('email_usuario', String, nullable = False, unique = True)

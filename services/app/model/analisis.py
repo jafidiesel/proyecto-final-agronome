@@ -7,7 +7,7 @@ class Analisis(db.Model):
 
     codTipoAnalisis = db.Column('fk_cod_tipo_analisis', Integer, ForeignKey('tipo_analisis.cod_tipo_analisis'), nullable=False)
     codUsuario = db.Column('fk_cod_usuario', Integer, ForeignKey('usuario.cod_usuario_private'), nullable = False)
-
+    codGrupoCuadro = db.Column('fk_cod_grupo_cuadro', Integer, ForeignKey('grupo_cuadro.cod_grupo_cuadro'), nullable = True)
     #fk nullables
     codRecomDetalle = db.Column('fk_cod_recom_detalle', Integer, ForeignKey('recomendacion_detalle.cod_recom_detalle'), nullable = True)  #recomendación
 

@@ -4,6 +4,8 @@ from app.model.hlmodel import Usuario, Rol, FincaUsuario,Finca
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from sqlalchemy.orm import exc
+
+
 import datetime
 
 def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
@@ -82,9 +84,17 @@ def updateUser(usuarioJson, rolRst, codUsuario, listFincaJson):
 
 def getUsuarioByName(nombre):
     try:
+        print(nombre)
+        #usuario = Usuario.query.filter(Usuario.usuario == nombre).first()
         usuario = Usuario.query.filter(Usuario.usuario == nombre).one()
+        print(usuario)
         return usuario
     except exc.NoResultFound:
         raise Exception('N', 'Usuario no encontrado')
     except Exception as e:
         return ResponseException(e)
+
+
+def selectAllUser():
+    objList=Usuario.query.order_by(Usuario.usuario).all()
+    return objList

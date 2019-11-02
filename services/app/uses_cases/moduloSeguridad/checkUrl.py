@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -71,31 +71,34 @@ def checkUrl(method,pat,rol):
     HLA = '/' + urlAnalisis.name
     HLA_POST = 'POST' + HLA
     HLA_GET  = 'GET' + HLA + '/'
-
+    HLA_PARAM = 'GET' + HLA + '/parametros/'
     #-plan
     HLP = '/' + urlPlan.name
     HLP_POST = 'POST' + HLP
     HLP_GET  = 'GET' + HLP + '/'
+    HLP_PARAM = 'GET' + HLP + '/parametros/'
 
-
-
-
-
+    #MODULO DE REPORTES
+    MREPOR = 'POST/' + urlReporte.name #son todos POST
+    MREPOR_ACTIVBAR = MREPOR + '/actividadGfBar'
+    MREPOR_RECOMPIE = MREPOR + '/recomendacionGfPie'
+    MREPOR_SIEMBBAR = MREPOR + '/siembraGfBar'
 
     #PERMISOS:
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        HLA_GET, HLA_POST, HLP_POST, HLP_GET                                      #Helper
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_SIEMBBAR                              #Modulo de reporte
         ) #todos
 
     administrador = (
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT,                            #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MGF_POST,MGF_PUT,                             #Modulo de finca
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
     ) + default
     
     encargadofinca = (
@@ -105,7 +108,8 @@ def checkUrl(method,pat,rol):
     
     ingeniero = (  
         MAREG_GETS, MAREG_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
          )+ default
 
     supervisor = (  
@@ -122,7 +126,6 @@ def checkUrl(method,pat,rol):
     }
 
     isCheck = url in roles[rol]
-    print(url)
-
+    #print(url)
     return isCheck
     

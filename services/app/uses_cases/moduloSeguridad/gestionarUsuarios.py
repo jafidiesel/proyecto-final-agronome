@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+from app.repositorio.repositorioUsuario import updateUser,selectAllUser
 
 modelos = {
 "rol":hlmodel.Rol,
@@ -23,7 +24,9 @@ def postUser(data):
         print(rolJson)
         #Buscar rol seleccionado
         rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
+        print(rolRst)
         fincaListJson =  dataLower.get('finca')
+        print(fincaListJson)
         #Setear pws con hash
         #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
         #Crear usuario
@@ -31,6 +34,7 @@ def postUser(data):
         usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
         #Generar codPublic
         usuario.cod = str(uuid.uuid4())
+        print(usuario.cod)
         #Asociar Finca
         #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
         if ((rolRst.nombre == 'supervisor') or (rolRst.nombre == 'ingeniero')):
@@ -67,7 +71,7 @@ def postUser(data):
 def getAllUsers():
     try:
         usuariosList  = []
-        usuarioRstList = selectAll(hlmodel.Usuario)
+        usuarioRstList = selectAllUser()
         if not usuarioRstList:
             raise Exception('N','No existen Usuarios')
         else:
@@ -100,7 +104,6 @@ def updateUsuario(data, cod):
     rolRst = getNomencladoCod(claves[1], rolJson.get('cod'))
     #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
     listFincaRst = dataLower.get('finca')         
-    from app.repositorio.repositorioUsuario import updateUser
     return updateUser(usuarioJson, rolRst, cod, listFincaRst)        
 
 

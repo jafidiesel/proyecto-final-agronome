@@ -12,11 +12,14 @@ from werkzeug.security import check_password_hash
 
 def login(data):
     try:
+        print('En login')
         if not data:
             raise Exception('N', 'Data vacio')
         #Buscar Usuario 
         usuarioRst = getUsuarioByName(data.get('usuario'))
+        print(dir(usuarioRst))
         if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
+            print('En comparar contrasenia')
             #Generar un token y almacenar los datos en la tabla Session
             #Armado de Token        
             tokenRst = usuarioRst.getToken() 

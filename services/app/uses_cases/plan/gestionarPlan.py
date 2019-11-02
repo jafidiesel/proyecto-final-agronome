@@ -2,7 +2,8 @@ from app.repositorio.hlDb import saveEntidadSinCommit, Commit
 from app.uses_cases.plan.hlPlan import createPlan
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from app.repositorio.repositorioGestionarPlan import selectPlanCod
-from app.uses_cases.hlToDict import planFullToDict
+from app.uses_cases.hlToDict import planFullToDict, parametroListFullToDict
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 ##OBJETO HELPER
 
 def postPlan(data,currentUser):
@@ -29,4 +30,11 @@ def getPlanCod(data,codPlan):
         return ResponseException(e)
 
 
-    
+def getParamPlanFull(data,codTipoPlan):
+    try:
+        tipoPlan = getNomencladoCod('tipoPlan', codTipoPlan)
+        paramListObj = tipoPlan.tipoPlanParamList
+        dtoParametroFull = parametroListFullToDict(paramListObj)
+        return (dict(parametros=dtoParametroFull))
+    except Exception as e:
+        return ResponseException(e)
