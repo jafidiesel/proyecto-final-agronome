@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -78,15 +78,18 @@ def checkUrl(method,pat,rol):
     HLP_GET  = 'GET' + HLP + '/'
     HLP_PARAM = 'GET' + HLP + '/parametros/'
 
-
-
+    #MODULO DE REPORTES
+    MREPOR = 'POST/' + urlReporte.name #son todos POST
+    MREPOR_ACTIVBAR = MREPOR + '/actividadGfBar'
+    MREPOR_RECOMPIE = MREPOR + '/recomendacionGfPie'
 
 
     #PERMISOS:
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
-        MGF_GETS, MGF_GET                            #Modulo de finca
+        MGF_GETS, MGF_GET,                            #Modulo de finca
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE                               #Modulo de reporte
         ) #todos
 
     administrador = (
@@ -123,7 +126,6 @@ def checkUrl(method,pat,rol):
     }
 
     isCheck = url in roles[rol]
-    print(url)
-
+    #print(url)
     return isCheck
     

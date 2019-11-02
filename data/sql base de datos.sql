@@ -125,7 +125,6 @@ Parm activida de riego
 57 ('marca',TRUE,1,1),
 58 ('dosis',TRUE,1,3),
 59 ('unidades (Ámbito) unidad de medida de la dosis',TRUE,1,3),
-60 ('dosis',TRUE,1,2);
 
 #Parm activida de fertilizacion 
 (TRUE,56,3),
@@ -156,7 +155,7 @@ Parm activida de riego
 66 ('enfermedad o Plaga',TRUE,1,6),
 67 ('producto',TRUE,1,1),
 68 ('marca',TRUE,1,1),
-69 ('dosis',TRUE,1,3),
+58 ('dosis',TRUE,1,3),
 59 ('unidades (Ámbito)',TRUE,1,1), //porque ya existe no hay que crearlo
 70 ('plazo de seguridad',TRUE,1,5);
 
@@ -166,7 +165,7 @@ Parm activida de riego
 (TRUE,66,5),
 (TRUE,67,5),
 (TRUE,68,5),
-(TRUE,69,5),
+(TRUE,58,5),
 (TRUE,59,5),
 (TRUE,70,5);
 
@@ -187,13 +186,14 @@ Parm activida de riego
 73 ('posible enfermedad o Plaga',TRUE,1,6);
 
 #Parm actividad detección situación fitosanitaria 
-(TRUE,73,7);
+(TRUE,73,8);
 
 
 #Actividad de detección de catástrofe
 74 ('nombre de catástrofe',TRUE,1,1);
+
 #Parm  Actividad de detección de catástrof
-(TRUE,74,8);
+(TRUE,74,7);
 
 
 #Actidad de fertirrigacion
