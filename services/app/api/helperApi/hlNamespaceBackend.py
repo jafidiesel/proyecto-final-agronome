@@ -8,6 +8,7 @@ from app.api.finca_api import finca
 from app.api.registrarRecomendacion_api import registrarRecom
 from app.api.analisis_api import analisis
 from app.api.plan_api import plan
+from app.api.planificacion_api import planificacion
 from app.api.reporte_api import  reporte
 
 NAMESPACES = [
@@ -21,5 +22,7 @@ NAMESPACES = [
     registrarRecom,
     analisis,
     plan,
+    planificacion
+
     reporte
 ]
