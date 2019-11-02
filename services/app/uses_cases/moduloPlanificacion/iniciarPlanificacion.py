@@ -1,14 +1,15 @@
-from app.repositorio.hlDb import saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv
-from app.model.hlmodel import Finca, Parcela, Cuadro, EstadoPlanificacion, GrupoCuadro, CuadroCultivo, Cuadro
+from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv
+from app.model.hlmodel import Cultivo,TipoCultivo,TipoPlanificacion,Planificacion,GrupoPlanificacion,Finca, Parcela, Cuadro, EstadoPlanificacion, GrupoCuadro, CuadroCultivo, Cuadro
 from app.uses_cases.moduloPlanificacion.shared.sharedFunctions import tipoCultivoListToDict
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
+from flask import jsonify
 
 #{'codFinca': cod }
 #
 #
 def getParcelasLibres(data):    
     #Extraer Finca de Json
-    codFincaJson = data.get('codFinca')
+    codFincaJson = data
     #Buscar Finca
     fincaRst = selectFincaCod(codFincaJson)
     if not fincaRst: 
@@ -16,18 +17,19 @@ def getParcelasLibres(data):
     #Buscar Parcelas asociadas
     parcelasRstList = fincaRst.parcelaList
     dtoGeneral = []
-    dtoParcela = []
+    #Dto de parcelas con sus respectivos cuadros
     #Por cada parcela, leer cuadro asociado
-    dtoCuadroList = []
     for parcelasRst in parcelasRstList:
+        dtoParcela = []
         dtoParcela.append(parcelasRst)
-        dtoCuadroList.append(parcelasRst.cuadroList)
-        dtoParcela.append(dtoCuadroList)
-        dtoGeneral.append(dtoParcela)
+        dtoParcela.append(parcelasRst.cuadroList)
+        dtoGeneral.append(dtoParcela)  
     
     #Leer instancias Planificación asociadas a Finca instanciada.
+    dtoParcPlan = []
+    dtoGeneralPlan = []
+    dtoCuadroPlan = []
     planificacionListRst = fincaRst.planificacionList
-    dtoCuadroListAux = []
     if not planificacionListRst:
         return dtoGeneral
     else:
@@ -38,6 +40,29 @@ def getParcelasLibres(data):
                     #Armar dto con encabezado parcela y cuerpo cuadro
                     for cuadroCultivo in grupoCuadro.cuadroCultivoList:
                         cuadroGrupo = cuadroCultivo.cuadro
+                        dtoCuadroPlan.append(cuadroGrupo)
+                    
+                    dtoParcela.append(parcelaGrupo)
+                    dtoParcela.append(dtoCuadroPlan)
+
+        
+def iniciarPlanificacion(data):
+    parcelaLibreList = getParcelasLibres(data)
+    dtoParcelaLibre = []
+    for parcelaLibre in parcelaLibreList:        
+        dtoCuadrosLibre = []
+        for cuadroLibre in parcelaLibre.__getitem__(1):
+            #parcelaDto.pop('_sa_instance_state', None) 
+            cuadroDto = cuadroLibre.__dict__
+            cuadroDto.pop('_sa_instance_state', None)
+            cuadroDto.pop('codParcela', None)
+            dtoCuadrosLibre.append(cuadroDto)
+        parcela = parcelaLibre.__getitem__(0)
+        dtoParcelaAux = dict(codParcela = parcela.codParcela, nombre = parcela.nombrePacela, superficie = str(parcela.superficieParcela) + ' m', filas= parcela.filas, columnas = parcela.columnas, cantCuadros = parcela.filas * parcela.columnas)
+        dtoParcelaAux['cuadros'] = dtoCuadrosLibre
+        dtoParcelaLibre.append(dtoParcelaAux)
+    print(dtoParcelaLibre)
+    return jsonify(dtoParcelaLibre)
 
     #Comparar las listas de parcelas con los cuadros
     #Si la parcela no esta en la lista de planificaion, se agregan todos sus cuadros al dto final --> Comparar
@@ -46,4 +71,25 @@ def getParcelasLibres(data):
     #Comparar elementos de lista planificacion contra lista general
 
 
-    
+def crearPlanificacionInicial(data):
+    #Crear instancia GrupoPlanificacion 
+    nombreGrupoJson = data.get("nombreGrupo")
+    comentarioJson = data.get("comentario")
+    datosCultivosJsonList = data.get("cultivo")
+    grupoPlanificacion = GrupoPlanificacion(nombreGrupoPlanificacion = nombreGrupoJson)
+    #Buscar entidades asociadas a la Planificacion
+    estadoPlanificacionRst = selectActiveByName(EstadoPlanificacion, data.get("en curso"))
+    tipoPlanificacionRst = selectActiveByName(TipoPlanificacion, data.get("inicial"))
+    #Crear instancia Planificacion
+    planificacionInicial = Planificacion(comentarioPlanificacion = comentarioJson )
+    planificacionInicial.tipoPlanificacion = tipoPlanificacionRst
+    planificacionInicial.estadoPlanificacion = estadoPlanificacionRst
+    #Asociar GrupoPlanificacion con Planificacion
+    grupoPlanificacion.planificacion.append(planificacionInicial)
+    #Por cada cultivo ingresado
+    for datosCultivoJson in datosCultivosJsonList:
+        tipoCultivoRst = selectActiveByName(TipoCultivo,datosCultivoJson.get("nombreTipoCultivo"))
+        cultivoObj = Cultivo(cantidadCultivo = datosCultivoJson.get("cantidadCultivo"), produccionEsperada = datosCultivoJson.get("produccionEsperada"),variedadCultivo=datosCultivoJson.get("variedadCultivo"),cicloUnico=datosCultivoJson.get("cicloUnico"))
+        cuadroCultivo = CuadroCultivo()
+        cuadroCultivo.cultivo = cultivoObj
+        

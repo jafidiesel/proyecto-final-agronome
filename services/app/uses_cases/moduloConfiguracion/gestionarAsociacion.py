@@ -143,7 +143,6 @@ def getAsociaciones(entidadIntermedia):
         for entidad in entidadList:
             dtoAux = dict(cod=entidad.cod,nombre=entidad.nombre)
             cantidad = cantAsociaciones(entidad,entidadIntermedia)
-
             if cantidad > 0: ##tiene asociaciones
                 dtoAsociacionesList.append(dtoAux)
             else:
