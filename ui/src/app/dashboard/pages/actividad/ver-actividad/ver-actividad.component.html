@@ -8,14 +8,14 @@
         <div class="card-body">
 
             <div class="form-group row">
-                <label for="fecha" class="col-sm-2 col-form-label"><b>Fecha:</b>
+                <label for="fecha" class="col-sm-2 col-form-label"><b>Fecha y hora:</b>
                 </label>
                 <div class="col-sm-8">
                     <p>{{registrarActividadForm.value.fchActivDetalle}}</p>
 
                 </div>
             </div>
-            <div *ngFor="let parametro of registrarActividadForm.get('parametros').controls; let i = index">
+            <div *ngFor="let parametro of registrarActividadForm.get('parametro').controls; let i = index">
                 <div class="form-group row">
                     <label for="{{parametro.value.nombreParametro}}"
                         class="col-sm-2 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
