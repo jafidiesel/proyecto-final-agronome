@@ -39,4 +39,24 @@ export class RecomendacionService {
   getRecomendacion(id: number): Observable<any> {
     return this.http.get<string>(`http://localhost:9001/api/recomendacion/${id}`);
   }
+
+  /**
+  * @param id number 
+  * @return Observable<string>
+  *  
+  * GET obtiene la estructura de una recomendacion segun el id enviado
+  */
+  getEstructuraRecomendacion(id: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/recomendacion/parametros/${id}`);
+  }
+
+  /**
+  * @param id number 
+  * @return Observable<string>
+  *  
+  * GET obtiene la estructura de una recomendacion segun el id enviado
+  */
+  postRecomendacion(json: any): Observable<any> {
+    return this.http.post(`http://localhost:9001/api/recomendacion/registrar`,json);
+  }
 }

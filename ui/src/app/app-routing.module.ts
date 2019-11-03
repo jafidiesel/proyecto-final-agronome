@@ -62,7 +62,7 @@ const routes: Routes = [
   /* Modulo Recomendaciones */
   { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
   { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
-  { path: 'recomendaciones/registrarRecomendacion/:cod', component: RegistrarRecomendacionComponent },
+  { path: 'recomendaciones/registrarRecomendacion/:codAct', component: RegistrarRecomendacionComponent },
   /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
