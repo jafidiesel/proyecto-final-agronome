@@ -1,10 +1,4 @@
-<div class="row">
-    <div class="col">
-        <button [routerLink]="['/recomendacion/registrarRecomendacion']" type="button"
-            class="btn btn-lg btn-success m-4">Registrar Recomendacion</button>
-    </div>
-</div>
-<h1 class="display-4" *ngIf="mostrarTablaARecomendar">
+<h1 class="display-4 m-3" *ngIf="mostrarTablaARecomendar">
     Actividades a recomendar
 </h1>
 
@@ -13,7 +7,7 @@
         <app-table [tableData]="this.aRecomendarArray"></app-table>
     </div> 
 </div>
-<h1 class="display-4" *ngIf="mostrarTablaRecomendadas">
+<h1 class="display-4 m-3" *ngIf="mostrarTablaRecomendadas">
     Actividades recomendadas
 </h1>
 <div class="row" *ngIf="mostrarTablaRecomendadas">
