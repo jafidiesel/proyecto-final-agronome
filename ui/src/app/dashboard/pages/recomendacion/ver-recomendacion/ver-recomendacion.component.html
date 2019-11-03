@@ -8,9 +8,9 @@
         <div class="card-body">
 
             <div class="form-group row">
-                <label for="fecha" class="col-sm-5 col-form-label"><b>Fecha y hora:</b>
+                <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Fecha y hora:</b>
                 </label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 col-form-label">
                     <p>{{actividadForm.value.fchActivDetalle}}</p>
 
                 </div>
@@ -18,9 +18,9 @@
             <div *ngFor="let parametro of actividadForm.get('parametro').controls; let i = index">
                 <div class="form-group row">
                     <label for="{{parametro.value.nombreParametro}}"
-                        class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                        class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
                     </label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 col-form-label">
                         <p>{{parametro.value.valor}}</p>
 
                     </div>
@@ -30,9 +30,9 @@
             </div>
 
             <div class="form-group row">
-                <label for="observacion" class="col-sm-5 col-form-label"><b>Observación:</b>
+                <label for="observacion" class="col-sm-5 col-form-label text-right"><b>Observación:</b>
                 </label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 col-form-label">
                     <p>{{actividadForm.value.observacion}}</p>
                 </div>
             </div>
@@ -47,9 +47,9 @@
         <div class="card-body">
 
             <div class="form-group row">
-                <label for="fecha" class="col-sm-5 col-form-label"><b>Fecha y hora:</b>
+                <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Fecha y hora:</b>
                 </label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 col-form-label">
                     <p>{{recomendacionForm.value.fchRecomDetalle}}</p>
 
                 </div>
@@ -57,9 +57,9 @@
             <div *ngFor="let parametro of recomendacionForm.get('parametro').controls; let i = index">
                 <div class="form-group row">
                     <label for="{{parametro.value.nombreParametro}}"
-                        class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                        class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
                     </label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 col-form-label">
                         <p>{{parametro.value.valor}}</p>
 
                     </div>
@@ -69,7 +69,7 @@
             </div>
 
             <div class="form-group row">
-                <label for="observacion" class="col-sm-5 col-form-label"><b>Observación:</b>
+                <label for="observacion" class="col-sm-5 col-form-label text-right"><b>Observación:</b>
                 </label>
                 <div class="col-sm-5">
                     <p>{{recomendacionForm.value.observacion}}</p>
@@ -77,9 +77,9 @@
             </div>
 
             <div class="form-group row">
-                <label for="fecha" class="col-sm-5 col-form-label"><b>Ing. Agrónomo:</b>
+                <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Ing. Agrónomo:</b>
                 </label>
-                <div class="col-sm-5">
+                <div class="col-sm-5 col-form-label">
                     <p>{{recomendacionForm.value.nombreUsuario.charAt(0).toUpperCase() + recomendacionForm.value.nombreUsuario.slice(1)}}</p>
 
                 </div>
@@ -101,24 +101,3 @@
 
 
 </main>
-
-
-<ng-template #content let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title">Eliminar</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="form-group form-check">
-            <h4>¿Esta seguro que desea eliminar la actividad?</h4>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary float-left"
-            (click)="modal.close('Close click')">Cancelar</button>
-        <button type="button" class="btn btn-danger float-right"
-            (click)="modal.close('Ok click'); deleteActivity()">Eliminar</button>
-    </div>
-</ng-template>
