@@ -83,13 +83,14 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVBAR = MREPOR + '/actividadGfBar'
     MREPOR_RECOMPIE = MREPOR + '/recomendacionGfPie'
     MREPOR_ACTIVDUALBAR = MREPOR + '/actividadDualGfBar'
+    MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
     #PERMISOS:
     default = (
         MSLOG,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR                              #Modulo de reporte
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte
         ) #todos
 
     administrador = (

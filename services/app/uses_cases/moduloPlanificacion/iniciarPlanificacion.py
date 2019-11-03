@@ -1,4 +1,4 @@
-from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv,Commit()
+from app.repositorio.hlDb import selectActiveByName,saveEntidad, selectAll, selectByCod, updateEntidad, selectByisActiv,Commit
 from app.model.hlmodel import Cultivo,TipoCultivo,TipoPlanificacion,Planificacion,GrupoPlanificacion,Finca, Parcela, Cuadro, EstadoPlanificacion, GrupoCuadro, CuadroCultivo, Cuadro
 from app.uses_cases.moduloPlanificacion.shared.sharedFunctions import tipoCultivoListToDict
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca

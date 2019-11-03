@@ -1,4 +1,4 @@
-from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB , actividadDualGfBarDB
+from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomendacionGfPieDB , actividadDualGfBarDB, actividadOptionGfPieDB
 
 def actividadGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
@@ -59,4 +59,44 @@ def actividadDualGfBar(data,currentUser):
         codOpcionTwo = codOpcionTwo
         )
     dtoReporte=actividadDualGfBarDB(parmIn)
+    return dtoReporte
+
+
+def actividadOptionGfPie(data,currentUser):
+    fchDesde = data.get('fchDesde')
+    fchHasta = data.get('fchHasta')
+    codActividad = data.get('codActividad')
+    codParamComboOption = data.get('codParamComboOption')
+
+
+    parmIn = dict(
+        fchDesde = fchDesde,
+        fchHasta = fchHasta,
+        codActividad = codActividad,
+        codParamComboOption = codParamComboOption,
+        )
+
+    dtoOpcion = actividadOptionGfPieDB(parmIn)
+
+    keys = dtoOpcion.keys()
+    values = dtoOpcion.values()
+
+    total = 0
+    for value in values:
+        total = total + value
+
+    if total>0:
+        porcentaje = 100/total
+    else:
+        porcentaje = 0
+
+    number=[]
+    label=[]
+    for key in keys:
+        number.append(dtoOpcion[key]*porcentaje)
+        label.append(key) 
+
+    data=dict(number=number)
+    dtoReporte = dict(dataset=data,label=label)
+
     return dtoReporte
