@@ -34,7 +34,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
               actividad.actividad.nombreActividad,
               actividad.fchActivDetalle,
               actividad.observacion,
-              `%/actividades/verActividad/${actividad.codActivDetalle}`
+              `*/recomendaciones/registrarRecomendacion/${actividad.codActivDetalle}`
             ]);
           });
           console.log('aRecomendarArray',this.aRecomendarArray);
@@ -47,7 +47,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
               actividad.actividad.nombreActividad,
               actividad.fchActivDetalle,
               actividad.observacion,
-              `%/actividades/verActividad/${actividad.codActivDetalle}`
+              `%/recomendaciones/verRecomendacion/${actividad.codActivDetalle}/${actividad.codRecomDetalle}`
             ]);
           });
           console.log('recomendadasArray',this.recomendadasArray);

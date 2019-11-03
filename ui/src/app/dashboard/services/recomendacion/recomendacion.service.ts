@@ -19,4 +19,24 @@ export class RecomendacionService {
   getListasActividad(): Observable<any> {
     return this.http.get<string>(`http://localhost:9001/api/recomendacion/actividad`);
   }
+
+  /**
+  * @param id number 
+  * @return Observable<string>
+  *  
+  * GET obtiene la información detallada de una actividad segun el id enviado
+  */
+  getActividad(id: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/${id}`);
+  }
+
+  /**
+  * @param id number 
+  * @return Observable<string>
+  *  
+  * GET obtiene la información detallada de una recomendacion segun el id enviado
+  */
+  getRecomendacion(id: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/recomendacion/${id}`);
+  }
 }

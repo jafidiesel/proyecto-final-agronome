@@ -1,0 +1,124 @@
+<main role="main" class="container mt-4">
+    <!-- actividad  -->
+    <div class="card m-3" *ngIf="actividadForm != null" [formGroup]="actividadForm">
+        <div class="card-header">
+            Actividad
+            {{ actividadForm.value.nombreActividad.charAt(0).toUpperCase() +  actividadForm.value.nombreActividad.slice(1) }}
+        </div>
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label for="fecha" class="col-sm-5 col-form-label"><b>Fecha y hora:</b>
+                </label>
+                <div class="col-sm-5">
+                    <p>{{actividadForm.value.fchActivDetalle}}</p>
+
+                </div>
+            </div>
+            <div *ngFor="let parametro of actividadForm.get('parametro').controls; let i = index">
+                <div class="form-group row">
+                    <label for="{{parametro.value.nombreParametro}}"
+                        class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                    </label>
+                    <div class="col-sm-5">
+                        <p>{{parametro.value.valor}}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="observacion" class="col-sm-5 col-form-label"><b>Observación:</b>
+                </label>
+                <div class="col-sm-5">
+                    <p>{{actividadForm.value.observacion}}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- recomendacion -->
+    <div class="card m-3" *ngIf="recomendacionForm != null" [formGroup]="recomendacionForm">
+        <div class="card-header">
+            {{ recomendacionForm.value.nombreRecomendacion.charAt(0).toUpperCase() +  recomendacionForm.value.nombreRecomendacion.slice(1) }}
+        </div>
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label for="fecha" class="col-sm-5 col-form-label"><b>Fecha y hora:</b>
+                </label>
+                <div class="col-sm-5">
+                    <p>{{recomendacionForm.value.fchRecomDetalle}}</p>
+
+                </div>
+            </div>
+            <div *ngFor="let parametro of recomendacionForm.get('parametro').controls; let i = index">
+                <div class="form-group row">
+                    <label for="{{parametro.value.nombreParametro}}"
+                        class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                    </label>
+                    <div class="col-sm-5">
+                        <p>{{parametro.value.valor}}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="observacion" class="col-sm-5 col-form-label"><b>Observación:</b>
+                </label>
+                <div class="col-sm-5">
+                    <p>{{recomendacionForm.value.observacion}}</p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="fecha" class="col-sm-5 col-form-label"><b>Ing. Agrónomo:</b>
+                </label>
+                <div class="col-sm-5">
+                    <p>{{recomendacionForm.value.nombreUsuario.charAt(0).toUpperCase() + recomendacionForm.value.nombreUsuario.slice(1)}}</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button [routerLink]="['/recomendaciones/listarRecomendaciones']"
+        class="btn btn-secondary float-left">Volver</button>
+    <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+        ¡ Actividad Eliminada exitosamente !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div [hidden]="!postError" class="alert alert-danger">
+        {{ postErrorMessage }}
+    </div>
+
+
+</main>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Eliminar</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group form-check">
+            <h4>¿Esta seguro que desea eliminar la actividad?</h4>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary float-left"
+            (click)="modal.close('Close click')">Cancelar</button>
+        <button type="button" class="btn btn-danger float-right"
+            (click)="modal.close('Ok click'); deleteActivity()">Eliminar</button>
+    </div>
+</ng-template>

@@ -38,6 +38,8 @@ import { LoginPageComponent } from './login/login-page/login-page.component';
 import { CrearFincaComponent } from './dashboard/pages/finca/crear-finca/crear-finca.component';
 import { EditarFincaComponent } from './dashboard/pages/finca/editar-finca/editar-finca.component';
 import { ListarRecomendacionesComponent } from './dashboard/pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { VerRecomendacionComponent } from './dashboard/pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
+import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
 
 
 const routes: Routes = [
@@ -59,6 +61,8 @@ const routes: Routes = [
   { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
   { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
+  { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
+  { path: 'recomendaciones/registrarRecomendacion/:cod', component: RegistrarRecomendacionComponent },
   /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */

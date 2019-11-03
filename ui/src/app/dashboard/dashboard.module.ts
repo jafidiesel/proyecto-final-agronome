@@ -11,7 +11,6 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
 import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
-import { RecomendacionesPageComponent } from './pages/recomendaciones-page/recomendaciones-page.component';
 import { SeguridadPageComponent } from './pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
@@ -54,6 +53,8 @@ import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-
 import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.component';
 import { EditarFincaComponent } from './pages/finca/editar-finca/editar-finca.component';
 import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { RegistrarRecomendacionComponent } from './pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
+import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,10 @@ import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-rec
     EditarUsuarioComponent,
     CrearFincaComponent,
     EditarFincaComponent,
-    ListarRecomendacionesAsociadasComponent
+    ListarRecomendacionesAsociadasComponent,
+    RegistrarRecomendacionComponent,
+    VerRecomendacionComponent,
+
   ],
   imports: [
     CommonModule,
