@@ -6,7 +6,7 @@ import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
-import { ReportesPageComponent } from './dashboard/pages/reportes-page/reportes-page.component';
+import { ReportesPageComponent } from './dashboard/pages/reportes/reportes-page/reportes-page.component';
 import { ListarRecomendacionesAsociadasComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
 import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
@@ -40,6 +40,7 @@ import { EditarFincaComponent } from './dashboard/pages/finca/editar-finca/edita
 import { ListarRecomendacionesComponent } from './dashboard/pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
 import { VerRecomendacionComponent } from './dashboard/pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
 import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
+import { ReporteActividadComponent } from './dashboard/pages/reportes/reporte-actividad/reporte-actividad.component';
 
 
 const routes: Routes = [
@@ -97,6 +98,7 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
+  { path: 'reportes/reporteActividad', component: ReporteActividadComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */];
 

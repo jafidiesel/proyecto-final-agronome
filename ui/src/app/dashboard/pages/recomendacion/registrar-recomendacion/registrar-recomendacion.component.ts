@@ -210,7 +210,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     this.recomendacionForm = this.fb.group({
       tempFecha: this.date,
       tempHora: this.time,
-      codRecomDetalle:  parseInt(this.codRecomendacion),
+      codRecomendacion:  parseInt(this.codRecomendacion),
       codActividadDetalle: parseInt(this.codActividad),
       nombreRecomendacion: this.nombreRecomendacion,
       fchRecomDetalle: null,

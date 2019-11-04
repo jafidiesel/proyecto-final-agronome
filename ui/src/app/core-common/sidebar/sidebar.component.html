@@ -19,7 +19,7 @@
             class="list-group-item list-group-item-action" *ngIf="rol == 'encargadofinca' || rol == 'administrador'">
             <fa-icon [icon]="faFileMedical" class="mr-1" ></fa-icon> <b>Recomendaciones</b>
         </button>
-        <button type="button" disabled routerLink="/reportes" routerLinkActive="active"
+        <button type="button" routerLink="/reportes/reporteActividad" routerLinkActive="active"
             class="list-group-item list-group-item-action">
             <fa-icon [icon]="faChartPie" class="mr-1" ></fa-icon> Reportes
         </button>
