@@ -13,7 +13,7 @@ import { PlanificacionPageComponent } from './pages/planificacion-page/planifica
 import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
 import { SeguridadPageComponent } from './pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
-import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
+import { ReportesPageComponent } from './pages/reportes/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 
 /* Actividad */
@@ -55,6 +55,8 @@ import { EditarFincaComponent } from './pages/finca/editar-finca/editar-finca.co
 import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
 import { RegistrarRecomendacionComponent } from './pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
 import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
+import { ReporteActividadComponent } from './pages/reportes/reporte-actividad/reporte-actividad.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendaci
     ListarRecomendacionesAsociadasComponent,
     RegistrarRecomendacionComponent,
     VerRecomendacionComponent,
+    ReporteActividadComponent,
 
   ],
   imports: [
@@ -111,7 +114,8 @@ import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendaci
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ChartsModule
   ],
   providers: [
     {
