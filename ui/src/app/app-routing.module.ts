@@ -44,6 +44,8 @@ import { ReporteRecomendacionComponent } from './dashboard/pages/reportes/report
 import { ReporteSiembraComponent } from './dashboard/pages/reportes/reporte-siembra/reporte-siembra.component';
 import { ReporteRiegoComponent } from './dashboard/pages/reportes/reporte-riego/reporte-riego.component';
 import { BackupComponent } from './dashboard/pages/backup/backup.component';
+import { ActivarComponent } from './login/activar/activar.component';
+import { ResetComponent } from './login/reset/reset.component';
 
 
 const routes: Routes = [
@@ -108,6 +110,9 @@ const routes: Routes = [
   { path: 'backup', component: BackupComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */
+  { path: 'backup', component: BackupComponent },
+  { path: 'activar', component: ActivarComponent },
+  { path: 'reset', component: ResetComponent },
   ];
 
 @NgModule({
