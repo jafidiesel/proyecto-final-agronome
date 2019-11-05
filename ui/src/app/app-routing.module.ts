@@ -42,6 +42,8 @@ import { VerRecomendacionComponent } from './dashboard/pages/recomendacion/ver-r
 import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
 import { ReporteActividadComponent } from './dashboard/pages/reportes/reporte-actividad/reporte-actividad.component';
 import { BackupComponent } from './dashboard/pages/backup/backup.component';
+import { ActivarComponent } from './login/activar/activar.component';
+import { ResetComponent } from './login/reset/reset.component';
 
 
 const routes: Routes = [
@@ -103,6 +105,8 @@ const routes: Routes = [
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */
   { path: 'backup', component: BackupComponent },
+  { path: 'activar', component: ActivarComponent },
+  { path: 'reset', component: ResetComponent },
   ];
 
 @NgModule({
