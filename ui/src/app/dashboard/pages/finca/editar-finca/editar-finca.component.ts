@@ -44,7 +44,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
     private auth: AuthService) { }
 
   ngOnInit() {
-    if (this.auth.getRol() == 'encargadofinca' && this.auth.getNombreFinca() == null) {
+    if (this.auth.getRol() == 'encargadofinca' && this.auth.getNombreFinca() == "") {
       this.router.navigate(['/finca/crearFinca']);
     }
     this.parcelasTabla.push(this.tableDataHeader);

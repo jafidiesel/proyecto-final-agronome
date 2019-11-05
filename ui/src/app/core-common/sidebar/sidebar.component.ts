@@ -26,7 +26,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.rol = this.auth.getRol();
-    this.nombreFinca = this.auth.getNombreFinca();
+    this.nombreFinca =  (this.auth.getNombreFinca() == "false") ? "" : this.auth.getNombreFinca();
   }
 
 }

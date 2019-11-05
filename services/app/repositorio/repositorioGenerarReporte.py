@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.model.hlmodel import Actividad, ActividadDetalle, Parametro, ActivDetalleParam
+from app.model.hlmodel import Actividad, ActividadDetalle, Parametro, ActivDetalleParam, Opcion, ParametroOpcion
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv
 from datetime import datetime
 
@@ -59,7 +59,7 @@ def actividadDualGfBarDB(parmIn):
     activDetalleList =  actividad.activDetalleList
     
 
-    mes = hlFchToMomth(fchDesde,fchHasta) #determinación de los meses
+    mes = hlFchToMonth(fchDesde,fchHasta) #determinación de los meses
     dtoOpcionOne=dict()
     dtoOpcionTwo=dict()
 
@@ -113,6 +113,46 @@ def actividadDualGfBarDB(parmIn):
     return (dtoReporte)
 
 
+def actividadOptionGfPieDB(parmIn):
+    fchDesde=StringToDateTime(parmIn['fchDesde'])
+    fchHasta=StringToDateTime(parmIn['fchHasta'])
+    codActividad = parmIn['codActividad']
+    codParamComboOption = parmIn['codParamComboOption']
+
+
+    #recupero los datos para poder generar el reporte
+    actividad = Actividad.query.filter(Actividad.cod == codActividad).one()
+    activDetalleList =  actividad.activDetalleList
+    parametroObj = Parametro.query.filter(Parametro.cod == codParamComboOption).one()
+    parametroOpcionObjList = parametroObj.paramOpcion
+    
+    ##defino las opciones
+    opcionesList = []
+    for paramOpcion in parametroOpcionObjList:
+        opcionesList.append(paramOpcion.opcion.nombre)
+
+    
+    dtoOpcion = dict()
+    for opcion in opcionesList:
+        dtoOpcion[opcion] = 0
+
+    #print (dtoOpcion)
+
+    for activDetalle in activDetalleList:
+        if hlIsOkFch(activDetalle.fchActivDetalle,fchDesde,fchHasta):
+            activDetalleParamList = activDetalle.paramList
+            for activDetalleParam in activDetalleParamList:
+                if activDetalleParam.param ==parametroObj:
+                    for opcion in opcionesList:
+                        if activDetalleParam.valor == opcion:
+                            dtoOpcion[opcion] = dtoOpcion.get(opcion) + 1 
+                            exit
+
+    return dtoOpcion
+
+
+
+
 
 #helper
 #Retorna los detalles entre 2 fechas
@@ -131,7 +171,7 @@ def StringToDateTime(auxFch):
     fch=datetime.strptime(auxFch, '%Y-%m-%d %H:%M')
     return fch
 
-def hlFchToMomth(fchDesde,fchHasta):
+def hlFchToMonth(fchDesde,fchHasta):
     mesDesde=fchDesde.month
     mesHasta=fchHasta.month
     mes=[]

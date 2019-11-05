@@ -114,12 +114,10 @@ export class EditarPlanAsociadoComponent implements OnInit, OnDestroy {
 
   onSubmitAsociacion() {
     //this.updateOpciones();
-    console.log(this.asociarParametroForm.value);
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
       this._configuracionService.putAsociacionForm('tipoPlanParam', this.codPlan ,this.asociarParametroForm.value).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
 
           this.asociarParametroForm.controls['cod'].disable();

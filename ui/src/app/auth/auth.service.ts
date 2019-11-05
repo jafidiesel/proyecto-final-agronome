@@ -100,7 +100,7 @@ export class AuthService {
       obj = JSON.parse(localStorage.getItem('fincas'));
       return obj.nombreFinca;
     }else{
-      return false;
+      return "";
     }
   }
 

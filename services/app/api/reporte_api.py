@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlReporte
-from app.uses_cases.moduloReporte.generarReporte import actividadGfBar, recomendacionGfPie,actividadDualGfBar
+from app.uses_cases.moduloReporte.generarReporte import actividadGfBar, recomendacionGfPie,actividadDualGfBar, actividadOptionGfPie
 from app.api.shared.tokenHandler import token_required
 
 
@@ -25,3 +25,9 @@ class ReporteHandler(Resource):
     @token_required
     def post(data,currentUser):
         return actividadDualGfBar(data,currentUser)
+
+@reporte.route('/actividadOptionGfPie')
+class ReporteHandler(Resource):
+    @token_required
+    def post(data,currentUser):
+        return actividadOptionGfPie(data,currentUser)

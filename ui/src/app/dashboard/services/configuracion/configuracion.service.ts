@@ -83,7 +83,6 @@ export class ConfiguracionService {
    */
   setOpcionesParametrotroData(opcion: string) {
     this.opcionesParametro.push(opcion);
-    console.log(this.opcionesParametro);
   }
 
   /**
@@ -145,7 +144,6 @@ export class ConfiguracionService {
 
   putNomencladorForm(nomencladorJson: any): Observable<any> {
     //return of(nomencladorForm);
-    console.log(nomencladorJson);
     return this.http.put(`http://localhost:9001/api/configuracion/nomenclador/${nomencladorJson.tipoNomenclador}/${nomencladorJson.cod}`, nomencladorJson);
   }
 

@@ -27,7 +27,6 @@ export class PantallaComponent implements OnInit {
       this.tokenExist = true;
       //this.router.navigateByUrl('/actividades');
       if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0 ) {
-        console.log('crear la finca');
         this.router.navigate(['/finca/crearFinca']);        
       }else{
         this.router.navigate(['/actividades/listarActividades']);

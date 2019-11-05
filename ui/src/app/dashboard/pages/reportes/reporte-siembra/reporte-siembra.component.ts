@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
 import { ReportesService } from 'src/app/dashboard/services/reportes/reportes.service';
 
 @Component({
-  selector: 'app-reporte-actividad',
-  templateUrl: './reporte-actividad.component.html'
+  selector: 'app-reporte-siembra',
+  templateUrl: './reporte-siembra.component.html'
 })
-export class ReporteActividadComponent implements OnInit, OnDestroy {
+export class ReporteSiembraComponent implements OnInit, OnDestroy {
 
   fechaDesde: any;
   fechaHasta: any;
@@ -23,6 +23,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   postErrorMessage = '';
 
 
+  // Pie
   public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
@@ -35,13 +36,13 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
     }
   };
 
-
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels];
-  
+
   public barChartLabels: Label[] = [];
   public barChartData: ChartDataSets[] = [];
+
 
   mostrarGrafico = false;
 
@@ -62,7 +63,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   onSubmit() {
 
     this.subscriptions.push(
-      this._reportesService.getReporteActividad(this.fechaDesde, this.fechaHasta).subscribe(
+      this._reportesService.getReporteSiembra(this.fechaDesde, this.fechaHasta).subscribe(
         result => {
           this.initDataset(result);
         },
@@ -73,19 +74,64 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   }
 
 
-  initDataset(form){
+  initDataset(form) {
     this.barChartData = [];
     this.barChartData.push(
       {
-        data: form.dataset.data, label: "número de actividades"
+        data: form.dataset[0].data, label: form.dataset[0].label
       }
     );
-    this.barChartLabels = form.label;
+    this.barChartData.push(
+      {
+        data: form.dataset[1].data, label: form.dataset[1].label
+      }
+    );
+    this.barChartLabels = form.label.map(element => {
+      switch (element) {
+        case 1:
+          return "Enero";
+          break;
+
+        case 2:
+          return "Febrero";
+          break;
+        case 3:
+          return "Marzo";
+          break;
+        case 4:
+          return "Abril";
+          break;
+        case 5:
+          return "Mayo";
+          break;
+        case 6:
+          return "Junio";
+          break;
+        case 7:
+          return "Julio";
+          break;
+        case 8:
+          return "Agosto";
+          break;
+        case 9:
+          return "Septiembre";
+          break;
+        case 10:
+          return "Octubre";
+          break;
+        case 11:
+          return "Noviembre";
+          break;
+        case 12:
+          return "Diciembre";
+          break;
+      }
+    });
     this.mostrarGrafico = true;
 
   }
 
-  mostrar(){
+  mostrar() {
     this.mostrarGrafico = !this.mostrarGrafico;
   }
 
@@ -99,5 +145,4 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
-
 }

@@ -14,7 +14,6 @@ export class DashboardPageComponent implements OnInit {
   constructor(private router: Router) { 
     if( localStorage.getItem('token') ){
       this.tokenExist = true;
-      console.log(this.tokenExist);
       //this.router.navigateByUrl('/actividades');
     }
 

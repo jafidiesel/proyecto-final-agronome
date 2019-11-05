@@ -21,7 +21,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
   municipioName: string;
 
   parcelasTabla = [];
-  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros', 'Activo', 'Rol', 'Editar'];
+  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros'];
   mostrarTabla = false;
 
   // error flags 
@@ -119,7 +119,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
         '<p for="swal-input1">Nombre de la parcela</p>' +
         '<input id="swal-input1" class="swal2-input">' +
         '<p for="swal-input2">Superficie</p>' +
-        '<input type="number" id="swal-input2" min="1"  "class="swal2-input" >' +
+        '<input type="number" id="swal-input2" min="1" class="swal2-input" >' +
         '<p for="swal-input3">Cantidad de filas</p>' +
         '<input type="number" id="swal-input3" min="1" class="swal2-input" >' +
         '<p for="swal-input4">Cantidad de columnas</p>' +
