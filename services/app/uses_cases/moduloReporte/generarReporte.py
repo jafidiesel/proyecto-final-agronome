@@ -3,21 +3,12 @@ from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomend
 def actividadGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
-    parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta)
+    parmIn   = dict (fchDesde =fchDesde, fchHasta=fchHasta)
     
-    dtoActividad=actividadGfBarDB(parmIn)
-    keys = dtoActividad.keys()
-    dtoData= []
-   
-    for key in keys:
-        data=[]
-        data.append(dtoActividad[key])
-        dtoAuxData=dict(data=data,label=key)
-        dtoData.append(dtoAuxData)
+    dtoData = actividadGfBarDB(parmIn)
+    nameData = 'data'
 
-    labelPpal = fchDesde + ' - ' + fchHasta
-
-    dtoReporte= dict(dataset=dtoData,label=labelPpal)
+    dtoReporte = toDtoReporte(dtoData,nameData,fchDesde,fchHasta)
     return dtoReporte
 
 
@@ -26,16 +17,10 @@ def recomendacionGfPie(data,currentUser):
     fchHasta = data.get('fchHasta')
     parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta)
     
-    dtoRecom = recomendacionGfPieDB(parmIn)
-    keys = dtoRecom.keys()
-    number=[]
-    labelPpal=[]
-    for key in keys:
-        number.append(dtoRecom[key])
-        labelPpal.append(key)
-    dtoAux=dict(number=number)
-
-    dtoReporte= dict(dataset=dtoAux,label=labelPpal)
+    dtoData = recomendacionGfPieDB(parmIn)
+    nameData = 'number'
+    
+    dtoReporte = toDtoReporte(dtoData,nameData,fchDesde,fchHasta)
     return dtoReporte
 
 
@@ -58,7 +43,11 @@ def actividadDualGfBar(data,currentUser):
         codOpcionOne = codOpcionOne,
         codOpcionTwo = codOpcionTwo
         )
+
     dtoReporte=actividadDualGfBarDB(parmIn)
+
+    dtoFecha = fchToDtoFfch(fchDesde,fchHasta)
+    dtoReporte['fecha'] = dtoFecha #se agrega de esta manera porque la logica se resuelve en actividadDualGfBarDB y aca solo le seteamos al fecha
     return dtoReporte
 
 
@@ -68,7 +57,6 @@ def actividadOptionGfPie(data,currentUser):
     codActividad = data.get('codActividad')
     codParamComboOption = data.get('codParamComboOption')
 
-
     parmIn = dict(
         fchDesde = fchDesde,
         fchHasta = fchHasta,
@@ -76,11 +64,11 @@ def actividadOptionGfPie(data,currentUser):
         codParamComboOption = codParamComboOption,
         )
 
-    dtoOpcion = actividadOptionGfPieDB(parmIn)
+    dtoData = actividadOptionGfPieDB(parmIn)
+    keys = dtoData.keys()
+    values = dtoData.values()
 
-    keys = dtoOpcion.keys()
-    values = dtoOpcion.values()
-
+    #porcentaje
     total = 0
     for value in values:
         total = total + value
@@ -90,13 +78,34 @@ def actividadOptionGfPie(data,currentUser):
     else:
         porcentaje = 0
 
-    number=[]
-    label=[]
     for key in keys:
-        number.append(dtoOpcion[key]*porcentaje)
-        label.append(key) 
+        dtoData[key] = dtoData.get(key) * porcentaje
 
-    data=dict(number=number)
-    dtoReporte = dict(dataset=data,label=label)
+    nameData='number'
+
+    dtoReporte = toDtoReporte(dtoData,nameData,fchDesde,fchHasta)
+    return dtoReporte
+
+
+def fchToDtoFfch(fchDesde,fchHasta):
+    dtoFecha = dict(
+        fchDesde=fchDesde,
+        fchHasta=fchHasta
+        )
+    return dtoFecha
+
+def toDtoReporte(dtoData,nameData,fchDesde,fchHasta):
+    dtoFecha = fchToDtoFfch(fchDesde,fchHasta)
+    keys     = dtoData.keys()
+    label    = []
+    data     = []
+
+    for key in keys:
+        data.append(dtoData[key])
+        label.append(key)
+
+    dtoDataset=dict()
+    dtoDataset[nameData]=data #nameData se encuentra definido en la documentación de ng2chart
+    dtoReporte = dict(dataset=dtoDataset,label=label,fecha=dtoFecha)
 
     return dtoReporte

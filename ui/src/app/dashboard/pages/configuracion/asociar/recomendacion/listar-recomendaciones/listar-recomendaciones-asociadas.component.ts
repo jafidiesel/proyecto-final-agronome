@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
 @Component({
-  selector: 'app-listar-recomendaciones',
-  templateUrl: './listar-recomendaciones.component.html',
+  selector: 'app-listar-recomendaciones-asociadas',
+  templateUrl: './listar-recomendaciones-asociadas.component.html',
 })
-export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
+export class ListarRecomendacionesAsociadasComponent implements OnInit, OnDestroy {
   subscriptions : Subscription[] = [];
   
   // array de rows para table component
