@@ -209,7 +209,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         break;
     }
 
-  }
+  } 
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
