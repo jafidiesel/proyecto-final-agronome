@@ -57,6 +57,7 @@ import { RegistrarRecomendacionComponent } from './pages/recomendacion/registrar
 import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
 import { ReporteActividadComponent } from './pages/reportes/reporte-actividad/reporte-actividad.component';
 import { ChartsModule } from 'ng2-charts';
+import { BackupComponent } from './pages/backup/backup.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { ChartsModule } from 'ng2-charts';
     RegistrarRecomendacionComponent,
     VerRecomendacionComponent,
     ReporteActividadComponent,
+    BackupComponent,
 
   ],
   imports: [
