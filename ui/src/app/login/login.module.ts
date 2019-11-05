@@ -7,8 +7,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { ResetComponent } from './reset/reset.component';
-import { ActivarComponent } from './activar/activar.component';
+import { ResetComponent } from './pages/reset/reset.component';
+import { ActivarComponent } from './pages/activar/activar.component';
 
 
 @NgModule({
@@ -24,6 +24,10 @@ import { ActivarComponent } from './activar/activar.component';
     FormsModule,
     HttpClientModule,
   ],
-  exports: [LoginComponent]
+  exports: [
+    LoginComponent,
+    ResetComponent,
+    ActivarComponent
+  ]
 })
 export class LoginModule { }

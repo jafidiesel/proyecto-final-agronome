@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -30,15 +30,21 @@ def checkUrl(method,pat,rol):
         url = MC
     
 
-    #Modulo de seguridad  
+    #Modulo de seguridad 
+    isAccount = False
+    MSACC = urlUsuario.name + '/account'
+    if url.count(MSACC)>0:
+        isAccount = True
+        url = MSACC 
+
     isLogin=False 
     MSLOG = urlLogin.name #login     
-    if url.count(MSLOG)>0:
+    if url.count(MSLOG)>0 and not isAccount:
         isLogin = True
         url = MSLOG
 
     MSUSU =  urlUsuario.name  #usuario
-    if url.count(MSUSU)>0 and not isLogin: #tengo que hacer esta logica porque comparten url con el login
+    if url.count(MSUSU)>0 and not isLogin and not isAccount: #tengo que hacer esta logica porque comparten url con el login
         url = MSUSU
 
 
@@ -85,9 +91,15 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVDUALBAR = MREPOR + '/actividadDualGfBar'
     MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
+    #MODULO DE PLANIFICACION
+    #Planificacion Inicial
+    MPLAN = '/' + urlPlanificacionInicial.name
+    MPLAN_POST = 'POST' + MPLAN
+    MPLAN_GET = 'GET' + MPLAN + '/'
+
     #PERMISOS:
     default = (
-        MSLOG,
+        MSLOG,MSACC,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
         MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte
@@ -104,7 +116,8 @@ def checkUrl(method,pat,rol):
     
     encargadofinca = (
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT                              #Modulo de finca
+        MGF_POST,MGF_PUT,                              #Modulo de finca
+        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
          ) + default
     
     ingeniero = (  

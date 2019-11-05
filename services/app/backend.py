@@ -2,13 +2,17 @@ from flask import Flask
 from flask_cors import CORS
 from app.extensions import api,db,migrate
 from app.api.helperApi.hlNamespaceBackend import NAMESPACES
-from config import config 
+from config import config
+from flask_mail import Mail, Message
+
+app= Flask(__name__)
 
 def create_api(environment_name=None):
-    app= Flask(__name__)
+    #app= Flask(__name__)
 
     app.config.from_object(config[environment_name])
-        
+    #app.config.from_object(Config.MAIL_CONFIG)
+    app.config.from_pyfile('configMail.cfg')
     #CORS(app)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 

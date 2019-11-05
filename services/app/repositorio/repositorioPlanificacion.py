@@ -6,5 +6,5 @@ def getCuadroByCod(cod):
     return cuadro
 
 def getParcelaByCod(cod):
-    parcela = Parcela.query.filter(Parcela.codCuadro == cod).one()
+    parcela = Parcela.query.filter(Parcela.codParcela == cod).one()
     return parcela

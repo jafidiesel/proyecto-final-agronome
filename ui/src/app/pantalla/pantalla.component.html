@@ -22,8 +22,11 @@
 
     <div *ngSwitchCase="false">
 
-        <app-login *ngIf="!tokenExist" (ValidateTokenFather)="validateToken($event)"></app-login>
-
+        <!-- <app-activar *ngIf="activar" (ValidateTokenFather)="validateToken($event)"></app-activar>
+        <app-reset *ngIf="recuperar" (ValidateTokenFather)="validateToken($event)"></app-reset> -->
+        <app-login  (ValidateTokenFather)="validateToken($event)"></app-login>
+        <!-- *ngIf="login" -->
+<!-- /activar/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZnJhZCIsInJvbCI6ImVuY2FyZ2Fkb2ZpbmNhIiwianRpIjoiODAyMjBkMzctZDUxMC00MGUyLThhZWQtOTBkY2YwOTcyYTY0In0.8VosrjNzgvfAuttkXYnyCF0KDd-INNQ8sLeo10qr2L4 -->
     </div>
 
 </div>
