@@ -11,7 +11,6 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
 import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
-import { SeguridadPageComponent } from './pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './pages/reportes/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
@@ -57,13 +56,14 @@ import { RegistrarRecomendacionComponent } from './pages/recomendacion/registrar
 import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
 import { ReporteActividadComponent } from './pages/reportes/reporte-actividad/reporte-actividad.component';
 import { ChartsModule } from 'ng2-charts';
+import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
+import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
 
 @NgModule({
   declarations: [
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
-    SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
     DashboardPageComponent,
@@ -105,6 +105,8 @@ import { ChartsModule } from 'ng2-charts';
     RegistrarRecomendacionComponent,
     VerRecomendacionComponent,
     ReporteActividadComponent,
+    ReporteRecomendacionComponent,
+    ReporteSiembraComponent,
 
   ],
   imports: [
@@ -128,7 +130,6 @@ import { ChartsModule } from 'ng2-charts';
     PlanificacionPageComponent,
     RecursosPageComponent,
     DashboardPageComponent,
-    SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent
   ],

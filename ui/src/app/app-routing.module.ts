@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
-import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes/reportes-page/reportes-page.component';
 import { ListarRecomendacionesAsociadasComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
@@ -41,6 +40,8 @@ import { ListarRecomendacionesComponent } from './dashboard/pages/recomendacion/
 import { VerRecomendacionComponent } from './dashboard/pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
 import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
 import { ReporteActividadComponent } from './dashboard/pages/reportes/reporte-actividad/reporte-actividad.component';
+import { ReporteRecomendacionComponent } from './dashboard/pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
+import { ReporteSiembraComponent } from './dashboard/pages/reportes/reporte-siembra/reporte-siembra.component';
 
 
 const routes: Routes = [
@@ -99,6 +100,8 @@ const routes: Routes = [
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
   { path: 'reportes/reporteActividad', component: ReporteActividadComponent },
+  { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
+  { path: 'reportes/reportesiembra', component: ReporteSiembraComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */];
 

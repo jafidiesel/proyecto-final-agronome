@@ -1,1 +1,12 @@
-----
+<div class="card-deck">
+    <div *ngFor="let button of configurationButtons" class="card border-gray col-3 m-3 text-center"
+        style="min-width: 220px;">
+        <div class="card-body">
+            <fa-icon class="mb-4" [icon]="button[2]" size="3x" [styles]="{'stroke': 'green', 'color': 'green'}">
+            </fa-icon>
+            <h5 class="card-title">{{ button[0] }}</h5>
+
+            <a [routerLink]="[button[1]]" class="btn btn-primary">Generar</a>
+        </div>
+    </div>
+</div>

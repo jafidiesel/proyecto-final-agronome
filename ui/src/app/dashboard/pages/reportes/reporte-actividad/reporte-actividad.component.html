@@ -1,15 +1,40 @@
-<div>
-        <div>
-          <div style="display: block">
-            <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [plugins]="barChartPlugins"
-              [legend]="barChartLegend"
-              [chartType]="barChartType">
-            </canvas>
-          </div>
-          <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button>
+<h3 class="display-4">Reporte de actividades</h3>
+<main role="main" class="container mt-1">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="exampleInputEmail1"><b>Fecha desde: </b></label>
+                            <ngb-datepicker [(ngModel)]="fechaDesde" [minDate]="{year: 2010, month: 1, day: 1}"
+                                [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
+                            </ngb-datepicker>
+                        </div>
+                        <div class="col-sm">
+                            <label for="exampleInputEmail1"><b>Fecha hasta: </b></label>
+                            <ngb-datepicker [(ngModel)]="fechaHasta" [minDate]="{year: 2010, month: 1, day: 1}"
+                                [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
+                            </ngb-datepicker>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-success float-right" (click)="onSubmit()">Generar</button>
+            </div>
         </div>
-      </div>
+    </div>
+</main>
+<main role="main" class="container mt-1">
+    <div>
+        <div>
+            <div style="display: block" *ngIf="mostrarGrafico">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                    [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <h5 *ngIf="mostrarGrafico"><i>Desde {{fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day }} hasta {{fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day }}</i></h5>
+</main>

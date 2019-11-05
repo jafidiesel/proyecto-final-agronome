@@ -16,10 +16,10 @@
             <fa-icon [icon]="faEdit" class="mr-1" ></fa-icon> <b>Actividades</b>
         </button>
         <button type="button" routerLink="/recomendaciones/listarRecomendaciones" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'encargadofinca' || rol == 'administrador'">
+            class="list-group-item list-group-item-action" *ngIf="rol == 'ingeniero' || rol == 'administrador'">
             <fa-icon [icon]="faFileMedical" class="mr-1" ></fa-icon> <b>Recomendaciones</b>
         </button>
-        <button type="button" routerLink="/reportes/reporteActividad" routerLinkActive="active"
+        <button type="button" routerLink="/reportes" routerLinkActive="active"
             class="list-group-item list-group-item-action">
             <fa-icon [icon]="faChartPie" class="mr-1" ></fa-icon> Reportes
         </button>
