@@ -65,7 +65,6 @@ export class ReporteSiembraComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._reportesService.getReporteSiembra(this.fechaDesde, this.fechaHasta).subscribe(
         result => {
-          console.warn('result', result);
           this.initDataset(result);
         },
         error => this.onHttpError({ message: "Debe ingresar ambas fechas." })

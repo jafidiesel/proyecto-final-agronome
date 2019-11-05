@@ -65,7 +65,6 @@ export class ReporteRiegoComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._reportesService.getReporteRiego(this.fechaDesde, this.fechaHasta).subscribe(
         result => {
-          console.warn('result', result);
           this.initDataset(result);
         },
         error => this.onHttpError({ message: "Debe ingresar ambas fechas." })
