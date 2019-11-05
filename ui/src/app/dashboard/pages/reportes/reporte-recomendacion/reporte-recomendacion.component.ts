@@ -51,15 +51,6 @@ export class ReporteRecomendacionComponent implements OnInit, OnDestroy {
   ];
 
 
-/*   public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
-
-  public barChartLabels: Label[] = [];
-
-
-  public barChartData: ChartDataSets[] = []; */
-
   mostrarGrafico = false;
 
   constructor(private _reportesService: ReportesService, private router: Router) { }

@@ -41,8 +41,6 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   public barChartPlugins = [pluginDataLabels];
   
   public barChartLabels: Label[] = [];
-
-
   public barChartData: ChartDataSets[] = [];
 
   mostrarGrafico = false;

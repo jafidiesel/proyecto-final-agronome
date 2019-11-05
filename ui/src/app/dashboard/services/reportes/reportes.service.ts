@@ -48,7 +48,12 @@ export class ReportesService {
   getReporteSiembra(fechaDesde:any, fechaHasta:any): Observable<any> {
     let json = {
       fchDesde: String(fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day + " 00:00"),
-      fchHasta: String(fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day + " 23:00")
+      fchHasta: String(fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day + " 23:00"),
+      codActividad: 2,
+      codParamComboDual: 50,
+      codParamIndicador:  54,
+      codOpcionOne: "plantin",
+      codOpcionTwo: "semilla"
     }
     return this.http.post<String>(`http://localhost:9001/api/reporte/actividadDualGfBar`, json);
   }
