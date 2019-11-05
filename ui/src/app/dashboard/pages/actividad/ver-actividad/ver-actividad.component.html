@@ -39,7 +39,7 @@
 
             <button [routerLink]="['/actividades/listarActividades']"
                 class="btn btn-secondary float-left">Volver</button>
-            <button class="btn btn-danger float-right" (click)="openVerticallyCentered(content)">Eliminar
+            <button  *ngIf="rol != 'ingeniero'" class="btn btn-danger float-right" (click)="openVerticallyCentered(content)">Eliminar
                 actividad</button>
         </div>
         <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
