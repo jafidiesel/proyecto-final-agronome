@@ -30,7 +30,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
   municipioName: string;
 
   parcelasTabla = [];
-  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros', 'Activo', 'Rol', 'Editar'];
+  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros'];
   mostrarTabla = false;
 
   // error flags 
@@ -94,7 +94,7 @@ export class EditarFincaComponent implements OnInit, OnDestroy {
                 let index = 0;
                 parcelas.map(parcela => {
                   let cantCuadros = parseInt(parcela.filas) * parseInt(parcela.columnas);
-                  this.parcelasTabla = [...this.parcelasTabla, [parcela.nombre, parcela.superficie, String(parcela.columnas), String(parcela.filas), String(cantCuadros), `./${index}`]];
+                  this.parcelasTabla = [...this.parcelasTabla, [parcela.nombre, parcela.superficie, String(parcela.columnas), String(parcela.filas), String(cantCuadros)]];
                   index++;
                 });
 

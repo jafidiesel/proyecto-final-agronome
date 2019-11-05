@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FincaService } from 'src/app/dashboard/services/finca.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-crear-finca',
@@ -31,7 +32,8 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
     private _fincaService: FincaService,
-    private router: Router) { }
+    private router: Router,
+    private auth: AuthService) { }
 
   ngOnInit() {
 
@@ -197,10 +199,11 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
     if (this.fincaForm.status == 'VALID') {
       this.subscriptions.push(
         this._fincaService.postFinca(this.fincaForm.value).subscribe(
-          result => {
+          (result:any) => {
             this.postSuccess = true;
             this.postError = false;
             this.postErrorMessage = '';
+            this.auth.guardarFinca([result.message], 1, this.auth.getRol());
 
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
