@@ -1,7 +1,7 @@
 from app.api.helperApi.hlUrl import urlUsuario
 from flask import request,make_response,jsonify
 from flask_restplus import Resource
-from app.uses_cases.moduloSeguridad.gestionarUsuarios import postUser,getAllUsers, getUsuario, updateUsuario
+from app.uses_cases.moduloSeguridad.gestionarUsuarios import postUser,getAllUsers, getUsuario, updateUsuario, activateUser, requestRecoverPass, restorePass
 from app.uses_cases.moduloSeguridad.checkUrl import checkUrl
 from app.api.shared.tokenHandler import token_required
 from app.api.helperApi.hlResponse import notCheck
@@ -29,8 +29,22 @@ class UsersHandler(Resource):
         return updateUsuario(data, cod)
      
 
-""" @users.route('/current')
-class UsersHandler(Resource):
-    def get(self, currentUser): """
+@users.route('/account/activate')
+class UsersActivate(Resource):
+    @token_required
+    def get(data,currentUser):
+        return activateUser(currentUser)
+
+
+@users.route('/account/recover')
+class UsersActivate(Resource):
+    def post(self):
+        data = self.api.payload
+        return requestRecoverPass(data)
 
   
+@users.route('/account/restore')
+class UsersActivate(Resource):
+    @token_required
+    def post(data,currentUser):
+        return restorePass(data,currentUser)
