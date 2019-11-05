@@ -87,7 +87,6 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
       cod: attrVal
     });
 
-    console.log('this.asociarParametroForm',this.asociarParametroForm);
   }
 
   actualizarParametroSeleccionado(event){
@@ -134,7 +133,6 @@ export class AsociarActividadComponent implements OnInit, OnDestroy {
     if ( this.asociarParametroForm.status == 'VALID' ) {
       this._configuracionService.postAsociacionForm(this.asociarParametroForm.value).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
 
           this.asociarParametroForm.controls['cod'].disable();

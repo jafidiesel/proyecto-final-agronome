@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<div class="bg-light border-right" id="sidebar-wrapper">
+<div class="bg-light border-right" id="sidebar-wrapper" style="height: 100%;">
     <div class="sidebar-heading" routerLink="home" routerLinkActive="active" style="cursor: pointer;" id="agronome">
         AgronoMe <img src="../../../assets/img/Logo AgronoMe.png" width="90px" alt=""> </div>
     <div class="list-group ">
@@ -30,6 +30,10 @@
         <button type="button" routerLink="/configuracion" routerLinkActive="active"
             class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
             <fa-icon [icon]="faCogs" class="mr-1"></fa-icon> <b> Configuración</b>
+        </button>
+        <button type="button" routerLink="/backup" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
+            <fa-icon [icon]="faDatabase" class="mr-1"></fa-icon> <b> Backup</b>
         </button>
     </div>
 </div>

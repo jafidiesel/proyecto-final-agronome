@@ -213,6 +213,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
+    console.log('nombreActividad',nombreActividad);
+    console.log('codActividad',codActividad);
 
     this.subscriptions.push(
       this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
@@ -329,10 +331,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     formValues.parametro.map(element => {
       if (element.opcion != null) {
         element.opcion.map(opc => {
-          console.log(opc.nombre,optionText);
           if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
             element.valor = this.slugify(optionText);
-            console.log(this.slugify(optionText));
           }
         });
       }

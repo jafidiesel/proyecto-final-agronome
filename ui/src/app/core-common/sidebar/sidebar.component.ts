@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMarkedAlt, faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/auth/auth.service';
 
 
@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit {
   faLock = faLock;
   faCogs = faCogs;
   faMapMarkedAlt = faMapMarkedAlt;
+  faDatabase = faDatabase
 
   constructor(private auth: AuthService) { }
 

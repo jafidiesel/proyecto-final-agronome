@@ -59,6 +59,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
 import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
 import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-riego.component';
+import { BackupComponent } from './pages/backup/backup.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-ri
     ReporteRecomendacionComponent,
     ReporteSiembraComponent,
     ReporteRiegoComponent,
+    BackupComponent,
 
   ],
   imports: [

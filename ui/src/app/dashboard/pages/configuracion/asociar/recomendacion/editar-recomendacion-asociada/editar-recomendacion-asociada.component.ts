@@ -117,7 +117,6 @@ export class EditarRecomendacionAsociadaComponent implements OnInit, OnDestroy {
     if ( this.asociarParametroForm.status == 'VALID' ) {
       this._configuracionService.putAsociacionForm('recomendacionParametro', this.codActividad ,this.asociarParametroForm.value).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
 
           //this.asociarParametroForm.controls['cod'].disable();

@@ -70,7 +70,6 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
     this.asociarParametroForm = this.fb.group({
       parametros: this.fb.array( result.parametros.map( element => this.crearParametro(element) ))
     });
-    console.log('initform',this.asociarParametroForm)
   }
   
   crearParametro( obj: any){
@@ -116,12 +115,10 @@ export class EditarAnalisisAsociadoComponent implements OnInit, OnDestroy {
 
   onSubmitAsociacion() {
     //this.updateOpciones();
-    console.log(this.asociarParametroForm.value);
 
     if ( this.asociarParametroForm.status == 'VALID' ) {
       this._configuracionService.putAsociacionForm('tipoAnalisisParam', this.codActividad ,this.asociarParametroForm.value).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
 
           //this.asociarParametroForm.controls['cod'].disable();

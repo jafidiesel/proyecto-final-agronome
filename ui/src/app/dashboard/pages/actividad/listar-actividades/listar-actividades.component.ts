@@ -24,7 +24,6 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
         (result: any) => { 
           this.actividadesArray.push(this.tableDataHeader);
 
-          console.log('result.ActividadDetalle',result.ActividadDetalle);
           result.ActividadDetalle.map( (element) => {
             this.actividadesArray.push([
               element.actividad.nombreActividad,

@@ -32,8 +32,6 @@ export class EditarNomencladorComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.activatedRoute.params.subscribe( params => {
         this.subscriptions.push(this._configuracionService.getNomenclador(params['tipoNomenclador'] , params['cod'] ).subscribe(
           (result: any) => {
-            console.log(params['tipoNomenclador'] + params['cod'] );
-            console.log(result);
             this.originalNomencladorAcargar.nombre = result.nombre;
             this.originalNomencladorAcargar.isActiv = result.isActiv;
             this.originalNomencladorAcargar.tipoNomenclador = result.tipoNomenclador;
@@ -62,7 +60,6 @@ export class EditarNomencladorComponent implements OnInit, OnDestroy {
     if ( form.controls.nombre.value ) {
       this.subscriptions.push(this._configuracionService.putNomencladorForm(this.nomencladorAcargar).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
           this.resetForm();
         },
