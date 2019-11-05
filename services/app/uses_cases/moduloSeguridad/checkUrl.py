@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -85,6 +85,12 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVDUALBAR = MREPOR + '/actividadDualGfBar'
     MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
+    #MODULO DE PLANIFICACION
+    #Planificacion Inicial
+    MPLAN = '/' + urlPlanificacionInicial.name
+    MPLAN_POST = 'POST' + MPLAN
+    MPLAN_GET = 'GET' + MPLAN + '/'
+
     #PERMISOS:
     default = (
         MSLOG,
@@ -104,7 +110,8 @@ def checkUrl(method,pat,rol):
     
     encargadofinca = (
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT                              #Modulo de finca
+        MGF_POST,MGF_PUT,                              #Modulo de finca
+        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
          ) + default
     
     ingeniero = (  

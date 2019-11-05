@@ -10,6 +10,7 @@ from datetime import datetime
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.repositorio.repositorioUsuario import updateUser,selectAllUser
+from flask_mail import Mail, Message
 
 modelos = {
 "rol":hlmodel.Rol,
@@ -17,56 +18,69 @@ modelos = {
 }
 
 def postUser(data):
-    try:
-        dataLower = obtainDict(data)
-        usuarioJson = dataLower.get('usuario')
-        rolJson = dataLower.get('rol')
-        print(rolJson)
-        #Buscar rol seleccionado
-        rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
-        print(rolRst)
-        fincaListJson =  dataLower.get('finca')
-        print(fincaListJson)
-        #Setear pws con hash
-        #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
-        #Crear usuario
-        usuario = hlmodel.Usuario.from_json(usuarioJson)
-        usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
-        #Generar codPublic
-        usuario.cod = str(uuid.uuid4())
-        print(usuario.cod)
-        #Asociar Finca
-        #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
-        if ((rolRst.nombre == 'supervisor') or (rolRst.nombre == 'ingeniero')):
-            print('En roles')
-            #Si la lista de finca essta vacia, msj de error
-            print(fincaListJson)
-            if not fincaListJson:
-                print('en finca vacio')
-                return make_response(jsonify({'message:':'El usuario debe estar asociado a una Finca'}),404)
+    #try:
+    dataLower = obtainDict(data)
+    usuarioJson = dataLower.get('usuario')
+    rolJson = dataLower.get('rol')
+    print(rolJson)
+    #Buscar rol seleccionado
+    rolRst = selectByCod(hlmodel.Rol, rolJson.get('cod'))
+    print(rolRst)
+    fincaListJson =  dataLower.get('finca')
+    print(fincaListJson)
+    #Setear pws con hash
+    #hashed_password = generate_password_hash(dataLower.get('contraseniaUsuario'), method = 'sha256')
+    #Crear usuario
+    usuario = hlmodel.Usuario.from_json(usuarioJson)
+    usuario.contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
+    #Generar codPublic
+    usuario.cod = str(uuid.uuid4())
+    #Asociar Finca
+    #Verificar tipo de rol asociado para asociar o no, la Finca correspondiente
+    if ((rolRst.nombre == 'supervisor') or (rolRst.nombre == 'ingeniero')):
+        #Si la lista de finca essta vacia, msj de error
+        if not fincaListJson:
+            return make_response(jsonify({'message:':'El usuario debe estar asociado a una Finca'}),404)
 
-            listFincaRst = dataLower.get('finca')
-            for finca in listFincaRst:
-                #Buscar finca para verificar que existe,crear intermedia FincaUsuario y asociarla al usuario
-                from app.repositorio.repositorioGestionarFinca import selectFincaCod
-                fincaRst = selectFincaCod(finca.get('codFinca'))
-                #Crear FincaUsario
-                fincaUsuario = hlmodel.FincaUsuario()
-                fincaUsuario.isActiv = True
-                #Asociar Finca a ficnaUsuario
-                fincaUsuario.finca = fincaRst
-                #Asociar usuario a fincaUsuario
-                usuario.fincaUsuarioList.append(fincaUsuario)            
+        listFincaRst = dataLower.get('finca')
+        for finca in listFincaRst:
+            #Buscar finca para verificar que existe,crear intermedia FincaUsuario y asociarla al usuario
+            from app.repositorio.repositorioGestionarFinca import selectFincaCod
+            fincaRst = selectFincaCod(finca.get('codFinca'))
+            #Crear FincaUsario
+            fincaUsuario = hlmodel.FincaUsuario()
+            fincaUsuario.isActiv = True
+            #Asociar Finca a ficnaUsuario
+            fincaUsuario.finca = fincaRst
+            #Asociar usuario a fincaUsuario
+            usuario.fincaUsuarioList.append(fincaUsuario)            
                 
-        #Asociar rol
-        usuario.rol = rolRst
-        saveEntidadSinCommit(usuario)
-        Commit()
-        return ResponseOk()
-    except Exception as e:
+    #Asociar rol
+    usuario.rol = rolRst
+    saveEntidadSinCommit(usuario)
+    Commit()
+    #Generar token para activacion de usuario
+    
+    #Envio de email
+    #Falta generar token temporario y almacenarlo. Token sin expiracion
+    #Falta generar url para enviarla: localhost:4200/activar/TOKEN
+    #Falta endpoint activar
+    
+    from app.backend import app
+    print(app.config.get('MAIL_USERNAME'))
+    with app.app_context():
+        mail = Mail(app)
+        msg = Message('Activación de cuenta - Agronome', sender = app.config.get('MAIL_USERNAME'), recipients = [usuario.email])
+        texto = 'Bienvenido a Agronome {} \nSus datos de registro son: \n\t -Usuario: {}\n\t -Contraseña: {}\nPara activar su cuenta utilice el siguiente enlace:'.format(usuario.usuario, usuario.usuario, usuario.contraseniaUsuario)
+        msg.body = texto
+        mail.send(msg)
+    
+    
+    return ResponseOk()
+    """ except Exception as e:
         Rollback()
         return ResponseException(e)
-
+    """
 #Listar usuarios. Mostrar 
 def getAllUsers():
     try:

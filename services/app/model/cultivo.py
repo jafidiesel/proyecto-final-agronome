@@ -9,4 +9,7 @@ class Cultivo(db.Model):
     cicloUnico = db.Column('ciclo_unico', Boolean, nullable = False)
     tipoCultivo = db.Column('fk_cod_tipo_cultivo',Integer,ForeignKey('tipo_cultivo.cod_tipo_cultivo'),index = True)
     codEstadoPlanificacion = db.Column('fk_cod_estado_planificacion',Integer,ForeignKey('estado_planificacion.cod_estado_planificacion'),index = True)
+
+    tipoCultivoR = relationship("TipoCultivo", uselist = False) #1->N
+
     
