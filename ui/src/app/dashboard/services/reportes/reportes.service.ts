@@ -31,8 +31,12 @@ export class ReportesService {
   *  
   * POST obtiene el dataset para realizar la grafica de torta de recomendaciones
   */
-  getReporteRecomendacion(json: any): Observable<any> {
-    return this.http.post(`http://localhost:9001/api/recomendacion/actividad`, json);
+  getReporteRecomendacion(fechaDesde:any, fechaHasta:any): Observable<any> {
+    let json = {
+      fchDesde: String(fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day + " 00:00"),
+      fchHasta: String(fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day + " 23:00")
+    }
+    return this.http.post<String>(`http://localhost:9001/api/reporte/recomendacionGfPie`, json);
   }
 
   /**
@@ -41,8 +45,12 @@ export class ReportesService {
   *  
   * POST obtiene el dataset para realizar la grafica de barras de siembra
   */
-  getReporteSiembra(json: any): Observable<any> {
-    return this.http.post(`http://localhost:9001/api/recomendacion/actividad`, json);
+  getReporteSiembra(fechaDesde:any, fechaHasta:any): Observable<any> {
+    let json = {
+      fchDesde: String(fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day + " 00:00"),
+      fchHasta: String(fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day + " 23:00")
+    }
+    return this.http.post<String>(`http://localhost:9001/api/reporte/actividadDualGfBar`, json);
   }
 
 }
