@@ -1,4 +1,4 @@
-<h3 class="display-4">Reporte de Actividades</h3>
+<h3 class="display-4">Reporte de Riego</h3>
 <main role="main" class="container mt-1">
     <div class="card  bg-light">
         <div class="card-body ">
@@ -30,11 +30,14 @@
     <div>
         <div>
             <div style="display: block" *ngIf="mostrarGrafico">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-                    [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
-                </canvas>
+                <div class="chart">
+                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                        [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+                    </canvas>
+                </div>
             </div>
         </div>
     </div>
-    <h5 *ngIf="mostrarGrafico"><i>Desde {{fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day }} hasta {{fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day }}</i></h5>
+    <h5 *ngIf="mostrarGrafico"><i>Desde {{fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day }} hasta
+            {{fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day }}</i></h5>
 </main>

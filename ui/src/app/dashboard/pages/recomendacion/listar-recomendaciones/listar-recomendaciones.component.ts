@@ -28,7 +28,6 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
       this._recomendacionService.getListasActividad().subscribe(
         (result: any) => {
           this.aRecomendarArray.push(this.tableDataHeaderReco);
-          console.log('result.actvidadesARecomendar',result.actvidadesARecomendar.length);
           result.actvidadesARecomendar.map((actividad: any) => {
             this.aRecomendarArray.push([
               actividad.actividad.nombreActividad,
@@ -37,11 +36,10 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
               `*/recomendaciones/registrarRecomendacion/${actividad.codActivDetalle}`
             ]);
           });
-          console.log('aRecomendarArray',this.aRecomendarArray);
           this.mostrarTablaARecomendar = true;
           
           this.recomendadasArray.push(this.tableDataHeader);
-          console.log('result.actividadesRecomendadas',result.actividadesRecomendadas.length);
+
           result.actividadesRecomendadas.map((actividad: any) => {
             this.recomendadasArray.push([
               actividad.actividad.nombreActividad,
@@ -50,7 +48,6 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
               `%/recomendaciones/verRecomendacion/${actividad.codActivDetalle}/${actividad.codRecomDetalle}`
             ]);
           });
-          console.log('recomendadasArray',this.recomendadasArray);
           this.mostrarTablaRecomendadas = true;
 
           

@@ -209,13 +209,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         break;
     }
 
-  }
+  } 
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
+    this.codActividad = codActividad;
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
+      this._actividadService.getEstructuraActividad(codActividad).subscribe(
         result => {
           this.initForm(result);
         },
@@ -329,10 +330,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     formValues.parametro.map(element => {
       if (element.opcion != null) {
         element.opcion.map(opc => {
-          console.log(opc.nombre,optionText);
           if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
             element.valor = this.slugify(optionText);
-            console.log(this.slugify(optionText));
           }
         });
       }

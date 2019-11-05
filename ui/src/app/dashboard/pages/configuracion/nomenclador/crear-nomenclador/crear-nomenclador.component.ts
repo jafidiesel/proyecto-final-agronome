@@ -50,7 +50,6 @@ export class CrearNomencladorComponent implements OnInit, OnDestroy {
     if ( form.controls.tipoNomenclador.value && form.controls.nombre.value ) {
       this.subscriptions.push(this._configuracionService.postNomencladorForm(this.nomencladorAEnviar).subscribe(
         result => {
-          console.log('Enviado.');
           this.postSuccess = true;
           this.postError = false;
           this.resetForm();

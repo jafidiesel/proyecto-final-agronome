@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
 import { ReportesService } from 'src/app/dashboard/services/reportes/reportes.service';
 
 @Component({
-  selector: 'app-reporte-actividad',
-  templateUrl: './reporte-actividad.component.html'
+  selector: 'app-reporte-recomendacion',
+  templateUrl: './reporte-recomendacion.component.html'
 })
-export class ReporteActividadComponent implements OnInit, OnDestroy {
+export class ReporteRecomendacionComponent implements OnInit, OnDestroy {
 
   fechaDesde: any;
   fechaHasta: any;
@@ -23,25 +23,33 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   postErrorMessage = '';
 
 
-  public barChartOptions: ChartOptions = {
+  // Pie
+  public pieChartOptions: ChartOptions = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
+    legend: {
+      position: 'top',
+    },
     plugins: {
       datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        },
+      },
     }
   };
 
+  public pieChartLabels: Label[] = [];
+  public pieChartData: number[] = [];
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [pluginDataLabels];
+  public pieChartColors = [
+    {
+      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+    },
+  ];
 
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
-  
-  public barChartLabels: Label[] = [];
-  public barChartData: ChartDataSets[] = [];
 
   mostrarGrafico = false;
 
@@ -62,7 +70,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   onSubmit() {
 
     this.subscriptions.push(
-      this._reportesService.getReporteActividad(this.fechaDesde, this.fechaHasta).subscribe(
+      this._reportesService.getReporteRecomendacion(this.fechaDesde, this.fechaHasta).subscribe(
         result => {
           this.initDataset(result);
         },
@@ -73,19 +81,17 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   }
 
 
-  initDataset(form){
-    this.barChartData = [];
-    this.barChartData.push(
-      {
-        data: form.dataset.data, label: "número de actividades"
-      }
-    );
-    this.barChartLabels = form.label;
+  initDataset(form) {
+    this.pieChartData = [];
+    let tempIntArray = form.dataset.number.map(element => parseInt(element));
+    this.pieChartData.push( tempIntArray );
+    let tempLabelArray = form.label.map(element => element == "activARecomendar" ? "Actividades a recomendar" : "Actividades recomendadas");
+    this.pieChartLabels = tempLabelArray;
     this.mostrarGrafico = true;
 
   }
 
-  mostrar(){
+  mostrar() {
     this.mostrarGrafico = !this.mostrarGrafico;
   }
 
@@ -99,5 +105,4 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
-
 }
