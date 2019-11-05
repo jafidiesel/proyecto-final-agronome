@@ -213,11 +213,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
-    console.log('nombreActividad',nombreActividad);
-    console.log('codActividad',codActividad);
+    this.codActividad = codActividad;
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
+      this._actividadService.getEstructuraActividad(codActividad).subscribe(
         result => {
           this.initForm(result);
         },
