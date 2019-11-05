@@ -42,6 +42,7 @@ import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion
 import { ReporteActividadComponent } from './dashboard/pages/reportes/reporte-actividad/reporte-actividad.component';
 import { ReporteRecomendacionComponent } from './dashboard/pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
 import { ReporteSiembraComponent } from './dashboard/pages/reportes/reporte-siembra/reporte-siembra.component';
+import { ReporteRiegoComponent } from './dashboard/pages/reportes/reporte-riego/reporte-riego.component';
 
 
 const routes: Routes = [
@@ -101,7 +102,8 @@ const routes: Routes = [
   { path: 'reportes', component: ReportesPageComponent },
   { path: 'reportes/reporteActividad', component: ReporteActividadComponent },
   { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
-  { path: 'reportes/reportesiembra', component: ReporteSiembraComponent },
+  { path: 'reportes/reporteSiembra', component: ReporteSiembraComponent },
+  { path: 'reportes/reporteRiego', component: ReporteRiegoComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */];
 

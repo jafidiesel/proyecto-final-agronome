@@ -58,6 +58,7 @@ import { ReporteActividadComponent } from './pages/reportes/reporte-actividad/re
 import { ChartsModule } from 'ng2-charts';
 import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
 import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
+import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-riego.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +108,7 @@ import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/report
     ReporteActividadComponent,
     ReporteRecomendacionComponent,
     ReporteSiembraComponent,
+    ReporteRiegoComponent,
 
   ],
   imports: [
