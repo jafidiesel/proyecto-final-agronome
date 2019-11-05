@@ -1,0 +1,74 @@
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4" >Asociar Actividad</h3>
+            </div>
+            
+            <form (ngSubmit)="onSubmitAsociacion()" [formGroup]="asociarParametroForm">
+
+                <div class="form-group" *ngIf="listaNomencladoresActividad == null" >
+                    <label for="parametroInput" class=" col-form-label">Nomenclador Actividad * </label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="tipoNomenclador" name="tipoNomenclador" formControlName="cod" (change)="actualizarNomencladorActividad($event)" >
+                            <option selected value="null">Seleccione un nomenclador actividad</option>
+                            <option *ngFor="let nomencladorActividadArray of listaNomencladoresActividadArray" [value]="nomencladorActividadArray.cod" >
+                                {{ nomencladorActividadArray.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <h6 class="border-bottom border-gray pb-2 mb-0"> Parametros </h6>
+                <div formArrayName="parametros">
+                    <div class="media text-muted pt-3" *ngFor="let parametro of parametrosElegidos">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray"  >
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark"> {{ parametro.nombre }} </strong>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(parametro)" [disabled]="postSuccess" ><fa-icon [icon]="faTrashAlt"></fa-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media text-muted pt-3">
+                    <div class="media-body pb-3 mb-0 small lh-125 ">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+
+                            <select  name="selectedOption" class="custom-select" id="inputGroupSelect01" (change)="actualizarParametroSeleccionado($event)" [disabled]="postSuccess" >
+                                <option>Seleccione un Parámetro</option>
+                                <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray" [value]="tipoParametroSelectArray.cod"  >
+                                    {{tipoParametroSelectArray.nombre}}
+                                </option>
+                            </select>
+
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()" [disabled]="postSuccess" >Agregar Parámetro</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Actividad asociada correctamente !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5 ">Crear</button>
+                        <button [routerLink]="['/configuracion/asociar/listarActividades']" type="button" class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</main>

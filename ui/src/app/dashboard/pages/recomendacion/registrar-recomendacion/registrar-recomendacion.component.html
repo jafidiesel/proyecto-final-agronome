@@ -1,0 +1,207 @@
+<main role="main" class="container mt-4">
+    <!-- actividad  -->
+    <div class="card m-3" *ngIf="actividadForm != null" [formGroup]="actividadForm">
+        <div class="card-header">
+            Actividad
+            {{ actividadForm.value.nombreActividad.charAt(0).toUpperCase() +  actividadForm.value.nombreActividad.slice(1) }}
+        </div>
+        <div class="card-body">
+
+            <div class="form-group row">
+                <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Fecha y hora:</b>
+                </label>
+                <div class="col-sm-5 col-form-label">
+                    <p>{{actividadForm.value.fchActivDetalle}}</p>
+
+                </div>
+            </div>
+            <div *ngFor="let parametro of actividadForm.get('parametro').controls; let i = index">
+                <div class="form-group row">
+                    <label for="{{parametro.value.nombreParametro}}"
+                        class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                    </label>
+                    <div class="col-sm-5 col-form-label">
+                        <p>{{parametro.value.valor}}</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <label for="observacion" class="col-sm-5 col-form-label text-right"><b>Observación:</b>
+                </label>
+                <div class="col-sm-5 col-form-label">
+                    <p>{{actividadForm.value.observacion}}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ---------------------------------------------------- -->
+    <!-- recomendacion -->
+    <div class="card m-3">
+        <form [formGroup]="recomendacionForm" (ngSubmit)="onSubmit()" *ngIf="
+                recomendacionForm != null ">
+            <div class="card-header">
+                Recomendación: {{ nombreRecomendacion.charAt(0).toUpperCase() +  nombreRecomendacion.slice(1) }}
+            </div>
+            <div class="card-body">
+
+                <div class="form-group row">
+                    <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Fecha y hora:</b>
+                    </label>
+                    <div class="col-sm-5">
+                        <ngb-timepicker formControlName="tempHora"></ngb-timepicker>
+                        <ngb-datepicker #dp formControlName="tempFecha" (select)="onDateSelection($event)"
+                            (navigate)="date = $event.next" [minDate]="{year: 2010, month: 1, day: 1}"
+                            [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled">
+                        </ngb-datepicker>
+
+                    </div>
+                </div>
+
+
+                <div *ngFor="let parametro of recomendacionForm.get('parametro').controls; let i = index"
+                    formArrayName="parametro">
+                    <div [ngSwitch]="parametro.value.tipo">
+                        <div *ngSwitchCase="'string'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b>
+                            </label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'time'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b>
+                            </label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'date'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b>
+                            </label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="text" id="{{parametro.value.nombre}}"
+                                    placeholder="Ingrese su texto aqui." [value]="parametro.value.valor"
+                                    (change)="actualizarValorParametro($event)" required />
+                            </div>
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                        <div *ngSwitchCase="'int'" class="form-group row">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b></label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="number"
+                                    id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
+                                    [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
+                                    required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'double'" class="form-group row text-right">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b></label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="number"
+                                    id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
+                                    [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
+                                    required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'combo'" class="form-group row text-right">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b></label>
+                            <div class=" col-sm-5">
+                                <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)">
+                                    <option selected>Seleccione una opción</option>
+                                    <option *ngFor="let opcion of parametro.value.opcion; let i = index"
+                                        (value)="opcion.nombre">
+                                        {{opcion.nombre}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'float'" class="form-group row text-right">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b></label>
+                            <div class="col-sm-5">
+                                <input class="form-control input-parametros" type="number"
+                                    id="{{parametro.value.nombre}}" placeholder="Ingrese su numero aqui."
+                                    [value]="parametro.value.valor" (change)="actualizarValorParametro($event)"
+                                    required />
+                                <!-- formControlName="{{parametro.codParam}}" -->
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'enumeration'" class="form-group">
+                            <label for="{{parametro.value.nombre}}"
+                                class="col-sm-5 text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
+                                    *</b></label>
+                            <div *ngFor="let opcion of parametro.value.opcion; let i = index" class="col-sm-5">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input input-parametros" [id]="i"
+                                        (value)="parametro.value.valor">
+                                    <label class="custom-control-label"
+                                        [for]="i">{{opcion.nombre.charAt(0).toUpperCase() + opcion.nombre.slice(1)}}</label>
+                                </div>
+                            </div>
+                            <!-- <input class="form-control" type="number" id="{{parametro.value.nombre}}"
+                                placeholder="Ingrese su numero aqui." /> -->
+                            <!-- formControlName="{{parametro.codParam}}" -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="observacion" class="col-sm-5 col-form-label text-right"><b>Observación:</b>
+                    </label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            formControlName="observacion" required></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <button [routerLink]="['/recomendaciones/listarRecomendaciones']"
+                class="btn btn-secondary float-left m-3">Volver</button>
+            <button type="submit" class="btn btn-success btn-lg float-right m-3">
+                Registrar</button>
+
+        </form>
+    </div>
+
+    <div class="alert alert-info italic" role="alert">
+        Los campos marcados con * son obligatorios.
+    </div>
+
+    <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+        ¡ Actividad Eliminada exitosamente !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div [hidden]="!postError" class="alert alert-danger">
+        {{ postErrorMessage }}
+    </div>
+
+
+</main>

@@ -1,0 +1,126 @@
+<main role="main" class="container mt-4" *ngIf="fincaForm != null">
+    <h1 class="display-4">Finca: <i>{{nombreFinca}}</i></h1>
+
+    <form [formGroup]="fincaForm" (ngSubmit)="onSubmit()">
+        <div class="card m-3">
+            <div class="card-header">
+                Datos del campo
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="nombreFinca">Nombre de la finca <b>*</b></label>
+                        <input type="text" class="form-control" id="nombreFinca"
+                            placeholder="Ingrese el nombre de su finca." formControlName="nombre">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="superficieFinca">Superficie <b>*</b></label>
+                        <input type="number" class="form-control" id="superficieFinca"
+                            placeholder="Ingrese la superficie de su finca" formControlName="superficie">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="nombreFinca">Calle <b>*</b></label>
+                        <input type="text" class="form-control" id="calleFinca"
+                            placeholder="Ingrese la calle de su finca." formControlName="calle">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="nroFinca">Número <b>*</b></label>
+                        <input type="number" class="form-control" id="nroFinca"
+                            placeholder="Ingrese el número de su finca" formControlName="nro">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="provinciaFinca">Provincia <b>*</b></label>
+                        <select class="custom-select" id="provinciaFinca" formControlName="provinciaCod"
+                            (change)="seleccionProvincia($event)" *ngIf="provinciasArray != '' else loading1">
+                            <option *ngFor="let provincia of provinciasArray" [value]="provincia.id"
+                                [attr.data-nombre]="provincia.nombre">
+                                {{provincia.nombre}}</option>
+                        </select>
+                        <ng-template #loading1>
+                            <br>
+                            <button class="btn btn-info" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando...
+                            </button>
+                        </ng-template>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="localidadFinca">Localidad <b>*</b></label>
+                        <select class="custom-select" id="localidadFinca" formControlName="localidadCod"
+                            *ngIf="municipiosArray != '' else loading2" (change)="seleccionMunicipio($event)">
+                            <option *ngFor="let municipio of municipiosArray " [value]="municipio.id">
+                                {{municipio.nombre}}</option>
+                        </select>
+                        <ng-template #loading2>
+                            <br>
+                            <button class="btn btn-info" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando...
+                            </button>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="form-row">
+                    
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <a [href]="urlMap" target="_blank">
+                                    <fa-icon class="ml-3  fa-7x" [icon]="faMapMarkedAlt"></fa-icon>
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Ubicación de la finca en google maps.</h5>
+                                    <p class="card-text">Clickeando el ícono puede encontrar la ubicación de su finca generada automáticamente acorde a su dirección ingresada.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <button type="submit" class="btn btn-success float-right">Guardar</button>
+                </div> -->
+            </div>
+        </div>
+
+
+        <div class="card m-3">
+            <div class="card-header">
+                Distribución de la finca <b>*</b>
+            </div>
+            <div class="card-body">
+                <div class="row animated fadeIn">
+                    <div class="col">
+                        <app-table [tableData]="parcelasTabla" (eventClick)="quitarFila($event)" *ngIf="mostrarTabla"></app-table>
+                    </div>
+                </div>
+                <button class="btn btn-primary  animated fadeIn " type="button" disabled *ngIf="!mostrarTabla">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Actualizando...
+                </button>
+                <button type="button" class="btn btn-primary" (click)="agregarParcelas()" *ngIf="mostrarTabla">Agregar
+                    parcela</button>
+            </div>
+        </div>
+
+        <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+            ¡ Finca editada exitosamente !
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <div [hidden]="!postError" class="alert alert-danger">
+                    {{ postErrorMessage }}
+                </div>
+                <button type="submit" class="btn btn-success btn-lg float-right mr-5">Editar finca</button>
+            </div>
+        </div>
+    </form>
+</main>

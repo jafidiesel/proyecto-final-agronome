@@ -1,0 +1,41 @@
+<!-- Sidebar -->
+<div class="bg-light border-right" id="sidebar-wrapper" style="height: 100%;">
+    <div class="sidebar-heading" routerLink="home" routerLinkActive="active" style="cursor: pointer;" id="agronome">
+        AgronoMe <img src="../../../assets/img/Logo AgronoMe.png" width="90px" alt=""> </div>
+    <div class="list-group ">
+        <button type="button" routerLink="/finca/editarFinca" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'encargadofinca'" (click)="actualizarNombreFinca()" >
+            <fa-icon [icon]="faMapMarkedAlt" class="mr-1" ></fa-icon><b>Finca</b> {{nombreFinca}}
+        </button>
+        <button type="button" disabled routerLink="/planificacion" routerLinkActive="active"
+            class="list-group-item list-group-item-action">
+            <fa-icon [icon]="faListAlt" class="mr-1" ></fa-icon> Planificación
+        </button>
+        <button type="button" routerLink="/actividades/listarActividades" routerLinkActive="active"
+            class="list-group-item list-group-item-action">
+            <fa-icon [icon]="faEdit" class="mr-1" ></fa-icon> <b>Actividades</b>
+        </button>
+        <button type="button" routerLink="/recomendaciones/listarRecomendaciones" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'ingeniero' || rol == 'administrador'">
+            <fa-icon [icon]="faFileMedical" class="mr-1" ></fa-icon> <b> Recomendaciones</b>
+        </button>
+        <button type="button" routerLink="/reportes" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol != 'supervisor'" >
+            <fa-icon [icon]="faChartPie" class="mr-1" ></fa-icon><b>Reportes</b>
+        </button>
+        <button type="button" routerLink="/seguridad" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'" >
+            <fa-icon [icon]="faLock" class="mr-1" ></fa-icon> <b> Seguridad</b>
+        </button>
+        <button type="button" routerLink="/configuracion" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
+            <fa-icon [icon]="faCogs" class="mr-1"></fa-icon> <b> Configuración</b>
+        </button>
+        <button type="button" routerLink="/backup" routerLinkActive="active"
+            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
+            <fa-icon [icon]="faDatabase" class="mr-1"></fa-icon> <b> Backup</b>
+        </button>
+    </div>
+</div>
+
+<!-- /#sidebar-wrapper-->

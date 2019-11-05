@@ -1,0 +1,106 @@
+<main role="main" class="container mt-4">
+    <div class="card  bg-light">
+        <div class="card-body ">
+            <div>
+                <h3 class="display-4">Nuevo Parámetro</h3>
+            </div>
+
+            <form (ngSubmit)="onSubmitParametro()" [formGroup]="crearParametroForm">
+
+                <div class="form-group" formGroupName="parametro">
+                    <label for="nameInput">Nombre *</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" aria-describedby="nameHelp"
+                        placeholder="Ingrese nombre" formControlName="nombre">
+                </div>
+
+                <div class="form-group" formGroupName="tipoParametro">
+                    <label for="parametroInput" class=" col-form-label">Tipo Parametro * </label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="cod">
+                            <option *ngFor="let tipoParametroSelectArray of tiposParametrosSelectArray"
+                                [value]="tipoParametroSelectArray.cod">
+                                {{ tipoParametroSelectArray.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" formGroupName="tipoDato">
+                    <label for="parametroInput" class=" col-form-label">Tipo Dato * </label>
+                    <div class="input-group ">
+                        <select class="custom-select" id="tipoParametro" name="tipoParametro" formControlName="cod">
+                            <option *ngFor="let tipoDatoSelectArray of tiposDatosSelectArray"
+                                [value]="tipoDatoSelectArray.cod">
+                                {{ tipoDatoSelectArray.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group form-check" formGroupName="parametro">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="isActiv" name="isActiv"
+                            formControlName="isActiv">
+                        <label class="custom-control-label" for="isActiv">Activo</label>
+                    </div>
+                </div>
+
+                <h6 class="border-bottom border-gray pb-2 mb-0"> Opciones </h6>
+                <div formArrayName="opcion">
+                    <div class="media text-muted pt-3" *ngFor="let option of opcionesElegidas">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="text-gray-dark"> {{ option.nombre }} </strong>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="quitarItem(option)">
+                                    <fa-icon [icon]="faTrashAlt"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="media text-muted pt-3">
+                    <div class="media-body pb-3 mb-0 small lh-125 ">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+
+                            <select name="selectedOption" class="custom-select" id="inputGroupSelect01"
+                                (change)="actualizaropcionSeleccionada($event)">
+                                <option>Seleccione una opcion</option>
+                                <option *ngFor="let tipoOpcioneSelectArray of tiposOpcionesSelectArray"
+                                    [value]="tipoOpcioneSelectArray.cod">
+                                    {{tipoOpcioneSelectArray.nombre}}
+                                </option>
+                            </select>
+
+                            <button type="button" class="btn btn-success btn-sm" (click)="agregarItem()">Agregar
+                                Opcion</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+                    ¡ Parametro Creado !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="alert alert-light italic" role="alert">
+                    Los campos marcados con * son obligatorios.
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <div [hidden]="!postError" class="alert alert-danger">
+                            {{ postErrorMessage }}
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg float-right mr-5">Crear</button>
+                        <button [routerLink]="['/configuracion/listarParametros']" type="button"
+                            class="btn btn-secondary btn-lg float-left ml-5">Volver</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</main>
