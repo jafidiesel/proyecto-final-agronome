@@ -10,3 +10,4 @@ flask-cors
 psycopg2
 pyjwt
 werkzeug
+flask_mail

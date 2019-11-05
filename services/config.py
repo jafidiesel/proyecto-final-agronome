@@ -65,3 +65,4 @@ config = {
     'development': DevelopmentConfig,
     'default': DevelopmentConfig
 }
+
