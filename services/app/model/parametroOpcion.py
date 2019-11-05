@@ -12,7 +12,7 @@ class ParametroOpcion(db.Model):
         
         
     opcion = relationship("Opcion")
-    print("Opcion relationship") 
+    #print("Opcion relationship") 
 
     @staticmethod
     #def from_json(json):

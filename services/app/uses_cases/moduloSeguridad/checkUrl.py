@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -30,15 +30,21 @@ def checkUrl(method,pat,rol):
         url = MC
     
 
-    #Modulo de seguridad  
+    #Modulo de seguridad 
+    isAccount = False
+    MSACC = urlUsuario.name + '/account'
+    if url.count(MSACC)>0:
+        isAccount = True
+        url = MSACC 
+
     isLogin=False 
     MSLOG = urlLogin.name #login     
-    if url.count(MSLOG)>0:
+    if url.count(MSLOG)>0 and not isAccount:
         isLogin = True
         url = MSLOG
 
     MSUSU =  urlUsuario.name  #usuario
-    if url.count(MSUSU)>0 and not isLogin: #tengo que hacer esta logica porque comparten url con el login
+    if url.count(MSUSU)>0 and not isLogin and not isAccount: #tengo que hacer esta logica porque comparten url con el login
         url = MSUSU
 
 
@@ -71,41 +77,53 @@ def checkUrl(method,pat,rol):
     HLA = '/' + urlAnalisis.name
     HLA_POST = 'POST' + HLA
     HLA_GET  = 'GET' + HLA + '/'
-
+    HLA_PARAM = 'GET' + HLA + '/parametros/'
     #-plan
     HLP = '/' + urlPlan.name
     HLP_POST = 'POST' + HLP
     HLP_GET  = 'GET' + HLP + '/'
+    HLP_PARAM = 'GET' + HLP + '/parametros/'
 
+    #MODULO DE REPORTES
+    MREPOR = 'POST/' + urlReporte.name #son todos POST
+    MREPOR_ACTIVBAR = MREPOR + '/actividadGfBar'
+    MREPOR_RECOMPIE = MREPOR + '/recomendacionGfPie'
+    MREPOR_ACTIVDUALBAR = MREPOR + '/actividadDualGfBar'
+    MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
-
-
-
+    #MODULO DE PLANIFICACION
+    #Planificacion Inicial
+    MPLAN = '/' + urlPlanificacionInicial.name
+    MPLAN_POST = 'POST' + MPLAN
+    MPLAN_GET = 'GET' + MPLAN + '/'
 
     #PERMISOS:
     default = (
-        MSLOG,
+        MSLOG,MSACC,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        HLA_GET, HLA_POST, HLP_POST, HLP_GET                                      #Helper
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte
         ) #todos
 
     administrador = (
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT,                            #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MGF_POST,MGF_PUT,                             #Modulo de finca
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
     ) + default
     
     encargadofinca = (
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
-        MGF_POST,MGF_PUT                              #Modulo de finca
+        MGF_POST,MGF_PUT,                              #Modulo de finca
+        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
          ) + default
     
     ingeniero = (  
         MAREG_GETS, MAREG_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
          )+ default
 
     supervisor = (  
@@ -122,7 +140,6 @@ def checkUrl(method,pat,rol):
     }
 
     isCheck = url in roles[rol]
-    print(url)
-
+    #print(url)
     return isCheck
     

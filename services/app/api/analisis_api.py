@@ -1,6 +1,6 @@
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlAnalisis
-from app.uses_cases.analisis.gestionarAnalisis import postAnalisis, getAnalisisCod
+from app.uses_cases.analisis.gestionarAnalisis import postAnalisis, getAnalisisCod, getParamAnalisisFull
 from app.api.shared.tokenHandler import token_required
 ## ESTE OBJETO ES UN HELPER;
 
@@ -18,3 +18,12 @@ class AnalisisHandler(Resource):
     @token_required
     def get(data,currentUser,codAnalisis):
         return getAnalisisCod(data,codAnalisis)
+
+@analisis.route('/parametros/<int:codTipoAnalisis>')
+class AnalisisParamHandler(Resource):
+    @token_required
+    def get(data,currentUser,codTipoAnalisis):
+        return getParamAnalisisFull(data,codTipoAnalisis)
+
+
+

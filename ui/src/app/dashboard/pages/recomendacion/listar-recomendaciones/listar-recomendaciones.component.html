@@ -1,0 +1,17 @@
+<h1 class="display-4 m-3" *ngIf="mostrarTablaARecomendar">
+    Actividades a recomendar
+</h1>
+
+<div class="row" *ngIf="mostrarTablaARecomendar">
+    <div class="col">
+        <app-table [tableData]="this.aRecomendarArray"></app-table>
+    </div> 
+</div>
+<h1 class="display-4 m-3" *ngIf="mostrarTablaRecomendadas">
+    Actividades recomendadas
+</h1>
+<div class="row" *ngIf="mostrarTablaRecomendadas">
+    <div class="col">
+        <app-table [tableData]="this.recomendadasArray"></app-table>
+    </div>
+</div>

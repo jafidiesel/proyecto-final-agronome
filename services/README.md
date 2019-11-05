@@ -88,6 +88,43 @@ _📌 Para impactar todos los cambios se debe realizar un upgrade_
  app.py db upgrade 
 ```
  
+## Backup de la base de datos ⚙️
+_Para poder realizar un backup completo de las tablas y datos se deben realizar los siguientes pasos_
+
+⚙️Abrir el cmd como administrador e ir al path bin donde esta instalado postgres
+```
+cd C:\Program Files\PostgreSQL\9.6\bin
+```
+⚙️Correr el comando y completar los literales que se encuentran entre comillas simples:
+
+pg_dump -U 'usuario' -W -h 'host' 'database' > 'backup.sql' 
+```
+pg_dump -U postgres -W -h localhost agronome > agronomeBackup.sql
+```
+
+* Se crear el archivo agronomeBackup.sql en la carpeta C:\Program Files\PostgreSQL\9.6\bin , en donde se visualiza el script sql 
+
+⚙️Para restaurar lanzamos el comando:
+
+psql -U 'usuario' -W -h 'host' 'database' < 'backup.sql'
+```
+psql -U postgres -W -h localhost agronome < agronomeBackup.sql
+```
+
+
+⚙️Para realizar el backup de solo una TABLA en particular:
+
+pg_dump -U 'usuario' -W -h 'host' 'database' -t 'tablename' > 'backup.sql' 
+```
+pg_dump -U postgres -W -h localhost -t actividad agronome > actividadbackup.sql
+```
+## Link de interes para backup con postgres ✒️
+
+✒️ [Postgres - pgdump documentación oficial ](https://www.postgresql.org/docs/9.1/app-pgdump.html)
+
+✒️ [Tutorial para crear un backup](https://platzi.com/tutoriales/1480-postgresql/2252-como-generar-una-backup-de-postgresql-y-como-restaurarla/)
+
+✒️ [Especificaciones del comando pgdump](http://es.tldp.org/Postgresql-es/web/navegable/user/app-pgdump.html)
 
 ## Crear un nuevo end point  📄
 

@@ -3,12 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { RecomendacionesPageComponent } from './dashboard/pages/recomendaciones-page/recomendaciones-page.component';
 import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
-import { SeguridadPageComponent } from './dashboard/pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
-import { ReportesPageComponent } from './dashboard/pages/reportes-page/reportes-page.component';
-import { ListarRecomendacionesComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { ReportesPageComponent } from './dashboard/pages/reportes/reportes-page/reportes-page.component';
+import { ListarRecomendacionesAsociadasComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
 import { ListarParametrosComponent } from './dashboard/pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './dashboard/pages/configuracion/parametro/crear-parametro/crear-parametro.component';
 import { EditarParametroComponent } from './dashboard/pages/configuracion/parametro/editar-parametro/editar-parametro.component';
@@ -37,6 +35,17 @@ import { DashboardPageComponent } from './dashboard/pages/dashboard-page/dashboa
 import { PantallaComponent } from './pantalla/pantalla.component';
 import { LoginPageComponent } from './login/login-page/login-page.component';
 import { CrearFincaComponent } from './dashboard/pages/finca/crear-finca/crear-finca.component';
+import { EditarFincaComponent } from './dashboard/pages/finca/editar-finca/editar-finca.component';
+import { ListarRecomendacionesComponent } from './dashboard/pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { VerRecomendacionComponent } from './dashboard/pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
+import { RegistrarRecomendacionComponent } from './dashboard/pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
+import { ReporteActividadComponent } from './dashboard/pages/reportes/reporte-actividad/reporte-actividad.component';
+import { ReporteRecomendacionComponent } from './dashboard/pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
+import { ReporteSiembraComponent } from './dashboard/pages/reportes/reporte-siembra/reporte-siembra.component';
+import { ReporteRiegoComponent } from './dashboard/pages/reportes/reporte-riego/reporte-riego.component';
+import { BackupComponent } from './dashboard/pages/backup/backup.component';
+import { ActivarComponent } from './login/activar/activar.component';
+import { ResetComponent } from './login/reset/reset.component';
 
 
 const routes: Routes = [
@@ -55,8 +64,11 @@ const routes: Routes = [
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
+  { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
-  { path: 'recomendaciones', component: RecomendacionesPageComponent },
+  { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
+  { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
+  { path: 'recomendaciones/registrarRecomendacion/:codAct', component: RegistrarRecomendacionComponent },
   /* Modulo Gestionar Recursos */
   { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
@@ -72,7 +84,7 @@ const routes: Routes = [
   { path: 'configuracion/asociar/asociarActividad', component: AsociarActividadComponent },
   { path: 'configuracion/asociar/editarActividad/:cod', component: EditarActividadAsociadaComponent },
   { path: 'configuracion/asociar/asociarRecomendacion', component: AsociarRecomendacionComponent},
-  { path: 'configuracion/asociar/listarRecomendaciones', component: ListarRecomendacionesComponent},
+  { path: 'configuracion/asociar/listarRecomendaciones', component: ListarRecomendacionesAsociadasComponent},
   { path: 'configuracion/asociar/editarRecomendacion/:cod', component: EditarRecomendacionAsociadaComponent},
   { path: 'configuracion/asociar/listarAnalisis', component: ListarAnalisisComponent },
   { path: 'configuracion/asociar/asociarAnalisis', component: AsociarAnalisisComponent },
@@ -91,8 +103,17 @@ const routes: Routes = [
   { path: 'configuracion/editarParametro/:cod', component: EditarParametroComponent },
   /* Modulo Reportes */
   { path: 'reportes', component: ReportesPageComponent },
+  { path: 'reportes/reporteActividad', component: ReporteActividadComponent },
+  { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
+  { path: 'reportes/reporteSiembra', component: ReporteSiembraComponent },
+  { path: 'reportes/reporteRiego', component: ReporteRiegoComponent },
+  { path: 'backup', component: BackupComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
- */];
+ */
+  { path: 'backup', component: BackupComponent },
+  { path: 'activar', component: ActivarComponent },
+  { path: 'reset', component: ResetComponent },
+  ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

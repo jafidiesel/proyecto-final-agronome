@@ -21,6 +21,11 @@ from app.model.session import SessionUser
 from app.model.finca import Finca
 from app.model.parcela import Parcela
 from app.model.cuadro import Cuadro
+from app.model.planificacion import Planificacion
+from app.model.cultivo import Cultivo
+from app.model.cuadroCultivo import CuadroCultivo
+from app.model.grupoPlanificacion import GrupoPlanificacion
+from app.model.grupoCuadro import GrupoCuadro
 
 
 from app.model.actividadParametro import ActividadParametro

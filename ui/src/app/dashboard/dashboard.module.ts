@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './../auth/token.interceptor';
 
 import { CoreCommonModule } from '../core-common/core-common.module';
 
@@ -9,17 +11,15 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
 import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
 import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
-import { RecomendacionesPageComponent } from './pages/recomendaciones-page/recomendaciones-page.component';
-import { SeguridadPageComponent } from './pages/seguridad-page/seguridad-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
-import { ReportesPageComponent } from './pages/reportes-page/reportes-page.component';
+import { ReportesPageComponent } from './pages/reportes/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
 
 /* Actividad */
 import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
 
 /* Configuracion */
-import { ListarRecomendacionesComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { ListarRecomendacionesAsociadasComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
 import { ListarNomencladoresComponent } from './pages/configuracion/nomenclador/listar-nomencladores/listar-nomencladores.component';
 import { ListarParametrosComponent } from './pages/configuracion/parametro/listar-parametros/listar-parametros.component';
 import { CrearParametroComponent } from './pages/configuracion/parametro/crear-parametro/crear-parametro.component';
@@ -50,14 +50,22 @@ import { ListarActividadesComponent } from './pages/actividad/listar-actividades
 import { VerActividadComponent } from './pages/actividad/ver-actividad/ver-actividad.component';
 import { EditarUsuarioComponent } from './pages/seguridad/editar-usuario/editar-usuario.component';
 import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.component';
+import { EditarFincaComponent } from './pages/finca/editar-finca/editar-finca.component';
+import { ListarRecomendacionesComponent } from './pages/recomendacion/listar-recomendaciones/listar-recomendaciones.component';
+import { RegistrarRecomendacionComponent } from './pages/recomendacion/registrar-recomendacion/registrar-recomendacion.component';
+import { VerRecomendacionComponent } from './pages/recomendacion/ver-recomendacion/ver-recomendacion.component';
+import { ReporteActividadComponent } from './pages/reportes/reporte-actividad/reporte-actividad.component';
+import { ChartsModule } from 'ng2-charts';
+import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomendacion/reporte-recomendacion.component';
+import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
+import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-riego.component';
+import { BackupComponent } from './pages/backup/backup.component';
 
 @NgModule({
   declarations: [
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
-    RecomendacionesPageComponent,
-    SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
     DashboardPageComponent,
@@ -94,6 +102,16 @@ import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.compo
     VerActividadComponent,
     EditarUsuarioComponent,
     CrearFincaComponent,
+    EditarFincaComponent,
+    ListarRecomendacionesAsociadasComponent,
+    RegistrarRecomendacionComponent,
+    VerRecomendacionComponent,
+    ReporteActividadComponent,
+    ReporteRecomendacionComponent,
+    ReporteSiembraComponent,
+    ReporteRiegoComponent,
+    BackupComponent,
+
   ],
   imports: [
     CommonModule,
@@ -102,17 +120,22 @@ import { CrearFincaComponent } from './pages/finca/crear-finca/crear-finca.compo
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    ChartsModule
   ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }],
   exports: [
     ActividadPageComponent,
     PlanificacionPageComponent,
     RecursosPageComponent,
     DashboardPageComponent,
-    RecomendacionesPageComponent,
-    SeguridadPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent
-  ]
+  ],
 })
 export class DashboardModule { }

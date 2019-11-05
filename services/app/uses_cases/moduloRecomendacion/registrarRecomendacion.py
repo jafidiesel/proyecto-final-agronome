@@ -80,7 +80,7 @@ def recomendacionActividad(currentUser):
         else:   
             dtoAux['codRecomDetalle'] = codRecomDetalle
             dtoListActivRecom.append(dtoAux) 
-    result= (dict(actvidadesArecomendar = dtoListActivSin, actividadesRecomendadas=dtoListActivRecom))
+    result= (dict(actvidadesARecomendar = dtoListActivSin, actividadesRecomendadas=dtoListActivRecom))
     return result
 
 def getParametrosRecomFull(codRecomendacion):

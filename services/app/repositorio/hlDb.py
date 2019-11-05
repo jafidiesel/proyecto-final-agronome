@@ -8,11 +8,11 @@ def saveEntidad(entidad):
 
 
 def selectAll(entidad):
-    objList=entidad.query.order_by(entidad.cod).all()
+    objList=entidad.query.order_by(entidad.nombre).all()
     return objList
 
 def selectAllisActiv(entidad):
-    objList=entidad.query.filter(entidad.isActiv==True).order_by(entidad.cod).all()
+    objList=entidad.query.filter(entidad.isActiv==True).order_by(entidad.nombre).all()
     return objList
 
 def selectByCod(entidad,cod): ##si el codigo se llama cod
@@ -61,3 +61,7 @@ def addObject(entidad):
 def deleteObject(entidad):
     db.session.delete(entidad)
     return
+
+def selectActiveByName(entidad,valor):
+    obj = entidad.query.filter(entidad.nombre == valor).filter(entidad.isActiv == True).first()
+    return obj

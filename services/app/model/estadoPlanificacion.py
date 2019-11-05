@@ -3,7 +3,7 @@ from app.model.modelImport import *
 class EstadoPlanificacion(db.Model):
     __tablename__ = 'estado_planificacion'
     cod = db.Column('cod_estado_planificacion', Integer,primary_key = True,index = True)
-    nombre = db.Column('nombre_estado_planificacion', String(80), nullable = False,  unique = True)
+    nombre = db.Column('nombre_estado_planificacion', String(80), nullable = False,  unique = True, index = True)
     isActiv = db.Column('is_activ', Boolean, nullable = False)
     nombreNomenclador = "estadoPlanificacion"  
 

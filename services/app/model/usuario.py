@@ -1,5 +1,6 @@
 from app.model.modelImport import *
-from datetime import datetime
+#from datetime import datetime
+import datetime
 import jwt
 import uuid
 from flask import jsonify, request, make_response
@@ -8,7 +9,7 @@ class Usuario(db.Model):
     __tablename__ = 'usuario'
     codPrivate = db.Column('cod_usuario_private',Integer,primary_key = True,index = True)
     cod = db.Column('cod_usuario', String(40), nullable = False)
-    usuario = db.Column('usuario', String(80), nullable = False, unique = True)
+    usuario = db.Column('usuario', String(80), nullable = False, unique = True, index=True)
     nombre = db.Column('nombre_usuario', String(80), nullable = False)
     apellido = db.Column('apellido_usuario', String(80), nullable = False)
     email = db.Column('email_usuario', String, nullable = False, unique = True)
@@ -30,7 +31,7 @@ class Usuario(db.Model):
             apellido = json.get('apellido'),
             email=json.get('email'),
             contraseniaUsuario = json.get('contraseniaUsuario'),
-            fchCrea = datetime.strptime(json.get('fchCrea'),'%d-%m-%Y').date(),
+            fchCrea = datetime.datetime.strptime(json.get('fchCrea'),'%d-%m-%Y').date(),
             isActiv = json.get('isActiv')
             )
         return usuario
@@ -52,9 +53,12 @@ class Usuario(db.Model):
         payload = {'user': self.usuario,'rol': self.rol.nombre,'jti':str(uuid.uuid4())}
         tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
         return tokenRst
+    
 
     def getResetToken(self, expirationTime):
-        payload = {'user': self.usuario,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=expirationTime)}
+        now = datetime.datetime.now
+        expiration = now + datetime.timedelta(minutes=expirationTime)
+        payload = {'user': self.usuario,'rol': self.rol.nombre,'exp':expiration}
         tokenRst = jwt.encode(payload, 'AgronomeKey', algorithm='HS256')
         return tokenRst
 

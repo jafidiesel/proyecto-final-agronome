@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FincaService } from 'src/app/dashboard/services/finca.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-crear-finca',
@@ -21,7 +22,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
   municipioName: string;
 
   parcelasTabla = [];
-  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros', 'Activo', 'Rol', 'Editar'];
+  tableDataHeader = ['Parcela', 'Superficie', 'Cantidad Filas', 'Cantidad Columnas', 'Cantidad Cuadros'];
   mostrarTabla = false;
 
   // error flags 
@@ -31,7 +32,8 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder,
     private _fincaService: FincaService,
-    private router: Router) { }
+    private router: Router,
+    private auth: AuthService) { }
 
   ngOnInit() {
 
@@ -46,7 +48,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
 
           });
         },
-        error =>  this.onHttpError({ message: "Ocurrió un error al obtener las provincias de la api del gobierno de Mendoza." })
+        error => this.onHttpError({ message: "Ocurrió un error al obtener las provincias de la api del gobierno de Mendoza." })
       )
     );
 
@@ -92,7 +94,6 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
         error => this.onHttpError(error)
       )
     );
-
   }
 
   seleccionMunicipio(event) {
@@ -120,11 +121,11 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
         '<p for="swal-input1">Nombre de la parcela</p>' +
         '<input id="swal-input1" class="swal2-input">' +
         '<p for="swal-input2">Superficie</p>' +
-        '<input id="swal-input2" class="swal2-input" type="number">' +
+        '<input type="number" id="swal-input2" min="1" class="swal2-input" >' +
         '<p for="swal-input3">Cantidad de filas</p>' +
-        '<input id="swal-input3" class="swal2-input" type="number">' +
+        '<input type="number" id="swal-input3" min="1" class="swal2-input" >' +
         '<p for="swal-input4">Cantidad de columnas</p>' +
-        '<input id="swal-input4" class="swal2-input" type="number">'
+        '<input type="number" id="swal-input4" min="1" class="swal2-input" >'
       ,
       focusConfirm: false,
       confirmButtonText: 'Agregar',
@@ -134,6 +135,12 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
       preConfirm: () => {
 
         if (
+          !(<HTMLInputElement>document.getElementById('swal-input2')).checkValidity() &&
+          !(<HTMLInputElement>document.getElementById('swal-input3')).checkValidity() &&
+          !(<HTMLInputElement>document.getElementById('swal-input4')).checkValidity()
+        ) {
+          Swal.showValidationMessage("Valores negativos: Debe ingresar valores mayores a cero para poder agregar una parcela.")
+        } else if (
           (<HTMLInputElement>document.getElementById('swal-input1')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input2')).value == '' ||
           (<HTMLInputElement>document.getElementById('swal-input3')).value == '' ||
@@ -192,10 +199,11 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
     if (this.fincaForm.status == 'VALID') {
       this.subscriptions.push(
         this._fincaService.postFinca(this.fincaForm.value).subscribe(
-          result => {
+          (result:any) => {
             this.postSuccess = true;
             this.postError = false;
             this.postErrorMessage = '';
+            this.auth.guardarFinca([result.message], 1, this.auth.getRol());
 
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
@@ -207,12 +215,12 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
             swalWithBootstrapButtons.fire({
               title: '¡Exito!',
               text: 'Se creo la finca correctamente.',
-              type: 'warning',
+              type: 'success',
               confirmButtonText: 'Salir',
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                this.router.navigate(['actividades/listarActividades']);
+                this.router.navigate(['home']);
               }
             }
             )

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { faTint, faSpinner, faSeedling, faSpider, faCloudRain, faLeaf, faFlask, faFireAlt, faBriefcaseMedical, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateStruct, NgbDate, NgbModal, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
@@ -15,13 +15,17 @@ import Swal from 'sweetalert2';
 })
 export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
+  // variables utilizadas para mostrar info
   nombreActividad: string;
   codActividad: number;
 
+  // array usado para limpiar las subscripciones
   subscriptions: Subscription[] = [];
 
+  // formgroup
   registrarActividadForm: FormGroup;
 
+  // variables usadas para manejar la redireccion
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
   nextButtonText = "Siguiente";
@@ -30,6 +34,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   configurationButtons: any[] = [];
 
+  // mock data
   dummyConfigurationButtons: any[] = [
     ['Riego', faCloudRain, true],
     ['Siembra', faSpinner, true],
@@ -43,16 +48,19 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     ['new', faPlusSquare, true]
   ];
 
+  // variables para manejar el formato de las fechas
   format = 'dd-MM-yyyy';
   locale = 'en-US';
   model: NgbDateStruct;
-  date: { year: number, month: number, day: number };
+  date: { year: 2019, month: 10, day: 12 };
   fechaFormateada = "";
+
+  time = { hour: 13, minute: 30 };
 
   // flag que comprueba el estado de los comprobados
   camposParametrosCompletados = false;
 
-  // error flags
+  // banderas de error
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
@@ -61,7 +69,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService ) { }
+    private _actividadService: ActividadService) { }
 
   ngOnInit() {
 
@@ -76,23 +84,22 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               if (this.ciEquals(this.slugify(dummyElement[0]), this.slugify(element.nombre))) {
                 this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), dummyElement[1], element.isActiv, element.cod]);
                 defaultIcon = false;
-                
+
               }
             });
             if (defaultIcon) {
               this.configurationButtons.push([(element.nombre).charAt(0).toUpperCase() + (element.nombre).slice(1), this.dummyConfigurationButtons[9][1], element.isActiv, element.cod]);
             }
-            console.log('this.configurationButtons',this.configurationButtons);
             this.codActividad = element.cod;
           });
-          
+
           // Obtencion de la estructura de la actividad para crear formulario
           this.subscriptions.push(
-            this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+            this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
               result => {
                 this.initForm(result);
               },
-              error => console.log('error', error)
+              error => this.onHttpError({ message: "Error al recuperar el formulario de la actividad" })
             )
           );
         }
@@ -103,15 +110,17 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
+  // metodo para comparar dos strings 
   ciEquals(a: string, b: string) {
     return typeof a === 'string' && typeof b === 'string'
       ? a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0
       : a === b;
   }
 
+  // metodo para convertir strings con may, min y caracteres especiales
   slugify(str: string) {
     var map = {
-      '-': ' ',
+      '': ' ',
       'a': 'á|à|ã|â|À|Á|Ã|Â',
       'e': 'é|è|ê|É|È|Ê',
       'i': 'í|ì|î|Í|Ì|Î',
@@ -128,6 +137,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     return str;
   }
 
+  // metodo para manejar la navegacion hacia atras
   atras() {
     this.postError = false;
     this.postErrorMessage = '';
@@ -165,6 +175,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
   }
 
+  // metodo para manejar la navegacion hacia adelante
   siguiente() {
     this.postError = false;
     this.postErrorMessage = '';
@@ -198,16 +209,18 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         break;
     }
 
-  }
+  } 
 
-  registrarActividad(nombreActividad: string, codActividad:number) {
+  // inicializador de registrar
+  registrarActividad(nombreActividad: string, codActividad: number) {
+    this.codActividad = codActividad;
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe( // reemplazar 1 con codActividad
+      this._actividadService.getEstructuraActividad(codActividad).subscribe(
         result => {
           this.initForm(result);
         },
-        error => console.log('error', error)
+        error => this.onHttpError({ message: "Error al obtener la estructura de la actividad." })
       )
     );
 
@@ -216,6 +229,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.siguiente();
   }
 
+  // metodo para asignar la fecha seleccionada
   onDateSelection(date: NgbDate) {
     let dayString = date.day.toString();
 
@@ -223,17 +237,21 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       dayString = "0" + date.day;
     }
 
-    let fecha = dayString + "-" + date.month + "-" + date.year
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
 
     this.registrarActividadForm.patchValue({
       fchActivDetalle: fecha,
     });
   }
 
+  // metodo para abrir el modal
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
 
+
+  // creacion del parametro para formgroup
   crearParametro(obj: any, index) {
     return this.fb.control({
       codParam: obj.parametro.cod,
@@ -245,6 +263,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       ;
   }
 
+  // creacion del parametro para formgroup con opciones
   crearParametroConOpcion(obj: any, index) {
     return this.fb.control({
       codParam: obj.parametro.cod,
@@ -256,25 +275,29 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  // actualizacion del valor del parametro
   actualizarValorParametro(event) {
     const selectEl = event.target;
     const valor = selectEl.value;
     const id = selectEl.id;
 
-    this.registrarActividadForm.get('parametros').value.map(element => {
+    this.registrarActividadForm.get('parametro').value.map(element => {
       if (id == element.nombre) {
         element.valor = valor;
       }
     });
   }
 
+  // inicializador del formgroup
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
+      tempFecha: this.date,
+      tempHora: this.time,
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
-      observacion: null,
-      imagenes: [{}],
-      parametros: this.fb.array(form.parametros.map((element, index) => {
+      observacion: " ",
+      imagen: [{}],
+      parametro: this.fb.array(form.parametros.map((element, index) => {
         if (element.opcion.length > 0) {
           return this.crearParametroConOpcion(element, index);
         } else {
@@ -286,8 +309,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
+  // verificador si los parametros de la actividad fueron completados
   parametrosCompletados() {
-    debugger; 
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -296,7 +319,27 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  procesarOpciones(event) {
 
+    const selectEl = event.target;
+    const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    let formValues: any;
+    formValues = this.registrarActividadForm.value;
+
+    formValues.parametro.map(element => {
+      if (element.opcion != null) {
+        element.opcion.map(opc => {
+          if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
+            element.valor = this.slugify(optionText);
+          }
+        });
+      }
+    });
+  }
+
+
+  // envio de form
   onSubmit() {
     if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
       this.subscriptions.push(
@@ -317,13 +360,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             swalWithBootstrapButtons.fire({
               title: '¡Exito!',
               text: 'Se registro la actividad correctamente.',
-              type: 'warning',
+              type: 'success',
               confirmButtonText: 'Salir',
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
                 this.router.navigate(['actividades/listarActividades']);
-              }}
+              }
+            }
             )
           },
           error => this.onHttpError(error)
@@ -335,6 +379,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
   }
 
+  // metodo custom para mostrar mensajes de error
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
