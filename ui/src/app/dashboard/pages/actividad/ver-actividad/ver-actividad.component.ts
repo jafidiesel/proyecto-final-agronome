@@ -5,12 +5,15 @@ import { ActividadService } from 'src/app/dashboard/services/actividad/actividad
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-ver-actividad',
   templateUrl: './ver-actividad.component.html'
 })
 export class VerActividadComponent implements OnInit, OnDestroy {
+
+  rol: string;
 
   subscriptions: Subscription[] = [];
 
@@ -26,9 +29,12 @@ export class VerActividadComponent implements OnInit, OnDestroy {
   constructor(private _actividadService: ActividadService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private activatedRoute: ActivatedRoute, ) { }
+    private activatedRoute: ActivatedRoute, private auth: AuthService) { }
 
   ngOnInit() {
+
+    this.rol = this.auth.getRol();
+
     this.subscriptions.push(
       this.activatedRoute.params.subscribe(params => {
         this.subscriptions.push(

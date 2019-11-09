@@ -323,7 +323,15 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-
+    // TODO: Seguir desde aca. Hay que hacer la comprobacion para agregar un text inpu con id relacionado al select. 
+    // Ademas hay que hace la comprobacion de cuando se cambia de un parametro "otro" a un parametro "no otro"
+/* 
+    if( this.slugify(optionText.toLowerCase()) == "otro"){
+      let input = document.createElement("input");
+      input.setAttribute('id', '');
+      selectEl.parentElement.append(input);
+      
+    } */
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
