@@ -1,41 +1,81 @@
-<!-- Sidebar -->
-<div class="bg-light border-right" id="sidebar-wrapper" style="height: 100%;">
-    <div class="sidebar-heading" routerLink="home" routerLinkActive="active" style="cursor: pointer;" id="agronome">
-        AgronoMe <img src="../../../assets/img/Logo AgronoMe.png" width="90px" alt=""> </div>
-    <div class="list-group ">
-        <button type="button" routerLink="/finca/editarFinca" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'encargadofinca'" (click)="actualizarNombreFinca()" >
-            <fa-icon [icon]="faMapMarkedAlt" class="mr-1" ></fa-icon><b>Finca</b> {{nombreFinca}}
-        </button>
-        <button type="button" disabled routerLink="/planificacion" routerLinkActive="active"
-            class="list-group-item list-group-item-action">
-            <fa-icon [icon]="faListAlt" class="mr-1" ></fa-icon> Planificación
-        </button>
-        <button type="button" routerLink="/actividades/listarActividades" routerLinkActive="active"
-            class="list-group-item list-group-item-action">
-            <fa-icon [icon]="faEdit" class="mr-1" ></fa-icon> <b>Actividades</b>
-        </button>
-        <button type="button" routerLink="/recomendaciones/listarRecomendaciones" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'ingeniero' || rol == 'administrador'">
-            <fa-icon [icon]="faFileMedical" class="mr-1" ></fa-icon> <b> Recomendaciones</b>
-        </button>
-        <button type="button" routerLink="/reportes" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol != 'supervisor'" >
-            <fa-icon [icon]="faChartPie" class="mr-1" ></fa-icon><b>Reportes</b>
-        </button>
-        <button type="button" routerLink="/seguridad" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'" >
-            <fa-icon [icon]="faLock" class="mr-1" ></fa-icon> <b> Seguridad</b>
-        </button>
-        <button type="button" routerLink="/configuracion" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
-            <fa-icon [icon]="faCogs" class="mr-1"></fa-icon> <b> Configuración</b>
-        </button>
-        <button type="button" routerLink="/backup" routerLinkActive="active"
-            class="list-group-item list-group-item-action" *ngIf="rol == 'administrador'">
-            <fa-icon [icon]="faDatabase" class="mr-1"></fa-icon> <b> Backup</b>
-        </button>
-    </div>
-</div>
 
 <!-- /#sidebar-wrapper-->
+<div class="sidebar" data-color="white" data-active-color="danger">
+  <!--
+      Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+  -->
+  <div class="logo">
+    <a class="simple-text logo-mini" routerLink="home" routerLinkActive="active" style="cursor: pointer;" id="agronome">
+      <div class="logo-image-small">
+        <img src="../../../assets/img/Logo AgronoMe.png" width="100px" alt="">
+      </div>
+    </a>
+    <a routerLink="home" routerLinkActive="active" class="simple-text logo-normal">
+      AgronoMe
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <ul class="nav">
+      <li  class="elementMenu" id="finca" (click)="setActive('finca')"  >
+        <a routerLink="/finca/editarFinca" routerLinkActive="active" *ngIf="rol == 'encargadofinca'"
+          (click)="actualizarNombreFinca()">
+          <i>
+            <fa-icon [icon]="faMapMarkedAlt" class="mr-1"></fa-icon>
+          </i>
+          <p>Finca {{nombreFinca}}</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="planificacion" (click)="setActive('planificacion')" >
+        <a disabled routerLink="/planificacion" routerLinkActive="active">
+          <i>
+            <fa-icon [icon]="faListAlt" class="mr-1"></fa-icon>
+          </i>
+          <p>Planificación</p>
+        </a>
+      </li>
+      <li  class="elementMenu" (click)="setActive('actividades')" id="actividades" data-active-color="success" >
+        <a routerLink="/actividades/listarActividades" routerLinkActive="active">
+          <i>
+            <fa-icon [icon]="faEdit" class="mr-1"></fa-icon>
+          </i>
+          <p>Actividades</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="recomendaciones" (click)="setActive('recomendaciones')" >
+        <a routerLink="/recomendaciones/listarRecomendaciones" routerLinkActive="active"
+          *ngIf="rol == 'ingeniero' || rol == 'administrador'">
+          <i>
+            <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
+          </i>
+          <p>Recomendaciones</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="reportes" (click)="setActive('reportes')" >
+        <a routerLink="/reportes" routerLinkActive="active" *ngIf="rol != 'supervisor'">
+          <i>
+            <fa-icon [icon]="faChartPie" class="mr-1"></fa-icon>
+          </i>
+          <p>Reportes</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="seguridad" (click)="setActive('seguridad')" >
+        <a routerLink="/seguridad" routerLinkActive="active" *ngIf="rol == 'administrador'" >
+          <i ><fa-icon [icon]="faLock" class="mr-1"></fa-icon></i>
+          <p>Seguridad</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="configuracion" (click)="setActive('configuracion')" >
+        <a routerLink="/configuracion" routerLinkActive="active" *ngIf="rol == 'administrador'" >
+          <i><fa-icon [icon]="faCogs" class="mr-1"></fa-icon></i>
+          <p>Configuración</p>
+        </a>
+      </li>
+      <li class="elementMenu" id="backup" (click)="setActive('backup')" >
+        <a routerLink="/backup" routerLinkActive="active" *ngIf="rol == 'administrador'" >
+          <i><fa-icon [icon]="faDatabase" class="mr-1"></fa-icon></i>
+          <p>Backup</p>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
