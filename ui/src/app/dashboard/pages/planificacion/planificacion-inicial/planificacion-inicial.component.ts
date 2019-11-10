@@ -6,10 +6,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./planificacion-inicial.component.css']
 })
 export class PlanificacionInicialComponent implements OnInit {
+  
+  dummyDataCultivo = [
+    "Tomate", "Lechuga", "Zanahoria", "Calabaza", "Cebolla"
+  ];
+
+  tableDataHeader = ['Parcela', 'Cuadros']
+  parcelaArray = []
 
   constructor() { }
 
   ngOnInit() {
+    this.parcelaArray.push(this.tableDataHeader)
+    this.parcelaArray.push([
+      'Parcela 1',
+      '1,2,3'
+    ])
+
+    console.log("parcelasArray",this.parcelaArray);
   }
 
 }

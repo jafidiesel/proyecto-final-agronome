@@ -1,21 +1,61 @@
 <main role="main" class="container mt-4">
-        <h1 class="display-4">Planificacion Inicial</h1>
-<div class="content">
-    <div class="row">
-        <div class="col">
-            <button type="button" class="btn btn-lg btn-success m-3">Añadir Cultivo</button>
+    <h1 class="display-4">Planificacion Inicial</h1>
+    <div class="content">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-lg btn-success m-3">Añadir Cultivo</button>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title"> Actividades creadas</h4>
-                </div>
-                <div class="card-body" *ngIf="mostrarTabla">
-                    <app-table [tableData]="this.actividadesArray"></app-table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <form>
+                        <div class="form-group col-md-6">
+                            <label>Cultivo <b>*</b></label>
+                            <select class="custom-select" id="cultivoInicial"
+                                *ngIf="dummyDataCultivo != '' else loading1">
+                                <option *ngFor="let cultivo of dummyDataCultivo">
+                                    {{cultivo}}</option>
+                            </select>
+                            <ng-template #loading1>
+                                <br>
+                                <button class="btn btn-info" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    Cargando...
+                                </button>
+                            </ng-template>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="variedadCultivo">Variedad <b>*</b></label>
+                            <input type="text" class="form-control" id="variedadCultivo"
+                                placeholder="Ingrese la variedad del cultivo.">
+                        </div>
+                        <div class="form-group form-check">
+                            <div class="custom-control custom-checkbox">
+                                <label class="custom-control-label">Ciclo único <b>*</b></label>
+                                <input type="checkbox" class="custom-control-input" id="cicloUnico">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="variedadCultivo">Producción esperadaa <b>*</b></label>
+                            <input type="number" class="form-control" id="produccionCultivo"
+                                placeholder="Ingrese producción esperada.">
+                        </div>
+                    </form>
+
+                    <div class="card-body">
+                        <app-table [tableData]="this.parcelaArray"></app-table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="row">
+            <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> Cancelar
+                </button>
+                <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
+                    Guardar</button>
+    </div>
+</main>
