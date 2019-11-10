@@ -32,23 +32,29 @@ def getParcelasLibres(data):
         return dtoGeneral
     else:
         dtoGeneralPlan = []
-        dtoCuadroTmp = []
         parcelasList = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
         for planificacionRst in planificacionListRst:
             dtoPlanificacion = []            
             if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
+                #Por cuadro leer Parcela asociada
                 for grupoCuadro in planificacionRst.grupoCuadroList:
+                    parcelaDtoPlanif = []
                     parcelaGrupo = grupoCuadro.parcela
+                    dtoCuadroTmp = []
                     #Verficar si la parcela ya existe en la lista
                     if not parcelaGrupo in parcelasList:
+                        parcelaDtoPlanif.append(parcelaGrupo)
                         parcelasList.append(parcelaGrupo)
                         #Armar dto con encabezado parcela y cuerpo cuadro
                         for cuadroCultivo in grupoCuadro.cuadroCultivoList:
                             cuadroGrupo = cuadroCultivo.cuadro
                             dtoCuadroTmp.append(cuadroGrupo)                        
-                        parcelasList.append(dtoCuadroTmp)
-                        dtoPlanificacion.append(parcelasList)
+                        parcelaDtoPlanif.append(dtoCuadroTmp)
+                        dtoPlanificacion.append(parcelaDtoPlanif)
+                        
                     else:
+                        #Comparar los cuadros de la parcela actual
+                        index = parcelasList.index(parcelaGrupo)
                         #Agregar los cuadros a la parcela correspondiente
                         pass
 
