@@ -63,7 +63,7 @@ def postUser(data):
 
     #Setiar flag de account 
     usuario.isRecuperarContrasenia = False
-    usuario.isActiv = False
+    usuario.isActiv = True
     token = str(usuario.getToken())
     saveEntidadSinCommit(usuario)
     Commit()
