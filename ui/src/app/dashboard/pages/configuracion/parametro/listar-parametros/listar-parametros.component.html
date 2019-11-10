@@ -1,12 +1,22 @@
-<div class="row">
-    <div class="col">
-        <button [routerLink]="['/configuracion/crearParametro']" type="button" class="btn btn-lg btn-success m-4">Crear Parámetro</button>
+<div class="content">
+    <div class="row">
+        <div class="col">
+            <button [routerLink]="['/configuracion/crearParametro']" type="button"
+                class="btn btn-lg btn-success m-4">Crear Parámetro</button>
+        </div>
     </div>
-</div>
-
-<div class="row" *ngIf="mostrarTabla" >
-    <div class="col">
-        <app-table [tableData]="this.nomencladoresTabla" ></app-table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row animated fadeIn" *ngIf="mostrarTabla">
+                        <div class="col">
+                            <app-table [tableData]="this.nomencladoresTabla"></app-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

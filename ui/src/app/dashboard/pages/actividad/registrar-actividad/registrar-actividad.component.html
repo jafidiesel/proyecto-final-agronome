@@ -1,16 +1,17 @@
 <main role="main" class="container mt-4" [ngSwitch]="step" *ngIf="this.codActividad != null">
-    <h1 class="display-4">{{ nombreActividad }}</h1>
+    <h1 class="display-4">{{ nombreActividad }} </h1>
     <form [formGroup]="registrarActividadForm" (ngSubmit)="onSubmit()" *ngIf="
     registrarActividadForm != null ">
-        <div class="card m-3" *ngSwitchCase="'0'">
-            <div class="card-header">
+        <div *ngSwitchCase="'0'">
+            <div class="display-4" style="width: 100%;">
                 Seleccionar actividad
             </div>
-            <div class="card-columns">
+            <div class="card-columns m-3">
                 <div *ngFor="let button of configurationButtons">
-                    <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center" style="min-width: 200px;">
+                    <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center"
+                        style="min-width: 250px; min-height: 250px;">
                         <div class="card-body">
-                            <fa-icon class="mb-4" [icon]="button[1]" size="5x"
+                            <fa-icon class="mb-4 mt-2" [icon]="button[1]" size="5x"
                                 [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
                             <h5 class="card-title">{{ button[0] }}</h5>
                             <button class="btn btn-primary text-light"
@@ -19,10 +20,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="card m-3" *ngSwitchCase="'1'">
             <div class="card-header">
-                Datos del campo
+                <b>Datos del campo</b>
             </div>
             <div class="card-body">
                 <div class="form-group row">
@@ -86,7 +88,7 @@
 
         <div class="card m-3" *ngSwitchCase="'2'">
             <div class="card-header">
-                Actividad {{ nombreActividad }}
+                <b>Actividad {{ nombreActividad }}</b>
             </div>
             <div class="card-body">
 
@@ -200,7 +202,7 @@
         </div>
         <div class="card m-3" *ngSwitchCase="'3'">
             <div class="card-header">
-                Otros datos
+               <b>Otros datos</b>
             </div>
             <div class="card-body">
                 <div class="form-group">
@@ -211,10 +213,6 @@
             </div>
         </div>
     </form>
-
-    <div class="alert alert-info italic" role="alert">
-        Los campos marcados con * son obligatorios.
-    </div>
 
     <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
         ¡ Actividad Registrada exitosamente !
@@ -232,5 +230,9 @@
             <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
                 {{ nextButtonText }}</button>
         </div>
+    </div>
+
+    <div class="alert alert-info italic" role="alert">
+        Los campos marcados con * son obligatorios.
     </div>
 </main>
