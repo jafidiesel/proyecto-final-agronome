@@ -60,6 +60,10 @@ import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomend
 import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
 import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-riego.component';
 import { BackupComponent } from './pages/backup/backup.component';
+import { ListarPlanificacionesComponent } from './pages/planificacion/listar-planificaciones/listar-planificaciones.component';
+import { PlanificacionInicialComponent } from './pages/planificacion/planificacion-inicial/planificacion-inicial.component';
+import { PlanificacionSupervisadaComponent } from './pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
+import { PlanificacionFinalComponent } from './pages/planificacion/planificacion-final/planificacion-final.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +115,10 @@ import { BackupComponent } from './pages/backup/backup.component';
     ReporteSiembraComponent,
     ReporteRiegoComponent,
     BackupComponent,
+    ListarPlanificacionesComponent,
+    PlanificacionInicialComponent,
+    PlanificacionSupervisadaComponent,
+    PlanificacionFinalComponent,
 
   ],
   imports: [

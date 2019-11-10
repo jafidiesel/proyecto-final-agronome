@@ -46,6 +46,10 @@ import { ReporteRiegoComponent } from './dashboard/pages/reportes/reporte-riego/
 import { BackupComponent } from './dashboard/pages/backup/backup.component';
 import { ActivarComponent } from './login/activar/activar.component';
 import { ResetComponent } from './login/reset/reset.component';
+import { ListarPlanificacionesComponent } from './dashboard/pages/planificacion/listar-planificaciones/listar-planificaciones.component';
+import { PlanificacionInicialComponent } from './dashboard/pages/planificacion/planificacion-inicial/planificacion-inicial.component';
+import { PlanificacionSupervisadaComponent } from './dashboard/pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
+import { PlanificacionFinalComponent } from './dashboard/pages/planificacion/planificacion-final/planificacion-final.component';
 
 
 const routes: Routes = [
@@ -61,6 +65,10 @@ const routes: Routes = [
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
+  { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
+  { path: 'planificacion/inicial', component: PlanificacionInicialComponent },
+  { path: 'planificacion/supervisada', component: PlanificacionSupervisadaComponent },
+  { path: 'planificacion/final', component: PlanificacionFinalComponent },
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
@@ -110,6 +118,7 @@ const routes: Routes = [
   { path: 'backup', component: BackupComponent },
 /*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
  */
+  /* Backup */
   { path: 'backup', component: BackupComponent },
   { path: 'activar', component: ActivarComponent },
   { path: 'reset', component: ResetComponent },

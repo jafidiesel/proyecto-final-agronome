@@ -1,0 +1,21 @@
+<main role="main" class="container mt-4">
+        <h1 class="display-4">Planificacion Inicial</h1>
+<div class="content">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-lg btn-success m-3">Añadir Cultivo</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"> Actividades creadas</h4>
+                </div>
+                <div class="card-body" *ngIf="mostrarTabla">
+                    <app-table [tableData]="this.actividadesArray"></app-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
