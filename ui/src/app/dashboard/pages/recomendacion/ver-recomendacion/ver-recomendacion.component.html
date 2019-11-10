@@ -2,8 +2,10 @@
     <!-- actividad  -->
     <div class="card m-3" *ngIf="actividadForm != null" [formGroup]="actividadForm">
         <div class="card-header">
-            Actividad
-            {{ actividadForm.value.nombreActividad.charAt(0).toUpperCase() +  actividadForm.value.nombreActividad.slice(1) }}
+            <b>
+                Actividad
+                {{ actividadForm.value.nombreActividad.charAt(0).toUpperCase() +  actividadForm.value.nombreActividad.slice(1) }}
+            </b>
         </div>
         <div class="card-body">
 
@@ -42,7 +44,9 @@
     <!-- recomendacion -->
     <div class="card m-3" *ngIf="recomendacionForm != null" [formGroup]="recomendacionForm">
         <div class="card-header">
-            {{ recomendacionForm.value.nombreRecomendacion.charAt(0).toUpperCase() +  recomendacionForm.value.nombreRecomendacion.slice(1) }}
+            <b>
+                {{ recomendacionForm.value.nombreRecomendacion.charAt(0).toUpperCase() +  recomendacionForm.value.nombreRecomendacion.slice(1) }}
+            </b>
         </div>
         <div class="card-body">
 

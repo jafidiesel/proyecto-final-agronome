@@ -1,17 +1,43 @@
-<h1 class="display-4 m-3" *ngIf="mostrarTablaARecomendar">
-    Actividades a recomendar
-</h1>
+<div class="content">
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4 m-3" *ngIf="mostrarTablaARecomendar">
+                Actividades a recomendar
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" *ngIf="mostrarTablaARecomendar">
+                        <div class="col">
+                            <app-table [tableData]="this.aRecomendarArray"></app-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="row" *ngIf="mostrarTablaARecomendar">
-    <div class="col">
-        <app-table [tableData]="this.aRecomendarArray"></app-table>
-    </div> 
-</div>
-<h1 class="display-4 m-3" *ngIf="mostrarTablaRecomendadas">
-    Actividades recomendadas
-</h1>
-<div class="row" *ngIf="mostrarTablaRecomendadas">
-    <div class="col">
-        <app-table [tableData]="this.recomendadasArray"></app-table>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4 m-3" *ngIf="mostrarTablaRecomendadas">
+                Actividades recomendadas
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row" *ngIf="mostrarTablaRecomendadas">
+                        <div class="col">
+                            <app-table [tableData]="this.recomendadasArray"></app-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

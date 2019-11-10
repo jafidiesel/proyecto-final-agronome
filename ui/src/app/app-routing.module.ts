@@ -55,7 +55,7 @@ const routes: Routes = [
   { path: 'home', component: DashboardPageComponent },
   { path: 'login', component: LoginPageComponent },
   /* Modulo Actividades */
-  { path: 'actividades', component: ActividadPageComponent },
+  { path: 'actividades/libroDeCampo', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
   { path: 'actividades/listarActividades', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
