@@ -10,10 +10,15 @@
                 <div *ngFor="let button of configurationButtons">
                     <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center"
                         style="min-width: 250px; min-height: 250px;">
-                        <div class="card-body">
+                        <h5 class="card-title mt-4">
                             <fa-icon class="mb-4 mt-2" [icon]="button[1]" size="5x"
                                 [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
-                            <h5 class="card-title">{{ button[0] }}</h5>
+                        </h5>
+                        {{ button[0] }}
+                        <h6>
+
+                        </h6>
+                        <div class="card-body">
                             <button class="btn btn-primary text-light"
                                 (click)="registrarActividad(button[0],button[3])">Registrar</button>
                         </div>
@@ -202,7 +207,7 @@
         </div>
         <div class="card m-3" *ngSwitchCase="'3'">
             <div class="card-header">
-               <b>Otros datos</b>
+                <b>Otros datos</b>
             </div>
             <div class="card-body">
                 <div class="form-group">
