@@ -1,7 +1,7 @@
 <main role="main" class="container mt-4">
     <h1 class="display-4">Planificacion Inicial</h1>
     <div class="content">
-        <div class="row">
+        <div class="row"  *ngIf="mostrarCultivo">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-title ml-4">
@@ -47,14 +47,30 @@
                     </form>
 
                     <div class="card-body">
-                        <app-table [tableData]="this.parcelaArray"></app-table>
+                        <button type="button" class="btn btn-sm btn-success m-3 float-left"
+                            (click)="agregarCuadros()">Añadir
+                            Parcelas</button>
+                        <app-table [tableData]="this.parcelaArray" *ngIf="mostrarTablaParcelas  else loading1">
+                        </app-table>
+                        <ng-template #loading1>
+                            <br>
+                            <button class="btn btn-info" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando...
+                            </button>
+                        </ng-template>
+
+                        <button type="button" class="btn btn-sm btn-danger m-3 float-right"
+                            (click)="quitarCultivo()">Quitar
+                            Cultivo</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-sm btn-success m-3">Añadir Cultivo</button>
+                <button type="button" class="btn btn-sm btn-success m-3" (click)="agregarCultivo()">Añadir
+                    Cultivo</button>
             </div>
         </div>
     </div>
@@ -65,7 +81,7 @@
             </div>
             <button type="button" class="btn btn-danger btn-lg float-left"> Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right">
+            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()" >
                 Guardar</button>
         </div>
     </div>
