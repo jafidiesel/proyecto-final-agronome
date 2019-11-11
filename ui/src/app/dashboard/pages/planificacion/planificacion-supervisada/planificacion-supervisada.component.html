@@ -110,7 +110,7 @@
             <button type="button" class="btn btn-danger btn-lg float-left"
                 [routerLink]="['/planificacion/listarPlanificaciones']"> Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()">
+            <button type="button" class="btn btn-success btn-lg float-right" *ngIf="rol == 'ingeniero'" (click)="onSubmit()">
                 Guardar</button>
         </div>
     </div>
