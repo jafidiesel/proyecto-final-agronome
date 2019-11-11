@@ -66,9 +66,9 @@ const routes: Routes = [
   /* Modulo Planificacion */
   { path: 'planificacion', component: PlanificacionPageComponent },
   { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
-  { path: 'planificacion/inicial', component: PlanificacionInicialComponent },
-  { path: 'planificacion/supervisada', component: PlanificacionSupervisadaComponent },
-  { path: 'planificacion/final', component: PlanificacionFinalComponent },
+  { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
+  { path: 'planificacion/crearPlanificacionSupervisada', component: PlanificacionSupervisadaComponent },
+  { path: 'planificacion/crearPlanificacionFinal', component: PlanificacionFinalComponent },
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },

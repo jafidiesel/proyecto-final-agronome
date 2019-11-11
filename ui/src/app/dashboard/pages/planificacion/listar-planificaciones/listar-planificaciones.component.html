@@ -1,22 +1,25 @@
 <main role="main" class="container mt-4">
     <h1 class="display-4">Planificaciones</h1>
     <div class="row">
-            <div class="col">
-                <button *ngIf="rol != 'ingeniero'" [routerLink]="['/planificacion/inicial']" type="button"
-                    class="btn btn-lg btn-success m-4">Crear Planificacion inicial</button>
-            </div>
+        <div class="col">
+            <button *ngIf="rol != 'ingeniero'" [routerLink]="['/planificacion/crearPlanificacionInicial']" type="button"
+                class="btn btn-lg btn-success m-4">Crear Planificacion inicial</button>
+        </div>
     </div>
     <form>
         <div class="m-3">
             <div class="card-columns">
-                <div>
-                    <div class="card border-gray col-3 m-3 text-center" style="min-width: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <b>Grupo 1</b>
-                            </h5>
-                            <button class="btn btn-primary text-light">Ver</button>
-                        </div>
+                <div *ngFor="let planificacion of planificacionesArray" class="card border-gray col-3 m-3 text-center" style="min-width: 300px;">
+                    <h5 class="card-title mt-2">
+                        <b>{{ planificacion[0] }}</b>
+                    </h5>
+                    <div class="card-body">
+                        <p><b>Último estado: </b>{{ planificacion[1] }}</p>
+                        <button class="btn btn-primary">Ver</button>
+                    </div>
+                    <div class="card-footer ">
+                        <hr>
+                        <p> <b>Fecha de creación:</b> {{ planificacion[2] }}</p>
                     </div>
                 </div>
             </div>
