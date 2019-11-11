@@ -48,6 +48,7 @@ import { ListarPlanificacionesComponent } from './dashboard/pages/planificacion/
 import { PlanificacionInicialComponent } from './dashboard/pages/planificacion/planificacion-inicial/planificacion-inicial.component';
 import { PlanificacionSupervisadaComponent } from './dashboard/pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
 import { PlanificacionFinalComponent } from './dashboard/pages/planificacion/planificacion-final/planificacion-final.component';
+import { VerPlanificacionFinalComponent } from './dashboard/pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
 
 
 const routes: Routes = [
@@ -66,6 +67,7 @@ const routes: Routes = [
   { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
   { path: 'planificacion/verPlanificacionInicial', component: PlanificacionSupervisadaComponent },
   { path: 'planificacion/verPlanificacionSupervisada', component: PlanificacionFinalComponent },
+  { path: 'planificacion/verPlanificacionFinal', component: VerPlanificacionFinalComponent},
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
