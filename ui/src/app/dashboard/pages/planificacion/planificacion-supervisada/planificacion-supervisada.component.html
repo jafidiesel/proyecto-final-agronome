@@ -11,20 +11,18 @@
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4">
                                 <label for="cultivoInicial"><b>Tipo de cultivo</b></label>
-                                <input type="text" class="form-control" id="cultivoInicial"
-                                    placeholder="Ingrese la variedad del cultivo." readonly>
+                                <input type="text" class="form-control" id="cultivoInicial" value="Tomate" readonly>
                             </div>
                             <div class="form-group col-md-5 ml-4">
                                 <label for="variedadCultivo">Variedad <b></b></label>
-                                <input type="text" class="form-control" id="variedadCultivo"
-                                    placeholder="Ingrese la variedad del cultivo." readonly>
+                                <input type="text" class="form-control" id="variedadCultivo" value="Perita" readonly>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
                                 <label for="produccionCultivo">Producción esperadaa <b></b></label>
-                                <input type="number" class="form-control" id="produccionCultivo"
-                                    placeholder="Ingrese producción esperada." min="0" readonly>
+                                <input type="number" class="form-control" id="produccionCultivo" value="10" min="0"
+                                    readonly>
                             </div>
                             <div class="form-group col-md-5 ml-4 ">
                                 <br>
@@ -42,7 +40,8 @@
                     </div>
 
                     <div class="card-body">
-                        <button class="btn btn-primary float-right" *ngIf="rol == 'ingeniero'" (click)="supervisar()">Supervisar</button>
+                        <button class="btn btn-primary float-right" *ngIf="rol == 'ingeniero'"
+                            (click)="supervisar()">Supervisar</button>
                     </div>
                 </div>
             </div>
@@ -75,15 +74,13 @@
                             </div>
                             <div class="form-group col-md-5 ml-4">
                                 <label for="variedad">Variedad <b>*</b></label>
-                                <input type="text" class="form-control" id="variedad"
-                                    placeholder="Ingrese la variedad del cultivo.">
+                                <input type="text" class="form-control" id="variedad" value="Perita">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
                                 <label for="produccion">Producción esperada<b>*</b></label>
-                                <input type="number" class="form-control" id="produccion"
-                                    placeholder="Ingrese producción esperada.">
+                                <input type="number" class="form-control" id="produccion" value="10">
                             </div>
                             <div class="form-group col-md-5 ml-4 ">
                                 <br>
@@ -91,6 +88,12 @@
                                     <input type="checkbox" class="custom-control-input" id="cicloUnicoSup">
                                     <label class="custom-control-label" for="cicloUnicoSup">Ciclo único <b>*</b></label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-10 ml-4 ">
+                                <label >Observaciones</label>
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
                             </div>
                         </div>
                     </form>
@@ -104,9 +107,10 @@
     </div>
     <div class="form-group row">
         <div class="col-sm-12">
-            <button type="button" class="btn btn-danger btn-lg float-left" [routerLink]="['/planificacion/listarPlanificaciones']" > Volver
+            <button type="button" class="btn btn-danger btn-lg float-left"
+                [routerLink]="['/planificacion/listarPlanificaciones']"> Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()" >
+            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()">
                 Guardar</button>
         </div>
     </div>

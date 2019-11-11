@@ -14,7 +14,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
   visible: boolean;
 
   dummyDataCultivo = [
-    "Tomate", "Lechuga", "Zanahoria", "Calabaza", "Cebolla"
+    "Tomate","Lechuga","Zanahoria", "Calabaza", "Cebolla"
   ];
 
   tableDataHeader = ['Parcela', 'Cuadros']
@@ -26,14 +26,14 @@ export class PlanificacionSupervisadaComponent implements OnInit {
     this.visible = false;
     this.rol = this.auth.getRol();
     this.parcelaArray.push(this.tableDataHeader)
-    this.parcelaArray.push([
-      'Parcela 1',
-      '1,2,3'
-    ])
+    this.parcelaArray.push(
+      ['Parcela 1','1,2,3'],
+    ['Parcela 2', '2,3,4'])
   }
 
   supervisar(){
     this.visible = true;
+
   }
 
   
