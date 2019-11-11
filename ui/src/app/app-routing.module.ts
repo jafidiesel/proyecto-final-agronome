@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
-import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes/reportes-page/reportes-page.component';
 import { ListarRecomendacionesAsociadasComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
@@ -64,11 +62,10 @@ const routes: Routes = [
   { path: 'actividades/listarActividades', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
-  { path: 'planificacion', component: PlanificacionPageComponent },
   { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
   { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
-  { path: 'planificacion/crearPlanificacionSupervisada', component: PlanificacionSupervisadaComponent },
-  { path: 'planificacion/crearPlanificacionFinal', component: PlanificacionFinalComponent },
+  { path: 'planificacion/verPlanificacionInicial', component: PlanificacionSupervisadaComponent },
+  { path: 'planificacion/verPlanificacionSupervisada', component: PlanificacionFinalComponent },
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
@@ -77,8 +74,6 @@ const routes: Routes = [
   { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
   { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
   { path: 'recomendaciones/registrarRecomendacion/:codAct', component: RegistrarRecomendacionComponent },
-  /* Modulo Gestionar Recursos */
-  { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
   //{ path: 'seguridad', component: SeguridadPageComponent },
   { path: 'seguridad', component: ListarUsuariosComponent },

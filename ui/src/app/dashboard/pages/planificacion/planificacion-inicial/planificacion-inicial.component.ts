@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 
 @Component({
   selector: 'app-planificacion-inicial',
@@ -18,7 +19,7 @@ export class PlanificacionInicialComponent implements OnInit {
   tableDataHeader = ['Parcela', 'Cuadros']
   parcelaArray = []
 
-  constructor(private router: Router,) { }
+  constructor(private router: Router, private _planificacionService: PlanificacionService) { }
 
   ngOnInit() {
     this.parcelaArray.push(this.tableDataHeader);
@@ -128,6 +129,7 @@ export class PlanificacionInicialComponent implements OnInit {
 
  
   onSubmit(){
+    this._planificacionService.guardarPlanificacion('inicial');
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success ml-1',
@@ -146,6 +148,8 @@ export class PlanificacionInicialComponent implements OnInit {
         this.router.navigate(['planificacion/crearPlanificacionSupervisada']);
       }
     });
+
+
   }
 
 

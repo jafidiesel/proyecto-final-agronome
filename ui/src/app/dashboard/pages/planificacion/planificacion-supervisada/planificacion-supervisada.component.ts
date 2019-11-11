@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-planificacion-supervisada',
@@ -17,7 +20,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
   tableDataHeader = ['Parcela', 'Cuadros']
   parcelaArray = []
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private _planificacionService: PlanificacionService, private router: Router) { }
 
   ngOnInit() {
     this.visible = false;
@@ -31,6 +34,31 @@ export class PlanificacionSupervisadaComponent implements OnInit {
 
   supervisar(){
     this.visible = true;
+  }
+
+  
+  onSubmit(){
+    this._planificacionService.guardarPlanificacion('supervisada');
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success ml-1',
+      },
+      buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+      title: '¡Exito!',
+      text: 'Se creo la planificación supervisada correctamente.',
+      type: 'success',
+      confirmButtonText: 'Salir',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.value) {
+        this.router.navigate(['planificacion/crearPlanificacionFinal']);
+      }
+    });
+
+
   }
 
 }

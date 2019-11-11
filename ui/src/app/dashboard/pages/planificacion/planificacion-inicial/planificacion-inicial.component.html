@@ -79,7 +79,7 @@
             <div [hidden]="!postError" class="alert alert-danger">
                 {{ postErrorMessage }}
             </div>
-            <button type="button" class="btn btn-danger btn-lg float-left"> Volver
+            <button type="button" class="btn btn-danger btn-lg float-left" [routerLink]="['/planificacion/listarPlanificaciones']" > Volver
             </button>
             <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()" >
                 Guardar</button>

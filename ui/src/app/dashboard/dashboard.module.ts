@@ -9,8 +9,6 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
-import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
-import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './pages/reportes/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
@@ -68,8 +66,6 @@ import { PlanificacionFinalComponent } from './pages/planificacion/planificacion
 @NgModule({
   declarations: [
     ActividadPageComponent,
-    PlanificacionPageComponent,
-    RecursosPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
     DashboardPageComponent,
@@ -139,8 +135,6 @@ import { PlanificacionFinalComponent } from './pages/planificacion/planificacion
     }],
   exports: [
     ActividadPageComponent,
-    PlanificacionPageComponent,
-    RecursosPageComponent,
     DashboardPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent
