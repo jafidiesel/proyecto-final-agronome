@@ -13,7 +13,7 @@ export class PlanificacionInicialComponent implements OnInit {
   mostrarCultivo = false;
 
   dummyDataCultivo = [
-    "Tomate", "Lechuga", "Zanahoria", "Calabaza", "Cebolla"
+     "Lechuga", "Tomate","Zanahoria", "Calabaza", "Cebolla"
   ];
 
   tableDataHeader = ['Parcela', 'Cuadros']
