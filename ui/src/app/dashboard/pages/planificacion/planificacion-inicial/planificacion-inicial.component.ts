@@ -145,7 +145,7 @@ export class PlanificacionInicialComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        this.router.navigate(['planificacion/crearPlanificacionSupervisada']);
+        this.router.navigate(['/planificacion/verPlanificacionInicial']);
       }
     });
 

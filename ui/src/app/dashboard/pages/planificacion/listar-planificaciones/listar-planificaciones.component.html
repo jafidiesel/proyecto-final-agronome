@@ -1,5 +1,5 @@
 <main role="main" class="container mt-4">
-    <h1 class="display-4">Planificaciones</h1>
+    <h1 class="display-4" (click)="limpiarPlanificacionInicial()" >Planificaciones</h1>
     <div class="row">
         <div class="col">
             <button *ngIf="rol != 'ingeniero'" [routerLink]="['/planificacion/crearPlanificacionInicial']" type="button"
