@@ -57,8 +57,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
         this.router.navigate(['planificacion/verPlanificacionSupervisada']);
       }
     });
-
-
   }
 
 }

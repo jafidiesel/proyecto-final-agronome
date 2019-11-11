@@ -37,7 +37,7 @@ export class ListarPlanificacionesComponent implements OnInit {
 
 
     this.planificacionesArray.push(
-      ["Planificación lechuga CA-3", "Finalizada", "13-04-2019", "/planificacion/verPlanificacionFinal"]
+      ["Planificación lechuga CA-3", "Final", "13-04-2019", "/planificacion/verPlanificacionFinal"]
     );
   }
 

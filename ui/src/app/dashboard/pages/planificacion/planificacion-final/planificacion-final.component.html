@@ -82,9 +82,9 @@
                         <app-table [tableData]="this.parcelaArray"></app-table>
                     </div>
                     <div class="card-body">
-                            <button class="btn btn-primary float-right" *ngIf="rol == 'encargadofinca'"
-                                (click)="finalizar()">Finalizar</button>
-                        </div>
+                        <button class="btn btn-primary float-right" *ngIf="rol == 'encargadofinca'"
+                            (click)="finalizar()">Finalizar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,19 +137,30 @@
                     </form>
 
                     <div class="card-body">
-                        <app-table [tableData]="this.parcelaArray"></app-table>
+                        <button type="button" class="btn btn-sm btn-success m-3 float-left"
+                            (click)="agregarCuadros()">Añadir
+                            Parcelas</button>
+                        <app-table [tableData]="this.parcelaArray" *ngIf="mostrarTablaParcelas  else loading1">
+                        </app-table>
+                        <ng-template #loading1>
+                            <br>
+                            <button class="btn btn-info" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Cargando...
+                            </button>
+                        </ng-template>
                     </div>
 
-                    
+
                 </div>
             </div>
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-12">
-            <button type="button" class="btn btn-danger btn-lg float-left"> Volver
+            <button type="button" class="btn btn-danger btn-lg float-left" [routerLink]="['/planificacion/listarPlanificaciones']" > Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right">
+            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()" >
                 Guardar</button>
         </div>
     </div>
