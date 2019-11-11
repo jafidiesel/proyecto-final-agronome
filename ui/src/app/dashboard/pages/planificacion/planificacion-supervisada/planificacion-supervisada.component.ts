@@ -54,7 +54,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        this.router.navigate(['planificacion/crearPlanificacionFinal']);
+        this.router.navigate(['planificacion/verPlanificacionSupervisada']);
       }
     });
 
