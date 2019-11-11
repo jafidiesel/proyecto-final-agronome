@@ -165,7 +165,7 @@
                                 class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b></label>
                             <div class=" col-sm-7">
-                                <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)">
+                                <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)" style="height: 45px;">
                                     <option selected>Seleccione una opción</option>
                                     <option *ngFor="let opcion of parametro.value.opcion; let i = index"
                                         (value)="opcion.nombre">
