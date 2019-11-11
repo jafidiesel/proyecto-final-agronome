@@ -5,12 +5,12 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-title ml-4">
-                        <h4>Cultivo <b>*</b></h4>
+                        <h4>Cultivo<b></b></h4>
                     </div>
                     <form>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4">
-                                <label for="cultivoInicial">Cultivo <b>*</b></label>
+                                <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
                                 <select class="custom-select" id="cultivoInicial"
                                     *ngIf="dummyDataCultivo != '' else loading1">
                                     <option *ngFor="let cultivo of dummyDataCultivo">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
-                                <label for="produccionCultivo">Producción esperadaa <b>*</b></label>
+                                <label for="produccionCultivo">Producción esperada<b>*</b></label>
                                 <input type="number" class="form-control" id="produccionCultivo"
                                     placeholder="Ingrese producción esperada.">
                             </div>
