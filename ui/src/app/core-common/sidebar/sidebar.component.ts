@@ -33,4 +33,19 @@ export class SidebarComponent implements OnInit {
     this.nombreFinca =  (this.auth.getNombreFinca() == "false") ? "" : this.auth.getNombreFinca();
   }
 
+  setActive(id){
+    /* const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id; */
+    document.querySelectorAll('.elementMenu').forEach( element => {
+      console.log(element.id,id);
+      if(element.id == id){
+        element.setAttribute('class','elementMenu active');
+      }else{
+        element.setAttribute('class','elementMenu');
+      }
+    } );
+
+  }
+
 }

@@ -1,0 +1,144 @@
+<main role="main" class="container mt-4">
+    <h1 class="display-4">Planificacion</h1>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-title ml-4">
+                        <h4>Planificacion Inicial<b></b></h4>
+                    </div>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="cultivoInicial"><b>Tipo de cultivo</b></label>
+                                <input type="text" class="form-control" id="cultivoInicial" value="Tomate" readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="variedadCultivo">Variedad <b></b></label>
+                                <input type="text" class="form-control" id="variedadCultivo" value="Perita" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4 ">
+                                <label for="produccionCultivo">Producción esperada (Tn)<b></b></label>
+                                <input type="number" class="form-control" id="produccionCultivo" value="10" min="0"
+                                    readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4 ">
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cicloUnico1" readonly>
+                                    <label class="custom-control-label" for="cicloUnico1">Ciclo único
+                                        <b></b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card-body">
+                        <app-table [tableData]="this.parcelaArray"></app-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-title ml-4">
+                        <h4>Planificacion Supervisada<b></b></h4>
+                    </div>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="cultivoInicial"><b>Tipo de cultivo</b></label>
+                                <input type="text" class="form-control" id="cultivoInicial" value="Tomate" readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="variedadCultivo">Variedad <b></b></label>
+                                <input type="text" class="form-control" id="variedadCultivo" value="Cherry" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4 ">
+                                <label for="produccionCultivo">Producción esperada (Tn)<b></b></label>
+                                <input type="number" class="form-control" id="produccionCultivo" value="10" min="0"
+                                    readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4 ">
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cicloUnico2" readonly>
+                                    <label class="custom-control-label" for="cicloUnico2">Ciclo único
+                                        <b></b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card-body">
+                        <app-table [tableData]="this.parcelaArray"></app-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-title ml-4">
+                        <h4>Planificacion Final<b></b></h4>
+                    </div>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="cultivoFinal">Seleccione un tipo de cultivo <b>*</b></label>
+                                <input type="text" class="form-control" id="cultivoFinal" value="Tomate" readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4">
+                                <label for="variedadFinal">Variedad <b>*</b></label>
+                                <input type="text" class="form-control" id="variedadFinal" value="Cherry" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 ml-4 ">
+                                <label for="produccionCultivo">Producción esperada (Tn)<b></b></label>
+                                <input type="number" class="form-control" id="produccionCultivo" value="10" min="0"
+                                    readonly>
+                            </div>
+                            <div class="form-group col-md-5 ml-4 ">
+                                <br>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="cicloUnicoFinal" readonly>
+                                    <label class="custom-control-label" for="cicloUnicoFinal">Ciclo único
+                                        <b>*</b></label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card-body">
+                        <app-table [tableData]="this.parcelaArray"></app-table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title ml-4">
+                        <h4>Se creó un libro de campo: BC-3</h4>
+                    </div>
+                    <div class="card-body" >
+                        <button [routerLink]="['/actividades/libroDeCampo']" type="button" class="btn btn-info btn-lg float-center"> Ver </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <button [routerLink]="['/planificacion/listarPlanificaciones']" type="button" class="btn btn-danger btn-lg float-left"> Volver
+            </button>
+        </div>
+    </div>
+</main>
