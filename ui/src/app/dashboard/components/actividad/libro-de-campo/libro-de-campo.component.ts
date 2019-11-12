@@ -12,8 +12,8 @@ export class LibroDeCampoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.librosDeCampo.push( ["Lechuga BC-3", "20-10-2019", ""] );
-    this.librosDeCampo.push( ["Tomate BC-3", "20-10-2019", "/actividades/listarActividades"] );
+    this.librosDeCampo.push( ["Lechuga MF-3", "10-01-2019", "/actividades/listarActividades"] );
+    this.librosDeCampo.push( ["Tomate BC-3", "12-11-2019","" ] );
 
   }
 
