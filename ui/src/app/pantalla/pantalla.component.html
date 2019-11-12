@@ -1,19 +1,21 @@
 <div [ngSwitch]="tokenExist">
     <div *ngSwitchCase="true">
 
-        <div class="d-flex" id="wrapper">
+        <div class="wrapper" id="wrapper">
             <app-sidebar *ngIf="tokenExist" ></app-sidebar>
 
 
             <!-- Page Content -->
-            <div id="page-content-wrapper">
+            <div class="main-panel">
                 <app-navbar (ValidateTokenFather2)="validateToken($event)" *ngIf="tokenExist"  ></app-navbar>
 
-
-                <div class="container-fluid">
+                <div class="content">
                     <router-outlet></router-outlet>
 
                 </div>
+                <!-- <div class="container-fluid"> -->
+
+                <!-- </div> -->
             </div>
             <!-- /#page-content-wrapper -->
 
