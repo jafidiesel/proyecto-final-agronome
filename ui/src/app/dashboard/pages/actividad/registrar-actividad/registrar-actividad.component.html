@@ -10,10 +10,15 @@
                 <div *ngFor="let button of configurationButtons">
                     <div *ngIf="button[2]" class="card border-gray col-3 m-3 text-center"
                         style="min-width: 250px; min-height: 250px;">
-                        <div class="card-body">
+                        <h5 class="card-title mt-4">
                             <fa-icon class="mb-4 mt-2" [icon]="button[1]" size="5x"
                                 [styles]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
-                            <h5 class="card-title">{{ button[0] }}</h5>
+                        </h5>
+                        {{ button[0] }}
+                        <h6>
+
+                        </h6>
+                        <div class="card-body">
                             <button class="btn btn-primary text-light"
                                 (click)="registrarActividad(button[0],button[3])">Registrar</button>
                         </div>
@@ -43,15 +48,13 @@
                 <div class="form-group row">
                     <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
                     <div class="col-sm-10">
-                        <select class="custom-select" id="libro" disabled>
-                            <option selected>Seleccione un libro de campo...</option>
-                            <option value="1">Tres arroyos</option>
-                            <option value="2">La colina</option>
-                            <option value="3">Flia. Benitez</option>
+                        <select class="custom-select" id="libro" >
+                            <option selected>Tomate BC-3</option>
+                            <option value="1">Lechuga MF-3</option>
                         </select>
-                        <button type="button" class="btn btn-success mt-4" (click)="openVerticallyCentered(content)"
+                        <!-- <button type="button" class="btn btn-success mt-4" (click)="openVerticallyCentered(content)"
                             disabled>Añadir
-                            parcela</button>
+                            parcela</button> -->
                     </div>
                 </div>
             </div>
@@ -160,7 +163,7 @@
                                 class="col-sm-3 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                     *</b></label>
                             <div class=" col-sm-7">
-                                <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)">
+                                <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)" style="height: 45px;">
                                     <option selected>Seleccione una opción</option>
                                     <option *ngFor="let opcion of parametro.value.opcion; let i = index"
                                         (value)="opcion.nombre">
@@ -202,7 +205,7 @@
         </div>
         <div class="card m-3" *ngSwitchCase="'3'">
             <div class="card-header">
-               <b>Otros datos</b>
+                <b>Otros datos</b>
             </div>
             <div class="card-body">
                 <div class="form-group">
