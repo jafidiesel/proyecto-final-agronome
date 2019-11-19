@@ -160,7 +160,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     }
 
     // Modificar para alterar el  orden del formato de la fecha
-    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.recomendacionForm.value.tempHora.hour + ":" + this.recomendacionForm.value.tempHora.minute;
+    let fecha = date.year + "-" + date.month + "-" + dayString + " ";
 
     this.recomendacionForm.patchValue({
       fchRecomDetalle: fecha,
@@ -250,6 +250,13 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
   // envio de form
   onSubmit() {
     this.checkOtherFields();
+
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = this.recomendacionForm.value.fchActivDetalle + " " + this.recomendacionForm.value.tempHora.hour + ":" + this.recomendacionForm.value.tempHora.minute;
+
+    this.recomendacionForm.patchValue({
+      fchActivDetalle: fecha,
+    });
 
     if (this.recomendacionForm.status == 'VALID') {
       this.subscriptions.push(

@@ -239,7 +239,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
 
     // Modificar para alterar el  orden del formato de la fecha
-    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
+    let fecha = date.year + "-" + date.month + "-" + dayString;
 
     this.registrarActividadForm.patchValue({
       fchActivDetalle: fecha,
@@ -359,6 +359,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   // envio de form
   onSubmit() {
+
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
+
+    this.registrarActividadForm.patchValue({
+      fchActivDetalle: fecha,
+    });
+
     if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
