@@ -85,7 +85,7 @@ export class ReporteRecomendacionComponent implements OnInit, OnDestroy {
     this.pieChartData = [];
     let tempIntArray = form.dataset.number.map(element => parseInt(element));
     this.pieChartData.push( tempIntArray );
-    let tempLabelArray = form.label.map(element => element == "activARecomendar" ? "Actividades a recomendar" : "Actividades recomendadas");
+    let tempLabelArray = form.label.map(element => element == "activARecomendar" ? "Actividades a recomendar" : "Recomendaciones realizadas");
     this.pieChartLabels = tempLabelArray;
     this.mostrarGrafico = true;
 
