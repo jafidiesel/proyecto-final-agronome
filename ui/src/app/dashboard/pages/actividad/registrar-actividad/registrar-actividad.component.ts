@@ -28,8 +28,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // variables usadas para manejar la redireccion
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
-  nextButtonText = "Siguiente";
-  guardarClass = "d-none";
+  nextButtonText = "Guardar";
+  guardarClass = "btn-success";
   cancelarClass = "btn-danger";
 
   configurationButtons: any[] = [];
@@ -148,10 +148,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 1:
         this.backButtonText = "Volver";
         this.cancelarClass = "btn-danger";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "d-none";
-
         this.nombreActividad = "";
 
         this.step--;
@@ -159,17 +155,11 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 2:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
       default:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
     }
@@ -181,30 +171,26 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = '';
 
     switch (this.step) {
-      case 3:
-        this.onSubmit();
-        break;
       case 2:
         this.checkOtherFields();
-        this.camposParametrosCompletados = this.parametrosCompletados();
-
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Guardar";
-        this.guardarClass = "btn-success";
-        this.cancelarClass = "btn-secondary";
-        this.step++;
+        this.onSubmit();
+        /*
+                this.backButtonText = "Atrás";
+                this.nextButtonText = "Guardar";
+                this.guardarClass = "btn-success";
+                this.cancelarClass = "btn-secondary";
+                this.step++; */
         break;
       case 1:
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
+        console.log('case 1 siguiente');
+        /* this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-        this.guardarClass = "btn-primary";
-        this.step++;
+        this.step++; */
+        this.checkOtherFields();
+        this.onSubmit();
         break;
       default:
         this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.cancelarClass = "btn-secondary";
         this.step++;
         break;
@@ -310,8 +296,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  // verificador si los parametros de la actividad fueron completados
   parametrosCompletados() {
+    // verificador si los parametros de la actividad fueron completados
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -359,7 +345,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   // envio de form
   onSubmit() {
-
     // Modificar para alterar el  orden del formato de la fecha
     let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
 
@@ -367,7 +352,9 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       fchActivDetalle: fecha,
     });
 
-    if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
+    if (this.registrarActividadForm.status == 'VALID'
+      && this.parametrosCompletados()
+      && this.registrarActividadForm.value.tempFecha.day != '') {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
