@@ -185,6 +185,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         this.onSubmit();
         break;
       case 2:
+        this.checkOtherFields();
         this.camposParametrosCompletados = this.parametrosCompletados();
 
         this.backButtonText = "Atrás";
@@ -209,7 +210,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         break;
     }
 
-  } 
+  }
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
@@ -323,15 +324,15 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-    // TODO: Seguir desde aca. Hay que hacer la comprobacion para agregar un text inpu con id relacionado al select. 
-    // Ademas hay que hace la comprobacion de cuando se cambia de un parametro "otro" a un parametro "no otro"
-/* 
-    if( this.slugify(optionText.toLowerCase()) == "otro"){
+
+    if (this.slugify(optionText.toLowerCase()) == "otro" || this.slugify(optionText.toLowerCase()) == "otra") {
       let input = document.createElement("input");
-      input.setAttribute('id', '');
+      input.setAttribute('id', 'other' + selectEl.value);
+      input.classList.add("form-control", "mt-2");
+      input.placeholder = "Detalle su opción elegida."
       selectEl.parentElement.append(input);
-      
-    } */
+
+    }
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
@@ -342,6 +343,15 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             element.valor = this.slugify(optionText);
           }
         });
+      }
+    });
+  }
+
+  checkOtherFields() {
+    this.registrarActividadForm.value.parametro.map(element => {
+      if (element.valor == "otro" || element.valor == "otra") {
+        let otherFields: any = document.querySelector('[id^=other]');
+        element.valor = element.valor + ": " + otherFields.value;
       }
     });
   }
@@ -357,7 +367,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             this.postError = false;
             this.postErrorMessage = '';
 
-            //prodn
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
                 confirmButton: 'btn btn-success ml-1',
