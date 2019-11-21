@@ -51,10 +51,10 @@ def postRegistrarActiv(data,currentUser):
 
 def getRegistrarActiv():
     try:
-        actividadDetalleList = selectActivDetalle()
+        actividadDetalleList = selectActivDetalle() #lectura de la bd
         dtoDetalleList = []
 
-        for detalle in actividadDetalleList:
+        for detalle in actividadDetalleList: #creacion de los dto para mostrar
             dtoDetalle = activDetalleToDict(detalle)
             dtoDetalleList.append(dtoDetalle)
 
@@ -76,16 +76,18 @@ def getRegistrarActivCod(codActivDetalle):
 
 def putRegistrarActiv(data,currentUser,codActivDetalle):
     try:
+        #parametros del json
         fchNew = data.get('fchActivDetalle')
         observacionNew = data.get('observacion')
         imagenesNew = data.get('imagen')
         paramListNew = data.get('parametro')
 
-        activDetalleObj = selectActivDetalleCod(codActivDetalle)
+        activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
 
-        if not activDetalleObj.fchActivDetalle == fchNew:
+        #acualizacion de datos    
+        if not activDetalleObj.fchActivDetalle == fchNew: 
             activDetalleObj.fchActivDetalle=fchNew
 
         if not activDetalleObj.observacion == observacionNew:
@@ -123,7 +125,7 @@ def putRegistrarActiv(data,currentUser,codActivDetalle):
 
 def deleteRegistrarActiv(data,codActivDetalle):
     try:
-        activDetalleObj = selectActivDetalleCod(codActivDetalle)
+        activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
         activDetalleObj.isEliminado= True

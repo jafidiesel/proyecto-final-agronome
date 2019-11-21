@@ -29,7 +29,6 @@ export class ListarUsuariosComponent implements OnInit, OnDestroy {
         this.usuariosTabla.push(this.tableDataHeader);
 
         for (let index = 0; index < result.length; index++) {
-          console.log(result[index].fchCrea);
           this.usuariosTabla.push([
             `${result[index].usuario}`,
             `${result[index].nombre}`,

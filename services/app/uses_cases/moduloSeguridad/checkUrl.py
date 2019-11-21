@@ -30,15 +30,21 @@ def checkUrl(method,pat,rol):
         url = MC
     
 
-    #Modulo de seguridad  
+    #Modulo de seguridad 
+    isAccount = False
+    MSACC = urlUsuario.name + '/account'
+    if url.count(MSACC)>0:
+        isAccount = True
+        url = MSACC 
+
     isLogin=False 
     MSLOG = urlLogin.name #login     
-    if url.count(MSLOG)>0:
+    if url.count(MSLOG)>0 and not isAccount:
         isLogin = True
         url = MSLOG
 
     MSUSU =  urlUsuario.name  #usuario
-    if url.count(MSUSU)>0 and not isLogin: #tengo que hacer esta logica porque comparten url con el login
+    if url.count(MSUSU)>0 and not isLogin and not isAccount: #tengo que hacer esta logica porque comparten url con el login
         url = MSUSU
 
 
@@ -93,7 +99,7 @@ def checkUrl(method,pat,rol):
 
     #PERMISOS:
     default = (
-        MSLOG,
+        MSLOG,MSACC,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
         MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte

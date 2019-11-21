@@ -64,13 +64,14 @@ export class AuthService {
     localStorage.setItem('nombre', nombre);
   }
 
-  private guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
+  guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
     localStorage.setItem('cantFincas', cantFincas.toString());
     if (rol == 'ingeniero') {
       localStorage.setItem('fincas', JSON.stringify(arrayFinca));
     } else if (rol == 'administrador') {
       localStorage.setItem('fincas', "0")
     } else {
+      localStorage.removeItem('fincas');
       localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
     }
 
@@ -100,7 +101,7 @@ export class AuthService {
       obj = JSON.parse(localStorage.getItem('fincas'));
       return obj.nombreFinca;
     }else{
-      return false;
+      return "";
     }
   }
 

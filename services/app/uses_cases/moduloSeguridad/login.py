@@ -12,52 +12,52 @@ from werkzeug.security import check_password_hash
 
 def login(data):
     try:
-        print('En login')
+        #print('En login')
         if not data:
             raise Exception('N', 'Data vacio')
         #Buscar Usuario 
         usuarioRst = getUsuarioByName(data.get('usuario'))
-        print(dir(usuarioRst))
-        if (data.get('contraseniaUsuario')== usuarioRst.contraseniaUsuario):
-            print('En comparar contrasenia')
+        #print(dir(usuarioRst))
+        if not (data.get('contraseniaUsuario') == usuarioRst.contraseniaUsuario):
+            raise Exception('N', 'User or Password invalid')
+        if not usuarioRst.isActiv:
+            raise Exception('N', 'Usuario desactivado')
+
+        #if (data.get('contraseniaUsuario') == usuarioRst.contraseniaUsuario):
+            #print('En comparar contrasenia')
             #Generar un token y almacenar los datos en la tabla Session
             #Armado de Token        
-            tokenRst = usuarioRst.getToken() 
+        tokenRst = usuarioRst.getToken() 
             #Verificar si el Usuario ya existe en Session
-            try:
-                sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
-                #Si el usuario ya tiene sesion, actualizar token
-                sessionUserRst.token = tokenRst
-                saveEntidadSinCommit(sessionUserRst)
-            except Exception as e:
-                #Si no se encontro sesion, crear objeto Session
-                session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
-                saveEntidadSinCommit(session)         
-            """ if sessionUserRst:
-                sessionUserRst.token = tokenRst
-                saveEntidadSinCommit(sessionUserRst) """
+        try:
+            #tokenRst = usuarioRst.getToken() 
+            sessionUserRst = SessionUser.query.filter(SessionUser.codPublic == usuarioRst.cod).one()
+            #Si el usuario ya tiene sesion, actualizar token
+            sessionUserRst.token = tokenRst
+            saveEntidadSinCommit(sessionUserRst)
+        except Exception as e:
+            #Si no se encontro sesion, crear objeto Session
+            session = SessionUser(codPublic = usuarioRst.cod, usuario = usuarioRst.usuario, token = tokenRst, rol = usuarioRst.rol.nombre)
+            saveEntidadSinCommit(session)         
             Commit()
-            nombre =  usuarioRst.nombre + ' ' + usuarioRst.apellido 
-            rol = usuarioRst.rol.nombre
-            dtoUsuario = dict(nombre=nombre, rol = rol, token = tokenRst.decode('UTF-8'))
 
-            if not rol =="administrador":
-                fincaUsuarioList = usuarioRst.fincaUsuarioList
-                dtoFincaList = []
 
-                for fincaUsuario in fincaUsuarioList:
-                    dtoFincaAux= dict(codFinca=fincaUsuario.finca.codFinca, nombreFinca= fincaUsuario.finca.nombreFinca)
-                    dtoFincaList.append(dtoFincaAux)
+        nombre =  usuarioRst.nombre + ' ' + usuarioRst.apellido 
+        rol = usuarioRst.rol.nombre
+        dtoUsuario = dict(nombre=nombre, rol = rol, token = tokenRst.decode('UTF-8'))
 
-                dtoUsuario['finca'] = dtoFincaList
+        if not rol =="administrador":
+            fincaUsuarioList = usuarioRst.fincaUsuarioList
+            dtoFincaList = []
 
-            
-            return dtoUsuario
-            #return jsonify({'token' : tokenRst.decode('UTF-8'), 'rol': usuarioRst.rol.nombre})
-        else:
-            return make_response(jsonify({'message': 'User or Password invalid'}),400)
+            for fincaUsuario in fincaUsuarioList:
+                dtoFincaAux= dict(codFinca=fincaUsuario.finca.codFinca, nombreFinca= fincaUsuario.finca.nombreFinca)
+                dtoFincaList.append(dtoFincaAux)
+
+            dtoUsuario['finca'] = dtoFincaList
+        
+        return dtoUsuario
     except Exception as e:
-        Rollback()
         return ResponseException(e)
 
 def logout(userCode): 

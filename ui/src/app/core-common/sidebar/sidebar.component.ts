@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faListAlt, faFileMedical, faChartPie, faLock, faCogs, faMapMarkedAlt, faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/auth/auth.service';
 
 
@@ -20,12 +20,32 @@ export class SidebarComponent implements OnInit {
   faLock = faLock;
   faCogs = faCogs;
   faMapMarkedAlt = faMapMarkedAlt;
+  faDatabase = faDatabase
 
   constructor(private auth: AuthService) { }
 
   ngOnInit() {
     this.rol = this.auth.getRol();
-    this.nombreFinca = this.auth.getNombreFinca();
+    this.actualizarNombreFinca();
+  }
+
+  actualizarNombreFinca(){
+    this.nombreFinca =  (this.auth.getNombreFinca() == "false") ? "" : this.auth.getNombreFinca();
+  }
+
+  setActive(id){
+    /* const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id; */
+    document.querySelectorAll('.elementMenu').forEach( element => {
+      console.log(element.id,id);
+      if(element.id == id){
+        element.setAttribute('class','elementMenu active');
+      }else{
+        element.setAttribute('class','elementMenu');
+      }
+    } );
+
   }
 
 }

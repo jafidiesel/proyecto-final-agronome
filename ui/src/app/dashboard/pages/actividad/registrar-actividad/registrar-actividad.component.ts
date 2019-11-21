@@ -209,13 +209,14 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
         break;
     }
 
-  }
+  } 
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
+    this.codActividad = codActividad;
 
     this.subscriptions.push(
-      this._actividadService.getEstructuraActividad(this.codActividad).subscribe(
+      this._actividadService.getEstructuraActividad(codActividad).subscribe(
         result => {
           this.initForm(result);
         },
@@ -322,17 +323,23 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-
+    // TODO: Seguir desde aca. Hay que hacer la comprobacion para agregar un text inpu con id relacionado al select. 
+    // Ademas hay que hace la comprobacion de cuando se cambia de un parametro "otro" a un parametro "no otro"
+/* 
+    if( this.slugify(optionText.toLowerCase()) == "otro"){
+      let input = document.createElement("input");
+      input.setAttribute('id', '');
+      selectEl.parentElement.append(input);
+      
+    } */
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
     formValues.parametro.map(element => {
       if (element.opcion != null) {
         element.opcion.map(opc => {
-          console.log(opc.nombre,optionText);
           if (this.ciEquals(this.slugify(opc.nombre), this.slugify(optionText))) {
             element.valor = this.slugify(optionText);
-            console.log(this.slugify(optionText));
           }
         });
       }
