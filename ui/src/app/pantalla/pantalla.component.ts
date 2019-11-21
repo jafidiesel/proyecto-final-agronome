@@ -19,6 +19,8 @@ export class PantallaComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.router.url);
+    console.log(window.location.pathname);
     
   }
 
