@@ -63,11 +63,12 @@ def postUser(data):
 
     #Setiar flag de account 
     usuario.isRecuperarContrasenia = False
-    usuario.isActiv = True
+    usuario.isActiv = False
     token = str(usuario.getToken())
     saveEntidadSinCommit(usuario)
     Commit()
     token = token.replace("b'",'')
+    token = token.replace("'",'')
 
     from app.backend import app
     #print(app.config.get('MAIL_USERNAME'))
@@ -147,7 +148,8 @@ def requestRecoverPass(data):
         saveEntidadSinCommit(usuario)
         Commit()
         token = token.replace("b'",'')
-
+        token = token.replace("'",'')
+        
         from app.backend import app
         #print(app.config.get('MAIL_USERNAME'))
         with app.app_context():
