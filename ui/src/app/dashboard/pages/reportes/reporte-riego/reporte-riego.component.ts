@@ -91,7 +91,6 @@ export class ReporteRiegoComponent implements OnInit, OnDestroy {
         case 1:
           return "Enero";
           break;
-
         case 2:
           return "Febrero";
           break;
