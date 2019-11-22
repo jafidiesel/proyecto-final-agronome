@@ -8,14 +8,27 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 
 
 def getParcelasLibres(data):    
+    def getCuadrosLibres(elemento, datoParcelaGeneral):    
+        if datoParcelaGeneral.__getitem__(0) == elemento.__getitem__(0):
+            cuadrosParcelaGeneral = datoParcelaGeneral.__getitem__(1)            
+            cuadrosParcelaOcupada = elemento.__getitem__(1)                 
+            cuadrosNoRepetidos =set(cuadrosParcelaGeneral) - set(cuadrosParcelaOcupada)
+            if cuadrosNoRepetidos:
+                dtoParcelaLibre.append(datoParcelaGeneral.__getitem__(0))
+                dtoParcelaLibre.append(list(cuadrosNoRepetidos))
+            dtoGeneralLibre.append(dtoParcelaLibre)
+
     #Extraer Finca de Json
     codFincaJson = data
     #Buscar Finca
     fincaRst = selectFincaCod(codFincaJson)
     if not fincaRst: 
-            raise Exception('N','No existe finca con código ' + str(codFincaJson))
+        raise Exception('N','No existe finca con código ' + str(codFincaJson))
     #Buscar Parcelas asociadas
     parcelasRstList = fincaRst.parcelaList
+    if not parcelasRstList:
+        raise Exception('N',"La finca no posee parcelas configuradas")
+
     dtoGeneral = []
     #Dto de parcelas con sus respectivos cuadros
     #Por cada parcela, leer cuadro asociado
@@ -24,65 +37,57 @@ def getParcelasLibres(data):
         dtoParcela.append(parcelaRst)
         dtoParcela.append(parcelaRst.cuadroList)
         dtoGeneral.append(dtoParcela)  
-    
+        
     #Leer instancias Planificación asociadas a Finca instanciada.
     planificacionListRst = fincaRst.planificacionList
     if not planificacionListRst:
-        print('DTO')
         return dtoGeneral
     else:
-        dtoGeneralPlan = []
-        dtoCuadroTmp = []
-        parcelasList = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
+        dtoGeneralOcupada = []
+        parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
         for planificacionRst in planificacionListRst:
-            dtoPlanificacion = []            
             if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
                 for grupoCuadro in planificacionRst.grupoCuadroList:
-                    parcelaGrupo = grupoCuadro.parcela
-                    #Verficar si la parcela ya existe en la lista
-                    if not parcelaGrupo in parcelasList:
-                        parcelasList.append(parcelaGrupo)
-                        #Armar dto con encabezado parcela y cuerpo cuadro
+                    dtoParcelaOcupada = []
+                    parcelaOcupada = grupoCuadro.parcela
+                    #Lista de parcelas ocupadas vacia
+                    if not parcelasTmp or (parcelaOcupada not in parcelasTmp):
+                        parcelasTmp.append(parcelaOcupada)
+                        dtoParcelaOcupada.append(parcelaOcupada)
+                        cuadrosOcupados = []
                         for cuadroCultivo in grupoCuadro.cuadroCultivoList:
-                            cuadroGrupo = cuadroCultivo.cuadro
-                            dtoCuadroTmp.append(cuadroGrupo)                        
-                        parcelasList.append(dtoCuadroTmp)
-                        dtoPlanificacion.append(parcelasList)
-                    else:
-                        #Agregar los cuadros a la parcela correspondiente
-                        pass
-
-            dtoGeneralPlan.append(dtoPlanificacion)
+                            cuadroOcupado = cuadroCultivo.cuadro
+                            cuadrosOcupados.append(cuadroOcupado)
+                        dtoParcelaOcupada.append(cuadrosOcupados)
+                        dtoGeneralOcupada.append(dtoParcelaOcupada) 
+                    #Lista con elementos
+                    if parcelasTmp:
+                        #Si la lista no esta vacia, buscar parcela
+                        if parcelaOcupada in parcelasTmp:
+                            for elemento in dtoGeneralOcupada:
+                                if (parcelaOcupada == elemento.__getitem__(0)):
+                                    cuadrosTmp = elemento.__getitem__(1)
+                                    #Comparar los cuadros de la parcela ocupada con los cuadros de la parcela ya guardada
+                                    #Cuadros de la parcela ocupada
+                                    for cuadroCultivo in grupoCuadro.cuadroCultivoList:
+                                        if cuadroCultivo.cuadro not in cuadrosTmp:
+                                            elemento.__getitem__(1).append(cuadroCultivo.cuadro)    
         
         #Comparacion de listas para extraer los items que no se repiten
-        dtoGeneralLibre = []
-        print('DTO GENERAL')
-        print(dtoGeneral)
-        print('DTO GENERAL 2')
-        print(dtoGeneralPlan)
-        for datosDtoGeneral in dtoGeneral:
-            parcelaDto = datosDtoGeneral.__getitem__(0)
-            for datosDtoGeneralPlan in dtoGeneralPlan:
-                dtoParcelaLibre = []
-                for datosParcela in datosDtoGeneralPlan:
-                    parcelaOcupada = datosParcela.__getitem__(0)
-                    #Se extraen los cuadros no repetidos
-                    if (parcelaDto.codParcela == parcelaOcupada.codParcela):
-                        cuadros1 = datosDtoGeneral.__getitem__(1)
-                        cuadros2 = datosParcela.__getitem__(1)                        
-                        cuadrosNoRepetidos =set(cuadros1) - set(cuadros2)
-                        if cuadrosNoRepetidos:
-                            dtoParcelaLibre.append(parcelaDto)
-                            print(dtoParcelaLibre)
-                            dtoParcelaLibre.append(list(cuadrosNoRepetidos))
-                            print(dtoParcelaLibre)
-                    else:
-                        dtoParcelaLibre.append(datosDtoGeneral)
+        dtoGeneralLibre = []       
+    
+        for datoParcelaGeneral in dtoGeneral:
+            dtoParcelaLibre= []
+            condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
             
-                dtoGeneralLibre.append(dtoParcelaLibre)
-        print('DTO COMPARATIVO')
-        print(dtoGeneralLibre)
-        return dtoGeneralLibre      
+            for x in condition:
+                print('Condicion')
+                print(x)
+            
+            if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
+                dtoGeneralLibre.append(datoParcelaGeneral)               
+            
+        return dtoGeneralLibre
         
 def iniciarPlanificacion(data):
     parcelaLibreList = getParcelasLibres(data)
