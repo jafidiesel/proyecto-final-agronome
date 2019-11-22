@@ -138,7 +138,7 @@
                                 <select class="form-control" id="inputGroupSelect01" (click)="procesarOpciones($event)"  style="height: 45px;" >
                                     <option selected>Seleccione una opción</option>
                                     <option *ngFor="let opcion of parametro.value.opcion; let i = index"
-                                        (value)="opcion.nombre">
+                                        [value]="opcion.cod">
                                         {{opcion.nombre}}</option>
                                 </select>
                             </div>
@@ -209,3 +209,5 @@
 
 
 </main>
+{{ tempFecha }}
+{{ tempHora }}

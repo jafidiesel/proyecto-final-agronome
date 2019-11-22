@@ -118,6 +118,15 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
 
+    if (this.slugify(optionText.toLowerCase()) == "otro" || this.slugify(optionText.toLowerCase()) == "otra") {
+      let input = document.createElement("input");
+      input.setAttribute('id', 'other' + selectEl.value);
+      input.classList.add("form-control", "mt-2");
+      input.placeholder = "Detalle su opción elegida."
+      selectEl.parentElement.append(input);
+
+    }
+
     let formValues: any;
     formValues = this.recomendacionForm.value;
 
@@ -132,6 +141,16 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkOtherFields() {
+    this.recomendacionForm.value.parametro.map(element => {
+      if (element.valor == "otro" || element.valor == "otra") {
+        let otherFields: any = document.querySelector('[id^=other]');
+        element.valor = element.valor + ": " + otherFields.value;
+      }
+    });
+  }
+
+
   // metodo para asignar la fecha seleccionada
   onDateSelection(date: NgbDate) {
     let dayString = date.day.toString();
@@ -141,7 +160,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     }
 
     // Modificar para alterar el  orden del formato de la fecha
-    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
+    let fecha = date.year + "-" + date.month + "-" + dayString + " ";
 
     this.recomendacionForm.patchValue({
       fchRecomDetalle: fecha,
@@ -210,7 +229,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
     this.recomendacionForm = this.fb.group({
       tempFecha: this.date,
       tempHora: this.time,
-      codRecomendacion:  parseInt(this.codRecomendacion),
+      codRecomendacion: parseInt(this.codRecomendacion),
       codActividadDetalle: parseInt(this.codActividad),
       nombreRecomendacion: this.nombreRecomendacion,
       fchRecomDetalle: null,
@@ -222,7 +241,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
           return this.crearParametroRecomendacion(element);
         }
       })),
-      analisis :[{}]  
+      analisis: [{}]
 
     });
     this.recomendacionLoaded = true;
@@ -230,9 +249,16 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
 
   // envio de form
   onSubmit() {
-    console.warn('this.recomendacionForm',this.recomendacionForm.status,this.recomendacionForm.value);
+    this.checkOtherFields();
 
-    if (this.recomendacionForm.status == 'VALID' ) {
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = this.recomendacionForm.value.fchActivDetalle + " " + this.recomendacionForm.value.tempHora.hour + ":" + this.recomendacionForm.value.tempHora.minute;
+
+    this.recomendacionForm.patchValue({
+      fchActivDetalle: fecha,
+    });
+
+    if (this.recomendacionForm.status == 'VALID') {
       this.subscriptions.push(
         this._recomendacionService.postRecomendacion(this.recomendacionForm.value).subscribe(
           result => {
