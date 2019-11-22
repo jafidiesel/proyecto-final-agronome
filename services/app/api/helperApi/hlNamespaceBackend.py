@@ -10,6 +10,7 @@ from app.api.analisis_api import analisis
 from app.api.plan_api import plan
 from app.api.planificacion_api import planificacion
 from app.api.reporte_api import  reporte
+from app.api.grupo_planificacion_api import grupoPlanificacion
 
 NAMESPACES = [
     nomenclador,
@@ -23,5 +24,6 @@ NAMESPACES = [
     analisis,
     plan,
     planificacion,
-    reporte
+    reporte,
+    grupoPlanificacion
 ]

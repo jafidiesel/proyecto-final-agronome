@@ -16,3 +16,4 @@ class Planificacion(db.Model):
     estadoPlanificacion = relationship('EstadoPlanificacion', uselist = False)
     grupoCuadroList = relationship('GrupoCuadro', uselist = True)
     usuario = relationship('Usuario', uselist = False)
+    grupoPlanificacion = relationship('GrupoPlanificacion', backref = 'planificacionList')

@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
+from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial, urlGrupoPlanificacion
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -92,6 +92,11 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
     #MODULO DE PLANIFICACION
+    #Grupo Planificacion
+    MPGRUPO = '/' + urlGrupoPlanificacion.name
+    print(MPGRUPO)
+    MPGRUPO_GET = 'GET' + MPGRUPO + '/'
+    print(MPGRUPO_GET)
     #Planificacion Inicial
     MPLAN = '/' + urlPlanificacionInicial.name
     MPLAN_POST = 'POST' + MPLAN
@@ -117,13 +122,14 @@ def checkUrl(method,pat,rol):
     encargadofinca = (
         MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET       #Modulo Planificacion
          ) + default
     
     ingeniero = (  
         MAREG_GETS, MAREG_GET,                         #Modulo de actividad
         MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
-        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
+        MPGRUPO_GET         #Modulo Planificacion
          )+ default
 
     supervisor = (  
