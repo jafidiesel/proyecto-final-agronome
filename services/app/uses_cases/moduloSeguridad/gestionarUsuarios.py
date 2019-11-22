@@ -10,7 +10,7 @@ from datetime import datetime
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.repositorio.repositorioGestionarFinca import selectFincaCod
-from app.repositorio.repositorioUsuario import updateUser,selectAllUser, getUsuarioByName
+from app.repositorio.repositorioUsuario import updateUser,selectAllUser, getUsuarioByName, getUsuarioByEmail, getUsuarioByUsuario
 from flask_mail import Mail, Message
 import jwt
 
@@ -174,8 +174,11 @@ def restorePass(data,currentUser):
         if not currentUser.isRecuperarContrasenia:
             raise Exception('N', 'No tenemos una solicitud para recuperar contraseña')
         
-        
-        passnew = data.get('contraseniaUsuario')    
+        passnew = data.get('pass')
+        passConfirm = data.get('passConfirm')
+
+        if passnew != passConfirm:
+            raise Exception('N','La nueva contraseña y su confirmación no coinciden')    
 
         currentUser.isRecuperarContrasenia = False
         currentUser.contraseniaUsuario = passnew
@@ -184,3 +187,22 @@ def restorePass(data,currentUser):
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
+
+
+def accountUser(data):
+    try:
+        filtroList={
+            'email': getUsuarioByEmail,
+            'usuario': getUsuarioByUsuario
+        }
+
+        filtro = data.get('atributo')
+        valor = data.get('valor').lower()
+
+        usuario = filtroList[filtro](valor)
+        if usuario == None:
+            return ResponseOkmsg(filtro + ' disponible')
+        else:
+            raise Exception('N',filtro + ' no disponible')
+    except Exception as e:
+        return ResponseException(e)    
