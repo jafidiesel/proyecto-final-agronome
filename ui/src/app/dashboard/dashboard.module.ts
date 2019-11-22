@@ -9,8 +9,6 @@ import { CoreCommonModule } from '../core-common/core-common.module';
 
 /* main pages */
 import { ActividadPageComponent } from './pages/actividad-page/actividad-page.component';
-import { PlanificacionPageComponent } from './pages/planificacion-page/planificacion-page.component';
-import { RecursosPageComponent } from './pages/recursos-page/recursos-page.component';
 import { ConfiguracionPageComponent } from './pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './pages/reportes/reportes-page/reportes-page.component';
 import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.component';
@@ -60,12 +58,15 @@ import { ReporteRecomendacionComponent } from './pages/reportes/reporte-recomend
 import { ReporteSiembraComponent } from './pages/reportes/reporte-siembra/reporte-siembra.component';
 import { ReporteRiegoComponent } from './pages/reportes/reporte-riego/reporte-riego.component';
 import { BackupComponent } from './pages/backup/backup.component';
+import { ListarPlanificacionesComponent } from './pages/planificacion/listar-planificaciones/listar-planificaciones.component';
+import { PlanificacionInicialComponent } from './pages/planificacion/planificacion-inicial/planificacion-inicial.component';
+import { PlanificacionSupervisadaComponent } from './pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
+import { PlanificacionFinalComponent } from './pages/planificacion/planificacion-final/planificacion-final.component';
+import { VerPlanificacionFinalComponent } from './pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
 
 @NgModule({
   declarations: [
     ActividadPageComponent,
-    PlanificacionPageComponent,
-    RecursosPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent,
     DashboardPageComponent,
@@ -111,6 +112,11 @@ import { BackupComponent } from './pages/backup/backup.component';
     ReporteSiembraComponent,
     ReporteRiegoComponent,
     BackupComponent,
+    ListarPlanificacionesComponent,
+    PlanificacionInicialComponent,
+    PlanificacionSupervisadaComponent,
+    PlanificacionFinalComponent,
+    VerPlanificacionFinalComponent,
 
   ],
   imports: [
@@ -131,8 +137,6 @@ import { BackupComponent } from './pages/backup/backup.component';
     }],
   exports: [
     ActividadPageComponent,
-    PlanificacionPageComponent,
-    RecursosPageComponent,
     DashboardPageComponent,
     ConfiguracionPageComponent,
     ReportesPageComponent

@@ -28,8 +28,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // variables usadas para manejar la redireccion
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
-  nextButtonText = "Siguiente";
-  guardarClass = "d-none";
+  nextButtonText = "Guardar";
+  guardarClass = "btn-success";
   cancelarClass = "btn-danger";
 
   configurationButtons: any[] = [];
@@ -148,10 +148,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 1:
         this.backButtonText = "Volver";
         this.cancelarClass = "btn-danger";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "d-none";
-
         this.nombreActividad = "";
 
         this.step--;
@@ -159,17 +155,11 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 2:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
       default:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
     }
@@ -181,35 +171,32 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = '';
 
     switch (this.step) {
-      case 3:
-        this.onSubmit();
-        break;
       case 2:
-        this.camposParametrosCompletados = this.parametrosCompletados();
-
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Guardar";
-        this.guardarClass = "btn-success";
-        this.cancelarClass = "btn-secondary";
-        this.step++;
+        this.checkOtherFields();
+        this.onSubmit();
+        /*
+                this.backButtonText = "Atrás";
+                this.nextButtonText = "Guardar";
+                this.guardarClass = "btn-success";
+                this.cancelarClass = "btn-secondary";
+                this.step++; */
         break;
       case 1:
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
+        console.log('case 1 siguiente');
+        /* this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-        this.guardarClass = "btn-primary";
-        this.step++;
+        this.step++; */
+        this.checkOtherFields();
+        this.onSubmit();
         break;
       default:
         this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.cancelarClass = "btn-secondary";
         this.step++;
         break;
     }
 
-  } 
+  }
 
   // inicializador de registrar
   registrarActividad(nombreActividad: string, codActividad: number) {
@@ -238,7 +225,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
 
     // Modificar para alterar el  orden del formato de la fecha
-    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
+    let fecha = date.year + "-" + date.month + "-" + dayString;
 
     this.registrarActividadForm.patchValue({
       fchActivDetalle: fecha,
@@ -309,8 +296,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  // verificador si los parametros de la actividad fueron completados
   parametrosCompletados() {
+    // verificador si los parametros de la actividad fueron completados
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -323,15 +310,15 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-    // TODO: Seguir desde aca. Hay que hacer la comprobacion para agregar un text inpu con id relacionado al select. 
-    // Ademas hay que hace la comprobacion de cuando se cambia de un parametro "otro" a un parametro "no otro"
-/* 
-    if( this.slugify(optionText.toLowerCase()) == "otro"){
+
+    if (this.slugify(optionText.toLowerCase()) == "otro" || this.slugify(optionText.toLowerCase()) == "otra") {
       let input = document.createElement("input");
-      input.setAttribute('id', '');
+      input.setAttribute('id', 'other' + selectEl.value);
+      input.classList.add("form-control", "mt-2");
+      input.placeholder = "Detalle su opción elegida."
       selectEl.parentElement.append(input);
-      
-    } */
+
+    }
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
@@ -346,10 +333,28 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkOtherFields() {
+    this.registrarActividadForm.value.parametro.map(element => {
+      if (element.valor == "otro" || element.valor == "otra") {
+        let otherFields: any = document.querySelector('[id^=other]');
+        element.valor = element.valor + ": " + otherFields.value;
+      }
+    });
+  }
+
 
   // envio de form
   onSubmit() {
-    if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
+    // Modificar para alterar el  orden del formato de la fecha
+    let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
+
+    this.registrarActividadForm.patchValue({
+      fchActivDetalle: fecha,
+    });
+
+    if (this.registrarActividadForm.status == 'VALID'
+      && this.parametrosCompletados()
+      && this.registrarActividadForm.value.tempFecha.day != '') {
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
@@ -357,7 +362,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             this.postError = false;
             this.postErrorMessage = '';
 
-            //prodn
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
                 confirmButton: 'btn btn-success ml-1',
