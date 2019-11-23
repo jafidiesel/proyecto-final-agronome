@@ -48,12 +48,6 @@ export class ActivarComponent implements OnInit, OnDestroy {
     );
   }
 
-  navigateLogin(){
-    this.router.navigate(['/login']);
-    setTimeout(() => this.router.navigate(['/login']) );
-
-  }
-
   
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());

@@ -33,9 +33,9 @@ export class PantallaComponent implements OnInit {
     } else if (this.url.toLocaleLowerCase().indexOf('login') == 1) {
       this.action = "login";
       return false;
-    } if (this.url.toLocaleLowerCase().indexOf('reset') == 1) {
-      this.action = "reset";
-      console.log('reset');
+    } if (this.url.toLocaleLowerCase().indexOf('recuperar') == 1) {
+      this.action = "recuperar";
+      console.log('recuperar');
       return false;
     } else if(this.tokenExist){
       this.action = "dashboard";

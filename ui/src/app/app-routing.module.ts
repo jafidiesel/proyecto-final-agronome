@@ -116,7 +116,7 @@ const routes: Routes = [
   /* Backup */
   { path: 'backup', component: BackupComponent },
   { path: 'activar/:token', component: ActivarComponent },
-  { path: 'reset/:token', component: ResetComponent },
+  { path: 'recuperar/:token', component: ResetComponent },
   
   { path: '**', pathMatch: 'full', redirectTo: '/home' },
 ];
