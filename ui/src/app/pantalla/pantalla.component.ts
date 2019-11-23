@@ -9,9 +9,14 @@ export class PantallaComponent implements OnInit {
 
   tokenExist = false;
 
-  constructor(private router: Router) { 
+  url: string;
+
+  action: string;
+
+
+  constructor(private router: Router) {
     // #TODO: Improve session detection
-    if( localStorage.getItem('token') ){
+    if (localStorage.getItem('token')) {
       this.tokenExist = true;
       this.router.navigateByUrl('/home');
     }
@@ -19,22 +24,42 @@ export class PantallaComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.router.url);
-    console.log(window.location.pathname);
-    
+    this.url = window.location.pathname;
+
+    if (this.url.toLocaleLowerCase().indexOf('activar') == 1) {
+      this.action = "activar";
+      return false;
+      //this.router.navigateByUrl('/activar');
+    } else if (this.url.toLocaleLowerCase().indexOf('login') == 1) {
+      this.action = "login";
+      return false;
+    } if (this.url.toLocaleLowerCase().indexOf('reset') == 1) {
+      this.action = "reset";
+      console.log('reset');
+      return false;
+    } else if(this.tokenExist){
+      this.action = "dashboard";
+      return false;
+    }else{
+      this.action = "login";
+      return false;
+    }
+
   }
 
-  validateToken(event){
+  validateToken(event) {
 
-    if( localStorage.getItem('token') ){
+    if (localStorage.getItem('token')) {
       this.tokenExist = true;
+      this.action = "dashboard";
       //this.router.navigateByUrl('/actividades');
-      if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0 ) {
-        this.router.navigate(['/finca/crearFinca']);        
-      }else{
+      if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0) {
+        this.router.navigate(['/finca/crearFinca']);
+      } else {
         this.router.navigate(['/actividades/listarActividades']);
       }
-    }else{
+    } else {
+      this.action = "login";
       this.tokenExist = false;
     }
     return this.tokenExist;

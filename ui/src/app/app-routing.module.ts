@@ -112,14 +112,14 @@ const routes: Routes = [
   { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
   { path: 'reportes/reporteSiembra', component: ReporteSiembraComponent },
   { path: 'reportes/reporteRiego', component: ReporteRiegoComponent },
-  { path: 'backup', component: BackupComponent },
-/*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
- */
+  
   /* Backup */
   { path: 'backup', component: BackupComponent },
-  { path: 'activar', component: ActivarComponent },
-  { path: 'reset', component: ResetComponent },
-  ];
+  { path: 'activar/:token', component: ActivarComponent },
+  { path: 'reset/:token', component: ResetComponent },
+  
+  { path: '**', pathMatch: 'full', redirectTo: '/home' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
