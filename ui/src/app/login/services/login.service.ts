@@ -12,10 +12,10 @@ export class LoginService {
   }
 
   /**
-  * @param json json
+  * @param token string (opcional)
   * @return Observable<string>
   *  
-  * POST obtiene el dataset para realizar la grafica de barras de actividades
+  * POST activa el usuario mediante el token que se envia por url
   */
   activateUser(token: string = 'empty'): Observable<any> {
     let result;
@@ -39,5 +39,20 @@ export class LoginService {
     }
     return result;
   }
+
+
+  /**
+  * @param usuario string
+  * @return Observable<string>
+  *  
+  * POST envia el usuario a recuperar la contraseña
+  */
+  sendRecover(usuarioReceived: string): Observable<any> {
+
+    return this.http.post<String>(`http://localhost:9001/api/users/account/recover`, { usuario: usuarioReceived }  );
+
+  }
+
+
 
 }

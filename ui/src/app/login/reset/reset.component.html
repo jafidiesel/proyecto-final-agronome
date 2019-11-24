@@ -1,7 +1,7 @@
 <div class="limiter animated fadeInLeft ">
     <div class="container-login100">
         <div class="wrap-login100 p-t-50 p-b-90">
-            <form (ngSubmit)="login( loginForm )" #loginForm="ngForm"
+            <form (ngSubmit)="reset( resetForm )" #resetForm="ngForm"
                 class="login100-form validate-form flex-sb flex-w">
 
                 <span class="login100-form-title ">
@@ -13,7 +13,7 @@
 
                 <div *ngIf="token == '' " class="login100-form">
                     <div class="wrap-input100 m-b-16">
-                        <input class="input100" type="text" name="nombreUsuario" placeholder="Ingrese su nombre de usuario.">
+                        <input class="input100" type="text" name="usuario" [(ngModel)]="usuario" required placeholder="Ingrese su nombre de usuario.">
                         <span class="focus-input100"></span>
                     </div>
 
