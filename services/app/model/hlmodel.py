@@ -26,7 +26,7 @@ from app.model.cultivo import Cultivo
 from app.model.cuadroCultivo import CuadroCultivo
 from app.model.grupoPlanificacion import GrupoPlanificacion
 from app.model.grupoCuadro import GrupoCuadro
-
+from app.model.libroCampo import LibroCampo
 
 from app.model.actividadParametro import ActividadParametro
 from app.model.tipoPlanParam import TipoPlanParam
