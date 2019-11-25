@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.value) {
-        this.router.navigate(['']);
+        this.router.navigate(['/login']);
         this.ValidateTokenFather2.emit('logout');
         localStorage.removeItem('rol');
         localStorage.removeItem('token');

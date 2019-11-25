@@ -77,7 +77,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
     this.barChartData = [];
     this.barChartData.push(
       {
-        data: form.dataset.data, label: "número de actividades"
+        data: form.dataset.data, label: "Número de actividades"
       }
     );
     this.barChartLabels = form.label;
