@@ -16,6 +16,11 @@ export class ResetComponent implements OnInit, OnDestroy {
   url: string;
 
   usuario: string;
+  password1: string;
+  password2: string;
+  firstPassword = false;
+  passwordsMatch = false;
+
 
   constructor(private _loginService: LoginService) { }
 
@@ -26,10 +31,16 @@ export class ResetComponent implements OnInit, OnDestroy {
     console.log('token', this.token);
   }
 
+  reset( form: NgForm ) {
+    if (this.token == '') {
+      this.resetUser(form);
+    }else{
+      this.resetPassword(form);
+    }
+  }
 
 
-
-  reset(form: NgForm) {
+  resetUser(form: NgForm) {
 
     if (form.valid) {
 
@@ -65,6 +76,56 @@ export class ResetComponent implements OnInit, OnDestroy {
     }
 
   }
+
+  resetPassword(form: NgForm) {
+
+    if (form.valid) {
+
+      Swal.fire({
+        allowOutsideClick: false,
+        type: 'info',
+        text: 'Espere por favor'
+      });
+      Swal.showLoading();
+
+      this.subscriptions.push(
+        this._loginService.confirmPassword(this.password1, this.password2, this.token).subscribe(
+          result => {
+            Swal.close();
+            Swal.fire({
+              allowOutsideClick: true,
+              type: 'success',
+              title: 'Recuperado',
+              text: result.message
+            });
+          },
+          error => {
+            Swal.fire({
+              allowOutsideClick: true,
+              type: 'error',
+              title: 'Error',
+              text: error.error.message
+            });
+          }
+        )
+      );
+
+    }
+
+  }
+
+  firstPasswordSet() {
+    this.firstPassword = true;
+    if (this.password1 != this.password2) this.passwordsMatch = false;
+  }
+
+  passwordMatch() {
+    if (this.password1 == this.password2) {
+      this.passwordsMatch = true;
+    }
+  }
+
+
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());

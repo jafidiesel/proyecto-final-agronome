@@ -13,9 +13,43 @@
 
                 <div *ngIf="token == '' " class="login100-form">
                     <div class="wrap-input100 m-b-16">
-                        <input class="input100" type="text" name="usuario" [(ngModel)]="usuario" required placeholder="Ingrese su nombre de usuario.">
+                        <input class="input100" type="text" name="usuario" [(ngModel)]="usuario" required
+                            placeholder="Ingrese su nombre de usuario.">
                         <span class="focus-input100"></span>
                     </div>
+
+                    <div class="container-login100-form-btn m-t-17">
+                        <button class="login100-form-btn" type="submit" id="recuperar">
+                            Recuperar
+                        </button>
+                    </div>
+
+                </div>
+
+                <div *ngIf="token != '' " class="login100-form">
+                    <div class="wrap-input100 m-b-16">
+                        <input class="input100" type="password" name="password1" [(ngModel)]="password1"
+                            placeholder="Ingrese su nueva contraseña" (keyup)="firstPasswordSet()" required>
+                        <span class="focus-input100">Contraseña</span>
+                    </div>
+                    <div class="wrap-input100 m-b-16">
+                        <input class="input100" type="password" name="password2" [(ngModel)]="password2"
+                            placeholder="Repita su nueva contraseña" required (keyup)="passwordMatch()">
+                        <span class="focus-input100">Repetir contraseña</span>
+                    </div>
+
+                    <span *ngIf=" firstPassword && (!passwordsMatch) ">
+                        <p class="text-danger" >
+                            Las contraseñas deben coincidir
+                        </p>
+                    </span>
+
+                    <span *ngIf=" firstPassword && (password1.length < 6) ">
+                        <p class="text-danger" >
+                            Su contraseña debe tener al menos 6 caracteres.
+                        </p>
+                    </span>
+
 
                     <div class="container-login100-form-btn m-t-17">
                         <button class="login100-form-btn" type="submit" id="recuperar">
