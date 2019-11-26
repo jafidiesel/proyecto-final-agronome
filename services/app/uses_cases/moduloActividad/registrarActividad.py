@@ -2,6 +2,7 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit,deleteObject
 from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm
+from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
@@ -9,7 +10,7 @@ from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict, 
 from app.extensions import db
 from datetime import datetime
 
-def postRegistrarActiv(data,currentUser):
+def registrarActivDetalle(data,currentUser):
     try:
         ##datos del json
         codActiv = data.get('codActividad')
@@ -17,6 +18,7 @@ def postRegistrarActiv(data,currentUser):
         imagenes = data.get('imagen')
         parametros = data.get('parametro')
         fch = data.get('fchActivDetalle')
+        codLibroCampo = data.get('codLibroCampo')
 
         activ = getNomencladoCod('actividad',codActiv)
         ##creación de la actividadDetalle
@@ -24,6 +26,11 @@ def postRegistrarActiv(data,currentUser):
         detalleActiv.actividad = activ #asociación con actividad
         #asociacion con usuario
         detalleActiv.usuario = currentUser
+        #asociacion con libro campo
+        libroCampo = selectLibroCod(codLibroCampo)
+        
+        detalleActiv.libroCampoActivDetalle =libroCampo
+
         ##Parametros
         for param in parametros:
             codParam = param.get('codParam')
@@ -49,9 +56,11 @@ def postRegistrarActiv(data,currentUser):
     except Exception as e:
         return ResponseException(e)
 
-def getRegistrarActiv():
+def consultarActivDetalle(data):
     try:
-        actividadDetalleList = selectActivDetalle() #lectura de la bd
+        codLibroCampo = data.get('codLibroCampo')
+        libroCampo = selectLibroCod(codLibroCampo)
+        actividadDetalleList = libroCampo.activDetalleList
         dtoDetalleList = []
 
         for detalle in actividadDetalleList: #creacion de los dto para mostrar
@@ -62,7 +71,7 @@ def getRegistrarActiv():
     except Exception as e:
         return ResponseException(e)
  
-def getRegistrarActivCod(codActivDetalle):
+def getActivDetalle(codActivDetalle):
     try:
         detalle = selectActivDetalleCod(codActivDetalle)
         if not detalle:
@@ -74,7 +83,7 @@ def getRegistrarActivCod(codActivDetalle):
         return ResponseException(e)
 
 
-def putRegistrarActiv(data,currentUser,codActivDetalle):
+def putActivDetalle(data,currentUser,codActivDetalle):
     try:
         #parametros del json
         fchNew = data.get('fchActivDetalle')
@@ -123,7 +132,7 @@ def putRegistrarActiv(data,currentUser,codActivDetalle):
     except Exception as e:
         return ResponseException(e)
 
-def deleteRegistrarActiv(data,codActivDetalle):
+def deleteActivDetalle(data,codActivDetalle):
     try:
         activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:

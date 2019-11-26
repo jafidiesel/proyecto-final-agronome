@@ -12,8 +12,13 @@ URL_MR = 'api/recurso/'
 urlRecurso=Namespace(URL_MR)
 
 #modulo de actividades"
-URL_MA= 'api/actividad/'
-urlResgistrarActiv = Namespace(URL_MA + 'registrar', description='Registrar Actividad')
+URL_MA= 'api/actividad'
+urlActividad = Namespace(URL_MA, description='Registrar y Consultar Actividades')
+
+#libro de campo (no es un modulo pero es importatante x eso se desacopla)
+URL_LC = 'api/libroCampo'
+urlLibroCampo = Namespace(URL_LC, description= 'Libro de Campo')
+
 
 #modulo de seguridad
 URL_MU = 'api/users'
@@ -27,7 +32,7 @@ urlFinca = Namespace(URL_MGF, description = 'Gestionar Finca')
 
 #modulo de recomendacion
 URL_MR = 'api/recomendacion'
-urlRegistrarRecom = Namespace (URL_MR, description = 'Registrar Recomendación')
+urlRecomendacion = Namespace (URL_MR, description = 'Registrar Recomendación')
 
 #modulo de helper 
 URL_HL = 'api/hl'
@@ -39,6 +44,7 @@ urlPlan = Namespace (URL_HL + '/plan', description = 'Helper plan')
 #modulo de planificacion
 URL_MP = 'api/planificacion'
 urlPlanificacionInicial = Namespace(URL_MP + '/inicial',desciption = 'Gestionar planificacion ')
+urlGrupoPlanificacion = Namespace(URL_MP +'/grupos', description = 'Gestionar grupos de planificaciones' )
 
 
 #modulo de reportes
