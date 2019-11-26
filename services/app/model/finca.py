@@ -15,4 +15,4 @@ class Finca(db.Model):
     parcelaList = relationship("Parcela", backref = "fincaParcela") #1->N
     planificacionList = relationship('Planificacion',uselist = True)
 
-    
+    libroCampoList = relationship("LibroCampo",backref = "fincaLibroCampo")  #1 -> N

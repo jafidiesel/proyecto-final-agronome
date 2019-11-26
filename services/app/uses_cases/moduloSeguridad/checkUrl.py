@@ -1,5 +1,6 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
+from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial, urlGrupoPlanificacion, urlLibroCampo
+
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -49,13 +50,18 @@ def checkUrl(method,pat,rol):
 
 
     #Modulo Actividades
-    MAREG = '/' + urlResgistrarActiv.name
-    MAREG_POST = 'POST' + MAREG
-    MAREG_GETS = 'GET' + MAREG
-    MAREG_GET = MAREG_GETS  + '/'
-    MAREG_PUT = 'PUT' + MAREG + '/'
-    MAREG_DELETE = 'DELETE' + MAREG + '/'
-    MAREG_PARAM = 'GET' + MAREG + '/parametros/'
+    MA = '/' + urlActividad.name
+    MA_REG = 'POST' + MA + '/registrar'
+    MA_CON = 'POST' + MA + '/consultar'
+    MA_GET = 'GET'  + MA + '/'
+    MA_PUT = 'PUT'  + MA + '/'
+    MA_DELETE = 'DELETE' + MA + '/'
+    MA_PARAM = 'GET' + MA + '/parametros/'
+
+    #Libro Campo 
+    LC = '/' + urlLibroCampo.name
+    LC_POST = 'POST' + LC
+    LC_FIN  = 'POST' + LC + '/finalizar'
 
     #Modulo de Gestion de Finca
     MGF = '/' + urlFinca.name
@@ -92,6 +98,11 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
     #MODULO DE PLANIFICACION
+    #Grupo Planificacion
+    MPGRUPO = '/' + urlGrupoPlanificacion.name
+    print(MPGRUPO)
+    MPGRUPO_GET = 'GET' + MPGRUPO + '/'
+    print(MPGRUPO_GET)
     #Planificacion Inicial
     MPLAN = '/' + urlPlanificacionInicial.name
     MPLAN_POST = 'POST' + MPLAN
@@ -102,32 +113,36 @@ def checkUrl(method,pat,rol):
         MSLOG,MSACC,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE,                         #Modulo de reporte
+        LC_POST
         ) #todos
 
     administrador = (
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                             #Modulo de finca
         MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
-        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
+        LC_FIN                                          #libro de campo
     ) + default
     
     encargadofinca = (
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET,       #Modulo Planificacion
+        LC_FIN                                      #libro de campo
          ) + default
     
     ingeniero = (  
-        MAREG_GETS, MAREG_GET,                         #Modulo de actividad
+        MA_CON, MA_GET,                         #Modulo de actividad
         MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
-        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
+        MPGRUPO_GET         #Modulo Planificacion
          )+ default
 
     supervisor = (  
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT  #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM  #Modulo de actividad
          )+ default
 
 

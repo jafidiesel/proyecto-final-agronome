@@ -165,5 +165,12 @@ def crearPlanificacionInicial(data,currentUser):
         Rollback()
         return ResponseException(e)
 
+def getPlanificacionInicial():
+    pass
+
+def getPlanificacionesIniciales():
+    pass
+
+
 
         
