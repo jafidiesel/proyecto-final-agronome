@@ -50,7 +50,7 @@ export class ActividadService {
    * Realiza una peticion GET para obtener los parametros que componen la estructura de dicha actividad elegida
    */
   getEstructuraActividad(codActividad: number): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/parametros/${codActividad}`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad/parametros/${codActividad}`);
   }
 
 
@@ -61,7 +61,7 @@ export class ActividadService {
    * Realiza una peticion post para registrar una actividad
    */
   postActividad(json: any) {
-    return this.http.post(`http://localhost:9001/api/actividad/registrar`, json);
+    return this.http.post(`http://localhost:9001/api/actividad`, json);
   }
 
   /**
@@ -71,7 +71,7 @@ export class ActividadService {
   * Realiza un delete para eliminar una actividad registrada (baja lógica)
   */
   deleteActividad(id: number) {
-    return this.http.delete(`http://localhost:9001/api/actividad/registrar/${id}`);
+    return this.http.delete(`http://localhost:9001/api/actividad/${id}`);
   }
 
   /**
@@ -80,7 +80,7 @@ export class ActividadService {
   * GET obtiene la lista de actividades registradas
   */
   getListaActividades(): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad`);
   }
 
   /**
@@ -90,6 +90,6 @@ export class ActividadService {
   * GET obtiene la información detallada de una actividad segun el id enviado
   */
   getActividad(id: number): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/${id}`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad/${id}`);
   }
 }
