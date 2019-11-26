@@ -62,6 +62,7 @@ def checkUrl(method,pat,rol):
     LC = '/' + urlLibroCampo.name
     LC_POST = 'POST' + LC
     LC_FIN  = 'POST' + LC + '/finalizar'
+    LC_REC  = 'POST' + LC + '/recomendacion'
 
     #Modulo de Gestion de Finca
     MGF = '/' + urlFinca.name
@@ -114,7 +115,7 @@ def checkUrl(method,pat,rol):
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
         MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE,                         #Modulo de reporte
-        LC_POST
+        LC_POST, LC_REC                                #libro campo
         ) #todos
 
     administrador = (

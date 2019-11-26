@@ -1,19 +1,17 @@
 from app.model.hlmodel import LibroCampo
 from app.uses_cases.libroCampo.hlLibroCampoToDict import libroCampoListFullToDict
+from app.uses_cases.moduloRecomendacion.registrarRecomendacion import recomendacionActividad
 from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.repositorio.repositorioGestionarFinca import selectFincaCod
 from app.repositorio.hlDb import saveEntidadSinCommit, Commit
+
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 import datetime
-def getLibroCampo(data):
+
+def consultarLibroCampo(data):
     try:
         codFinca = data.get('codFinca')
-
-        finca = selectFincaCod(codFinca)
-        if not finca:
-            raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
-
-        libroCampoList = finca.libroCampoList
+        libroCampoList = hlLibroCampoList(codFinca)
 
         dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
 
@@ -46,6 +44,32 @@ def finalizarLibroCampo(data):
         return ResponseException(e)
 
 
+def recomendacionLibroCampo(data):
+    dtoLibroCampoList = consultarLibroCampo(data)
+    dtoResultList = []
+    for dtoLibroCampo in dtoLibroCampoList:
+        dtoResult = dtoLibroCampo
+        codLibroCampo = dtoLibroCampo.get('codLibroCampo')
+        dtoJsonAux = dict(
+            codLibroCampo = codLibroCampo
+        )
+
+        dtoActividadRecomendacion = recomendacionActividad(dtoJsonAux)
+
+        actvidadesARecomendar = dtoActividadRecomendacion.get('actvidadesARecomendar')
+        actividadesRecomendadas = dtoActividadRecomendacion.get('actividadesRecomendadas')
+
+        cantARE = len(actvidadesARecomendar)
+        cantRE  = len(actividadesRecomendadas)
+
+        dtoResult['actvidadesARecomendar'] = cantARE
+        dtoResult['actividadesRecomendadas'] = cantRE
+        
+        dtoResultList.append(dtoResult)
+    return dtoResultList
+
+
+
 def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
     try:
         libroCampo = LibroCampo(nombreLibroCampo = nombreLibroCampo)
@@ -59,3 +83,12 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
         return ResponseOkmsg('Libro de campo ' + nombreLibroCampo +'creado correctamente')
     except Exception as e:
         return ResponseException(e)
+
+
+
+def hlLibroCampoList(codFinca):
+    finca = selectFincaCod(codFinca)
+    if not finca:
+        raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+    libroCampoList = finca.libroCampoList
+    return libroCampoList
