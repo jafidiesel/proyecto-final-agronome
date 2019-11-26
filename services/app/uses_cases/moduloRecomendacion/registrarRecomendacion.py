@@ -18,6 +18,9 @@ def postRegistrarRecom(data,currentUser):
 
         recomendacion = getNomencladoCod('recomendacion',codRecom)
         activDetalle = selectActivDetalleCod(codActivDetalle)
+        libroCampo   = activDetalle.libroCampoActivDetalle
+
+
         ##creacion del detalle recomendacion
         detalleRecom = RecomendacionDetalle(observacion = obs,fchRecomDetalle = fch)
         
@@ -27,6 +30,8 @@ def postRegistrarRecom(data,currentUser):
         activDetalle.recomendacionDetalle = detalleRecom
         ##asociacion de usuario
         detalleRecom.usuario = currentUser
+        ##asociacion con libro de campo
+        detalleRecom.libroCampoRecomDetalle = libroCampo
 
         ##asociacion de analisis
         for analisisJson in analisisList:
@@ -59,20 +64,15 @@ def getRecomDetalle(codRecomDetalle):
     except Exception as e:
         return ResponseException(e)
 
-def recomendacionActividad(currentUser):
-    ##sacar del usuario las fincas 
-    actividadDetalleList = selectRecomenActiv() #pasarle el libro de campo
+def recomendacionActividad(data):
+    codLibroCampo = data.get('codLibroCampo')
+    actividadDetalleList = selectRecomenActiv(codLibroCampo) 
     dtoListActivSin = []
     dtoListActivRecom= []
     
     for actividadDetalle in actividadDetalleList:
         dtoAux=activDetalleToDict(actividadDetalle)
-
-        dtoFinca = dict(codFinca=1,nombreFinca='3 Huert.JArcode')
-
-
-        dtoAux['finca'] = dtoFinca
-
+        
         codRecomDetalle = actividadDetalle.codRecomDetalle
 
         if actividadDetalle.codRecomDetalle == None:

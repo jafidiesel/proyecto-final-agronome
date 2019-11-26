@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial, urlGrupoPlanificacion, urlLibroCampo
+from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial, urlGrupoPlanificacion, urlLibroCampo
 
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
@@ -71,9 +71,9 @@ def checkUrl(method,pat,rol):
     MGF_PUT = 'PUT' + MGF + '/'
     
     #Modulo de Recomendaciones
-    MRREG = '/' + urlRegistrarRecom.name
+    MRREG = '/' + urlRecomendacion.name
     MRREG_POST =  'POST' + MRREG + '/registrar'
-    MRRECOMACTIV_GET = 'GET' + MRREG + '/actividad' 
+    MRRECOMACTIV_POST = 'POST' + MRREG + '/actividad' 
     MRREG_GET = 'GET' + MRREG + '/'
     MRREG_PARAM = 'GET' + MRREG + '/parametros/'
    
@@ -122,7 +122,7 @@ def checkUrl(method,pat,rol):
         MSUSU,                                        #Modulo de seguridad
         MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                             #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
         LC_FIN                                          #libro de campo
     ) + default
@@ -136,7 +136,7 @@ def checkUrl(method,pat,rol):
     
     ingeniero = (  
         MA_CON, MA_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
         MPGRUPO_GET         #Modulo Planificacion
          )+ default
