@@ -92,4 +92,19 @@ export class ActividadService {
   getActividad(id: number): Observable<any> {
     return this.http.get<string>(`http://localhost:9001/api/actividad/${id}`);
   }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * POST obtiene los libros de campo de la finca segun el codFinca enviado
+  */
+  getLibrosCampo(codFinca: number): Observable<any> {
+    let json = {
+      codFinca: 3
+    }
+    return this.http.post<string>(`http://localhost:9001/api/libroCampo`,json);
+  }
+
+
 }

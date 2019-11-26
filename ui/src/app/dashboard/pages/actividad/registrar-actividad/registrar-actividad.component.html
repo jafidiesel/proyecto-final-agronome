@@ -50,8 +50,8 @@
                         <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
                         <div class="col-sm-10">
                             <select class="custom-select" id="libro">
-                                <option selected>Tomate BC-3</option>
-                                <option value="1">Lechuga MF-3</option>
+                                <option *ngFor=" let libro of librosDeCampo" [value]="libro.codLibroCampo">
+                                    {{ libro.nombreLibroCampo }} </option>
                             </select>
                             <!-- <button type="button" class="btn btn-success mt-4" (click)="openVerticallyCentered(content)"
                                 disabled>Añadir
@@ -221,16 +221,17 @@
                 </div>
             </div>
             <div class="form-group row">
-                    <div class="col-sm-12">
-                        <div [hidden]="!postError" class="alert alert-danger">
-                            {{ postErrorMessage }}
-                        </div>
-                        <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()"> {{backButtonText}}
-                        </button>
-                        <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
-                            {{ nextButtonText }}</button>
+                <div class="col-sm-12">
+                    <div [hidden]="!postError" class="alert alert-danger">
+                        {{ postErrorMessage }}
                     </div>
+                    <button type="button" class="btn {{cancelarClass}} btn-lg float-left" (click)="atras()">
+                        {{backButtonText}}
+                    </button>
+                    <button type="button" class="btn {{guardarClass}} btn-lg float-right" (click)="siguiente()">
+                        {{ nextButtonText }}</button>
                 </div>
+            </div>
         </div>
     </form>
 

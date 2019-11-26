@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@ang
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -18,6 +19,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // variables utilizadas para mostrar info
   nombreActividad: string;
   codActividad: number;
+
+  // variables de finca
+  codFinca: number;
+
+  // variables de libro de campo
+  librosDeCampo = [];
+
 
   // array usado para limpiar las subscripciones
   subscriptions: Subscription[] = [];
@@ -34,7 +42,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   configurationButtons: any[] = [];
 
-  // mock data
+  // mock data for icons
   dummyConfigurationButtons: any[] = [
     ['Riego', faCloudRain, true],
     ['Siembra', faSpinner, true],
@@ -69,10 +77,44 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService) { }
+    private _actividadService: ActividadService,
+    private _authService: AuthService) { }
 
   ngOnInit() {
 
+    this.codFinca = this._authService.getcodFinca();
+
+    /*  [
+       {
+           "codLibroCampo": 1,
+           "nombreLibroCampo": "Tomate BC",
+           "fchIni": "24-11-2019 00:00:00",
+           "fchFin": "",
+           "cultivo": {
+               "cod": 1,
+               "cantidadCultivo": 2,
+               "produccionEsperada": 3.0,
+               "variedadCultivo": "perita",
+               "cicloUnico": true,
+               "codTipoCultivo": 1,
+               "nombreTipoCultivo": "tomate"
+           }
+       }
+   ] */
+
+    this.subscriptions.push(
+      this._actividadService.getLibrosCampo(this.codFinca).subscribe(
+        result => {
+          result.map(finca => {
+            this.librosDeCampo.push( {
+              codLibroCampo: finca.codLibroCampo,
+              nombreLibroCampo: finca.nombreLibroCampo
+            } );
+          });
+        },
+        error => this.onHttpError({ message: "Ocurrio un error obteniendo los libros de campo." })
+      )
+    );
     // Listado de actividades a seleccionar
     this.subscriptions.push(
       this._actividadService.getListaNomencladoresConFiltro('actividad', true).subscribe(
