@@ -18,4 +18,4 @@ class LibroCampo(db.Model):
     grupoPlanificacion = relationship("GrupoPlanificacion") #1->1 
     activDetalleList = relationship("ActividadDetalle",backref = "libroCampoActivDetalle")  #1 -> N
     recomDetalleList = relationship("RecomendacionDetalle",backref = "libroCampoRecomDetalle")  #1 -> N
-   
+    cultivo = relationship("Cultivo") #N->1
