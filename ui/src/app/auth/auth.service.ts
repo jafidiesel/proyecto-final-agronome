@@ -22,10 +22,6 @@ export class AuthService {
     this.leerToken();
   }
 
-  logout() {
-
-  }
-
   login(usuario: UsuarioModel) {
     return this.http.post(this.url, usuario).pipe(
       map(resp => {
