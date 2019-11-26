@@ -32,7 +32,7 @@ urlFinca = Namespace(URL_MGF, description = 'Gestionar Finca')
 
 #modulo de recomendacion
 URL_MR = 'api/recomendacion'
-urlRegistrarRecom = Namespace (URL_MR, description = 'Registrar Recomendación')
+urlRecomendacion = Namespace (URL_MR, description = 'Registrar Recomendación')
 
 #modulo de helper 
 URL_HL = 'api/hl'

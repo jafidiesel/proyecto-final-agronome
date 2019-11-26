@@ -5,7 +5,7 @@ from app.api.actividad_api import actividad
 from app.api.usuario_api import users
 from app.api.login_api import loginUser
 from app.api.finca_api import finca
-from app.api.registrarRecomendacion_api import registrarRecom
+from app.api.recomendacion_api import recomendacion
 from app.api.analisis_api import analisis
 from app.api.plan_api import plan
 from app.api.planificacion_api import planificacion
@@ -21,7 +21,7 @@ NAMESPACES = [
     users,
     loginUser,
     finca,
-    registrarRecom,
+    recomendacion,
     analisis,
     plan,
     planificacion,

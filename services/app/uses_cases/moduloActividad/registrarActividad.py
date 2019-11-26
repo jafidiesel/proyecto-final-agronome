@@ -61,7 +61,6 @@ def consultarActivDetalle(data):
         codLibroCampo = data.get('codLibroCampo')
         libroCampo = selectLibroCod(codLibroCampo)
         actividadDetalleList = libroCampo.activDetalleList
-        #actividadDetalleList = selectActivDetalle() #lectura de la bd
         dtoDetalleList = []
 
         for detalle in actividadDetalleList: #creacion de los dto para mostrar
