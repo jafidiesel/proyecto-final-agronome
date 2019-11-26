@@ -61,7 +61,7 @@ export class ActividadService {
    * Realiza una peticion post para registrar una actividad
    */
   postActividad(json: any) {
-    return this.http.post(`http://localhost:9001/api/actividad`, json);
+    return this.http.post(`http://localhost:9001/api/actividad/registrar`, json);
   }
 
   /**

@@ -49,7 +49,7 @@
                     <div class="form-group row">
                         <label for="staticFecha" class="col-sm-2 col-form-label font-weight-bold">Libro de campo</label>
                         <div class="col-sm-10">
-                            <select class="custom-select" id="libro">
+                            <select class="custom-select" id="libro" formControlName="codLibroCampo" >
                                 <option *ngFor=" let libro of librosDeCampo" [value]="libro.codLibroCampo">
                                     {{ libro.nombreLibroCampo }} </option>
                             </select>

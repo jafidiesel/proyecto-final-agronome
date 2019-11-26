@@ -106,10 +106,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       this._actividadService.getLibrosCampo(this.codFinca).subscribe(
         result => {
           result.map(finca => {
-            this.librosDeCampo.push( {
+            this.librosDeCampo.push({
               codLibroCampo: finca.codLibroCampo,
               nombreLibroCampo: finca.nombreLibroCampo
-            } );
+            });
           });
         },
         error => this.onHttpError({ message: "Ocurrio un error obteniendo los libros de campo." })
@@ -224,7 +224,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
                 this.step++; */
         break;
       case 1:
-        console.log('case 1 siguiente');
         /* this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
         this.step++; */
@@ -240,7 +239,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  // inicializador de registrar
+  // inicializador de la estructura de la actividad segun que actividad se selecciona
   registrarActividad(nombreActividad: string, codActividad: number) {
     this.codActividad = codActividad;
 
@@ -304,18 +303,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
-  // actualizacion del valor del parametro
-  actualizarValorParametro(event) {
-    const selectEl = event.target;
-    const valor = selectEl.value;
-    const id = selectEl.id;
-
-    this.registrarActividadForm.get('parametro').value.map(element => {
-      if (id == element.nombre) {
-        element.valor = valor;
-      }
-    });
-  }
 
   // inicializador del formgroup
   initForm(form) {
@@ -325,6 +312,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: " ",
+      codLibroCampo: [null, Validators.required],
       imagen: [{}],
       parametro: this.fb.array(form.parametros.map((element, index) => {
         if (element.opcion.length > 0) {
@@ -371,6 +359,19 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             element.valor = this.slugify(optionText);
           }
         });
+      }
+    });
+  }
+
+  // actualizacion del valor del parametro
+  actualizarValorParametro(event) {
+    const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id;
+
+    this.registrarActividadForm.get('parametro').value.map(element => {
+      if (id == element.nombre) {
+        element.valor = valor;
       }
     });
   }
