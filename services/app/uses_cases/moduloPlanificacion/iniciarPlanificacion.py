@@ -5,6 +5,7 @@ from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinc
 from app.repositorio.repositorioPlanificacion import getCuadroByCod, getParcelaByCod
 from flask import jsonify,make_response
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
+from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 
 
 def getParcelasLibres(data):    
@@ -112,12 +113,12 @@ def iniciarPlanificacion(data):
 
 def crearPlanificacionInicial(data,currentUser):
     try:
-
+        dataLower = obtainDict(data)
         #Crear instancia GrupoPlanificacion 
-        fincaJson = data.get("codFinca")
-        nombreGrupoJson = data.get("nombreGrupo")
-        comentarioJson = data.get("comentario")
-        datosCultivosJsonList = data.get("cultivos")
+        fincaJson = dataLower.get("codFinca")
+        nombreGrupoJson = dataLower.get("nombreGrupo")
+        comentarioJson = dataLower.get("comentario")
+        datosCultivosJsonList = dataLower.get("cultivos")
         #parcelaListJson = data.get("parcelas")
         grupoPlanificacion = GrupoPlanificacion(nombreGrupoPlanificacion = nombreGrupoJson)
         #Buscar entidades asociadas a la Planificacion
@@ -138,7 +139,6 @@ def crearPlanificacionInicial(data,currentUser):
         
         for datosCultivoJson in datosCultivosJsonList:
             tipoCultivoRst = selectActiveByName(TipoCultivo,datosCultivoJson.get("nombreTipoCultivo"))
-            print(tipoCultivoRst)
             cultivoObj = Cultivo(cantidadCultivo = datosCultivoJson.get("cantidadCultivo"), produccionEsperada = datosCultivoJson.get("produccionEsperada"),variedadCultivo=datosCultivoJson.get("variedadCultivo"),cicloUnico=datosCultivoJson.get("cicloUnico"))
             saveEntidadSinCommit(cultivoObj)
             cultivoObj.tipoCultivoR = tipoCultivoRst
@@ -166,7 +166,7 @@ def crearPlanificacionInicial(data,currentUser):
         Rollback()
         return ResponseException(e)
 
-def getPlanificacionInicial():
+def getPlanificacionInicial(codPlanificacion):
     pass
 
 def getPlanificacionesIniciales():
