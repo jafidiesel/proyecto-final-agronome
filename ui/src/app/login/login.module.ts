@@ -24,6 +24,10 @@ import { ActivarComponent } from './activar/activar.component';
     FormsModule,
     HttpClientModule,
   ],
-  exports: [LoginComponent]
+  exports: [
+    LoginComponent,
+    ActivarComponent,
+    ResetComponent
+  ]
 })
 export class LoginModule { }

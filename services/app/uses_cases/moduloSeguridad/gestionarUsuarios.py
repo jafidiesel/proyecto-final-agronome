@@ -184,7 +184,7 @@ def restorePass(data,currentUser):
         currentUser.contraseniaUsuario = passnew
         saveEntidadSinCommit(currentUser)
         Commit()
-        return ResponseOk()
+        return ResponseOkmsg('Contraseña recuperada correctamente')
     except Exception as e:
         return ResponseException(e)
 
