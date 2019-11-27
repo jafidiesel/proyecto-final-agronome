@@ -15,42 +15,81 @@ def getAll(currentUser,codFinca):
     #Armado Dto 
     dtoGeneral = []
     gruposTmp = []
+
     for planificacionRst in planificacionLista:
         dtoGrupo = []
+        dtoPlanificacion = []
+        dtoPlanificacionesList = []
+
         grupoPlanificacionRst = planificacionRst.grupoPlanificacion
         if not gruposTmp or (grupoPlanificacionRst not in gruposTmp) :
             gruposTmp.append(grupoPlanificacionRst)
             dtoGrupo.append(grupoPlanificacionRst)
-            dtoPlanificacion = []
-            dtoPlanificacion.append(planificacionRst)
+            dtoDatosPlanificacion = []
             tipoPlanificacionRst = planificacionRst.tipoPlanificacion
             estadoPlanificacionRst = planificacionRst.estadoPlanificacion
             usuarioPlanificacionRst = planificacionRst.usuario
-            dtoPlanificacion.append(tipoPlanificacionRst)
-            dtoPlanificacion.append(estadoPlanificacionRst)        
-            dtoPlanificacion.append(usuarioPlanificacionRst)        
-            dtoGrupo.append(dtoPlanificacion)  
+            #Armado DTO
+            dtoPlanificacion.append(planificacionRst)
+            dtoDatosPlanificacion.append(tipoPlanificacionRst)
+            dtoDatosPlanificacion.append(estadoPlanificacionRst)        
+            dtoDatosPlanificacion.append(usuarioPlanificacionRst)  
+            dtoPlanificacion.append(dtoDatosPlanificacion)
+            dtoPlanificacionesList.append(dtoPlanificacion)      
+            dtoGrupo.append(dtoPlanificacionesList)  
             dtoGeneral.append(dtoGrupo)
         else:
             if grupoPlanificacionRst in gruposTmp:
                 for arrayGrupo in dtoGeneral:
                     if (grupoPlanificacionRst == arrayGrupo.__getitem__(0)):
-                        dtoPlanificacion = []
                         dtoPlanificacion.append(planificacionRst)
                         tipoPlanificacionRst = planificacionRst.tipoPlanificacion
                         estadoPlanificacionRst = planificacionRst.estadoPlanificacion
                         usuarioPlanificacionRst = planificacionRst.usuario
                         dtoPlanificacion = []
+                        dtoDatosPlanificacion = []
                         dtoPlanificacion.append(planificacionRst)
                         tipoPlanificacionRst = planificacionRst.tipoPlanificacion
                         estadoPlanificacionRst = planificacionRst.estadoPlanificacion
                         usuarioPlanificacionRst = planificacionRst.usuario    
-                        dtoPlanificacion.append(tipoPlanificacionRst)
-                        dtoPlanificacion.append(estadoPlanificacionRst)        
-                        dtoPlanificacion.append(usuarioPlanificacionRst)                            
+                        dtoDatosPlanificacion.append(tipoPlanificacionRst)
+                        dtoDatosPlanificacion.append(estadoPlanificacionRst)        
+                        dtoDatosPlanificacion.append(usuarioPlanificacionRst)  
+                        dtoPlanificacion.append(dtoDatosPlanificacion)
                         arrayGrupo.append(dtoPlanificacion)                    
             
-    print(dtoGeneral)
-    #Devolver JSON: limpiar dto
     
-    return True
+    return jsonify(getDTO(dtoGeneral))
+
+def getDTO(dataRst):
+    dtoGeneral = []
+    for elementGeneral in dataRst:
+        dtoGrupo = []
+        for elementoGrupo in elementGeneral.__getitem__(1):
+            dtoElementos = []
+            dtoPlanificacion = []
+            dataPlanificacion = elementoGrupo.__getitem__(0)
+            dictPlanificacion = dataPlanificacion.__dict__
+            dictPlanificacion.pop('_sa_instance_state', None)
+            dictPlanificacion.pop('tipoPlanificacion', None)
+            dictPlanificacion.pop('estadoPlanificacion', None)
+            dictPlanificacion.pop('grupoPlanificacion', None)
+            dictPlanificacion.pop('usuario', None)
+            for elementPlanificacion in elementoGrupo.__getitem__(1):
+                dictElementP = elementPlanificacion.__dict__
+                if 'rol' in dictElementP:
+                    dictElementP.pop('rol', None)
+                
+                dictElementP.pop('_sa_instance_state', None)
+                dtoElementos.append(dictElementP)
+            
+            dtoPlanificacion.append(dictPlanificacion)
+            dtoPlanificacion.append(dtoElementos)
+            
+        dictGrupo = elementGeneral.__getitem__(0).__dict__
+        #dictGrupo = dataGrupo.__dict__
+        dictGrupo.pop('_sa_instance_state', None)
+        dtoGrupo.append(dictGrupo)
+        dtoGrupo.append(dtoPlanificacion)
+        dtoGeneral.append(dtoGrupo)
+    return dtoGeneral

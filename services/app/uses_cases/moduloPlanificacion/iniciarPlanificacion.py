@@ -93,7 +93,7 @@ def iniciarPlanificacion(data):
     parcelaLibreList = getParcelasLibres(data)
     dtoParcelasLibres = []
     if not parcelaLibreList:
-        return make_response(jsonify({'message:':'No existen cuadros libres'}),202)
+        return make_response(jsonify({'message:':'No existen cuadros libres'}),400)
     if parcelaLibreList:
         for parcelaLibre in parcelaLibreList:        
             dtoCuadrosLibre = []
@@ -112,6 +112,7 @@ def iniciarPlanificacion(data):
 
 def crearPlanificacionInicial(data,currentUser):
     try:
+
         #Crear instancia GrupoPlanificacion 
         fincaJson = data.get("codFinca")
         nombreGrupoJson = data.get("nombreGrupo")
