@@ -50,7 +50,7 @@ export class ActividadService {
    * Realiza una peticion GET para obtener los parametros que componen la estructura de dicha actividad elegida
    */
   getEstructuraActividad(codActividad: number): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/parametros/${codActividad}`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad/parametros/${codActividad}`);
   }
 
 
@@ -71,16 +71,19 @@ export class ActividadService {
   * Realiza un delete para eliminar una actividad registrada (baja lógica)
   */
   deleteActividad(id: number) {
-    return this.http.delete(`http://localhost:9001/api/actividad/registrar/${id}`);
+    return this.http.delete(`http://localhost:9001/api/actividad/${id}`);
   }
 
   /**
   * @return Observable<string>
   *  
-  * GET obtiene la lista de actividades registradas
+  * GET obtiene la lista de todas las actividades registradas
   */
-  getListaActividades(): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar`);
+  getListaActividades(cod: number): Observable<any> {
+    let json = {
+      codLibroCampo: cod
+    }
+    return this.http.post<string>(`http://localhost:9001/api/actividad/consultar`, json);
   }
 
   /**
@@ -90,6 +93,34 @@ export class ActividadService {
   * GET obtiene la información detallada de una actividad segun el id enviado
   */
   getActividad(id: number): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/${id}`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad/${id}`);
   }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * POST obtiene los libros de campo de la finca segun el codFinca enviado
+  */
+  getLibrosCampo(codFinca: number): Observable<any> {
+    let json = {
+      codFinca: codFinca
+    }
+    return this.http.post<string>(`http://localhost:9001/api/libroCampo`, json);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * POST obtiene los libros de campo de la finca segun el codFinca enviado
+  */
+  getLibrosCampoRecomendacion(codFinca: number): Observable<any> {
+    let json = {
+      codFinca: codFinca
+    }
+    return this.http.post<string>(`http://localhost:9001/api/libroCampo/recomendacion`, json);
+  }
+
+
 }

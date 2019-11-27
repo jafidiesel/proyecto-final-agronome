@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class ListarActividadesComponent implements OnInit, OnDestroy {
 
   rol: string;
+  codFinca: number;
 
   subscriptions: Subscription[] = [];
 
@@ -19,34 +21,43 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
 
   actividadesArray = [];
 
-  constructor(private _actividadService: ActividadService, private auth: AuthService) { }
+  constructor(
+    private _actividadService: ActividadService,
+    private auth: AuthService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.rol = this.auth.getRol();
+    this.codFinca = this.auth.getcodFinca();
 
 
     // Listado de las actividades registradas
     this.subscriptions.push(
-      this._actividadService.getListaActividades().subscribe(
-        (result: any) => { 
-          this.actividadesArray.push(this.tableDataHeader);
+      this.activatedRoute.params.subscribe(params => {
+        this._actividadService.getListaActividades(params['cod']).subscribe(
+          (result: any) => {
+            this.actividadesArray.push(this.tableDataHeader);
 
-          result.ActividadDetalle.map( (element) => {
-            this.actividadesArray.push([
-              element.actividad.nombreActividad,
-              element.fchActivDetalle,
-              element.observacion,
-              `%/actividades/verActividad/${element.codActivDetalle}`,
-            ]);
-          });
-          this.mostrarTabla = true;
-        },
-        error => console.log(error)
-      ));
+            result.ActividadDetalle.map((element) => {
+              this.actividadesArray.push([
+                element.actividad.nombreActividad,
+                element.fchActivDetalle,
+                element.observacion,
+                `%/actividades/verActividad/${element.codActivDetalle}`,
+              ]);
+            });
+            this.mostrarTabla = true;
+          },
+          error => console.log(error)
+        )
+
+      })
+
+    );
   }
 
-  imprimir(){
-    console.log("actividadesArray",this.actividadesArray);
+  imprimir() {
+    console.log("actividadesArray", this.actividadesArray);
   }
 
   ngOnDestroy() {
