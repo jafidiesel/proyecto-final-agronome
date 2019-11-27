@@ -9,9 +9,9 @@
                     <span class="navbar-toggler-bar bar3"></span>
                 </button>
             </div>
-            <div *ngIf="this.nombreFinca != '' ">
+            <div *ngIf="this.nombreFinca.length > 1 ">
                 <a class="navbar-brand text-capitalize" >Finca: <b>{{nombreFinca}}</b></a>
-                <button type="button" class="btn btn-primary btn-sm" *ngIf="this.rol == 'ingeniero' " >Cambiar</button>
+                <button type="button" class="btn btn-primary btn-sm" *ngIf="this.rol == 'ingeniero' " (click)="seleccionarFinca()" >Cambiar</button>
             </div>
         </div>
 

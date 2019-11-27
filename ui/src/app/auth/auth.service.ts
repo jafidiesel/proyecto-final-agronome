@@ -39,18 +39,21 @@ export class AuthService {
     );
   }
 
+  logoutLocalStorage() {
+    localStorage.removeItem('rol');
+    localStorage.removeItem('token');
+    localStorage.removeItem('nombre');
+    localStorage.removeItem('cantFincas');
+    localStorage.removeItem('fincas');
+    localStorage.removeItem('currentCodFinca');
+    localStorage.removeItem('currentNombreFinca');
+  }
+
   private guardarToken(idToken: string) {
     this.userToken = idToken;
     localStorage.setItem('token', idToken);
   }
 
-  leerToken() {
-    if (localStorage.getItem('token')) {
-      this.userToken = localStorage.getItem('token');
-    } else {
-      this.userToken = '';
-    }
-  }
 
   private guardarRol(rol: string) {
     localStorage.setItem('rol', rol);
@@ -71,6 +74,24 @@ export class AuthService {
       localStorage.setItem('fincas', JSON.stringify(arrayFinca));
     }
 
+  }
+
+  setearFinca(codFinca: number, nombreFinca: string) {
+    localStorage.setItem('currentCodFinca', String(codFinca));
+    localStorage.setItem('currentNombreFinca', nombreFinca);
+  }
+
+  getCurrentNombreFinca(){
+    let result = localStorage.getItem('currentNombreFinca') == null ? "" : localStorage.getItem('currentNombreFinca');
+    return result;
+  }
+
+  leerToken() {
+    if (localStorage.getItem('token')) {
+      this.userToken = localStorage.getItem('token');
+    } else {
+      this.userToken = '';
+    }
   }
 
   getToken() {
@@ -123,7 +144,6 @@ export class AuthService {
 
   getFincas() {
     if (localStorage.getItem('fincas') != "undefined") {
-      console.log(JSON.parse(localStorage.getItem('fincas')));
       return JSON.parse(localStorage.getItem('fincas'));
     }
   }
