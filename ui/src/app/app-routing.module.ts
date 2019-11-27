@@ -60,7 +60,8 @@ const routes: Routes = [
   /* Modulo Actividades */
   { path: 'actividades/libroDeCampo', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
-  { path: 'actividades/listarActividades', component: ListarActividadesComponent },
+  /* { path: 'actividades/listarActividades', component: ListarActividadesComponent }, */
+  { path: 'actividades/listarActividades/:cod', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
