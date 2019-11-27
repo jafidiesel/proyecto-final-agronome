@@ -65,31 +65,37 @@ def getDTO(dataRst):
     dtoGeneral = []
     for elementGeneral in dataRst:
         dtoGrupo = []
+        dictGrupo = elementGeneral.__getitem__(0).__dict__
+        dictGrupo.pop('_sa_instance_state', None)
+
         for elementoGrupo in elementGeneral.__getitem__(1):
-            dtoElementos = []
-            dtoPlanificacion = []
             dataPlanificacion = elementoGrupo.__getitem__(0)
             dictPlanificacion = dataPlanificacion.__dict__
             dictPlanificacion.pop('_sa_instance_state', None)
-            dictPlanificacion.pop('tipoPlanificacion', None)
-            dictPlanificacion.pop('estadoPlanificacion', None)
-            dictPlanificacion.pop('grupoPlanificacion', None)
-            dictPlanificacion.pop('usuario', None)
+            dictElementData = dict(cod = dataPlanificacion.cod, comentarioPlanificacion = dataPlanificacion.comentarioPlanificacion, fchPlanificacion = dataPlanificacion.fchPlanificacion)            
+            dictGrupo['planificacion'] = dictElementData
             for elementPlanificacion in elementoGrupo.__getitem__(1):
+                
                 dictElementP = elementPlanificacion.__dict__
+                print('ELEMENTOS')
+                dictElementP.pop('_sa_instance_state', None)
+
                 if 'rol' in dictElementP:
                     dictElementP.pop('rol', None)
+                if elementPlanificacion.nombre == 'inicial' or elementPlanificacion.nombre == 'supervisada' or elementPlanificacion.nombre == 'final':
+                    dictElementData['tipoPlanificacion'] = dictElementP                    
+                if elementPlanificacion.nombre == 'en curso' or elementPlanificacion.nombre == 'finalizada':
+                    dictElementData['estadoPlanificacion']= dictElementP
+                if 'usuario'in dictElementP:
+                    dictElementData['usuario'] = dictElementP
+                    
+                 
+                print(dictElementData)
                 
-                dictElementP.pop('_sa_instance_state', None)
-                dtoElementos.append(dictElementP)
+
+            #dictPlanificacion = dict(cod = dataPlanificacion.cod, comentarioPlanificacion = dataPlanificacion.comentarioPlanificacion, fchPlanificacion = dataPlanificacion.fchPlanificacion)            
             
-            dtoPlanificacion.append(dictPlanificacion)
-            dtoPlanificacion.append(dtoElementos)
-            
-        dictGrupo = elementGeneral.__getitem__(0).__dict__
         #dictGrupo = dataGrupo.__dict__
-        dictGrupo.pop('_sa_instance_state', None)
-        dtoGrupo.append(dictGrupo)
-        dtoGrupo.append(dtoPlanificacion)
-        dtoGeneral.append(dtoGrupo)
+        
+        dtoGeneral.append(dictGrupo)
     return dtoGeneral
