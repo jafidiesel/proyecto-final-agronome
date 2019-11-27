@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   // variables de finca
-  codFinca: number;
+  codFinca = [];
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -50,9 +50,10 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codFinca = this.auth.getcodFinca();
+    console.log('codFinca',this.codFinca);
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
+      this._actividadService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({

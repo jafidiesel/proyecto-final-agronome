@@ -30,7 +30,7 @@ export class AuthService {
         this.guardarNombre(resp['nombre']);
 
         let fincaLength = (resp['finca'] != null) ? resp['finca'].length : 0;
-        this.guardarFinca(resp['finca'], fincaLength, resp['rol']);
+        this.guardarFincas(resp['finca'], fincaLength, resp['rol']);
 
 
 
@@ -60,7 +60,7 @@ export class AuthService {
     localStorage.setItem('nombre', nombre);
   }
 
-  guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
+  guardarFincas(arrayFinca: any, cantFincas: number, rol: string) {
     localStorage.setItem('cantFincas', cantFincas.toString());
     if (rol == 'ingeniero') {
       localStorage.setItem('fincas', JSON.stringify(arrayFinca));
@@ -96,12 +96,12 @@ export class AuthService {
       let array = [];
       let result = [];
       array = JSON.parse(localStorage.getItem('fincas'));
-      if (array.length > 0){
+      if (array.length > 0) {
         array.map(finca => {
           result.push(finca.nombreFinca);
         });
         return result;
-      }else{
+      } else {
         return [];
       }
     } else {
@@ -109,11 +109,22 @@ export class AuthService {
     }
   }
 
-  getcodFinca(): number {
+  getcodFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
-      let obj: any;
-      obj = JSON.parse(localStorage.getItem('fincas'));
-      return obj.codFinca;
+      let array = [];
+      let result = [];
+      array = JSON.parse(localStorage.getItem('fincas'));
+      if (array.length > 0) {
+        array.map(finca => result.push(finca.codFinca));
+      }
+      return result;
+    }
+  }
+
+  getFincas() {
+    if (localStorage.getItem('fincas') != "undefined") {
+      console.log(JSON.parse(localStorage.getItem('fincas')));
+      return JSON.parse(localStorage.getItem('fincas'));
     }
   }
 
