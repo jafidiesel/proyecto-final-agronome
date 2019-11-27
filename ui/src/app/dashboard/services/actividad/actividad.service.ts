@@ -77,10 +77,13 @@ export class ActividadService {
   /**
   * @return Observable<string>
   *  
-  * GET obtiene la lista de actividades registradas
+  * GET obtiene la lista de todas las actividades registradas
   */
-  getListaActividades(): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad`);
+  getListaActividades(cod: number): Observable<any> {
+    let json = {
+      codLibroCampo: cod
+    }
+    return this.http.post<string>(`http://localhost:9001/api/actividad/consultar`, json);
   }
 
   /**
@@ -101,9 +104,22 @@ export class ActividadService {
   */
   getLibrosCampo(codFinca: number): Observable<any> {
     let json = {
-      codFinca: 3
+      codFinca: codFinca
     }
-    return this.http.post<string>(`http://localhost:9001/api/libroCampo`,json);
+    return this.http.post<string>(`http://localhost:9001/api/libroCampo`, json);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * POST obtiene los libros de campo de la finca segun el codFinca enviado
+  */
+  getLibrosCampoRecomendacion(codFinca: number): Observable<any> {
+    let json = {
+      codFinca: codFinca
+    }
+    return this.http.post<string>(`http://localhost:9001/api/libroCampo/recomendacion`, json);
   }
 
 

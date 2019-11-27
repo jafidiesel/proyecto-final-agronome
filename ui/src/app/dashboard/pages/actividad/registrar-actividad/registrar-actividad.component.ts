@@ -84,24 +84,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     this.codFinca = this._authService.getcodFinca();
 
-    /*  [
-       {
-           "codLibroCampo": 1,
-           "nombreLibroCampo": "Tomate BC",
-           "fchIni": "24-11-2019 00:00:00",
-           "fchFin": "",
-           "cultivo": {
-               "cod": 1,
-               "cantidadCultivo": 2,
-               "produccionEsperada": 3.0,
-               "variedadCultivo": "perita",
-               "cicloUnico": true,
-               "codTipoCultivo": 1,
-               "nombreTipoCultivo": "tomate"
-           }
-       }
-   ] */
-
     this.subscriptions.push(
       this._actividadService.getLibrosCampo(this.codFinca).subscribe(
         result => {
