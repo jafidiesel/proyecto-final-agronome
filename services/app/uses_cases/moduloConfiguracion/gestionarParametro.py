@@ -137,14 +137,13 @@ def getAllParametros():
         parametroRstList = selectAll(hlmodel.Parametro)
         dtoParametro = []
         #Obtener TipoDato activo y las opciones de cada parametro
-        for parametro in parametroRstList:        
-            parametroDto = parametro.__dict__            
-            parametroDto.pop('_sa_instance_state',None)
-            parametroDto.pop('codTipoParametro', None)
-            parametroDto.pop('codTipoDato', None)
-            parametroDto.pop('tipoParametroRef', None)
-            parametroDto.pop('tipoDatoRef', None)
-            parametroDto.pop('paramOpcion', None)
+        for parametro in parametroRstList: 
+            parametroDto = dict(
+                cod           = parametro.cod,
+                isActiv       = parametro.isActiv,
+                nombre        = parametro.nombre, 
+                tipoParametro = parametro.tipoParametroRef.nombre
+            )      
             dtoParametro.append(parametroDto)
         return jsonify(dtoParametro)
     except Exception as e:
