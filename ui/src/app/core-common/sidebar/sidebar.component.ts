@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class SidebarComponent implements OnInit {
 
   rol: string;
-  nombreFinca: string;
+  nombreFinca = [];
   
   faEdit = faEdit;
   faListAlt = faListAlt;
@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
   }
 
   actualizarNombreFinca(){
-    this.nombreFinca =  (this.auth.getNombreFinca() == "false") ? "" : this.auth.getNombreFinca();
+    this.nombreFinca =  (this.auth.getNombresFinca() == []) ? [""] : this.auth.getNombresFinca();
   }
 
   setActive(id){

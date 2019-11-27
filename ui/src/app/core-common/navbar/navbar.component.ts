@@ -10,28 +10,27 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  rol:string;
-  nombre:string;
-  nombreFinca:string;
+  rol: string;
+  nombre: string;
+  nombresFinca = [];
   @Output() ValidateTokenFather2 = new EventEmitter();
 
 
   constructor(
     private router: Router,
-    private auth: AuthService) { 
+    private auth: AuthService) {
   }
-  
+
   ngOnInit() {
     this.rol = localStorage.getItem('rol');
-    if(this.rol === "encargadofinca") this.rol = "Encargado de Finca";
-    if(this.rol === "ingeniero") this.rol = "Ingeniero Agrónomo";
+    if (this.rol === "encargadofinca") this.rol = "Encargado de Finca";
+    if (this.rol === "ingeniero") this.rol = "Ingeniero Agrónomo";
     this.nombre = this.auth.getNombre();
-    this.nombreFinca = this.auth.getNombreFinca();
-    console.log(this.nombreFinca);
+    this.nombresFinca = this.auth.getNombresFinca();
   }
-  
-  logout(){
-    
+
+  logout() {
+
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success ml-1',
@@ -39,7 +38,7 @@ export class NavbarComponent implements OnInit {
       },
       buttonsStyling: false
     })
-    
+
     swalWithBootstrapButtons.fire({
       title: '¿Deseas cerrar sesión?',
       type: 'warning',
@@ -63,8 +62,8 @@ export class NavbarComponent implements OnInit {
           confirmButtonText: 'Salir',
           reverseButtons: true
         })
-        setTimeout(() => this.ValidateTokenFather2.emit('logout') );
-      } 
+        setTimeout(() => this.ValidateTokenFather2.emit('logout'));
+      }
     })
 
   }

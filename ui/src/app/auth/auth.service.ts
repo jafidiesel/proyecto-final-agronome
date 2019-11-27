@@ -68,7 +68,7 @@ export class AuthService {
       localStorage.setItem('fincas', "0")
     } else {
       localStorage.removeItem('fincas');
-      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
     }
 
   }
@@ -91,13 +91,21 @@ export class AuthService {
     }
   }
 
-  getNombreFinca() {
+  getNombresFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
-      let obj: any;
-      obj = JSON.parse(localStorage.getItem('fincas'));
-      return obj.nombreFinca;
-    }else{
-      return "";
+      let array = [];
+      let result = [];
+      array = JSON.parse(localStorage.getItem('fincas'));
+      if (array.length > 0){
+        array.map(finca => {
+          result.push(finca.nombreFinca);
+        });
+        return result;
+      }else{
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 

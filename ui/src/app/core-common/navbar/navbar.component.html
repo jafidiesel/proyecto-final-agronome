@@ -9,8 +9,8 @@
                     <span class="navbar-toggler-bar bar3"></span>
                 </button>
             </div>
-            <div *ngIf="nombreFinca != null ">
-                <a class="navbar-brand text-capitalize" >Finca: <b>{{nombreFinca}}</b></a>
+            <div *ngIf="nombresFinca != [] ">
+                <a class="navbar-brand text-capitalize" *ngFor="let nombreFinca of nombresFinca" >Finca: <b>{{nombreFinca}}</b></a>
 
             </div>
         </div>
