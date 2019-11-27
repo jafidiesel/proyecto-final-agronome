@@ -50,7 +50,6 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codFinca = this.auth.getcodFinca();
-    this.codFinca = 3;
 
     this.subscriptions.push(
       this._actividadService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
