@@ -90,7 +90,6 @@ export class NavbarComponent implements OnInit {
       buttonsStyling: false
     });
 
-    console.log('this.arrayFincas',this.arrayFincas);
     let fincas = {}
     this.arrayFincas.map((element:any) => {
       fincas[element.codFinca] = element.nombreFinca ;
