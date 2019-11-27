@@ -126,6 +126,44 @@ pg_dump -U postgres -W -h localhost -t actividad agronome > actividadbackup.sql
 
 ✒️ [Especificaciones del comando pgdump](http://es.tldp.org/Postgresql-es/web/navegable/user/app-pgdump.html)
 
+
+## Recuperar base de datos + compatiblidad con migracion 📌
+_Para restablecer la base de datos y no perder la sincronizacion con la liberia que usamos para reorganizar las tablas se deb realizar los siguietes pasos (es necesario tener un backup de la base de datos)_
+
+
+1) DESCONECTAR y BORRAR la base de datos agronome (es importante no estar usando la db)
+
+2) CREAR la base de datos agronome
+
+3) BORRAR la carpeta  migrations de agronome\services\
+
+4) inicializar la base de datos, lanzar los siguientes comandos en agronome\services\
+ 
+```
+ app.py db init    // crea el repositorio migrations
+```
+
+```
+ app.py db migrate  //detecta las tablas a crear
+```
+
+```
+ app.py db upgrade //actualiza la tabla
+```
+
+5) COPIAR el valor que tiene la tabla  alembic_version ejemplo '019dad35f83a'
+
+6) BORRAR la base de datos agronome 
+
+7) CREAR la bas de datos agronome
+
+8) RESTAURAR base de datos
+```
+psql -U postgres -W -h localhost agronome < agronomeBackup.sql
+```
+
+9) REEMPLAZAR el numero de la tabla alembic_version por el numero copiado en el paso 5
+
 ## Crear un nuevo end point  📄
 
 _📄 Para poder definir un nuevo end point se deben realizar los siguientes pasos:_

@@ -21,7 +21,7 @@ class Usuario(db.Model):
 
     codRol = db.Column('fk_cod_rol',Integer,ForeignKey('rol.cod_rol'),index = True)
     rol = relationship('Rol', backref ='usuario')
-    fincaUsuarioList = relationship('FincaUsuario')
+    fincaUsuarioList = relationship('FincaUsuario',backref='usuario')
     
     @staticmethod
     def from_json(json):
