@@ -203,7 +203,7 @@ export class CrearFincaComponent implements OnInit, OnDestroy {
             this.postSuccess = true;
             this.postError = false;
             this.postErrorMessage = '';
-            this.auth.guardarFinca([result.message], 1, this.auth.getRol());
+            this.auth.guardarFincas([result.message], 1, this.auth.getRol());
 
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {

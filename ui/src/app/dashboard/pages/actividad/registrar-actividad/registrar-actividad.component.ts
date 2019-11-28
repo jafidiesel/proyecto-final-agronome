@@ -21,7 +21,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   codActividad: number;
 
   // variables de finca
-  codFinca: number;
+  codFinca: string;
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -82,10 +82,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.codFinca = this._authService.getcodFinca();
+    this.codFinca = this._authService.getCurrentCodFinca();
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampo(this.codFinca).subscribe(
+      this._actividadService.getLibrosCampo( parseInt(this.codFinca) ).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({

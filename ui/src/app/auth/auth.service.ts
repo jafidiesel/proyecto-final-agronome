@@ -81,11 +81,6 @@ export class AuthService {
     localStorage.setItem('currentNombreFinca', nombreFinca);
   }
 
-  getCurrentNombreFinca(){
-    let result = localStorage.getItem('currentNombreFinca') == null ? "" : localStorage.getItem('currentNombreFinca');
-    return result;
-  }
-
   leerToken() {
     if (localStorage.getItem('token')) {
       this.userToken = localStorage.getItem('token');
@@ -93,25 +88,26 @@ export class AuthService {
       this.userToken = '';
     }
   }
-
+  
+  
   getToken() {
     if (localStorage.getItem('token')) {
       return localStorage.getItem('token');
     }
   }
-
+  
   getRol() {
     if (localStorage.getItem('rol')) {
       return localStorage.getItem('rol');
     }
   }
-
+  
   getNombre() {
     if (localStorage.getItem('nombre')) {
       return localStorage.getItem('nombre');
     }
   }
-
+  
   getNombresFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
       let array = [];
@@ -129,7 +125,7 @@ export class AuthService {
       return [];
     }
   }
-
+  
   getcodFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
       let array = [];
@@ -141,13 +137,21 @@ export class AuthService {
       return result;
     }
   }
-
+  
   getFincas() {
     if (localStorage.getItem('fincas') != "undefined") {
       return JSON.parse(localStorage.getItem('fincas'));
     }
   }
-
-
-
+  
+  getCurrentNombreFinca(){
+    let result = localStorage.getItem('currentNombreFinca') == null ? "" : localStorage.getItem('currentNombreFinca');
+    return result;
+  }
+  
+  getCurrentCodFinca(){
+    let result = localStorage.getItem('currentcodFinca') == null ? "" : localStorage.getItem('currentCodFinca');
+    return result;
+  }
+  
 }
