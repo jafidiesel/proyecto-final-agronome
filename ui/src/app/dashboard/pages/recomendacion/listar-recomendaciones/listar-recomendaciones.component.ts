@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { RecomendacionService } from 'src/app/dashboard/services/recomendacion/recomendacion.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-listar-recomendaciones',
@@ -10,22 +11,30 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  codFinca: string;
+
 
   tableDataHeaderReco = ['Nombre', 'Fecha', 'Observacion', 'Recomendar'];
   tableDataHeader = ['Nombre', 'Fecha', 'Observacion', 'Ver'];
-  
+
   aRecomendarArray = [];
   mostrarTablaARecomendar = false;
   recomendadasArray = [];
   mostrarTablaRecomendadas = false;
 
 
-  constructor(private _recomendacionService: RecomendacionService) { }
+  constructor(
+    private auth: AuthService,
+    private _recomendacionService: RecomendacionService
+  ) { }
 
   ngOnInit() {
+    console.log('this.auth.getCurrentCodFinca()',this.auth.getCurrentCodFinca());
+    this.codFinca  = this.auth.getCurrentCodFinca();
+
     // Listado de las actividades registradas
     this.subscriptions.push(
-      this._recomendacionService.getListasActividad().subscribe(
+      this._recomendacionService.getListasActividad(this.codFinca).subscribe(
         (result: any) => {
           this.aRecomendarArray.push(this.tableDataHeaderReco);
           result.actvidadesARecomendar.map((actividad: any) => {
@@ -37,7 +46,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
             ]);
           });
           this.mostrarTablaARecomendar = true;
-          
+
           this.recomendadasArray.push(this.tableDataHeader);
 
           result.actividadesRecomendadas.map((actividad: any) => {
@@ -50,7 +59,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
           });
           this.mostrarTablaRecomendadas = true;
 
-          
+
         },
         error => console.log(error)
       ));

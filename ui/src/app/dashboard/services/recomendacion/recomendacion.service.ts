@@ -16,8 +16,11 @@ export class RecomendacionService {
   *  
   * GET obtiene la lista de actividades recomendadas y a recomendar
   */
-  getListasActividad(): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/recomendacion/actividad`);
+  getListasActividad(cod: string): Observable<any> {
+    let json = {
+      codLibroCampo: parseInt(cod)
+    }
+    return this.http.post<string>(`http://localhost:9001/api/recomendacion/actividad`, json);
   }
 
   /**
