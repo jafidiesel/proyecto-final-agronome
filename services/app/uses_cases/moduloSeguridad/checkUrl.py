@@ -103,6 +103,7 @@ def checkUrl(method,pat,rol):
     MPGRUPO = '/' + urlGrupoPlanificacion.name
     print(MPGRUPO)
     MPGRUPO_GET = 'GET' + MPGRUPO + '/'
+    MPGRUPO_POST = 'POST' + MPGRUPO
     print(MPGRUPO_GET)
     #Planificacion Inicial
     MPLAN = '/' + urlPlanificacionInicial.name
@@ -131,7 +132,7 @@ def checkUrl(method,pat,rol):
     encargadofinca = (
         MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET, MPGRUPO_GET,       #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST,     #Modulo Planificacion
         LC_FIN                                      #libro de campo
          ) + default
     
@@ -139,7 +140,7 @@ def checkUrl(method,pat,rol):
         MA_CON, MA_GET,                         #Modulo de actividad
         MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
-        MPGRUPO_GET         #Modulo Planificacion
+        MPGRUPO_GET, MPGRUPO_POST         #Modulo Planificacion
          )+ default
 
     supervisor = (  
