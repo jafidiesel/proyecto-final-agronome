@@ -8,4 +8,4 @@ class FincaUsuario(db.Model):
     fchFin = db.Column('fch_fin', DateTime, nullable= True) 
     isActiv = db.Column('is_activ',Boolean,nullable=False)
 
-    finca = relationship("Finca") #N->1
+    finca = relationship("Finca", backref= 'fincaUsuarioList') #N->1

@@ -5,6 +5,7 @@ from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, se
 from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
+from app.uses_cases.moduloGestionFinca.gestionarFinca import getUsersByFincaFilter
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict, parametroListFullToDict
 from app.extensions import db
@@ -52,6 +53,14 @@ def registrarActivDetalle(data,currentUser):
         saveEntidadSinCommit(detalleActiv)
         Commit()
 
+        enviaCorreo = True
+
+        if enviaCorreo:
+            if codActiv == 7 or codActiv==8: #Actividaes que necesitan recomendación
+                finca   = libroCampo.fincaLibroCampo
+                usuario = getUsersByFincaFilter(finca,'ingeniero')
+                hlSendEmailActividad(usuario)
+                
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
@@ -153,3 +162,13 @@ def getParametrosFull(codActividad):
         return (dict(parametros=dtoParametroFull))
     except Exception as e:
         return ResponseException(e)
+
+def hlSendEmailActividad(usuario):
+    from app.shared.hlSendEmail import sendEmail
+    key = 'actividad'
+    body = usuario.usuario + ' ha registrado una nueva actividad \nPara visualizarla y recomendarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    sendEmail(key,userList,body,html,additionals)
