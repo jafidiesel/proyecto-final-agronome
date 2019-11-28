@@ -57,4 +57,17 @@ export class FincaService {
     return this.http.put(`http://localhost:9001/api/finca/${id}`, json);
   }
 
+  
+  // TODO: Testear la devolucion de la finca en la creacion de usuario
+  /**
+  * @return Observable<string>
+  *  
+  * GET obtiene todas las fincas
+  */
+ getFincas(): Observable<any> {
+  return this.http.get<string>(`http://localhost:9001/api/finca`);
+}
+
+
+
 }

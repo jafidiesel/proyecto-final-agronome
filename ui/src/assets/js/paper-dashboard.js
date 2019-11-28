@@ -1,27 +1,24 @@
-/*!
+// =========================================================
+//  Paper Dashboard 2 - v2.0.0
+// =========================================================
+//
+//  Product Page: https://www.creative-tim.com/product/paper-dashboard-2
+//  Copyright 2019 Creative Tim (https://www.creative-tim.com)
+//  Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard/blob/master/LICENSE)
+//
+//  Coded by Creative Tim
+//
+// =========================================================
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
- =========================================================
- * Now UI Dashboard - v1.3.0
- =========================================================
-
- * Product Page: https://www.creative-tim.com/product/now-ui-dashboard
- * Copyright 2019 Creative Tim (http://www.creative-tim.com)
-
- * Designed by www.invisionapp.com Coded by www.creative-tim.com
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
- */
 
 (function() {
   isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
   if (isWindows) {
     // if we are on windows OS we activate the perfectScrollbar function
-    var ps = new PerfectScrollbar('.sidebar-wrapper');
-    var ps2 = new PerfectScrollbar('.main-panel');
+    $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
 
     $('html').addClass('perfect-scrollbar-on');
   } else {
@@ -38,9 +35,6 @@ backgroundOrange = false;
 sidebar_mini_active = false;
 toggle_initialized = false;
 
-var is_iPad = navigator.userAgent.match(/iPad/i) != null;
-var scrollElement = navigator.platform.indexOf('Win') > -1 ? $(".main-panel") : $(window);
-
 seq = 0, delays = 80, durations = 500;
 seq2 = 0, delays2 = 80, durations2 = 500;
 
@@ -55,13 +49,15 @@ $(document).ready(function() {
     });
   }
 
+  paperDashboard.initMinimizeSidebar();
+
   $navbar = $('.navbar[color-on-scroll]');
   scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
   // Check if we have the class "navbar-color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
   if ($('.navbar[color-on-scroll]').length != 0) {
-    nowuiDashboard.checkScrollForTransparentNavbar();
-    $(window).on('scroll', nowuiDashboard.checkScrollForTransparentNavbar)
+    paperDashboard.checkScrollForTransparentNavbar();
+    $(window).on('scroll', paperDashboard.checkScrollForTransparentNavbar)
   }
 
   $('.form-control').on("focus", function() {
@@ -86,9 +82,9 @@ $(document).ready(function() {
 $(document).on('click', '.navbar-toggle', function() {
   $toggle = $(this);
 
-  if (nowuiDashboard.misc.navbar_menu_visible == 1) {
+  if (paperDashboard.misc.navbar_menu_visible == 1) {
     $('html').removeClass('nav-open');
-    nowuiDashboard.misc.navbar_menu_visible = 0;
+    paperDashboard.misc.navbar_menu_visible = 0;
     setTimeout(function() {
       $toggle.removeClass('toggled');
       $('#bodyClick').remove();
@@ -102,7 +98,7 @@ $(document).on('click', '.navbar-toggle', function() {
     div = '<div id="bodyClick"></div>';
     $(div).appendTo('body').click(function() {
       $('html').removeClass('nav-open');
-      nowuiDashboard.misc.navbar_menu_visible = 0;
+      paperDashboard.misc.navbar_menu_visible = 0;
       setTimeout(function() {
         $toggle.removeClass('toggled');
         $('#bodyClick').remove();
@@ -110,7 +106,7 @@ $(document).on('click', '.navbar-toggle', function() {
     });
 
     $('html').addClass('nav-open');
-    nowuiDashboard.misc.navbar_menu_visible = 1;
+    paperDashboard.misc.navbar_menu_visible = 1;
   }
 });
 
@@ -119,44 +115,69 @@ $(window).resize(function() {
   seq = seq2 = 0;
 
   if ($('.full-screen-map').length == 0 && $('.bd-docs').length == 0) {
-
     $navbar = $('.navbar');
     isExpanded = $('.navbar').find('[data-toggle="collapse"]').attr("aria-expanded");
     if ($navbar.hasClass('bg-white') && $(window).width() > 991) {
-      if (scrollElement.scrollTop() == 0) {
-        $navbar.removeClass('bg-white').addClass('navbar-transparent');
-      }
+      $navbar.removeClass('bg-white').addClass('navbar-transparent');
     } else if ($navbar.hasClass('navbar-transparent') && $(window).width() < 991 && isExpanded != "false") {
       $navbar.addClass('bg-white').removeClass('navbar-transparent');
     }
   }
-  if (is_iPad) {
-    $('body').removeClass('sidebar-mini');
-  }
 });
 
-nowuiDashboard = {
+paperDashboard = {
   misc: {
     navbar_menu_visible: 0
   },
 
-  showNotification: function(from, align) {
-    color = 'primary';
+  initMinimizeSidebar: function() {
+    if ($('.sidebar-mini').length != 0) {
+      sidebar_mini_active = true;
+    }
 
-    $.notify({
-      icon: "now-ui-icons ui-1_bell-53",
-      message: "Welcome to <b>Now Ui Dashboard</b> - a beautiful freebie for every web developer."
+    $('#minimizeSidebar').click(function() {
+      var $btn = $(this);
 
-    }, {
-      type: color,
-      timer: 8000,
-      placement: {
-        from: from,
-        align: align
+      if (sidebar_mini_active == true) {
+        $('body').addClass('sidebar-mini');
+        sidebar_mini_active = true;
+        paperDashboard.showSidebarMessage('Sidebar mini activated...');
+      } else {
+        $('body').removeClass('sidebar-mini');
+        sidebar_mini_active = false;
+        paperDashboard.showSidebarMessage('Sidebar mini deactivated...');
       }
-    });
-  }
 
+      // we simulate the window Resize so the charts will get updated in realtime.
+      var simulateWindowResize = setInterval(function() {
+        window.dispatchEvent(new Event('resize'));
+      }, 180);
+
+      // we stop the simulation of Window Resize after the animations are completed
+      setTimeout(function() {
+        clearInterval(simulateWindowResize);
+      }, 1000);
+    });
+  },
+
+  showSidebarMessage: function(message) {
+    try {
+      $.notify({
+        icon: "now-ui-icons ui-1_bell-53",
+        message: message
+      }, {
+        type: 'info',
+        timer: 4000,
+        placement: {
+          from: 'top',
+          align: 'right'
+        }
+      });
+    } catch (e) {
+      console.log('Notify library is missing, please make sure you have the notifications library added.');
+    }
+
+  }
 
 };
 

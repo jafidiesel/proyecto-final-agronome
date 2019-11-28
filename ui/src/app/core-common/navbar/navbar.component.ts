@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -11,17 +12,22 @@ export class NavbarComponent implements OnInit {
 
   rol:string;
   nombre:string;
+  nombreFinca:string;
   @Output() ValidateTokenFather2 = new EventEmitter();
 
 
-  constructor(private router: Router) { 
+  constructor(
+    private router: Router,
+    private auth: AuthService) { 
   }
   
   ngOnInit() {
     this.rol = localStorage.getItem('rol');
     if(this.rol === "encargadofinca") this.rol = "Encargado de Finca";
     if(this.rol === "ingeniero") this.rol = "Ingeniero Agrónomo";
-    this.nombre = localStorage.getItem('nombre');
+    this.nombre = this.auth.getNombre();
+    this.nombreFinca = this.auth.getNombreFinca();
+    console.log(this.nombreFinca);
   }
   
   logout(){
