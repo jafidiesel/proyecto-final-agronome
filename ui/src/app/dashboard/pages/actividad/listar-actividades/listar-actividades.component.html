@@ -1,11 +1,5 @@
 <div class="content">
     <div class="row">
-        <div class="col">
-            <button *ngIf="rol != 'ingeniero'" [routerLink]="['/actividades/registrarActividad']" type="button"
-                class="btn btn-lg btn-success m-4">Registrar Actividad</button>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -15,6 +9,7 @@
                     <app-table [tableData]="this.actividadesArray"></app-table>
                 </div>
             </div>
+            <button [routerLink]="['/actividades/libroDeCampo']" class="btn btn-secondary float-left">Volver</button>
         </div>
     </div>
 </div>

@@ -21,7 +21,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   codActividad: number;
 
   // variables de finca
-  codFinca: number;
+  codFinca: string;
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -82,10 +82,10 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.codFinca = this._authService.getcodFinca();
+    this.codFinca = this._authService.getCurrentCodFinca();
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampo(this.codFinca).subscribe(
+      this._actividadService.getLibrosCampo(parseInt(this.codFinca)).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({
@@ -289,8 +289,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // inicializador del formgroup
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      tempFecha: this.date,
-      tempHora: this.time,
+      tempFecha: [this.date, Validators.required],
+      tempHora: [this.time, Validators.required],
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: " ",
@@ -370,16 +370,17 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   // envio de form
   onSubmit() {
-    // Modificar para alterar el  orden del formato de la fecha
-    let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
-
-    this.registrarActividadForm.patchValue({
-      fchActivDetalle: fecha,
-    });
 
     if (this.registrarActividadForm.status == 'VALID'
       && this.parametrosCompletados()
       && this.registrarActividadForm.value.tempFecha.day != '') {
+      // Modificar para alterar el  orden del formato de la fecha
+      let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
+
+      this.registrarActividadForm.patchValue({
+        fchActivDetalle: fecha,
+      });
+
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
@@ -402,7 +403,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                this.router.navigate(['actividades/listarActividades']);
+                this.router.navigate(['actividades/libroDeCampo']);
               }
             }
             )

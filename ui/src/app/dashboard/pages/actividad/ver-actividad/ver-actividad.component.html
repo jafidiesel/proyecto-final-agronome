@@ -9,17 +9,23 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="fecha" class="col-sm-5 col-form-label"><b>Fecha y hora:</b>
+                        <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Fecha y hora:</b>
                         </label>
                         <div class="col-sm-5">
                             <p>{{registrarActividadForm.value.fchActivDetalle}}</p>
-
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="fecha" class="col-sm-5 col-form-label text-right"><b>Nombre libro de campo:</b>
+                        </label>
+                        <div class="col-sm-5 col-form-label">
+                            <p>{{registrarActividadForm.value.nombreLibroCampo}}</p>
                         </div>
                     </div>
                     <div *ngFor="let parametro of registrarActividadForm.get('parametro').controls; let i = index">
                         <div class="form-group row">
                             <label for="{{parametro.value.nombreParametro}}"
-                                class="col-sm-5 col-form-label"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
+                                class="col-sm-5 col-form-label text-right"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}</b>
                             </label>
                             <div class="col-sm-5">
                                 <p>{{parametro.value.valor}}</p>
@@ -31,14 +37,14 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="observacion" class="col-sm-5 col-form-label"><b>Observación:</b>
+                        <label for="observacion" class="col-sm-5 col-form-label text-right"><b>Observación:</b>
                         </label>
                         <div class="col-sm-5">
                             <p>{{registrarActividadForm.value.observacion}}</p>
                         </div>
                     </div>
 
-                    <button [routerLink]="['/actividades/listarActividades']"
+                    <button [routerLink]="['/actividades/libroDeCampo']"
                         class="btn btn-secondary float-left">Volver</button>
                     <button *ngIf="rol != 'ingeniero'" class="btn btn-danger float-right"
                         (click)="openVerticallyCentered(content)">Eliminar

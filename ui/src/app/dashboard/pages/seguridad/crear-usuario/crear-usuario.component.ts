@@ -66,7 +66,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         apellido: [null, Validators.required],
         email: [null, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
-        isActiv: [false],
         fchCrea: [this.formattedDate]
       }),
       rol: this.fb.group({

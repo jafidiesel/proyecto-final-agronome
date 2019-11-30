@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ListarActividadesComponent implements OnInit, OnDestroy {
 
   rol: string;
-  codFinca: number;
+  codFinca: string;
 
   subscriptions: Subscription[] = [];
 
@@ -28,7 +28,7 @@ export class ListarActividadesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.rol = this.auth.getRol();
-    this.codFinca = this.auth.getcodFinca();
+    this.codFinca = this.auth.getCurrentCodFinca();
 
 
     // Listado de las actividades registradas
