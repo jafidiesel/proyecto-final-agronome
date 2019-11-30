@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   // variables de finca
-  codFinca = [];
+  codFinca: number;
   rol: string;
 
   // variables de libro de campo
@@ -30,11 +30,11 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
     private auth: AuthService) { }
 
   ngOnInit() {
-    this.codFinca = this.auth.getcodFinca();
+    this.codFinca = parseInt(this.auth.getCurrentCodFinca());
     this.rol = this.auth.getRol();
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
+      this._actividadService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({

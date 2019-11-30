@@ -126,6 +126,10 @@ export class AuthService {
     }
   }
   
+
+    /**
+   * @deprecated
+   */
   getcodFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
       let array = [];
