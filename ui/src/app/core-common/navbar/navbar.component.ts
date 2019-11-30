@@ -120,6 +120,7 @@ export class NavbarComponent implements OnInit {
           confirmButtonText: 'Salir',
           reverseButtons: true
         })
+        setTimeout(function(){ window.location.reload() }, 1000)
 
       }
     });
