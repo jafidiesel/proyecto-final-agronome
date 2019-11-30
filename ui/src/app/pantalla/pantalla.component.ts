@@ -55,7 +55,9 @@ export class PantallaComponent implements OnInit {
       //this.router.navigateByUrl('/actividades');
       if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0) {
         this.router.navigate(['/finca/crearFinca']);
-      } else {
+      } else if(localStorage.getItem('rol') == 'administrador'){
+        this.router.navigate(['/seguridad']);
+      }else{
         this.router.navigate(['/actividades/libroDeCampo']);
       }
     } else {
