@@ -164,6 +164,14 @@ psql -U postgres -W -h localhost agronome < agronomeBackup.sql
 
 9) REEMPLAZAR el numero de la tabla alembic_version por el numero copiado en el paso 5
 
+## Verificar status de postgres
+```
+cd C:\Program Files\PostgreSQL\9.6\bin
+```
+```
+pg_ctl status -D  "C:\Program Files\PostgreSQL\9.6\data"
+```
+
 ## Crear un nuevo end point  📄
 
 _📄 Para poder definir un nuevo end point se deben realizar los siguientes pasos:_
