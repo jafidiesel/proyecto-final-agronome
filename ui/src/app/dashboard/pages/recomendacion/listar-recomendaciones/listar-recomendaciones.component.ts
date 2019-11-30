@@ -13,7 +13,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   codFinca: string;
-
+  rol:string;
 
   tableDataHeaderReco = ['Nombre', 'Fecha', 'Observacion', 'Recomendar'];
   tableDataHeader = ['Nombre', 'Fecha', 'Observacion', 'Ver'];
@@ -32,7 +32,7 @@ export class ListarRecomendacionesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codFinca = this.auth.getCurrentCodFinca();
-
+    this.rol = this.auth.getRol();
 
 
     // Listado de las actividades registradas
