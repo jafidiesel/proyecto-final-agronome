@@ -5,6 +5,7 @@ class GrupoPlanificacion(db.Model):
     cod = db.Column('cod_grupo_planificacion', Integer, primary_key = True, index = True)
     fchCreacion = db.Column('fch_creacion', DateTime, default = datetime.datetime.now, index = True)
     nombreGrupoPlanificacion = db.Column('comentario_planificacion', String(120), nullable = False, unique = True)
-    
+    isActiv =  db.Column('is_activ', Boolean, nullable = True)
+    codFinca = db.Column('fk_cod_finca',Integer,ForeignKey('finca.cod_finca'),index = True)
     #Relationships
-    planificacion = relationship('Planificacion',uselist = True)
+    planificaciones = relationship('Planificacion',uselist = True, backref='grupoPlanif')

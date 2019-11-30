@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial, urlGrupoPlanificacion, urlLibroCampo
+from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacion, urlGrupoPlanificacion, urlLibroCampo
 
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
@@ -101,11 +101,12 @@ def checkUrl(method,pat,rol):
     #MODULO DE PLANIFICACION
     #Grupo Planificacion
     MPGRUPO = '/' + urlGrupoPlanificacion.name
-    print(MPGRUPO)
+    #print(MPGRUPO)
     MPGRUPO_GET = 'GET' + MPGRUPO + '/'
-    print(MPGRUPO_GET)
-    #Planificacion Inicial
-    MPLAN = '/' + urlPlanificacionInicial.name
+    MPGRUPO_POST = 'POST' + MPGRUPO
+    #print(MPGRUPO_GET)
+    #Planificacion 
+    MPLAN = '/' + urlPlanificacion.name
     MPLAN_POST = 'POST' + MPLAN
     MPLAN_GET = 'GET' + MPLAN + '/'
 
@@ -125,13 +126,15 @@ def checkUrl(method,pat,rol):
         MGF_POST,MGF_PUT,                             #Modulo de finca
         MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
-        LC_FIN                                          #libro de campo
+        LC_FIN,                                          #libro de campo
+        MPLAN_POST                                          #Modulo de planificiación
     ) + default
     
     encargadofinca = (
         MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET, MPGRUPO_GET,       #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST,     #Modulo Planificacion
+        MRRECOMACTIV_POST,                              #modulo de recomendaciones
         LC_FIN                                      #libro de campo
          ) + default
     
@@ -139,7 +142,7 @@ def checkUrl(method,pat,rol):
         MA_CON, MA_GET,                         #Modulo de actividad
         MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
-        MPGRUPO_GET         #Modulo Planificacion
+        MPGRUPO_GET, MPGRUPO_POST         #Modulo Planificacion
          )+ default
 
     supervisor = (  
