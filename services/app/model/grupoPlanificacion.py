@@ -8,4 +8,4 @@ class GrupoPlanificacion(db.Model):
     isActiv =  db.Column('is_activ', Boolean, nullable = True)
     codFinca = db.Column('fk_cod_finca',Integer,ForeignKey('finca.cod_finca'),index = True)
     #Relationships
-    planificaciones = relationship('Planificacion',uselist = True)
+    planificaciones = relationship('Planificacion',uselist = True, backref='grupoPlanif')
