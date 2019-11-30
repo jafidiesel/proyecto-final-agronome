@@ -15,7 +15,6 @@ def postRegistrarRecom(data,currentUser):
         parametroList = data.get('parametro')
         fch = data.get('fchRecomDetalle')
         analisisList = data.get('analisis')
-
         recomendacion = getNomencladoCod('recomendacion',codRecom)
         activDetalle = selectActivDetalleCod(codActivDetalle)
         libroCampo   = activDetalle.libroCampoActivDetalle
@@ -49,6 +48,13 @@ def postRegistrarRecom(data,currentUser):
 
         saveEntidadSinCommit(detalleRecom)  
         Commit()
+
+        enviaCorreo  = True #esto se puede enviar por el json
+        
+        if enviaCorreo:
+             ##Se envia correo a la persona que creo la activdetalle
+            hlSendEmailRecomendacion(activDetalle.usuario) 
+
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
@@ -90,3 +96,12 @@ def getParametrosRecomFull(codRecomendacion):
     return (dict(parametros=dtoParametroFull)) 
 
 
+def hlSendEmailRecomendacion(usuario):
+    from app.shared.hlSendEmail import sendEmail
+    key = 'recomendacion'
+    body = usuario.usuario + ' ha registrado una nueva recomendación\nPara visualizarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    sendEmail(key,userList,body,html,additionals)

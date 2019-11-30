@@ -19,6 +19,12 @@ modelos = {
 "usuario":hlmodel.Usuario,
 }
 
+#url para email 
+urlFront = {
+    'activate' : 'http://localhost:4200/activar/',
+    'recoverPass' : 'http://localhost:4200/recuperar/' 
+}
+
 def postUser(data):
     #try:
     dataLower = obtainDict(data)
@@ -67,23 +73,19 @@ def postUser(data):
     token = str(usuario.getToken())
     saveEntidadSinCommit(usuario)
     Commit()
-    token = token.replace("b'",'')
-    token = token.replace("'",'')
 
-    from app.backend import app
-    #print(app.config.get('MAIL_USERNAME'))
-    with app.app_context():
+    token = hlformatToken(token)
     
-        mail = Mail(app)
-        msg = Message('Activación de cuenta - Agronome', sender = app.config.get('MAIL_USERNAME'), recipients = [usuario.email])
-        texto = 'Bienvenido a Agronome {} \nSus datos de registro son: \n\t -Usuario: {}\n\t -Contraseña: {}\nPara activar su cuenta utilice el siguiente enlace:'.format(usuario.usuario, usuario.usuario, usuario.contraseniaUsuario)
-        url = 'http://localhost:4200/activar/' + str(token)
-        texto = texto +  '\n' + url
-        msg.body = texto
-        mail.send(msg)
-    
-    
-    return ResponseOk()
+    from app.shared.hlSendEmail import sendEmail
+    key = 'activate'
+    body = 'Bienvenido a Agronome {} \nSus datos de registro son: \n\t -Usuario: {}\n\t -Contraseña: {}\nPara activar su cuenta utilice el siguiente enlace:\n {}{}'.format(usuario.usuario, usuario.usuario, usuario.contraseniaUsuario,urlFront[key],token)
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    msg = sendEmail(key,userList,body,html,additionals)
+
+    return ResponseOkmsg(msg)
 
 #Listar usuarios. Mostrar 
 def getAllUsers():
@@ -147,21 +149,18 @@ def requestRecoverPass(data):
         token = str(usuario.getToken())
         saveEntidadSinCommit(usuario)
         Commit()
-        token = token.replace("b'",'')
-        token = token.replace("'",'')
+        token = hlformatToken(token)
         
-        from app.backend import app
-        #print(app.config.get('MAIL_USERNAME'))
-        with app.app_context():
-        
-            mail = Mail(app)
-            msg = Message('Restablecer contraseña - Agronome', sender = app.config.get('MAIL_USERNAME'), recipients = [usuario.email])
-            texto = 'Estimado {} \nPara restablecer contraseña utilice el siguiente enlace:'.format(usuario.usuario)
-            url = 'http://localhost:4200/recuperar/' + str(token)
-            texto = texto +  '\n' + url
-            msg.body = texto
-            mail.send(msg)
-        return ResponseOkmsg('Por favor revisa tu correo electrónico')
+        from app.shared.hlSendEmail import sendEmail
+        key = 'recoverPass'
+        body = 'Estimado '+ usuario.usuario+ '\nPara restablecer contraseña utilice el siguiente enlace:\n' + urlFront[key] + token 
+        html = ''
+        additionals = []
+        userList = []
+        userList.append(usuario)
+        msg = sendEmail(key,userList,body,html,additionals)
+
+        return ResponseOkmsg(msg)
     except Exception as e:
         return ResponseException(e)
 
@@ -206,3 +205,9 @@ def accountUser(data):
             raise Exception('N',filtro + ' no disponible')
     except Exception as e:
         return ResponseException(e)    
+
+
+def hlformatToken(token):
+    token = token.replace("b'",'')
+    token = token.replace("'",'')
+    return str(token)

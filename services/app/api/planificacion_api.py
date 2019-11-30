@@ -1,11 +1,12 @@
 from flask import jsonify, request
 from flask_restplus import Resource
-from app.api.helperApi.hlUrl import urlPlanificacionInicial
+from app.api.helperApi.hlUrl import urlPlanificacion
 from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import iniciarPlanificacion,crearPlanificacionInicial
+from app.uses_cases.moduloPlanificacion.gestionarPlanificacion import postPlanificacion
 from app.api.shared.tokenHandler import token_required
 
 
-planificacion = urlPlanificacionInicial
+planificacion = urlPlanificacion
 
 @planificacion.route('/<int:cod>')
 class PlanificacionInicialHandler(Resource):
@@ -14,9 +15,9 @@ class PlanificacionInicialHandler(Resource):
         return iniciarPlanificacion(cod) 
 
 @planificacion.route('')
-class PlanificacionInicialHandler(Resource):
+class PlanificacionHandler(Resource):
     @token_required
     def post(data,currentUser):
-        return crearPlanificacionInicial(data,currentUser)
+        return postPlanificacion(data,currentUser)
        
 

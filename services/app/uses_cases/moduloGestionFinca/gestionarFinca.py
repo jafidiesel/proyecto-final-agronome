@@ -2,6 +2,7 @@ from app.api.helperApi.hlResponse import ResponseException
 from app.model.hlmodel import Finca, Parcela, Cuadro, FincaUsuario
 from app.repositorio.hlDb import saveEntidadSinCommit, Commit , deleteObject
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 
 def postFinca(data,currentUser):
@@ -169,3 +170,33 @@ def adapterUrl(calle,nro,localidad,provincia):
     urlMaps = 'https://www.google.com.ar/maps/place/' + calle + '+' + str(nro) + '+' + localidad + '+' + provincia
     urlMaps = urlMaps.replace(' ','+')
     return urlMaps
+
+
+def getUsersByFinca(finca): #devuelve todos los usuarios(objetos) de una finca
+    usuarioList = []
+    fincaUsuarioList = finca.fincaUsuarioList
+
+    for fincaUser in fincaUsuarioList:
+        if fincaUser.fchFin == None and fincaUser.isActiv:
+            usuarioList.append(fincaUser.usuario)
+    return usuarioList
+
+
+def getUsersByFincaFilter(finca,nombreRol): #devueve los usuarios(objetos) por filtro
+    hlrol = {
+        'administrador' : 1,
+        'encargadofinca': 2,
+        'ingeniero':3,
+        'supervisor':4
+        }
+
+    usuario = ''
+    usuarioList = getUsersByFinca(finca)
+    rol = getNomencladoCod('rol',hlrol[nombreRol])
+
+    for user in usuarioList:
+        if user.rol == rol:
+            usuario = user
+            exit 
+
+    return usuario
