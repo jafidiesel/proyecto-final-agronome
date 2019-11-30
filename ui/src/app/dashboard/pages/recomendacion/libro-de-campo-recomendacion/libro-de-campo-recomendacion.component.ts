@@ -11,7 +11,7 @@ import { RecomendacionService } from 'src/app/dashboard/services/recomendacion/r
 export class LibroDeCampoRecomendacionComponent implements OnInit, OnDestroy {
 
   // variables de finca
-  codFinca = [];
+  codFinca: number;
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -28,10 +28,10 @@ export class LibroDeCampoRecomendacionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.codFinca = this.auth.getcodFinca();
+    this.codFinca = parseInt(this.auth.getCurrentCodFinca());
 
     this.subscriptions.push(
-      this._recomendacionService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
+      this._recomendacionService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({
