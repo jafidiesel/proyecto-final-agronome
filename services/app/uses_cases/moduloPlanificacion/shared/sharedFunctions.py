@@ -15,3 +15,22 @@ def tipoCultivoListToDict(tipoCultivoList):
         dtoTipoCultivoList.append(dtoTipoCultivo)
     return dtoTipoCultivoList
 
+def planificacionToDict(planificacionRst):
+    #Leer entidades asociadas
+    estadoRst = planificacionRst.estadoPlanificacion
+    tipoRst = planificacionRst.tipoPlanificacion
+    grupoListRst = planificacionRst.grupoCuadroList
+    #Armado Dto
+    estadoDict = estadoRst.__dict__
+    tipoDict = tipoRst.__dict__
+    
+    estadoDict.pop('_sa_instance_state', None)
+    tipoDict.pop('_sa_instance_state', None)
+    planificacionRst.pop('_sa_instance_state', None)
+
+    for grupo in grupoListRst:
+        pass
+
+    
+
+

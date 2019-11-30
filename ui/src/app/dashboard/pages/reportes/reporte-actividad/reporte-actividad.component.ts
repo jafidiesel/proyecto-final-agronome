@@ -5,6 +5,7 @@ import { Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ReportesService } from 'src/app/dashboard/services/reportes/reportes.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-reporte-actividad',
@@ -14,6 +15,11 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
 
   fechaDesde: any;
   fechaHasta: any;
+
+  // variables de libro de campo
+  librosDeCampo = [];
+  codFinca: string;
+  codLibroCampo: number;
 
   subscriptions: Subscription[] = [];
 
@@ -39,15 +45,33 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels];
-  
+
   public barChartLabels: Label[] = [];
   public barChartData: ChartDataSets[] = [];
 
   mostrarGrafico = false;
 
-  constructor(private _reportesService: ReportesService, private router: Router) { }
+  constructor(private _reportesService: ReportesService, 
+    private router: Router,
+    private _authService: AuthService) { }
 
   ngOnInit() {
+    this.codFinca = this._authService.getCurrentCodFinca();
+
+    this.subscriptions.push(
+      this._reportesService.getLibrosCampo( parseInt(this.codFinca) ).subscribe(
+        result => {
+          result.map(finca => {
+            this.librosDeCampo.push({
+              codLibroCampo: finca.codLibroCampo,
+              nombreLibroCampo: finca.nombreLibroCampo
+            });
+          });
+        },
+        error => this.onHttpError({ message: "Ocurrio un error obteniendo los libros de campo." })
+      )
+    );
+
   }
   // events
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
@@ -62,7 +86,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   onSubmit() {
 
     this.subscriptions.push(
-      this._reportesService.getReporteActividad(this.fechaDesde, this.fechaHasta).subscribe(
+      this._reportesService.getReporteActividad(this.fechaDesde, this.fechaHasta, this.codLibroCampo).subscribe(
         result => {
           this.initDataset(result);
         },
@@ -73,11 +97,11 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
   }
 
 
-  initDataset(form){
+  initDataset(form) {
     this.barChartData = [];
     this.barChartData.push(
       {
-        data: form.dataset.data, label: "número de actividades"
+        data: form.dataset.data, label: "Número de actividades"
       }
     );
     this.barChartLabels = form.label;
@@ -85,7 +109,7 @@ export class ReporteActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  mostrar(){
+  mostrar() {
     this.mostrarGrafico = !this.mostrarGrafico;
   }
 

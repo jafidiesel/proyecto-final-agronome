@@ -1,12 +1,12 @@
 <div class="content">
-    <div class="row">
+    <div class="row" *ngIf="rol == 'ingeniero' " >
         <div class="col">
             <h4 class="display-4 m-3" *ngIf="mostrarTablaARecomendar">
                 Actividades a recomendar
             </h4>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="rol == 'ingeniero' ">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">

@@ -22,11 +22,11 @@
           <i>
             <fa-icon [icon]="faMapMarkedAlt" class="mr-1"></fa-icon>
           </i>
-          <p>Finca {{nombreFinca}}</p>
+          <p>Finca {{nombreFinca[0]}}</p>
         </a>
       </li>
       <li class="elementMenu" id="planificacion" (click)="setActive('planificacion')" >
-        <a disabled routerLink="/planificacion/listarPlanificaciones" routerLinkActive="active">
+        <a disabled routerLink="/planificacion/listarPlanificaciones" routerLinkActive="active"  *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'">
           <i>
             <fa-icon [icon]="faListAlt" class="mr-1"></fa-icon>
           </i>
@@ -34,7 +34,7 @@
         </a>
       </li>
       <li  class="elementMenu" (click)="setActive('actividades')" id="actividades" data-active-color="success" >
-        <a routerLink="actividades/libroDeCampo" routerLinkActive="active">
+        <a routerLink="actividades/libroDeCampo" routerLinkActive="active" *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'" >
           <i>
             <fa-icon [icon]="faEdit" class="mr-1"></fa-icon>
           </i>
@@ -42,8 +42,8 @@
         </a>
       </li>
       <li class="elementMenu" id="recomendaciones" (click)="setActive('recomendaciones')" >
-        <a routerLink="/recomendaciones/listarRecomendaciones" routerLinkActive="active"
-          *ngIf="rol == 'ingeniero' || rol == 'administrador'">
+        <a routerLink="/recomendaciones/libroDeCampo" routerLinkActive="active"
+          *ngIf="rol == 'ingeniero' || rol == 'encargadofinca'">
           <i>
             <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
           </i>
@@ -51,7 +51,7 @@
         </a>
       </li>
       <li class="elementMenu" id="reportes" (click)="setActive('reportes')" >
-        <a routerLink="/reportes" routerLinkActive="active" *ngIf="rol != 'supervisor'">
+        <a routerLink="/reportes" routerLinkActive="active" *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'">
           <i>
             <fa-icon [icon]="faChartPie" class="mr-1"></fa-icon>
           </i>

@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@ang
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -19,6 +20,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   nombreActividad: string;
   codActividad: number;
 
+  // variables de finca
+  codFinca: string;
+
+  // variables de libro de campo
+  librosDeCampo = [];
+
+
   // array usado para limpiar las subscripciones
   subscriptions: Subscription[] = [];
 
@@ -28,13 +36,13 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
   // variables usadas para manejar la redireccion
   step: number = 0;
   backButtonText = "Volver"; // both in initial state
-  nextButtonText = "Siguiente";
-  guardarClass = "d-none";
+  nextButtonText = "Guardar";
+  guardarClass = "btn-success";
   cancelarClass = "btn-danger";
 
   configurationButtons: any[] = [];
 
-  // mock data
+  // mock data for icons
   dummyConfigurationButtons: any[] = [
     ['Riego', faCloudRain, true],
     ['Siembra', faSpinner, true],
@@ -69,10 +77,26 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     private calendar: NgbCalendar,
     private modalService: NgbModal,
     private fb: FormBuilder,
-    private _actividadService: ActividadService) { }
+    private _actividadService: ActividadService,
+    private _authService: AuthService) { }
 
   ngOnInit() {
 
+    this.codFinca = this._authService.getCurrentCodFinca();
+
+    this.subscriptions.push(
+      this._actividadService.getLibrosCampo(parseInt(this.codFinca)).subscribe(
+        result => {
+          result.map(finca => {
+            this.librosDeCampo.push({
+              codLibroCampo: finca.codLibroCampo,
+              nombreLibroCampo: finca.nombreLibroCampo
+            });
+          });
+        },
+        error => this.onHttpError({ message: "Ocurrio un error obteniendo los libros de campo." })
+      )
+    );
     // Listado de actividades a seleccionar
     this.subscriptions.push(
       this._actividadService.getListaNomencladoresConFiltro('actividad', true).subscribe(
@@ -148,10 +172,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 1:
         this.backButtonText = "Volver";
         this.cancelarClass = "btn-danger";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "d-none";
-
         this.nombreActividad = "";
 
         this.step--;
@@ -159,17 +179,11 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
       case 2:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
       default:
         this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.step--;
         break;
     }
@@ -181,37 +195,33 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     this.postErrorMessage = '';
 
     switch (this.step) {
-      case 3:
-        this.onSubmit();
-        break;
       case 2:
-        this.camposParametrosCompletados = this.parametrosCompletados();
-
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Guardar";
-        this.guardarClass = "btn-success";
-        this.cancelarClass = "btn-secondary";
-        this.step++;
+        this.checkOtherFields();
+        this.onSubmit();
+        /*
+                this.backButtonText = "Atrás";
+                this.nextButtonText = "Guardar";
+                this.guardarClass = "btn-success";
+                this.cancelarClass = "btn-secondary";
+                this.step++; */
         break;
       case 1:
-        this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
+        /* this.backButtonText = "Atrás";
         this.cancelarClass = "btn-secondary";
-        this.guardarClass = "btn-primary";
-        this.step++;
+        this.step++; */
+        this.checkOtherFields();
+        this.onSubmit();
         break;
       default:
         this.backButtonText = "Atrás";
-        this.nextButtonText = "Siguiente";
-        this.guardarClass = "btn-primary";
         this.cancelarClass = "btn-secondary";
         this.step++;
         break;
     }
 
-  } 
+  }
 
-  // inicializador de registrar
+  // inicializador de la estructura de la actividad segun que actividad se selecciona
   registrarActividad(nombreActividad: string, codActividad: number) {
     this.codActividad = codActividad;
 
@@ -238,7 +248,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     }
 
     // Modificar para alterar el  orden del formato de la fecha
-    let fecha = date.year + "-" + date.month + "-" + dayString + " " + this.time.hour + ":" + this.time.minute;
+    let fecha = date.year + "-" + date.month + "-" + dayString;
 
     this.registrarActividadForm.patchValue({
       fchActivDetalle: fecha,
@@ -275,27 +285,16 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
-  // actualizacion del valor del parametro
-  actualizarValorParametro(event) {
-    const selectEl = event.target;
-    const valor = selectEl.value;
-    const id = selectEl.id;
-
-    this.registrarActividadForm.get('parametro').value.map(element => {
-      if (id == element.nombre) {
-        element.valor = valor;
-      }
-    });
-  }
 
   // inicializador del formgroup
   initForm(form) {
     this.registrarActividadForm = this.fb.group({
-      tempFecha: this.date,
-      tempHora: this.time,
+      tempFecha: [this.date, Validators.required],
+      tempHora: [this.time, Validators.required],
       codActividad: this.codActividad,
       fchActivDetalle: [null, Validators.required],
       observacion: " ",
+      codLibroCampo: [null, Validators.required],
       imagen: [{}],
       parametro: this.fb.array(form.parametros.map((element, index) => {
         if (element.opcion.length > 0) {
@@ -309,8 +308,8 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
   }
 
-  // verificador si los parametros de la actividad fueron completados
   parametrosCompletados() {
+    // verificador si los parametros de la actividad fueron completados
     let list = document.querySelectorAll(".input-parametros");
     for (let index = 0; index < list.length; index++) {
       const element: any = list[index];
@@ -323,15 +322,15 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
 
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
-    // TODO: Seguir desde aca. Hay que hacer la comprobacion para agregar un text inpu con id relacionado al select. 
-    // Ademas hay que hace la comprobacion de cuando se cambia de un parametro "otro" a un parametro "no otro"
-/* 
-    if( this.slugify(optionText.toLowerCase()) == "otro"){
+
+    if (this.slugify(optionText.toLowerCase()) == "otro" || this.slugify(optionText.toLowerCase()) == "otra") {
       let input = document.createElement("input");
-      input.setAttribute('id', '');
+      input.setAttribute('id', 'other' + selectEl.value);
+      input.classList.add("form-control", "mt-2");
+      input.placeholder = "Detalle su opción elegida."
       selectEl.parentElement.append(input);
-      
-    } */
+
+    }
     let formValues: any;
     formValues = this.registrarActividadForm.value;
 
@@ -346,10 +345,42 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
     });
   }
 
+  // actualizacion del valor del parametro
+  actualizarValorParametro(event) {
+    const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id;
+
+    this.registrarActividadForm.get('parametro').value.map(element => {
+      if (id == element.nombre) {
+        element.valor = valor;
+      }
+    });
+  }
+
+  checkOtherFields() {
+    this.registrarActividadForm.value.parametro.map(element => {
+      if (element.valor == "otro" || element.valor == "otra") {
+        let otherFields: any = document.querySelector('[id^=other]');
+        element.valor = element.valor + ": " + otherFields.value;
+      }
+    });
+  }
+
 
   // envio de form
   onSubmit() {
-    if (this.registrarActividadForm.status == 'VALID' && this.camposParametrosCompletados) {
+
+    if (this.registrarActividadForm.status == 'VALID'
+      && this.parametrosCompletados()
+      && this.registrarActividadForm.value.tempFecha.day != '') {
+      // Modificar para alterar el  orden del formato de la fecha
+      let fecha = this.registrarActividadForm.value.fchActivDetalle + " " + this.registrarActividadForm.value.tempHora.hour + ":" + this.registrarActividadForm.value.tempHora.minute;
+
+      this.registrarActividadForm.patchValue({
+        fchActivDetalle: fecha,
+      });
+
       this.subscriptions.push(
         this._actividadService.postActividad(this.registrarActividadForm.value).subscribe(
           result => {
@@ -357,7 +388,6 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
             this.postError = false;
             this.postErrorMessage = '';
 
-            //prodn
             const swalWithBootstrapButtons = Swal.mixin({
               customClass: {
                 confirmButton: 'btn btn-success ml-1',
@@ -373,7 +403,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                this.router.navigate(['actividades/listarActividades']);
+                this.router.navigate(['actividades/libroDeCampo']);
               }
             }
             )

@@ -49,6 +49,7 @@ import { PlanificacionInicialComponent } from './dashboard/pages/planificacion/p
 import { PlanificacionSupervisadaComponent } from './dashboard/pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
 import { PlanificacionFinalComponent } from './dashboard/pages/planificacion/planificacion-final/planificacion-final.component';
 import { VerPlanificacionFinalComponent } from './dashboard/pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
+import { LibroDeCampoRecomendacionComponent } from './dashboard/pages/recomendacion/libro-de-campo-recomendacion/libro-de-campo-recomendacion.component';
 
 
 const routes: Routes = [
@@ -60,7 +61,8 @@ const routes: Routes = [
   /* Modulo Actividades */
   { path: 'actividades/libroDeCampo', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
-  { path: 'actividades/listarActividades', component: ListarActividadesComponent },
+  /* { path: 'actividades/listarActividades', component: ListarActividadesComponent }, */
+  { path: 'actividades/listarActividades/:cod', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
@@ -73,7 +75,9 @@ const routes: Routes = [
   { path: 'finca/crearFinca', component: CrearFincaComponent },
   { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
-  { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
+  // #TODO: Refactor this librodecampocomponentName, or reuse it in activity and recomendation
+  { path: 'recomendaciones/libroDeCampo', component: LibroDeCampoRecomendacionComponent },
+  { path: 'recomendaciones/listarRecomendaciones/:cod', component: ListarRecomendacionesComponent },
   { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
   { path: 'recomendaciones/registrarRecomendacion/:codAct', component: RegistrarRecomendacionComponent },
   /* Modulo Seguridad */
@@ -112,14 +116,15 @@ const routes: Routes = [
   { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
   { path: 'reportes/reporteSiembra', component: ReporteSiembraComponent },
   { path: 'reportes/reporteRiego', component: ReporteRiegoComponent },
-  { path: 'backup', component: BackupComponent },
-/*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
- */
+  
   /* Backup */
   { path: 'backup', component: BackupComponent },
-  { path: 'activar', component: ActivarComponent },
-  { path: 'reset', component: ResetComponent },
-  ];
+  { path: 'activar/:token', component: ActivarComponent },
+  { path: 'recuperar', component: ResetComponent },
+  { path: 'recuperar/:token', component: ResetComponent },
+  
+  { path: '**', pathMatch: 'full', redirectTo: '/home' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

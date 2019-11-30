@@ -1,13 +1,13 @@
-<div [ngSwitch]="tokenExist">
-    <div *ngSwitchCase="true">
+<div [ngSwitch]="action">
+    <div *ngSwitchCase="'dashboard'">
 
         <div class="wrapper" id="wrapper">
-            <app-sidebar *ngIf="tokenExist" ></app-sidebar>
+            <app-sidebar></app-sidebar>
 
 
             <!-- Page Content -->
             <div class="main-panel">
-                <app-navbar (ValidateTokenFather2)="validateToken($event)" *ngIf="tokenExist"  ></app-navbar>
+                <app-navbar (ValidateTokenFather2)="validateToken($event)" ></app-navbar>
 
                 <div class="content">
                     <router-outlet></router-outlet>
@@ -22,10 +22,18 @@
         </div>
     </div>
 
-    <div *ngSwitchCase="false">
-
-        <app-login *ngIf="!tokenExist" (ValidateTokenFather)="validateToken($event)"></app-login>
+    <div *ngSwitchCase="'login'">
+        <app-login (ValidateTokenFather)="validateToken($event)"></app-login>
 
     </div>
+
+    <div *ngSwitchCase="'activar'">
+        <app-activar></app-activar>
+    </div>
+
+    <div *ngSwitchCase="'recuperar'">
+        <app-reset></app-reset>
+    </div>
+
 
 </div>
