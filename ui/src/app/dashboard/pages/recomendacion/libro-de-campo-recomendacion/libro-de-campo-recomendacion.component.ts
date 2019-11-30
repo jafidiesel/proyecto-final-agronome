@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { RecomendacionService } from 'src/app/dashboard/services/recomendacion/recomendacion.service';
 
 @Component({
-  selector: 'app-libro-de-campo',
-  templateUrl: './libro-de-campo.component.html'
+  selector: 'app-libro-de-campo-recomendacion',
+  templateUrl: './libro-de-campo-recomendacion.component.html'
 })
-export class LibroDeCampoComponent implements OnInit, OnDestroy {
+export class LibroDeCampoRecomendacionComponent implements OnInit, OnDestroy {
 
   // variables de finca
   codFinca = [];
@@ -22,18 +23,15 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-
-  // TODO: please refactor this, for the love of Ada, please
-
-  constructor(private _actividadService: ActividadService,
+  constructor(private _recomendacionService: RecomendacionService,
     private auth: AuthService) { }
 
   ngOnInit() {
+
     this.codFinca = this.auth.getcodFinca();
-    console.log('codFinca',this.codFinca);
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
+      this._recomendacionService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({
@@ -45,15 +43,13 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
               variedadCultivo: finca.cultivo.variedadCultivo ,
               actvidadesARecomendar: finca.actvidadesARecomendar ,
               actividadesRecomendadas: finca.actividadesRecomendadas,
-              url: `/actividades/listarActividades/${finca.codLibroCampo}`  
+              url: `/recomendaciones/listarRecomendaciones/${finca.codLibroCampo}`  
             });
           });
         },
         error => this.onHttpError({ message: "Error al recuperar los libros de campo" })
       )
     );
-
-
   }
   
   onHttpError(errorResponse: any) {
@@ -61,9 +57,10 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
     this.postSuccess = false;
     this.postErrorMessage = errorResponse.message;
   }
-  
-    ngOnDestroy() {
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
 
 }

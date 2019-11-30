@@ -123,7 +123,9 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
       input.setAttribute('id', 'other' + selectEl.value);
       input.classList.add("form-control", "mt-2");
       input.placeholder = "Detalle su opción elegida."
-      selectEl.parentElement.append(input);
+      if (!document.querySelector('[id^=other]')) {
+        selectEl.parentElement.append(input);
+      }
 
     }
 
@@ -282,7 +284,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                this.router.navigate(['recomendaciones/listarRecomendaciones']);
+                this.router.navigate(['recomendaciones/libroDeCampo']);
               }
             }
             )

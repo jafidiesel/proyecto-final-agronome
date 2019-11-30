@@ -30,7 +30,7 @@ export class RecomendacionService {
   * GET obtiene la información detallada de una actividad segun el id enviado
   */
   getActividad(id: number): Observable<any> {
-    return this.http.get<string>(`http://localhost:9001/api/actividad/registrar/${id}`);
+    return this.http.get<string>(`http://localhost:9001/api/actividad/${id}`);
   }
 
   /**
@@ -62,4 +62,17 @@ export class RecomendacionService {
   postRecomendacion(json: any): Observable<any> {
     return this.http.post(`http://localhost:9001/api/recomendacion/registrar`,json);
   }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * POST obtiene los libros de campo de la finca segun el codFinca enviado
+  */
+ getLibrosCampoRecomendacion(codFinca: number): Observable<any> {
+  let json = {
+    codFinca: codFinca
+  }
+  return this.http.post<string>(`http://localhost:9001/api/libroCampo/recomendacion`, json);
+}
 }

@@ -150,7 +150,7 @@ export class AuthService {
   }
   
   getCurrentCodFinca(){
-    let result = localStorage.getItem('currentcodFinca') == null ? "" : localStorage.getItem('currentCodFinca');
+    let result = localStorage.getItem('currentCodFinca') == null ? "" : localStorage.getItem('currentCodFinca');
     return result;
   }
   
