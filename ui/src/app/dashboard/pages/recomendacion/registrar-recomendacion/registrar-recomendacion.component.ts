@@ -23,6 +23,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
   codActividad: any;
   codRecomendacion: any;
   nombreRecomendacion: string;
+  codLibroCampo:number;
 
   // variables para manejar el formato de las fechas
   format = 'dd-MM-yyyy';
@@ -213,10 +214,13 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
 
 
   initFormActividad(form) {
+    this.codLibroCampo = form.libroCampo.codLibroCampo;
+
     this.actividadForm = this.fb.group({
       codActividad: form.actividad.codActividad,
       nombreActividad: form.actividad.nombreActividad,
       fchActivDetalle: form.fchActivDetalle,
+      nombreLibroCampo: form.libroCampo.nombreLibroCampo,
       observacion: form.observacion,
       imagen: [{}],
       parametro: this.fb.array(form.parametro.map(element => this.crearParametro(element)))
@@ -234,6 +238,7 @@ export class RegistrarRecomendacionComponent implements OnInit, OnDestroy {
       codRecomendacion: parseInt(this.codRecomendacion),
       codActividadDetalle: parseInt(this.codActividad),
       nombreRecomendacion: this.nombreRecomendacion,
+      codLibroCampo: this.codLibroCampo,
       fchRecomDetalle: null,
       observacion: " ",
       parametro: this.fb.array(form.parametros.reverse().map((element, index) => {
