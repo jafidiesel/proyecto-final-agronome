@@ -32,7 +32,6 @@ def getAll(currentUser,codFinca):
         #Buscar Finca
         fincaRst = selectFincaCod(codFinca)
         #Buscar Planificaciones asociadas a la finca
-        #planificacionLista = fincaRst.planificacionList
         grupoPlanificacionRstList = fincaRst.grupoPlanificacionList
 
         if not grupoPlanificacionRstList:
@@ -66,34 +65,31 @@ def getAll(currentUser,codFinca):
     except Exception as e:
         return ResponseException(e)
 
-def getDTO(dataRst):
+def getDTO(grupoObjList):
     dtoGeneral = []
-    for elementGeneral in dataRst:
-        
-        dictGrupo = elementGeneral.__getitem__(0).__dict__
-        dictGrupo.pop('_sa_instance_state', None)
-        planificacion = elementGeneral.__getitem__(1)
-        for elementoGrupo in elementGeneral.__getitem__(1):
-            dataPlanificacion = elementoGrupo.__getitem__(0)
-            dictPlanificacion = dataPlanificacion.__dict__
-            dictPlanificacion.pop('_sa_instance_state', None)
-            dictElementData = dict(cod = dataPlanificacion.cod, comentarioPlanificacion = dataPlanificacion.comentarioPlanificacion, fchPlanificacion = dataPlanificacion.fchPlanificacion)            
-            dictGrupo['planificacion'] = dictElementData
-            for elementPlanificacion in elementoGrupo.__getitem__(1):
-                
-                dictElementP = elementPlanificacion.__dict__
-                print('ELEMENTOS')
-                dictElementP.pop('_sa_instance_state', None)
-
-                if 'rol' in dictElementP:
-                    dictElementP.pop('rol', None)
-                if elementPlanificacion.nombre == 'inicial' or elementPlanificacion.nombre == 'supervisada' or elementPlanificacion.nombre == 'final':
-                    dictElementData['tipoPlanificacion'] = dictElementP                    
-                if elementPlanificacion.nombre == 'en curso' or elementPlanificacion.nombre == 'finalizada':
-                    dictElementData['estadoPlanificacion']= dictElementP
-                if 'usuario'in dictElementP:
-                    dictUsuario = dict(nombre = elementPlanificacion.nombre, apellido = elementPlanificacion.apellido, usuario = elementPlanificacion.usuario)
-                    dictElementData['usuario'] = dictUsuario
-                 
+    #Etapas
+    
+    for grupoObj in grupoObjList:
+        #Obtener grupo        
+        dictGrupo = grupoObj.__getitem__(0).__dict__
+        dictGrupo.pop('_sa_instance_state', None) 
+        #Obtener planificaciones del grupo
+        for planificacionGrupo in grupoObj.__getitem__(1):
+            #Obtener datos una planificacion
+            dataPlanificacion = planificacionGrupo.__getitem__(0)
+            #dictGrupo['planificacion'] = dictElementData
+            #Obtener la ultima planificacion en curso del grupo --> Etapa: Inicial, supervisada, Final
+            if dataPlanificacion.estadoPlanificacion.nombre == 'inicial':
+                ultimoEstadoCod = 0
+                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
+            elif dataPlanificacion.estadoPlanificacion.nombre == 'supervisada':
+                ultimoEstadoCod = 1
+                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
+            elif dataPlanificacion.estadoPlanificacion.nombre == 'final':
+                ultimoEstadoCod = 2
+                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
+            
+            dictPlanificacion = dict(cod = ultimoEstadoCod, nombre = ultimoEstadoNombre)
+            dictGrupo['planificacion'] =dictPlanificacion
         dtoGeneral.append(dictGrupo)
     return dtoGeneral
