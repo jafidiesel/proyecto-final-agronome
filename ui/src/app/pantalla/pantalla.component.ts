@@ -56,7 +56,7 @@ export class PantallaComponent implements OnInit {
       if (localStorage.getItem('rol') == 'encargadofinca' && parseInt(localStorage.getItem('cantFincas')) == 0) {
         this.router.navigate(['/finca/crearFinca']);
       } else {
-        this.router.navigate(['/actividades/listarActividades']);
+        this.router.navigate(['/actividades/libroDeCampo']);
       }
     } else {
       this.action = "login";
