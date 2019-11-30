@@ -402,7 +402,7 @@ export class RegistrarActividadComponent implements OnInit, OnDestroy {
               reverseButtons: true
             }).then((result) => {
               if (result.value) {
-                this.router.navigate(['actividades/listarActividades']);
+                this.router.navigate(['actividades/libroDeCampo']);
               }
             }
             )

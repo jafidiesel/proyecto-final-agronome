@@ -123,7 +123,7 @@ const routes: Routes = [
   { path: 'recuperar', component: ResetComponent },
   { path: 'recuperar/:token', component: ResetComponent },
   
-  /* { path: '**', pathMatch: 'full', redirectTo: '/home' }, */
+  { path: '**', pathMatch: 'full', redirectTo: '/home' },
 ];
 
 @NgModule({

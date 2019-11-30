@@ -66,6 +66,7 @@ export class VerActividadComponent implements OnInit, OnDestroy {
       codActividad: form.actividad.codActividad,
       nombreActividad: form.actividad.nombreActividad,
       fchActivDetalle: form.fchActivDetalle,
+      nombreLibroCampo: form.libroCampo.nombreLibroCampo,
       observacion: form.observacion,
       imagenes: [{}],
       parametro: this.fb.array(form.parametro.map(element => this.crearParametro(element)))

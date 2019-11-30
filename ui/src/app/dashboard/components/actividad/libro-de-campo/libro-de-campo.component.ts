@@ -11,6 +11,7 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   // variables de finca
   codFinca = [];
+  rol: string;
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -30,7 +31,7 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codFinca = this.auth.getcodFinca();
-    console.log('codFinca',this.codFinca);
+    this.rol = this.auth.getRol();
 
     this.subscriptions.push(
       this._actividadService.getLibrosCampoRecomendacion(this.codFinca[0]).subscribe(
