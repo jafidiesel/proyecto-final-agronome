@@ -73,8 +73,9 @@ def consultarActivDetalle(data):
         dtoDetalleList = []
 
         for detalle in actividadDetalleList: #creacion de los dto para mostrar
-            dtoDetalle = activDetalleToDict(detalle)
-            dtoDetalleList.append(dtoDetalle)
+            if not detalle.isEliminado: 
+                dtoDetalle = activDetalleToDict(detalle)
+                dtoDetalleList.append(dtoDetalle)
 
         return (dict(ActividadDetalle=dtoDetalleList))
     except Exception as e:
@@ -146,6 +147,10 @@ def deleteActivDetalle(data,codActivDetalle):
         activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
+        
+        if not activDetalleObj.recomendacionDetalle == None:
+            raise Exception('N','La actividad no se puede eliminar ya que posee una recomendacion.')
+        
         activDetalleObj.isEliminado= True
         saveEntidadSinCommit(activDetalleObj)
         Commit()
