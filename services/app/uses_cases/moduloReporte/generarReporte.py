@@ -59,12 +59,14 @@ def actividadDualGfBar(data,currentUser):
 def actividadOptionGfPie(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
+    codLibroCampo = data.get('codLibroCampo')
     codActividad = data.get('codActividad')
     codParamComboOption = data.get('codParamComboOption')
 
     parmIn = dict(
         fchDesde = fchDesde,
         fchHasta = fchHasta,
+        codLibroCampo = codLibroCampo,
         codActividad = codActividad,
         codParamComboOption = codParamComboOption,
         )
