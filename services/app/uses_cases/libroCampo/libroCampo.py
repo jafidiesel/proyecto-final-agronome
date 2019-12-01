@@ -10,11 +10,7 @@ import datetime
 
 def consultarLibroCampo(data):
     try:
-        codFinca = data.get('codFinca')
-        libroCampoList = hlLibroCampoList(codFinca)
-        if len(libroCampoList) == 0:
-             raise Exception('N','La finca, no posee libros de campo')
-        dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+        dtoLibroCampoList = hlLibroCampoList(data)
 
         return dtoLibroCampoList
     except Exception as e:
@@ -47,7 +43,7 @@ def finalizarLibroCampo(data):
 
 def recomendacionLibroCampo(data):
     try:
-        dtoLibroCampoList = consultarLibroCampo(data)
+        dtoLibroCampoList = hlLibroCampoList(data)
         dtoResultList = []
         for dtoLibroCampo in dtoLibroCampoList:
             dtoResult = dtoLibroCampo
@@ -89,9 +85,16 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
 
 
 
-def hlLibroCampoList(codFinca):
+def hlLibroCampoList(data):
+    codFinca = data.get('codFinca')
     finca = selectFincaCod(codFinca)
     if not finca:
         raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+    
     libroCampoList = finca.libroCampoList
-    return libroCampoList
+    if len(libroCampoList) == 0:
+        raise Exception('N','La finca ' + finca.nombreFinca + ' no posee libros de campo')
+
+    dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+
+    return dtoLibroCampoList
