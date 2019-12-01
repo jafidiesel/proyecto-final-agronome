@@ -14,7 +14,9 @@ export class ListarPlanificacionesComponent implements OnInit {
 
   planificacionesArray = [];
 
-  constructor(private _planificacionService: PlanificacionService, private auth: AuthService,) { }
+  constructor(
+    private _planificacionService: PlanificacionService, 
+    private auth: AuthService,) { }
 
   ngOnInit() {
     this.rol = this.auth.getRol();

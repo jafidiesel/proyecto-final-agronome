@@ -1,0 +1,40 @@
+<main role="main" class="container mt-4">
+    <h1 class="display-4">Grupo de planificaciones</h1>
+    <div class="row">
+        <div class="col">
+            <button *ngIf="rol != 'ingeniero'" [routerLink]="['/planificacion/crearPlanificacionInicial']" type="button"
+                class="btn btn-lg btn-success m-4">Crear Planificacion inicial</button>
+        </div>
+    </div>
+    <form>
+        <div class="m-3">
+            <div class="card-columns">
+                <div *ngFor="let planificacion of planificacionesArray" class="card border-gray col-3 m-3 text-center"
+                    style="min-width: 300px;">
+                    <h5 class="card-title mt-2">
+                        <b>{{ planificacion[0] }}</b>
+                    </h5>
+                    <div class="card-body">
+                        <p><b>Último estado: </b>{{ planificacion[1] }}</p>
+                        <button class="btn btn-primary" [routerLink]="[ planificacion[3] ]"
+                            routerLinkActive="router-link-active">Ver</button>
+                    </div>
+                    <div class="card-footer ">
+                        <hr>
+                        <p> <b>Fecha de creación:</b> {{ planificacion[2] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+        ¡ Actividad Eliminada exitosamente !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div> -->
+    <div [hidden]="!postError" class="alert alert-danger">
+        {{ postErrorMessage }}
+    </div>
+</main>

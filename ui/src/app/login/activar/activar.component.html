@@ -11,7 +11,7 @@
                 <div *ngIf="response">
                     <div *ngIf="userActivated">
                         <span class="login100-form-title p-b-51">
-                            ¡ Usuario activado correctamente !
+                            {{succesMessage}}
                         </span>
 
                         <div class="container-login100-form-btn m-t-17">
@@ -20,7 +20,7 @@
                     </div>
                     <div *ngIf="!userActivated">
                         <span class="login100-form-title p-b-51">
-                            Ocurrió un error.<br> Por favor contacte a su administrador.
+                            {{errorMessage}}
                         </span>
                     </div>
 
