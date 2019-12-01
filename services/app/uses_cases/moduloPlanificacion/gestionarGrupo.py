@@ -37,38 +37,35 @@ def getGrupos(currentUser,codFinca):
                     dtoDatosPlanificacion.append(usuarioPlanificacionRst)  
                     dtoPlanificacion.append(dtoDatosPlanificacion)
                     dtoPlanificacionesList.append(dtoPlanificacion)      
-                    dtoGrupo.append(dtoPlanificacionesList)  
-                    dtoGeneral.append(dtoGrupo)
-
+                dtoGrupo.append(dtoPlanificacionesList)  
+                dtoGeneral.append(dtoGrupo)
         return jsonify(getDTO(dtoGeneral))
     except Exception as e:
         return ResponseException(e)
-
+    
 def getDTO(grupoObjList):
-    dtoGeneral = []
-    #Etapas
-    ultimoEstadoCod=0
-    for grupoObj in grupoObjList:
-        #Obtener grupo        
-        dictGrupo = grupoObj.__getitem__(0).__dict__
-        dictGrupo.pop('_sa_instance_state', None) 
-        #Obtener planificaciones del grupo
-        for planificacionGrupo in grupoObj.__getitem__(1):
-            #Obtener datos una planificacion
-            dataPlanificacion = planificacionGrupo.__getitem__(0)
-            #dictGrupo['planificacion'] = dictElementData
-            #Obtener la ultima planificacion en curso del grupo --> Etapa: Inicial, supervisada, Final
-            if dataPlanificacion.estadoPlanificacion.nombre == 'inicial':
-                ultimoEstadoCod = 0
-                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
-            elif dataPlanificacion.estadoPlanificacion.nombre == 'supervisada':
-                ultimoEstadoCod = 1
-                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
-            elif dataPlanificacion.estadoPlanificacion.nombre == 'final':
-                ultimoEstadoCod = 2
-                ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre
-            
+    try:
+        dtoGeneral = []
+        #Etapas
+        ultimoEstadoCod = 0
+        ultimoEstadoNombre = ""
+        for grupoObj in grupoObjList:
+            #Obtener grupo        
+            dictGrupo = grupoObj.__getitem__(0).__dict__
+            dictGrupo.pop('_sa_instance_state', None) 
+            #Obtener planificaciones del grupo
+            for planificacionGrupo in grupoObj.__getitem__(1):
+                #Obtener datos una planificacion
+                dataPlanificacion = planificacionGrupo.__getitem__(0)
+                #Obtener la ultima planificacion en curso del grupo --> Etapa: Inicial, supervisada, Final
+                if dataPlanificacion.estadoPlanificacion.cod > ultimoEstadoCod:
+                    ultimoEstadoCod = dataPlanificacion.estadoPlanificacion.cod
+                    ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre               
+                
             dictPlanificacion = dict(cod = ultimoEstadoCod, nombre = ultimoEstadoNombre)
-            dictGrupo['planificacion'] =dictPlanificacion
-        dtoGeneral.append(dictGrupo)
-    return dtoGeneral
+            dictGrupo.pop('planificaciones', None)
+            dictGrupo['planificacion'] = dictPlanificacion
+            dtoGeneral.append(dictGrupo)
+        return dtoGeneral
+    except Exception as e:
+        return ResponseException(e)
