@@ -7,18 +7,28 @@ import { Observable } from 'rxjs';
 })
 export class PlanificacionService {
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     console.log("PlanificacionService up and running");
   }
-
+  /**
+  * @deprecated
+  */
   guardarPlanificacion(tipo: string) {
     localStorage.setItem('tipoPlanificacion', tipo.toString());
   }
-
+  /**
+  * @deprecated
+  */
   getTipoPlanificacion() {
     if (localStorage.getItem('tipoPlanificacion')) {
       return localStorage.getItem('tipoPlanificacion');
     }
+  }
+  /**
+  * @deprecated
+  */
+  deleteTipoPlanificacion() {
+    localStorage.removeItem('tipoPlanificacion');
   }
 
   /**
@@ -27,12 +37,18 @@ export class PlanificacionService {
   *  
   * GET obtiene las planificaciones creadas segun el codigo de la finca
   */
- getPlanificacionesCreadas(codFinca: number): Observable<any> {
-  return this.http.get<string>(`http://localhost:9001/api/planificacion/grupos/${codFinca}`);
-}
+  getPlanificacionesCreadas(codFinca: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/planificacion/grupos/${codFinca}`);
+  }
 
-  deleteTipoPlanificacion(){
-    localStorage.removeItem('tipoPlanificacion');
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * GET obtiene las parcelas libres segun el codigo de la finca
+  */
+  getParcelasLibres(codFinca: number): Observable<any> {
+    return this.http.get<string>(`http://localhost:9001/api/planificacion/parcelas/${codFinca}`);
   }
 
 }

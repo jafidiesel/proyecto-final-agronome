@@ -1,30 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
+import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-planificacion-inicial',
   templateUrl: './planificacion-inicial.component.html'
 })
-export class PlanificacionInicialComponent implements OnInit {
+export class PlanificacionInicialComponent implements OnInit, OnDestroy {
+
+  subscriptions: Subscription[] = [];
+  codfinca: number;
+
+  // banderas de error
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
 
   mostrarTablaParcelas = false;
-  mostrarCultivo = false;
 
   dummyDataCultivo = [
-     "Lechuga", "Tomate","Zanahoria", "Calabaza", "Cebolla"
+    "Lechuga", "Tomate", "Zanahoria", "Calabaza", "Cebolla"
   ];
+
+  tipoCultivoArray = [];
 
   tableDataHeader = ['Parcela', 'Cuadros']
   parcelaArray = []
 
-  constructor(private router: Router, private _planificacionService: PlanificacionService) { }
+  constructor(
+    private router: Router,
+    private _planificacionService: PlanificacionService,
+    private _configuracionService: ConfiguracionService
+  ) { }
 
   ngOnInit() {
     this.parcelaArray.push(this.tableDataHeader);
     //this.parcelaArray.push([ 'Parcela 1', '1,2,3' ]);
     this.mostrarTablaParcelas = true;
+
+    this.subscriptions.push(
+      this._configuracionService.getListaNomencladoresConFiltro('tipoCultivo', true).subscribe(
+        (result:any) => {
+          console.log('result',result);
+          result.map( element =>{
+            this.tipoCultivoArray.push([element.cod, element.nombre])
+          });
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+    
+    
   }
 
   async agregarCuadros() {
@@ -118,17 +147,8 @@ export class PlanificacionInicialComponent implements OnInit {
     });
   }
 
-  agregarCultivo() {
-    this.mostrarCultivo = true;
-  }
-  
-  quitarCultivo(){
-    this.mostrarCultivo = false;
 
-  }
-
- 
-  onSubmit(){
+  onSubmit() {
     this._planificacionService.guardarPlanificacion('inicial');
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -150,6 +170,17 @@ export class PlanificacionInicialComponent implements OnInit {
     });
 
 
+  }
+
+  // metodo custom para mostrar mensajes de error
+  onHttpError(errorResponse: any) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
 
