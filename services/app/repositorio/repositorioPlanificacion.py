@@ -14,3 +14,11 @@ def getCuadroByCod(cod):
 def getParcelaByCod(cod):
     parcela = Parcela.query.filter(Parcela.codParcela == cod).one()
     return parcela
+
+def selectGrupoName(entidad,valor):
+    obj = entidad.query.filter(entidad.nombreGrupoPlanificacion == valor).first()
+    return obj
+
+def selectLibroName(entidad,valor):
+    obj = entidad.query.filter(entidad.nombreLibroCampo == valor).first()
+    return obj

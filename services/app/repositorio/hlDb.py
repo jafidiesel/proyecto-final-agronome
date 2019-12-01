@@ -65,3 +65,4 @@ def deleteObject(entidad):
 def selectActiveByName(entidad,valor):
     obj = entidad.query.filter(entidad.nombre == valor).filter(entidad.isActiv == True).first()
     return obj
+##No borrar!!!
