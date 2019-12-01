@@ -40,13 +40,13 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
             this.librosDeCampo.push({
               codLibroCampo: finca.codLibroCampo,
               nombreLibroCampo: finca.nombreLibroCampo,
-              fchIni: finca.fchIni.slice(0, 10) ,
-              fchFin: finca.fchFin.slice(0, 10) ,
-              nombreTipoCultivo: finca.cultivo.nombreTipoCultivo ,
-              variedadCultivo: finca.cultivo.variedadCultivo ,
-              actvidadesARecomendar: finca.actvidadesARecomendar ,
+              fchIni: finca.fchIni.slice(0, 10),
+              fchFin: finca.fchFin.slice(0, 10),
+              nombreTipoCultivo: finca.cultivo.nombreTipoCultivo,
+              variedadCultivo: finca.cultivo.variedadCultivo,
+              actvidadesARecomendar: finca.actvidadesARecomendar,
               actividadesRecomendadas: finca.actividadesRecomendadas,
-              url: `/actividades/listarActividades/${finca.codLibroCampo}`  
+              url: `/actividades/listarActividades/${finca.codLibroCampo}`
             });
           });
         },
@@ -56,15 +56,15 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
 
 
   }
-  
+
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
     this.postErrorMessage = errorResponse.message;
   }
-  
-    ngOnDestroy() {
-      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
 
 }
