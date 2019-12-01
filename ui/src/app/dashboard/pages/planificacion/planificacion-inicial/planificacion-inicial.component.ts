@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-planificacion-inicial',
@@ -14,47 +16,117 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   codfinca: number;
 
-  // banderas de error
-  postSuccess = false;
-  postError = false;
-  postErrorMessage = '';
-
-  mostrarTablaParcelas = false;
+  parcelas = [];
 
   dummyDataCultivo = [
     "Lechuga", "Tomate", "Zanahoria", "Calabaza", "Cebolla"
   ];
 
+  // formgroup
+  planificacionForm: FormGroup;
+
   tipoCultivoArray = [];
 
-  tableDataHeader = ['Parcela', 'Cuadros']
-  parcelaArray = []
+  tablaParcelaArray = []
+  mostrarTablaParcelas = false;
+
+  // banderas de error
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
 
   constructor(
     private router: Router,
     private _planificacionService: PlanificacionService,
-    private _configuracionService: ConfiguracionService
+    private _configuracionService: ConfiguracionService,
+    private fb: FormBuilder,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.parcelaArray.push(this.tableDataHeader);
     //this.parcelaArray.push([ 'Parcela 1', '1,2,3' ]);
     this.mostrarTablaParcelas = true;
 
+    this.codfinca = parseInt(this.auth.getCurrentCodFinca());
+
     this.subscriptions.push(
       this._configuracionService.getListaNomencladoresConFiltro('tipoCultivo', true).subscribe(
-        (result:any) => {
-          console.log('result',result);
-          result.map( element =>{
+        (result: any) => {
+          result.map(element => {
             this.tipoCultivoArray.push([element.cod, element.nombre])
           });
         },
         error => this.onHttpError({ message: error.error.message })
       )
     );
+
+    this.subscriptions.push(
+      this._planificacionService.getParcelasLibres(this.codfinca).subscribe(
+        result => {
+          result.parcelas.map(element => this.parcelas.push(element))
+          this.initForm(result.parcelas);
+
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+
+  }
+
+  crearParcela(obj: any) {
+    return this.fb.control({
+      codParcela: obj.codParcela,
+      nombre: obj.nombre,
+      cuadros: this.fb.array(obj.cuadros.map(cuadro => this.crearCuadro(cuadro).value))
+    })
+  }
+
+  crearCuadro(obj: any) {
+    return this.fb.control({
+      codcuadro: obj.codCuadro,
+      nombreCuadro: obj.nombreCuadro,
+      isActive: false
+    })
+  }
+
+  initForm(form) {
+    this.planificacionForm = this.fb.group({
+      action: "i",
+      codPlanifBefore: null,
+      codFinca: this.codfinca,
+      comentario: null,
+      cultivos: [{
+        codTipoCultivo: 0,
+        cantidadCultivo: 0,
+        produccionEsperada: 0,
+        variedadCultivo: "",
+        cicloUnico: false,
+        parcelas: this.fb.array(form.map(parcela => this.crearParcela(parcela).value))
+      }]
+
+      
+    });
     
+    this.imprimir();
+
     
   }
+  
+  imprimir(){
+    console.warn(this.planificacionForm.value);
+
+  }
+
+  procesarOpciones(event) {
+
+    debugger;
+    const selectEl = event.target;
+    const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+
+    this.planificacionForm.value.cultivos.codTipoCultivo = optionText;
+
+  }
+
 
   async agregarCuadros() {
 
@@ -139,8 +211,8 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       reverseButtons: true,
       preConfirm: () => {
         // Aqui se debe realizar la validacion de todos los campos seleccionados
-        this.parcelaArray.push(['Parcela 1', '1,2,3']);
-        this.parcelaArray.push(['Parcela 2', '2,3,4']);
+        this.tablaParcelaArray.push(['Parcela 1', '1,2,3']);
+        this.tablaParcelaArray.push(['Parcela 2', '2,3,4']);
         this.mostrarTablaParcelas = true;
 
       }
