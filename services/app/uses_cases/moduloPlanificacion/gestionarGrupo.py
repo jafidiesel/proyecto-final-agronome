@@ -3,11 +3,11 @@ from app.model.hlmodel import Planificacion,Finca,Usuario, GrupoPlanificacion, T
 from app.repositorio.hlDb import saveEntidadSinCommit, selectByCod,Commit, selectAll, Rollback
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk,ResponseOkmsg
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
-from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import getPlanificacionInicial
+
 
 #Cabecera
 ##Agregar  isCancelado
-def getCuadros(currentUser,codFinca):
+def getGrupos(currentUser,codFinca):
     try:
         #Buscar Finca
         fincaRst = selectFincaCod(codFinca)
