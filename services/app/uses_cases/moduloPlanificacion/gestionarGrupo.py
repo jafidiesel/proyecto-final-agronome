@@ -5,8 +5,6 @@ from app.api.helperApi.hlResponse import ResponseException, ResponseOk,ResponseO
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
 from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import getPlanificacionInicial
 
-#{codGrupo,codFinca}
-
 #Cabecera
 ##Agregar  isCancelado
 def getCuadros(currentUser,codFinca):

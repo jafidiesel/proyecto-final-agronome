@@ -215,15 +215,39 @@ def toDict(planificacionesDtoList):
         for cultivoData in planificacionData.__getitem__(1):
             cultivoDto = []
             cultivoRst = cultivoData.__getitem__(0)
+            grupoList = []
             for grupoData in cultivoData.__getitem__(1):
-                grupoDto = []
-                grupoRst = grupoData.__getitem__(0)
-                for parcelaData in grupoData.__getitem__(1):
-                    parcelaDto = []
-                    parcelaRst = parcelaData.__getitem__(0)
-                    for cuadroData in parcelaData.__getitem__(1):
-                        cuadroDto = []
-                        cuadroRst = cuadroData
-                        
-                            
+                grupoRst = grupoData.__getitem__(0)                    
+                parcelaData = grupoData.__getitem__(1)
+                parcelaDto = []
+                parcelaRst = parcelaData.__getitem__(0)
+                cuadrosDto = []
+                for cuadroData in parcelaData.__getitem__(1):
+                    cuadro = cuadroData.__dict__
+                    cuadro.pop('_sa_instance_state', None)
+                    cuadro.pop('codParcela', None)
+                parcela = parcelaRst.__dict__
+                parcela.pop('_sa_instance_state', None)
+                parcela.pop('codFinca',None)
+                parcela.pop('superficie',None)
+                parcela.pop('columnas',None)
+                parcela.pop('filas',None)
+                parcela['cuadros'] = cuadrosDto
+                parcelaDto.append(parcela)
+
+                grupo = grupoRst.__dict__
+                grupo.pop('_sa_instance_state', None)
+                grupo.pop('codFinca', None)
+
+                grupo['parcela'] = parcelaDto
+                grupoList.append(grupo)
+            tipoCultivoRst = cultivoRst.tipoCultivo
+            tipoCultivo = tipoCultivoRst.__dict__
+            cultivo = cultivoRst.__dict__
+            tipoCultivo.pop('_sa_instance_state', None)
+            tipoCultivo.pop('nombreNomenclador', None)
+            cultivo.pop('_sa_instance_state', None)
+            cultivo.pop('tipoCultivo', None)
+
+                                
                             
