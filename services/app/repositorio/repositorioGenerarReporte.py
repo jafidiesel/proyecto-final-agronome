@@ -1,30 +1,33 @@
 from app.extensions import db
 from app.model.hlmodel import Actividad, ActividadDetalle, Parametro, ActivDetalleParam, Opcion, ParametroOpcion
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv
+from app.repositorio.repositorioLibroCampo import selectLibroCod
 from datetime import datetime
 
 def actividadGfBarDB(parmIn):
     fchDesde=StringToDateTime(parmIn['fchDesde'])
     fchHasta=StringToDateTime(parmIn['fchHasta'])
-    
+    codLibroCampo = parmIn['codLibroCampo']
+
     activDetalleList = hlActivDetalle(fchDesde,fchHasta)
+    libroCampo = selectLibroCod(codLibroCampo)
     actividadList = Actividad.query.order_by(Actividad.cod).all()
 
     dtoActividad = dict()
     for actividad in actividadList:
         dtoActividad[actividad.nombre] = 0
         for detalle in activDetalleList:
-            if detalle.actividad == actividad:
+            if detalle.actividad == actividad and detalle.libroCampoActivDetalle == libroCampo:
                dtoActividad[actividad.nombre] = int(dtoActividad.get(actividad.nombre)) + 1
 
     return dtoActividad
 
 
 def recomendacionGfPieDB(parmIn):
-    fchDesde=StringToDateTime(parmIn['fchDesde'])
-    fchHasta=StringToDateTime(parmIn['fchHasta'])
-
-    activDetalleList = selectRecomenActiv() #enviar luego la finca
+    fchDesde = StringToDateTime(parmIn['fchDesde'])
+    fchHasta = StringToDateTime(parmIn['fchHasta'])
+    codLibroCampo = parmIn['codLibroCampo']
+    activDetalleList = selectRecomenActiv(codLibroCampo) 
 
     activRecomendadas = 0
     activARecomendar = 0
@@ -45,6 +48,7 @@ def actividadDualGfBarDB(parmIn):
     ##datos del entrada
     fchDesde=StringToDateTime(parmIn['fchDesde'])
     fchHasta=StringToDateTime(parmIn['fchHasta'])
+    codLibroCampo = parmIn['codLibroCampo']
     codActividad = parmIn['codActividad']
     codParamComboDual = parmIn['codParamComboDual']
     codParamIndicador = parmIn['codParamIndicador']
@@ -56,6 +60,9 @@ def actividadDualGfBarDB(parmIn):
     actividad = Actividad.query.filter(Actividad.cod == codActividad).one()
     parametroObj = Parametro.query.filter(Parametro.cod == codParamComboDual).one()
     parametroCant = Parametro.query.filter(Parametro.cod == codParamIndicador).one()
+    
+    libroCampo = selectLibroCod(codLibroCampo)
+    #activDetalleList =  libroCampo.activDetalleList
     activDetalleList =  actividad.activDetalleList
     
 

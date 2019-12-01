@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActividadService } from 'src/app/dashboard/services/actividad/actividad.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { RecomendacionService } from 'src/app/dashboard/services/recomendacion/recomendacion.service';
 
 @Component({
-  selector: 'app-libro-de-campo',
-  templateUrl: './libro-de-campo.component.html'
+  selector: 'app-libro-de-campo-recomendacion',
+  templateUrl: './libro-de-campo-recomendacion.component.html'
 })
-export class LibroDeCampoComponent implements OnInit, OnDestroy {
+export class LibroDeCampoRecomendacionComponent implements OnInit, OnDestroy {
 
   // variables de finca
   codFinca: number;
-  rol: string;
 
   // variables de libro de campo
   librosDeCampo = [];
@@ -23,40 +23,35 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
   postError = false;
   postErrorMessage = '';
 
-
-  // TODO: please refactor this, for the love of Ada, please
-
-  constructor(private _actividadService: ActividadService,
+  constructor(private _recomendacionService: RecomendacionService,
     private auth: AuthService) { }
 
   ngOnInit() {
+
     this.codFinca = parseInt(this.auth.getCurrentCodFinca());
-    this.rol = this.auth.getRol();
 
     this.subscriptions.push(
-      this._actividadService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
+      this._recomendacionService.getLibrosCampoRecomendacion(this.codFinca).subscribe(
         result => {
           result.map(finca => {
             this.librosDeCampo.push({
               codLibroCampo: finca.codLibroCampo,
               nombreLibroCampo: finca.nombreLibroCampo,
-              fchIni: finca.fchIni.slice(0, 10),
-              fchFin: finca.fchFin.slice(0, 10),
-              nombreTipoCultivo: finca.cultivo.nombreTipoCultivo,
-              variedadCultivo: finca.cultivo.variedadCultivo,
-              actvidadesARecomendar: finca.actvidadesARecomendar,
+              fchIni: finca.fchIni.slice(0, 10) ,
+              fchFin: finca.fchFin.slice(0, 10) ,
+              nombreTipoCultivo: finca.cultivo.nombreTipoCultivo ,
+              variedadCultivo: finca.cultivo.variedadCultivo ,
+              actvidadesARecomendar: finca.actvidadesARecomendar ,
               actividadesRecomendadas: finca.actividadesRecomendadas,
-              url: `/actividades/listarActividades/${finca.codLibroCampo}`
+              url: `/recomendaciones/listarRecomendaciones/${finca.codLibroCampo}`  
             });
           });
         },
         error => this.onHttpError({ message: "Error al recuperar los libros de campo" })
       )
     );
-
-
   }
-
+  
   onHttpError(errorResponse: any) {
     this.postError = true;
     this.postSuccess = false;
@@ -66,5 +61,6 @@ export class LibroDeCampoComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
+
 
 }

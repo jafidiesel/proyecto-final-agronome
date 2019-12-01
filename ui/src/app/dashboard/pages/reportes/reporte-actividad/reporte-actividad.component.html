@@ -6,16 +6,32 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
+                            <label for="staticFecha" class="col-form-label font-weight-bold">Libro de
+                                campo</label>
+                            <div class="">
+                                <select class="custom-select" id="libro" [(ngModel)]="codLibroCampo">
+                                    <option *ngFor=" let libro of librosDeCampo" [value]="libro.codLibroCampo">
+                                        {{ libro.nombreLibroCampo }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm">
                             <label for="exampleInputEmail1"><b>Fecha desde: </b></label>
-                            <ngb-datepicker [(ngModel)]="fechaDesde" [minDate]="{year: 2010, month: 1, day: 1}"
-                                [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
-                            </ngb-datepicker>
+                            <div>
+                                <ngb-datepicker [(ngModel)]="fechaDesde" [minDate]="{year: 2010, month: 1, day: 1}"
+                                    [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
+                                </ngb-datepicker>
+
+                            </div>
                         </div>
                         <div class="col-sm">
                             <label for="exampleInputEmail1"><b>Fecha hasta: </b></label>
-                            <ngb-datepicker [(ngModel)]="fechaHasta" [minDate]="{year: 2010, month: 1, day: 1}"
-                                [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
-                            </ngb-datepicker>
+                            <div>
+                                <ngb-datepicker [(ngModel)]="fechaHasta" [minDate]="{year: 2010, month: 1, day: 1}"
+                                    [maxDate]="{year: 2048, month: 12, day: 31}" [markDisabled]="isDisabled" class="m-1">
+                                </ngb-datepicker>
+
+                            </div>
                         </div>
 
                     </div>
@@ -36,5 +52,6 @@
             </div>
         </div>
     </div>
-    <h5 *ngIf="mostrarGrafico"><i>Desde {{fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day }} hasta {{fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day }}</i></h5>
+    <h5 *ngIf="mostrarGrafico"><i>Desde {{fechaDesde.year + "-" + fechaDesde.month + "-" + fechaDesde.day }} hasta
+            {{fechaHasta.year + "-" + fechaHasta.month + "-" + fechaHasta.day }}</i></h5>
 </main>

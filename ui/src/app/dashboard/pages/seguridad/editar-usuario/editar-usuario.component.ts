@@ -81,7 +81,6 @@ export class EditarUsuarioComponent implements OnInit, OnDestroy {
         apellido: [form.apellido, Validators.required],
         email: [form.email, [Validators.required, Validators.email]],
         contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
-        isActiv: form.isActiv,
         cod: [ form.cod ]
       }),
       rol: this.fb.group({

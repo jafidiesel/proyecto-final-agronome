@@ -19,9 +19,9 @@ def login(data):
         usuarioRst = getUsuarioByName(data.get('usuario'))
         #print(dir(usuarioRst))
         if not (data.get('contraseniaUsuario') == usuarioRst.contraseniaUsuario):
-            raise Exception('N', 'User or Password invalid')
+            raise Exception('N', 'Usuario y/o contraseña no válida')
         if not usuarioRst.isActiv:
-            raise Exception('N', 'Usuario desactivado')
+            raise Exception('N', 'Usuario no activo')
 
         #if (data.get('contraseniaUsuario') == usuarioRst.contraseniaUsuario):
             #print('En comparar contrasenia')

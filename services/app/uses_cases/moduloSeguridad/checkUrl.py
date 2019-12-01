@@ -138,6 +138,8 @@ def checkUrl(method,pat,rol):
         MGF_POST,MGF_PUT,                              #Modulo de finca
         MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPAR_GET,   #Modulo Planificacion
         MRRECOMACTIV_POST,                              #modulo de recomendaciones
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST,     #Modulo Planificacion
+        MRRECOMACTIV_POST, MRREG_GET,                #modulo de recomendaciones
         LC_FIN                                      #libro de campo
          ) + default
     

@@ -1,5 +1,3 @@
-<a class="btn btn-success btn-lg m-3" routerLink="/actividades/registrarActividad" routerLinkActive="active" role="button" *ngIf="rol == 'encargadofinca' || rol == 'supervisor' " >Registrar Actividad</a>
-
 <div class="card-deck row " *ngIf="librosDeCampo != [] > 0" >
     <div class="card border-gray col-md m-2" *ngFor="let libro of librosDeCampo" style="min-width: 300px;">
         <div class="card-header"> <h3> Libro de Campo:<small> {{libro.nombreLibroCampo}}</small></h3></div>

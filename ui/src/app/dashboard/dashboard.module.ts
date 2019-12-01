@@ -15,6 +15,8 @@ import { DashboardPageComponent } from './pages/dashboard-page/dashboard-page.co
 
 /* Actividad */
 import { LibroDeCampoComponent } from './components/actividad/libro-de-campo/libro-de-campo.component';
+/* Recomendacion */
+import { LibroDeCampoRecomendacionComponent } from './pages/recomendacion/libro-de-campo-recomendacion/libro-de-campo-recomendacion.component';
 
 /* Configuracion */
 import { ListarRecomendacionesAsociadasComponent } from './pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
@@ -117,6 +119,7 @@ import { VerPlanificacionFinalComponent } from './pages/planificacion/ver-planif
     PlanificacionSupervisadaComponent,
     PlanificacionFinalComponent,
     VerPlanificacionFinalComponent,
+    LibroDeCampoRecomendacionComponent,
 
   ],
   imports: [

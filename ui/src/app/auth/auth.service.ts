@@ -30,7 +30,7 @@ export class AuthService {
         this.guardarNombre(resp['nombre']);
 
         let fincaLength = (resp['finca'] != null) ? resp['finca'].length : 0;
-        this.guardarFinca(resp['finca'], fincaLength, resp['rol']);
+        this.guardarFincas(resp['finca'], fincaLength, resp['rol']);
 
 
 
@@ -39,18 +39,21 @@ export class AuthService {
     );
   }
 
+  logoutLocalStorage() {
+    localStorage.removeItem('rol');
+    localStorage.removeItem('token');
+    localStorage.removeItem('nombre');
+    localStorage.removeItem('cantFincas');
+    localStorage.removeItem('fincas');
+    localStorage.removeItem('currentCodFinca');
+    localStorage.removeItem('currentNombreFinca');
+  }
+
   private guardarToken(idToken: string) {
     this.userToken = idToken;
     localStorage.setItem('token', idToken);
   }
 
-  leerToken() {
-    if (localStorage.getItem('token')) {
-      this.userToken = localStorage.getItem('token');
-    } else {
-      this.userToken = '';
-    }
-  }
 
   private guardarRol(rol: string) {
     localStorage.setItem('rol', rol);
@@ -60,7 +63,7 @@ export class AuthService {
     localStorage.setItem('nombre', nombre);
   }
 
-  guardarFinca(arrayFinca: any, cantFincas: number, rol: string) {
+  guardarFincas(arrayFinca: any, cantFincas: number, rol: string) {
     localStorage.setItem('cantFincas', cantFincas.toString());
     if (rol == 'ingeniero') {
       localStorage.setItem('fincas', JSON.stringify(arrayFinca));
@@ -68,47 +71,91 @@ export class AuthService {
       localStorage.setItem('fincas', "0")
     } else {
       localStorage.removeItem('fincas');
-      localStorage.setItem('fincas', JSON.stringify(arrayFinca[0]));
+      localStorage.setItem('fincas', JSON.stringify(arrayFinca));
     }
 
   }
 
+  setearFinca(codFinca: number, nombreFinca: string) {
+    localStorage.setItem('currentCodFinca', String(codFinca));
+    localStorage.setItem('currentNombreFinca', nombreFinca);
+  }
+
+  leerToken() {
+    if (localStorage.getItem('token')) {
+      this.userToken = localStorage.getItem('token');
+    } else {
+      this.userToken = '';
+    }
+  }
+  
+  
   getToken() {
     if (localStorage.getItem('token')) {
       return localStorage.getItem('token');
     }
   }
-
+  
   getRol() {
     if (localStorage.getItem('rol')) {
       return localStorage.getItem('rol');
     }
   }
-
+  
   getNombre() {
     if (localStorage.getItem('nombre')) {
       return localStorage.getItem('nombre');
     }
   }
-
-  getNombreFinca() {
+  
+  getNombresFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
-      let obj: any;
-      obj = JSON.parse(localStorage.getItem('fincas'));
-      return obj.nombreFinca;
-    }else{
-      return "";
+      let array = [];
+      let result = [];
+      array = JSON.parse(localStorage.getItem('fincas'));
+      if (array.length > 0) {
+        array.map(finca => {
+          result.push(finca.nombreFinca);
+        });
+        return result;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
+  
 
-  getcodFinca(): number {
+    /**
+   * @deprecated
+   */
+  getcodFinca() {
     if (localStorage.getItem('fincas') != "undefined") {
-      let obj: any;
-      obj = JSON.parse(localStorage.getItem('fincas'));
-      return obj.codFinca;
+      let array = [];
+      let result = [];
+      array = JSON.parse(localStorage.getItem('fincas'));
+      if (array.length > 0) {
+        array.map(finca => result.push(finca.codFinca));
+      }
+      return result;
     }
   }
-
-
-
+  
+  getFincas() {
+    if (localStorage.getItem('fincas') != "undefined") {
+      return JSON.parse(localStorage.getItem('fincas'));
+    }
+  }
+  
+  getCurrentNombreFinca(){
+    let result = localStorage.getItem('currentNombreFinca') == null ? "" : localStorage.getItem('currentNombreFinca');
+    return result;
+  }
+  
+  getCurrentCodFinca(){
+    let result = localStorage.getItem('currentCodFinca') == null ? "" : localStorage.getItem('currentCodFinca');
+    return result;
+  }
+  
 }

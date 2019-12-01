@@ -57,9 +57,17 @@ def imgListToDict(imgList):
         dtoImagenList.append(dtoImagen)
     return dtoImagenList
 
+def hlCodRecomDetalle(activDetalle):
+    recomendacionDetalle = activDetalle.recomendacionDetalle
+    if recomendacionDetalle == None:
+        codRecomDetalle = 0
+    else:
+        codRecomDetalle =recomendacionDetalle.codRecomDetalle
+    return codRecomDetalle
 
 def activDetalleFullToDict(activDetalle):
     dtoActivDetalle = activDetalleToDict(activDetalle)
+    dtoActivDetalle['codRecomDetalle'] = hlCodRecomDetalle(activDetalle)
     dtoActivDetalle['parametro']  = parametroListToDict(activDetalle.paramList)
     dtoActivDetalle['imagen']     = imgListToDict(activDetalle.imgList)
     dtoActivDetalle['usuario']    = usuarioToDict(activDetalle.usuario)
