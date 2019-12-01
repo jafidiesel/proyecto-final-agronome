@@ -50,6 +50,7 @@ import { PlanificacionSupervisadaComponent } from './dashboard/pages/planificaci
 import { PlanificacionFinalComponent } from './dashboard/pages/planificacion/planificacion-final/planificacion-final.component';
 import { VerPlanificacionFinalComponent } from './dashboard/pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
 import { LibroDeCampoRecomendacionComponent } from './dashboard/pages/recomendacion/libro-de-campo-recomendacion/libro-de-campo-recomendacion.component';
+import { ListarGruposComponent } from './dashboard/pages/planificacion/listar-grupos/listar-grupos.component';
 
 
 const routes: Routes = [
@@ -65,6 +66,7 @@ const routes: Routes = [
   { path: 'actividades/listarActividades/:cod', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
+  { path: 'planificacion/listarGrupos', component: ListarGruposComponent },
   { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
   { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
   { path: 'planificacion/verPlanificacionInicial', component: PlanificacionSupervisadaComponent },

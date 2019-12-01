@@ -65,6 +65,7 @@ import { PlanificacionInicialComponent } from './pages/planificacion/planificaci
 import { PlanificacionSupervisadaComponent } from './pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
 import { PlanificacionFinalComponent } from './pages/planificacion/planificacion-final/planificacion-final.component';
 import { VerPlanificacionFinalComponent } from './pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
+import { ListarGruposComponent } from './pages/planificacion/listar-grupos/listar-grupos.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { VerPlanificacionFinalComponent } from './pages/planificacion/ver-planif
     PlanificacionFinalComponent,
     VerPlanificacionFinalComponent,
     LibroDeCampoRecomendacionComponent,
+    ListarGruposComponent,
 
   ],
   imports: [
