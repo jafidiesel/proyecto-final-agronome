@@ -31,7 +31,6 @@ def getParcelasLibres(data):
     print(parcelasRstList)
     if not parcelasRstList:
         raise Exception('N',"La finca no posee parcelas configuradas")
-
     dtoGeneral = []
     #Dto de parcelas con sus respectivos cuadros
     #Por cada parcela, leer cuadro asociado
@@ -55,7 +54,7 @@ def getParcelasLibres(data):
             dtoGeneralOcupada = []
             parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
             for planificacionRst in planificacionListRst:
-                if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
+                if (planificacionRst.estadoPlanificacion.cod == 1 ):
                     for grupoCuadro in planificacionRst.grupoCuadroList:
                         dtoParcelaOcupada = []
                         parcelaOcupada = grupoCuadro.parcela
@@ -104,7 +103,7 @@ def getParcelas(data):
         parcelaLibreList = getParcelasLibres(data)
         dtoParcelasLibres = []
         if not parcelaLibreList:
-            return make_response(jsonify({'message:':'No existen cuadros libres'}),400)
+            raise Exception('N','No hay cuadros disponibles')
         if parcelaLibreList:
             for parcelaLibre in parcelaLibreList:        
                 dtoCuadrosLibre = []
