@@ -80,15 +80,18 @@ export class CrearParametroComponent implements OnInit, OnDestroy {
       }
     ));
 
-    this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
-      result => {
-        for (let index = 0; index < result.length; index++) {
-          const element = result[index];
-          this.tiposOpcionesSelectArray.push(element);
-
+    this.subscriptions.push(
+      this._configuracionService.getListaNomencladoresConFiltro('opcion', true).subscribe(
+        result => {
+          for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            this.tiposOpcionesSelectArray.push(element);
+  
+          }
         }
-      }
+      )
     );
+
   }
 
   onBlur(field: NgModel) {
