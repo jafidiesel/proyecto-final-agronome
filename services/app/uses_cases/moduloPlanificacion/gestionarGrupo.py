@@ -15,7 +15,7 @@ def getGrupos(currentUser,codFinca):
         grupoPlanificacionRstList = fincaRst.grupoPlanificacionList
 
         if not grupoPlanificacionRstList:
-            return raise Exception('N','La finca no posee planificaciones')
+            raise Exception('N','La finca no posee planificaciones')
         elif grupoPlanificacionRstList:            
             #Armado Dto 
             dtoGeneral = []
