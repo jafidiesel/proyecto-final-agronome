@@ -21,12 +21,14 @@ def getParcelasLibres(data):
 
     #Extraer Finca de Json
     codFincaJson = data
+    print(codFincaJson)
     #Buscar Finca
     fincaRst = selectFincaCod(codFincaJson)
     if not fincaRst: 
         raise Exception('N','No existe finca con código ' + str(codFincaJson))
     #Buscar Parcelas asociadas
     parcelasRstList = fincaRst.parcelaList
+    print(parcelasRstList)
     if not parcelasRstList:
         raise Exception('N',"La finca no posee parcelas configuradas")
 
@@ -38,19 +40,18 @@ def getParcelasLibres(data):
         dtoParcela.append(parcelaRst)
         dtoParcela.append(parcelaRst.cuadroList)
         dtoGeneral.append(dtoParcela)  
-        
+    print('Parcelas')
+    print(dtoGeneral)
     #Leer instancias Grupo asociadas a Finca instanciada.
     grupoList = fincaRst.grupoPlanificacionList
+    print('Grupo')
+    print(grupoList)
     if not grupoList:
-        #Make response "La finca no posee planificaciones"
-        pass
+        return dtoGeneral
     elif grupoList:
         #Leer planificaciones asociadas al Grupo
         for grupoPlanificacion in grupoList:    
             planificacionListRst = grupoPlanificacion.planificaciones
-        if not planificacionListRst:
-            return dtoGeneral
-        else:
             dtoGeneralOcupada = []
             parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
             for planificacionRst in planificacionListRst:
@@ -94,7 +95,7 @@ def getParcelasLibres(data):
                 
                 if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
                     dtoGeneralLibre.append(datoParcelaGeneral)               
-                
+            print(dtoGeneralLibre)  
             return dtoGeneralLibre
     
         
