@@ -3,7 +3,9 @@ from app.repositorio.repositorioGenerarReporte import  actividadGfBarDB,recomend
 def actividadGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
-    parmIn   = dict (fchDesde =fchDesde, fchHasta=fchHasta)
+    codLibroCampo = data.get('codLibroCampo')
+
+    parmIn   = dict (fchDesde =fchDesde, fchHasta=fchHasta, codLibroCampo = codLibroCampo)
     
     dtoData = actividadGfBarDB(parmIn)
     nameData = 'data'
@@ -15,7 +17,8 @@ def actividadGfBar(data,currentUser):
 def recomendacionGfPie(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
-    parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta)
+    codLibroCampo = data.get('codLibroCampo')
+    parmIn = dict (fchDesde =fchDesde, fchHasta=fchHasta, codLibroCampo = codLibroCampo)
     
     dtoData = recomendacionGfPieDB(parmIn)
     nameData = 'number'
@@ -27,6 +30,7 @@ def recomendacionGfPie(data,currentUser):
 def actividadDualGfBar(data,currentUser):
     fchDesde = data.get('fchDesde')
     fchHasta = data.get('fchHasta')
+    codLibroCampo = data.get('codLibroCampo')
     codActividad = data.get('codActividad')
     codParamComboDual = data.get('codParamComboDual')
     codOpcionOne = data.get('codOpcionOne')
@@ -37,6 +41,7 @@ def actividadDualGfBar(data,currentUser):
     parmIn = dict(
         fchDesde = fchDesde,
         fchHasta = fchHasta,
+        codLibroCampo = codLibroCampo,
         codActividad = codActividad,
         codParamComboDual = codParamComboDual,
         codParamIndicador = codParamIndicador,
