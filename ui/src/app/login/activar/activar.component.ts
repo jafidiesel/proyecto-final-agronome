@@ -17,6 +17,9 @@ export class ActivarComponent implements OnInit, OnDestroy {
   response: boolean = false;
   userActivated:boolean;
 
+  succesMessage: string;
+  errorMessage: string;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -39,10 +42,12 @@ export class ActivarComponent implements OnInit, OnDestroy {
         result =>{
           this.userActivated = true;
           this.response = true;
+          this.succesMessage = result.message;
         },
         error => {
           this.userActivated = false;
           this.response = true;
+          this.errorMessage = error.error.message;
         }
       )
     );
