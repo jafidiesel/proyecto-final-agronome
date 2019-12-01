@@ -12,7 +12,8 @@ def consultarLibroCampo(data):
     try:
         codFinca = data.get('codFinca')
         libroCampoList = hlLibroCampoList(codFinca)
-
+        if len(libroCampoList) == 0:
+             raise Exception('N','La finca, no posee libros de campo')
         dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
 
         return dtoLibroCampoList
@@ -45,29 +46,31 @@ def finalizarLibroCampo(data):
 
 
 def recomendacionLibroCampo(data):
-    dtoLibroCampoList = consultarLibroCampo(data)
-    dtoResultList = []
-    for dtoLibroCampo in dtoLibroCampoList:
-        dtoResult = dtoLibroCampo
-        codLibroCampo = dtoLibroCampo.get('codLibroCampo')
-        dtoJsonAux = dict(
-            codLibroCampo = codLibroCampo
-        )
+    try:
+        dtoLibroCampoList = consultarLibroCampo(data)
+        dtoResultList = []
+        for dtoLibroCampo in dtoLibroCampoList:
+            dtoResult = dtoLibroCampo
+            codLibroCampo = dtoLibroCampo.get('codLibroCampo')
+            dtoJsonAux = dict(
+                codLibroCampo = codLibroCampo
+            )
 
-        dtoActividadRecomendacion = recomendacionActividad(dtoJsonAux)
+            dtoActividadRecomendacion = recomendacionActividad(dtoJsonAux)
 
-        actvidadesARecomendar = dtoActividadRecomendacion.get('actvidadesARecomendar')
-        actividadesRecomendadas = dtoActividadRecomendacion.get('actividadesRecomendadas')
+            actvidadesARecomendar = dtoActividadRecomendacion.get('actvidadesARecomendar')
+            actividadesRecomendadas = dtoActividadRecomendacion.get('actividadesRecomendadas')
 
-        cantARE = len(actvidadesARecomendar)
-        cantRE  = len(actividadesRecomendadas)
+            cantARE = len(actvidadesARecomendar)
+            cantRE  = len(actividadesRecomendadas)
 
-        dtoResult['actvidadesARecomendar'] = cantARE
-        dtoResult['actividadesRecomendadas'] = cantRE
-        
-        dtoResultList.append(dtoResult)
-    return dtoResultList
-
+            dtoResult['actvidadesARecomendar'] = cantARE
+            dtoResult['actividadesRecomendadas'] = cantRE
+            
+            dtoResultList.append(dtoResult)
+        return dtoResultList
+    except Exception as e:
+        return ResponseException(e)
 
 
 def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):

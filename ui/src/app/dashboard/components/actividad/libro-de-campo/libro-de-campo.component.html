@@ -1,16 +1,28 @@
-<a class="btn btn-success btn-lg m-3" routerLink="/actividades/registrarActividad" routerLinkActive="active" role="button" *ngIf="rol == 'encargadofinca' || rol == 'supervisor' " >Registrar Actividad</a>
+<a class="btn btn-success btn-lg m-3" routerLink="/actividades/registrarActividad" routerLinkActive="active"
+    role="button" *ngIf="rol == 'encargadofinca' || rol == 'supervisor' ">Registrar Actividad</a>
 
-<div class="card-deck row " *ngIf="librosDeCampo != [] > 0" >
+<div class="card-deck row " *ngIf="librosDeCampo != [] > 0">
     <div class="card border-gray col-md m-2" *ngFor="let libro of librosDeCampo" style="min-width: 300px;">
-        <div class="card-header"> <h3> Libro de Campo:<small> {{libro.nombreLibroCampo}}</small></h3></div>
+        <div class="card-header">
+            <h3> Libro de Campo:<small> {{libro.nombreLibroCampo}}</small></h3>
+        </div>
         <div class="card-body text-dark">
-            <p ><b>Fecha de creación:</b> {{libro.fchIni}} </p>
-            <p class="text-capitalize" ><b>Cultivo:  </b>{{ libro.nombreTipoCultivo }} </p>
-            <p class="text-capitalize" ><b>Variedad:  </b>{{ libro.variedadCultivo }} </p>
-            <p ><b>Actividades a recomendar: </b>  <span class="badge badge-warning">{{ libro.actvidadesARecomendar }}</span> </p>
-            <p><b>Recomendaciones realizadas: </b> <span class="badge badge-success"> {{ libro.actividadesRecomendadas }}</span></p>
+            <p><b>Fecha de creación:</b> {{libro.fchIni}} </p>
+            <p class="text-capitalize"><b>Cultivo: </b>{{ libro.nombreTipoCultivo }} </p>
+            <p class="text-capitalize"><b>Variedad: </b>{{ libro.variedadCultivo }} </p>
+            <p><b>Actividades a recomendar: </b> <span
+                    class="badge badge-warning">{{ libro.actvidadesARecomendar }}</span> </p>
+            <p><b>Recomendaciones realizadas: </b> <span class="badge badge-success">
+                    {{ libro.actividadesRecomendadas }}</span></p>
             <a [routerLink]="libro.url" class="btn btn-primary">Ver</a>
         </div>
 
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-12">
+        <div [hidden]="!postError" class="alert alert-danger">
+            {{ postErrorMessage }}
+        </div>
     </div>
 </div>

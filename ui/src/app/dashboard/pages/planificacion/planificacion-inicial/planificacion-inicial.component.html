@@ -1,7 +1,7 @@
 <main role="main" class="container mt-4">
     <h1 class="display-4">Planificacion Inicial</h1>
     <div class="content">
-        <div class="row"  *ngIf="mostrarCultivo">
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-title ml-4">
@@ -11,10 +11,10 @@
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4">
                                 <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
-                                <select class="custom-select" id="cultivoInicial"
-                                    *ngIf="dummyDataCultivo != '' else loading1">
-                                    <option *ngFor="let cultivo of dummyDataCultivo">
-                                        {{cultivo}}</option>
+                                <select class="custom-select text-capitalize" id="cultivoInicial"
+                                    *ngIf="tipoCultivoArray != '' else loading1">
+                                    <option *ngFor="let tipoCultivo of tipoCultivoArray" [value]="tipoCultivo[0]" class="text-capitalize" >
+                                        {{tipoCultivo[1]}}</option>
                                 </select>
                                 <ng-template #loading1>
                                     <button class="btn btn-info" type="button" disabled>
@@ -59,18 +59,8 @@
                                 Cargando...
                             </button>
                         </ng-template>
-
-                        <button type="button" class="btn btn-sm btn-danger m-3 float-right"
-                            (click)="quitarCultivo()">Quitar
-                            Cultivo</button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn btn-sm btn-success m-3" (click)="agregarCultivo()">Añadir
-                    Cultivo</button>
             </div>
         </div>
     </div>
@@ -79,9 +69,10 @@
             <div [hidden]="!postError" class="alert alert-danger">
                 {{ postErrorMessage }}
             </div>
-            <button type="button" class="btn btn-danger btn-lg float-left" [routerLink]="['/planificacion/listarPlanificaciones']" > Volver
+            <button type="button" class="btn btn-danger btn-lg float-left"
+                [routerLink]="['/planificacion/listarGrupos']"> Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()" >
+            <button type="button" class="btn btn-success btn-lg float-right" (click)="onSubmit()">
                 Guardar</button>
         </div>
     </div>
