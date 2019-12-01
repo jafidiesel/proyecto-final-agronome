@@ -40,61 +40,68 @@ def getParcelasLibres(data):
             dtoParcela.append(parcelaRst.cuadroList)
             dtoGeneral.append(dtoParcela)  
             
-        #Leer instancias Planificación asociadas a Finca instanciada.
-        planificacionListRst = fincaRst.planificacionList
-        if not planificacionListRst:
-            return dtoGeneral
-        else:
-            dtoGeneralOcupada = []
-            parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
-            for planificacionRst in planificacionListRst:
-                if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
-                    for grupoCuadro in planificacionRst.grupoCuadroList:
-                        dtoParcelaOcupada = []
-                        parcelaOcupada = grupoCuadro.parcela
-                        #Lista de parcelas ocupadas vacia
-                        if not parcelasTmp or (parcelaOcupada not in parcelasTmp):
-                            parcelasTmp.append(parcelaOcupada)
-                            dtoParcelaOcupada.append(parcelaOcupada)
-                            cuadrosOcupados = []
-                            for cuadroCultivo in grupoCuadro.cuadroCultivoList:
-                                cuadroOcupado = cuadroCultivo.cuadro
-                                cuadrosOcupados.append(cuadroOcupado)
-                            dtoParcelaOcupada.append(cuadrosOcupados)
-                            dtoGeneralOcupada.append(dtoParcelaOcupada) 
-                        #Lista con elementos
-                        if parcelasTmp:
-                            #Si la lista no esta vacia, buscar parcela
-                            if parcelaOcupada in parcelasTmp:
-                                for elemento in dtoGeneralOcupada:
-                                    if (parcelaOcupada == elemento.__getitem__(0)):
-                                        cuadrosTmp = elemento.__getitem__(1)
-                                        #Comparar los cuadros de la parcela ocupada con los cuadros de la parcela ya guardada
-                                        #Cuadros de la parcela ocupada
-                                        for cuadroCultivo in grupoCuadro.cuadroCultivoList:
-                                            if cuadroCultivo.cuadro not in cuadrosTmp:
-                                                elemento.__getitem__(1).append(cuadroCultivo.cuadro)    
+        #Leer instancias Grupo asociadas a Finca instanciada.
+        grupoList = fincaRst.grupoPlanificacionList
+        if not grupoList:
+            #Make response "La finca no posee planificaciones"
+            pass
+        elif grupoList:
+            #Leer planificaciones asociadas al Grupo
+            for grupoPlanificacion in grupoList:    
+                planificacionListRst = grupoPlanificacion.planificaciones
+            if not planificacionListRst:
+                return dtoGeneral
+            else:
+                dtoGeneralOcupada = []
+                parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
+                for planificacionRst in planificacionListRst:
+                    if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
+                        for grupoCuadro in planificacionRst.grupoCuadroList:
+                            dtoParcelaOcupada = []
+                            parcelaOcupada = grupoCuadro.parcela
+                            #Lista de parcelas ocupadas vacia
+                            if not parcelasTmp or (parcelaOcupada not in parcelasTmp):
+                                parcelasTmp.append(parcelaOcupada)
+                                dtoParcelaOcupada.append(parcelaOcupada)
+                                cuadrosOcupados = []
+                                for cuadroCultivo in grupoCuadro.cuadroCultivoList:
+                                    cuadroOcupado = cuadroCultivo.cuadro
+                                    cuadrosOcupados.append(cuadroOcupado)
+                                dtoParcelaOcupada.append(cuadrosOcupados)
+                                dtoGeneralOcupada.append(dtoParcelaOcupada) 
+                            #Lista con elementos
+                            if parcelasTmp:
+                                #Si la lista no esta vacia, buscar parcela
+                                if parcelaOcupada in parcelasTmp:
+                                    for elemento in dtoGeneralOcupada:
+                                        if (parcelaOcupada == elemento.__getitem__(0)):
+                                            cuadrosTmp = elemento.__getitem__(1)
+                                            #Comparar los cuadros de la parcela ocupada con los cuadros de la parcela ya guardada
+                                            #Cuadros de la parcela ocupada
+                                            for cuadroCultivo in grupoCuadro.cuadroCultivoList:
+                                                if cuadroCultivo.cuadro not in cuadrosTmp:
+                                                    elemento.__getitem__(1).append(cuadroCultivo.cuadro)    
+                
+                #Comparacion de listas para extraer los items que no se repiten
+                dtoGeneralLibre = []       
             
-            #Comparacion de listas para extraer los items que no se repiten
-            dtoGeneralLibre = []       
-        
-            for datoParcelaGeneral in dtoGeneral:
-                dtoParcelaLibre= []
-                condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
-                
-                for x in condition:
-                    print('Condicion')
-                    print(x)
-                
-                if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
-                    dtoGeneralLibre.append(datoParcelaGeneral)               
-                
-            return dtoGeneralLibre
+                for datoParcelaGeneral in dtoGeneral:
+                    dtoParcelaLibre= []
+                    condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
+                    
+                    for x in condition:
+                        print('Condicion')
+                        print(x)
+                    
+                    if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
+                        dtoGeneralLibre.append(datoParcelaGeneral)               
+                    
+                return dtoGeneralLibre
     except Exception as e:
         return ResponseException(e)
     
         
-def iniciarPlanificacion(data):
+def getParcelas(data):
     try:
         parcelaLibreList = getParcelasLibres(data)
         dtoParcelasLibres = []
@@ -110,80 +117,13 @@ def iniciarPlanificacion(data):
                     dtoCuadrosLibre.append(cuadroDto)
                 parcela = parcelaLibre.__getitem__(0)
                 dtoParcelaAux = dict(codParcela = parcela.codParcela, nombre = parcela.nombrePacela, superficie = str(parcela.superficieParcela) + ' m', filas= parcela.filas, columnas = parcela.columnas, cantCuadros = parcela.filas * parcela.columnas, cuadros = dtoCuadrosLibre)
-                #dtoParcelaAux['cuadros'] = dtoCuadrosLibre
                 dtoParcelasLibres.append(dtoParcelaAux)
             dtoParcelas = dict(parcelas = dtoParcelasLibres)
             return jsonify(dtoParcelas)
     except Exception as e:
-        Rollback()
         return ResponseException(e)
 
 
-def crearPlanificacionInicial(data,currentUser):
-    try:
-        dataLower = obtainDict(data)
-        #Crear instancia GrupoPlanificacion 
-        fincaJson = dataLower.get("codFinca")
-        nombreGrupoJson = dataLower.get("nombreGrupo")
-        comentarioJson = dataLower.get("comentario")
-        datosCultivosJsonList = dataLower.get("cultivos")
-        #parcelaListJson = data.get("parcelas")
-        grupoPlanificacion = GrupoPlanificacion(nombreGrupoPlanificacion = nombreGrupoJson)
-        #Buscar entidades asociadas a la Planificacion
-        estadoPlanificacionRst = selectActiveByName(EstadoPlanificacion, "en curso")
-        tipoPlanificacionRst = selectActiveByName(TipoPlanificacion, "inicial")
-        #Crear instancia Planificacion
-        planificacionInicial = Planificacion(comentarioPlanificacion = comentarioJson )
-        planificacionInicial.tipoPlanificacion = tipoPlanificacionRst
-        planificacionInicial.estadoPlanificacion = estadoPlanificacionRst
-        fincaRst = Finca.query.filter(Finca.codFinca == fincaJson).one()
-        planificacionInicial.usuario = currentUser
-        saveEntidadSinCommit(planificacionInicial)
-        #Asociar GrupoPlanificacion con Planificacion
-        grupoPlanificacion.planificacion.append(planificacionInicial)
-        saveEntidadSinCommit(grupoPlanificacion)
-
-        #Por cada cultivo ingresado
-        
-        for datosCultivoJson in datosCultivosJsonList:
-            tipoCultivoRst = selectActiveByName(TipoCultivo,datosCultivoJson.get("nombreTipoCultivo"))
-            cultivoObj = Cultivo(cantidadCultivo = datosCultivoJson.get("cantidadCultivo"), produccionEsperada = datosCultivoJson.get("produccionEsperada"),variedadCultivo=datosCultivoJson.get("variedadCultivo"),cicloUnico=datosCultivoJson.get("cicloUnico"))
-            saveEntidadSinCommit(cultivoObj)
-            cultivoObj.tipoCultivoR = tipoCultivoRst
-            for parcelaJson in datosCultivoJson.get("parcelas"):
-                parcelaRst = getParcelaByCod(parcelaJson.get('codParcela'))
-                grupoCuadro = GrupoCuadro()
-                saveEntidadSinCommit(grupoCuadro)
-                grupoCuadro.parcela = parcelaRst
-                planificacionInicial.grupoCuadroList.append(grupoCuadro)
-                for cuadroJson in parcelaJson.get('cuadros'):
-                    cuadroRst = getCuadroByCod(cuadroJson.get('codCuadro'))
-                    cuadroCultivo = CuadroCultivo()
-                    saveEntidadSinCommit(cuadroCultivo)
-                    cuadroCultivo.cultivo = cultivoObj
-                    cuadroCultivo.cuadro = cuadroRst
-                    grupoCuadro.cuadroCultivoList.append(cuadroCultivo)
-        
-        #Agregar los save correspodientes
-        
-        fincaRst.planificacionList.append(planificacionInicial) 
-        saveEntidadSinCommit(fincaRst)
-        Commit()
-        return ResponseOk()
-    except Exception as e:
-        Rollback()
-        return ResponseException(e)
-
-def getPlanificacionInicial(cod):
-    planificacionRst = selectByCod(Planificacion, cod)
-    if not planificacionRst:
-        message = json.dumps({'message': 'No existe planificacion inicial creada'})   
-        return make_response(jsonify(message),400)
-    planificacionDto = planificacionToDict(planificacionRst)
-    return planificacionDto
-
-def getPlanificacionesIniciales():
-    pass
 
 
 

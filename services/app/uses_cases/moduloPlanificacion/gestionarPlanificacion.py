@@ -6,6 +6,7 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 import datetime
+from flask import jsonify,make_response
 
 def postPlanificacion(data,currentUser):
     try:
@@ -67,10 +68,7 @@ def postPlanificacion(data,currentUser):
             planifBefore = updateEstadoPlanificacion(planifBefore,estadoFinalizado)
 
             grupPlanif = planifBefore.grupoPlanif #recupero grupo de la planf before
-
-
-
-        
+       
         ##comun
         planifNew = crearPlanificacion(comentarioJson,tipoPlanificacion,estadoEncurso,currentUser,grupPlanif)
 
@@ -150,3 +148,82 @@ def hlCheckTipoPlanifBefore(tipoActual, tipoActualEsperado, tipoNuevo, codPlanif
     if not tipoActual == tipoActualEsperado: 
         raise Exception('N','La planficación anterior con codPlanifBefore {},no es de tipo {}, su tipo es {}, no se puede cambiar al tipo {}.'.format(codPlanifBefore, tipoActualEsperado.nombre,tipoActual.nombre,tipoNuevo.nombre))
     return
+
+def getPlanificaciones(data,currentUser):
+    #Filtrar por Finca
+    try:
+        fincaRst = selectFincaCod(data.get('codFinca'))
+    except Exception:
+        return make_response(jsonify({'message': 'No existe la FInca consultada'}),400)
+
+    grupoRstList = fincaRst.grupoPlanificacionList
+    if not grupoRstList:
+        pass
+    elif grupoRstList:
+        #Buscar el grupo pasado como parametro
+        for grupoRst in grupoRstList:
+            if (grupoRst.cod == data.get('codGrupo')):
+                planificacionesRst = grupoRst.planificaciones
+                #Armar dto de planificaciones
+                planificacionesDtoList = []
+                for planificacionRst in planificacionesRst:
+                    cultivoCuadroList = []
+                    planificacionDto = []
+                    planificacionDto.append(planificacionRst)
+                    #Leer Cuadros de la planificacion
+                    grupoCuadroRstList = planificacionRst.grupoCuadroList
+
+                    for grupoCuadroRst in grupoCuadroRstList:
+                        cuadroCultivoRstList = grupoCuadroRst.cuadroCultivoList
+                        for cuadroCultivoRst in cuadroCultivoRstList:
+                            if cuadroCultivoRst.cultivo not in cultivoCuadroList:
+                                cultivoCuadroList.append(cuadroCultivoRst.cultivo)
+                    
+                    for cultivoCuadro in cuadroCultivoRstList:
+                        cultivoDto = []
+                        cultivoDto.append(cultivoCuadro)
+                        gruposList = []
+                        for grupoCuadroRst in grupoCuadroRstList:
+                            grupoCuadroDto = []
+                            parcelaDatos = []
+                            #Leer parcela
+                            parcelaRst = grupoCuadroRst.parcela
+                            parcelaDatos.append(parcelaRst)
+                            #Armado Dto
+                            grupoCuadroDto.append(grupoCuadroRst)
+                            cuadroCultivoRstList = grupoCuadroRst.cuadroCultivoList
+                            cuadrosList = []
+                            for cuadroCultivoRst in cuadroCultivoRstList:                                                                
+                                if (cuadroCultivoRst.cultivo == cultivoCuadro):
+                                    cuadrosList.append(cuadroCultivoRst.cuadro)
+                            parcelaDatos.append(cuadrosList)
+                            grupoCuadroDto.append(parcelaDatos)
+                            gruposList.append(grupoCuadroDto)
+                        
+                        cultivoDto.append(gruposList)
+                    planificacionDto.append(cultivoDto)
+                planificacionesDtoList.append(planificacionDto)
+
+                return planificacionesDtoList
+                
+                          
+def toDict(planificacionesDtoList):
+    planificacionesDto = []
+    for planificacionData in planificacionesDtoList:
+        planificacionDto = []
+        planificacionRst = planificacionData.__getitem__(0)
+        for cultivoData in planificacionData.__getitem__(1):
+            cultivoDto = []
+            cultivoRst = cultivoData.__getitem__(0)
+            for grupoData in cultivoData.__getitem__(1):
+                grupoDto = []
+                grupoRst = grupoData.__getitem__(0)
+                for parcelaData in grupoData.__getitem__(1):
+                    parcelaDto = []
+                    parcelaRst = parcelaData.__getitem__(0)
+                    for cuadroData in parcelaData.__getitem__(1):
+                        cuadroDto = []
+                        cuadroRst = cuadroData
+                        
+                            
+                            

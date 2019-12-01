@@ -1,5 +1,5 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacion, urlGrupoPlanificacion, urlLibroCampo
+from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacion, urlGrupoPlanificacion, urlLibroCampo, urlParcelas
 
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
@@ -109,6 +109,9 @@ def checkUrl(method,pat,rol):
     MPLAN = '/' + urlPlanificacion.name
     MPLAN_POST = 'POST' + MPLAN
     MPLAN_GET = 'GET' + MPLAN + '/'
+    #Parcelas
+    MPPAR = '/' + urlParcelas.name
+    MPAR_GET = 'GET' + MPPAR + '/'
 
     #PERMISOS:
     default = (
@@ -133,7 +136,7 @@ def checkUrl(method,pat,rol):
     encargadofinca = (
         MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST,     #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPAR_GET,   #Modulo Planificacion
         MRRECOMACTIV_POST,                              #modulo de recomendaciones
         LC_FIN                                      #libro de campo
          ) + default
@@ -142,7 +145,7 @@ def checkUrl(method,pat,rol):
         MA_CON, MA_GET,                         #Modulo de actividad
         MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
         HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
-        MPGRUPO_GET, MPGRUPO_POST         #Modulo Planificacion
+        MPGRUPO_GET, MPGRUPO_POST, MPAR_GET         #Modulo Planificacion
          )+ default
 
     supervisor = (  
