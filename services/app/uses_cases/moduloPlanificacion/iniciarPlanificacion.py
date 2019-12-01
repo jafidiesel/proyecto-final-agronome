@@ -9,46 +9,52 @@ from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 
 
 def getParcelasLibres(data):    
-    try:
-        def getCuadrosLibres(elemento, datoParcelaGeneral):    
-            if datoParcelaGeneral.__getitem__(0) == elemento.__getitem__(0):
-                cuadrosParcelaGeneral = datoParcelaGeneral.__getitem__(1)            
-                cuadrosParcelaOcupada = elemento.__getitem__(1)                 
-                cuadrosNoRepetidos =set(cuadrosParcelaGeneral) - set(cuadrosParcelaOcupada)
-                if cuadrosNoRepetidos:
-                    dtoParcelaLibre.append(datoParcelaGeneral.__getitem__(0))
-                    dtoParcelaLibre.append(list(cuadrosNoRepetidos))
-                dtoGeneralLibre.append(dtoParcelaLibre)
+    def getCuadrosLibres(elemento, datoParcelaGeneral):    
+        if datoParcelaGeneral.__getitem__(0) == elemento.__getitem__(0):
+            cuadrosParcelaGeneral = datoParcelaGeneral.__getitem__(1)            
+            cuadrosParcelaOcupada = elemento.__getitem__(1)                 
+            cuadrosNoRepetidos =set(cuadrosParcelaGeneral) - set(cuadrosParcelaOcupada)
+            if cuadrosNoRepetidos:
+                dtoParcelaLibre.append(datoParcelaGeneral.__getitem__(0))
+                dtoParcelaLibre.append(list(cuadrosNoRepetidos))
+            dtoGeneralLibre.append(dtoParcelaLibre)
 
-        #Extraer Finca de Json
-        codFincaJson = data
-        #Buscar Finca
-        fincaRst = selectFincaCod(codFincaJson)
-        if not fincaRst: 
-            raise Exception('N','No existe finca con código ' + str(codFincaJson))
-        #Buscar Parcelas asociadas
-        parcelasRstList = fincaRst.parcelaList
-        if not parcelasRstList:
-            raise Exception('N',"La finca no posee parcelas configuradas")
-
-        dtoGeneral = []
-        #Dto de parcelas con sus respectivos cuadros
-        #Por cada parcela, leer cuadro asociado
-        for parcelaRst in parcelasRstList:
-            dtoParcela = []
-            dtoParcela.append(parcelaRst)
-            dtoParcela.append(parcelaRst.cuadroList)
-            dtoGeneral.append(dtoParcela)  
-            
-        #Leer instancias Planificación asociadas a Finca instanciada.
-        planificacionListRst = fincaRst.planificacionList
-        if not planificacionListRst:
-            return dtoGeneral
-        else:
+    #Extraer Finca de Json
+    codFincaJson = data
+    print(codFincaJson)
+    #Buscar Finca
+    fincaRst = selectFincaCod(codFincaJson)
+    if not fincaRst: 
+        raise Exception('N','No existe finca con código ' + str(codFincaJson))
+    #Buscar Parcelas asociadas
+    parcelasRstList = fincaRst.parcelaList
+    print(parcelasRstList)
+    if not parcelasRstList:
+        raise Exception('N',"La finca no posee parcelas configuradas")
+    dtoGeneral = []
+    #Dto de parcelas con sus respectivos cuadros
+    #Por cada parcela, leer cuadro asociado
+    for parcelaRst in parcelasRstList:
+        dtoParcela = []
+        dtoParcela.append(parcelaRst)
+        dtoParcela.append(parcelaRst.cuadroList)
+        dtoGeneral.append(dtoParcela)  
+    print('Parcelas')
+    print(dtoGeneral)
+    #Leer instancias Grupo asociadas a Finca instanciada.
+    grupoList = fincaRst.grupoPlanificacionList
+    print('Grupo')
+    print(grupoList)
+    if not grupoList:
+        return dtoGeneral
+    elif grupoList:
+        #Leer planificaciones asociadas al Grupo
+        for grupoPlanificacion in grupoList:    
+            planificacionListRst = grupoPlanificacion.planificaciones
             dtoGeneralOcupada = []
             parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
             for planificacionRst in planificacionListRst:
-                if (planificacionRst.estadoPlanificacion.nombre == "en curso" ):
+                if (planificacionRst.estadoPlanificacion.cod == 1 ):
                     for grupoCuadro in planificacionRst.grupoCuadroList:
                         dtoParcelaOcupada = []
                         parcelaOcupada = grupoCuadro.parcela
@@ -88,18 +94,16 @@ def getParcelasLibres(data):
                 
                 if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
                     dtoGeneralLibre.append(datoParcelaGeneral)               
-                
+            print(dtoGeneralLibre)  
             return dtoGeneralLibre
-    except Exception as e:
-        return ResponseException(e)
     
         
-def iniciarPlanificacion(data):
+def getParcelas(data):
     try:
         parcelaLibreList = getParcelasLibres(data)
         dtoParcelasLibres = []
         if not parcelaLibreList:
-            return make_response(jsonify({'message:':'No existen cuadros libres'}),400)
+            raise Exception('N','No hay cuadros disponibles')
         if parcelaLibreList:
             for parcelaLibre in parcelaLibreList:        
                 dtoCuadrosLibre = []
@@ -110,80 +114,13 @@ def iniciarPlanificacion(data):
                     dtoCuadrosLibre.append(cuadroDto)
                 parcela = parcelaLibre.__getitem__(0)
                 dtoParcelaAux = dict(codParcela = parcela.codParcela, nombre = parcela.nombrePacela, superficie = str(parcela.superficieParcela) + ' m', filas= parcela.filas, columnas = parcela.columnas, cantCuadros = parcela.filas * parcela.columnas, cuadros = dtoCuadrosLibre)
-                #dtoParcelaAux['cuadros'] = dtoCuadrosLibre
                 dtoParcelasLibres.append(dtoParcelaAux)
             dtoParcelas = dict(parcelas = dtoParcelasLibres)
             return jsonify(dtoParcelas)
     except Exception as e:
-        Rollback()
         return ResponseException(e)
 
 
-def crearPlanificacionInicial(data,currentUser):
-    try:
-        dataLower = obtainDict(data)
-        #Crear instancia GrupoPlanificacion 
-        fincaJson = dataLower.get("codFinca")
-        nombreGrupoJson = dataLower.get("nombreGrupo")
-        comentarioJson = dataLower.get("comentario")
-        datosCultivosJsonList = dataLower.get("cultivos")
-        #parcelaListJson = data.get("parcelas")
-        grupoPlanificacion = GrupoPlanificacion(nombreGrupoPlanificacion = nombreGrupoJson)
-        #Buscar entidades asociadas a la Planificacion
-        estadoPlanificacionRst = selectActiveByName(EstadoPlanificacion, "en curso")
-        tipoPlanificacionRst = selectActiveByName(TipoPlanificacion, "inicial")
-        #Crear instancia Planificacion
-        planificacionInicial = Planificacion(comentarioPlanificacion = comentarioJson )
-        planificacionInicial.tipoPlanificacion = tipoPlanificacionRst
-        planificacionInicial.estadoPlanificacion = estadoPlanificacionRst
-        fincaRst = Finca.query.filter(Finca.codFinca == fincaJson).one()
-        planificacionInicial.usuario = currentUser
-        saveEntidadSinCommit(planificacionInicial)
-        #Asociar GrupoPlanificacion con Planificacion
-        grupoPlanificacion.planificacion.append(planificacionInicial)
-        saveEntidadSinCommit(grupoPlanificacion)
-
-        #Por cada cultivo ingresado
-        
-        for datosCultivoJson in datosCultivosJsonList:
-            tipoCultivoRst = selectActiveByName(TipoCultivo,datosCultivoJson.get("nombreTipoCultivo"))
-            cultivoObj = Cultivo(cantidadCultivo = datosCultivoJson.get("cantidadCultivo"), produccionEsperada = datosCultivoJson.get("produccionEsperada"),variedadCultivo=datosCultivoJson.get("variedadCultivo"),cicloUnico=datosCultivoJson.get("cicloUnico"))
-            saveEntidadSinCommit(cultivoObj)
-            cultivoObj.tipoCultivoR = tipoCultivoRst
-            for parcelaJson in datosCultivoJson.get("parcelas"):
-                parcelaRst = getParcelaByCod(parcelaJson.get('codParcela'))
-                grupoCuadro = GrupoCuadro()
-                saveEntidadSinCommit(grupoCuadro)
-                grupoCuadro.parcela = parcelaRst
-                planificacionInicial.grupoCuadroList.append(grupoCuadro)
-                for cuadroJson in parcelaJson.get('cuadros'):
-                    cuadroRst = getCuadroByCod(cuadroJson.get('codCuadro'))
-                    cuadroCultivo = CuadroCultivo()
-                    saveEntidadSinCommit(cuadroCultivo)
-                    cuadroCultivo.cultivo = cultivoObj
-                    cuadroCultivo.cuadro = cuadroRst
-                    grupoCuadro.cuadroCultivoList.append(cuadroCultivo)
-        
-        #Agregar los save correspodientes
-        
-        fincaRst.planificacionList.append(planificacionInicial) 
-        saveEntidadSinCommit(fincaRst)
-        Commit()
-        return ResponseOk()
-    except Exception as e:
-        Rollback()
-        return ResponseException(e)
-
-def getPlanificacionInicial(cod):
-    planificacionRst = selectByCod(Planificacion, cod)
-    if not planificacionRst:
-        message = json.dumps({'message': 'No existe planificacion inicial creada'})   
-        return make_response(jsonify(message),400)
-    planificacionDto = planificacionToDict(planificacionRst)
-    return planificacionDto
-
-def getPlanificacionesIniciales():
-    pass
 
 
 

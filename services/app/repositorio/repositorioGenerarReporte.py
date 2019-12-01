@@ -1,30 +1,33 @@
 from app.extensions import db
 from app.model.hlmodel import Actividad, ActividadDetalle, Parametro, ActivDetalleParam, Opcion, ParametroOpcion
 from app.repositorio.repositorioRegistrarRecomendacion import selectRecomenActiv
+from app.repositorio.repositorioLibroCampo import selectLibroCod
 from datetime import datetime
 
 def actividadGfBarDB(parmIn):
     fchDesde=StringToDateTime(parmIn['fchDesde'])
     fchHasta=StringToDateTime(parmIn['fchHasta'])
-    
+    codLibroCampo = parmIn['codLibroCampo']
+
     activDetalleList = hlActivDetalle(fchDesde,fchHasta)
+    libroCampo = selectLibroCod(codLibroCampo)
     actividadList = Actividad.query.order_by(Actividad.cod).all()
 
     dtoActividad = dict()
     for actividad in actividadList:
         dtoActividad[actividad.nombre] = 0
         for detalle in activDetalleList:
-            if detalle.actividad == actividad:
+            if detalle.actividad == actividad and hlIsLibroCampo(detalle,libroCampo):
                dtoActividad[actividad.nombre] = int(dtoActividad.get(actividad.nombre)) + 1
 
     return dtoActividad
 
 
 def recomendacionGfPieDB(parmIn):
-    fchDesde=StringToDateTime(parmIn['fchDesde'])
-    fchHasta=StringToDateTime(parmIn['fchHasta'])
-
-    activDetalleList = selectRecomenActiv() #enviar luego la finca
+    fchDesde = StringToDateTime(parmIn['fchDesde'])
+    fchHasta = StringToDateTime(parmIn['fchHasta'])
+    codLibroCampo = parmIn['codLibroCampo']
+    activDetalleList = selectRecomenActiv(codLibroCampo) 
 
     activRecomendadas = 0
     activARecomendar = 0
@@ -45,17 +48,19 @@ def actividadDualGfBarDB(parmIn):
     ##datos del entrada
     fchDesde=StringToDateTime(parmIn['fchDesde'])
     fchHasta=StringToDateTime(parmIn['fchHasta'])
+    codLibroCampo = parmIn['codLibroCampo']
     codActividad = parmIn['codActividad']
     codParamComboDual = parmIn['codParamComboDual']
     codParamIndicador = parmIn['codParamIndicador']
     codOpcionOne= parmIn['codOpcionOne']
     codOpcionTwo= parmIn['codOpcionTwo']
-
     
     ##recupero datos de la bd para realizar la logica
     actividad = Actividad.query.filter(Actividad.cod == codActividad).one()
     parametroObj = Parametro.query.filter(Parametro.cod == codParamComboDual).one()
     parametroCant = Parametro.query.filter(Parametro.cod == codParamIndicador).one()
+    
+    libroCampo = selectLibroCod(codLibroCampo)
     activDetalleList =  actividad.activDetalleList
     
 
@@ -67,7 +72,7 @@ def actividadDualGfBarDB(parmIn):
         dtoOpcionOne[m]=0
         dtoOpcionTwo[m]=0
         for detalle in activDetalleList:
-            if m == detalle.fchActivDetalle.month: #si el detalle se hizo en este mes
+            if m == detalle.fchActivDetalle.month and hlIsLibroCampo(detalle,libroCampo): #si el detalle se hizo en este mes y es del libro de campo
                 
                 activDetalleParamList = detalle.paramList
                 for activDetalleParam in activDetalleParamList:
@@ -116,6 +121,7 @@ def actividadDualGfBarDB(parmIn):
 def actividadOptionGfPieDB(parmIn):
     fchDesde=StringToDateTime(parmIn['fchDesde'])
     fchHasta=StringToDateTime(parmIn['fchHasta'])
+    codLibroCampo = parmIn['codLibroCampo']
     codActividad = parmIn['codActividad']
     codParamComboOption = parmIn['codParamComboOption']
 
@@ -125,6 +131,7 @@ def actividadOptionGfPieDB(parmIn):
     activDetalleList =  actividad.activDetalleList
     parametroObj = Parametro.query.filter(Parametro.cod == codParamComboOption).one()
     parametroOpcionObjList = parametroObj.paramOpcion
+    libroCampo = selectLibroCod(codLibroCampo)
     
     ##defino las opciones
     opcionesList = []
@@ -139,7 +146,7 @@ def actividadOptionGfPieDB(parmIn):
     #print (dtoOpcion)
 
     for activDetalle in activDetalleList:
-        if hlIsOkFch(activDetalle.fchActivDetalle,fchDesde,fchHasta):
+        if hlIsOkFch(activDetalle.fchActivDetalle,fchDesde,fchHasta) and hlIsLibroCampo(activDetalle,libroCampo):
             activDetalleParamList = activDetalle.paramList
             for activDetalleParam in activDetalleParamList:
                 if activDetalleParam.param ==parametroObj:
@@ -179,3 +186,11 @@ def hlFchToMonth(fchDesde,fchHasta):
         mes.append(x)
     
     return mes
+
+def hlIsLibroCampo(activiDetalle,libroCampo):
+    isOk = False
+    if activiDetalle.libroCampoActivDetalle == libroCampo:
+        isOk = True
+
+    return isOk
+

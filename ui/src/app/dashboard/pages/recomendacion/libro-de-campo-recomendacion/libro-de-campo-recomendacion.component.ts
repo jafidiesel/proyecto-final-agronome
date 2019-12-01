@@ -47,7 +47,7 @@ export class LibroDeCampoRecomendacionComponent implements OnInit, OnDestroy {
             });
           });
         },
-        error => this.onHttpError({ message: "Error al recuperar los libros de campo" })
+        error => this.onHttpError({ message: error.error.message })
       )
     );
   }

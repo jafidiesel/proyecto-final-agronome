@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
     if (this.rol === "encargadofinca") this.rolText = "Encargado de Finca";
     if (this.rol === "ingeniero") this.rolText = "Ingeniero Agrónomo";
     if (this.rol === "administrador") this.rolText = "Administrador";
+    if (this.rol === "supervisor") this.rolText = "Supervisor";
     this.nombre = this.auth.getNombre();
     this.arrayFincas = this.auth.getFincas();
 

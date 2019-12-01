@@ -34,7 +34,7 @@
         </a>
       </li>
       <li  class="elementMenu" (click)="setActive('actividades')" id="actividades" data-active-color="success" >
-        <a routerLink="actividades/libroDeCampo" routerLinkActive="active" *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'" >
+        <a routerLink="actividades/libroDeCampo" routerLinkActive="active" *ngIf="rol == 'encargadofinca' || rol == 'ingeniero' || rol == 'supervisor'" >
           <i>
             <fa-icon [icon]="faEdit" class="mr-1"></fa-icon>
           </i>
@@ -43,7 +43,7 @@
       </li>
       <li class="elementMenu" id="recomendaciones" (click)="setActive('recomendaciones')" >
         <a routerLink="/recomendaciones/libroDeCampo" routerLinkActive="active"
-          *ngIf="rol == 'ingeniero' || rol == 'encargadofinca'">
+          *ngIf="rol == 'ingeniero' || rol == 'encargadofinca' || rol == 'supervisor'">
           <i>
             <fa-icon [icon]="faFileMedical" class="mr-1"></fa-icon>
           </i>

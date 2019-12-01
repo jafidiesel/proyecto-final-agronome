@@ -6,7 +6,7 @@ contentType = 'application/json'
     
 
 errors = {
-"(psycopg2.errors.UniqueViolation)":"existente",
+#"(psycopg2.errors.UniqueViolation)":"existente UniqueViolation para mas info avisar a backend",
 "(psycopg2.errors.ForeignKeyViolation)": "No existe la instancia que desea asignar"
 }
 #AGREGAR ESTOOO es cuando no existe el objeto

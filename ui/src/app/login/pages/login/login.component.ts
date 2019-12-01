@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               allowOutsideClick: true,
               type: 'error',
               title: 'Error',
-              text: 'Usuario y/o contrasña invalida.'
+              text: err.error.message
             });
           }
         )

@@ -10,10 +10,7 @@ import datetime
 
 def consultarLibroCampo(data):
     try:
-        codFinca = data.get('codFinca')
-        libroCampoList = hlLibroCampoList(codFinca)
-
-        dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+        dtoLibroCampoList = hlLibroCampoList(data)
 
         return dtoLibroCampoList
     except Exception as e:
@@ -45,29 +42,31 @@ def finalizarLibroCampo(data):
 
 
 def recomendacionLibroCampo(data):
-    dtoLibroCampoList = consultarLibroCampo(data)
-    dtoResultList = []
-    for dtoLibroCampo in dtoLibroCampoList:
-        dtoResult = dtoLibroCampo
-        codLibroCampo = dtoLibroCampo.get('codLibroCampo')
-        dtoJsonAux = dict(
-            codLibroCampo = codLibroCampo
-        )
+    try:
+        dtoLibroCampoList = hlLibroCampoList(data)
+        dtoResultList = []
+        for dtoLibroCampo in dtoLibroCampoList:
+            dtoResult = dtoLibroCampo
+            codLibroCampo = dtoLibroCampo.get('codLibroCampo')
+            dtoJsonAux = dict(
+                codLibroCampo = codLibroCampo
+            )
 
-        dtoActividadRecomendacion = recomendacionActividad(dtoJsonAux)
+            dtoActividadRecomendacion = recomendacionActividad(dtoJsonAux)
 
-        actvidadesARecomendar = dtoActividadRecomendacion.get('actvidadesARecomendar')
-        actividadesRecomendadas = dtoActividadRecomendacion.get('actividadesRecomendadas')
+            actvidadesARecomendar = dtoActividadRecomendacion.get('actvidadesARecomendar')
+            actividadesRecomendadas = dtoActividadRecomendacion.get('actividadesRecomendadas')
 
-        cantARE = len(actvidadesARecomendar)
-        cantRE  = len(actividadesRecomendadas)
+            cantARE = len(actvidadesARecomendar)
+            cantRE  = len(actividadesRecomendadas)
 
-        dtoResult['actvidadesARecomendar'] = cantARE
-        dtoResult['actividadesRecomendadas'] = cantRE
-        
-        dtoResultList.append(dtoResult)
-    return dtoResultList
-
+            dtoResult['actvidadesARecomendar'] = cantARE
+            dtoResult['actividadesRecomendadas'] = cantRE
+            
+            dtoResultList.append(dtoResult)
+        return dtoResultList
+    except Exception as e:
+        return ResponseException(e)
 
 
 def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
@@ -86,9 +85,16 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
 
 
 
-def hlLibroCampoList(codFinca):
+def hlLibroCampoList(data):
+    codFinca = data.get('codFinca')
     finca = selectFincaCod(codFinca)
     if not finca:
         raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+    
     libroCampoList = finca.libroCampoList
-    return libroCampoList
+    if len(libroCampoList) == 0:
+        raise Exception('N','La finca ' + finca.nombreFinca + ' no posee libros de campo')
+
+    dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+
+    return dtoLibroCampoList
