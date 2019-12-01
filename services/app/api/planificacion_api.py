@@ -13,6 +13,7 @@ parcelas = urlParcelas
 class ParcelasInicialHandler(Resource):
     @token_required
     def get(data,currentUser,cod):
+        print('EN get parcelas')
         return getParcelas(cod) 
 
 @planificacion.route('')
