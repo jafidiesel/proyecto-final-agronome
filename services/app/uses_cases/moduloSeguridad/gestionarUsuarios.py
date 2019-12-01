@@ -37,6 +37,7 @@ def postUser(data):
         #Check usuario y email unique
         userUsuario = usuarioJson.get('usuario')
         email = usuarioJson.get('email')
+        contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
 
         usuario = getUsuarioByUsuario(userUsuario)
         if usuario:
@@ -46,6 +47,8 @@ def postUser(data):
         if usuario:
             raise Exception('N','El email: ' + email +', no se encuentra disponible')
         
+        if len(contraseniaUsuario)<6:
+            raise Exception('N','La contraseña debe ser mayor a 6 caracteres')
 
         #Crear usuario
         usuario = hlmodel.Usuario.from_json(usuarioJson)
