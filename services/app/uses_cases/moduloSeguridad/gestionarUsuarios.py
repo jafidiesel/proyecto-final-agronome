@@ -234,3 +234,21 @@ def hlformatToken(token):
     token = token.replace("b'",'')
     token = token.replace("'",'')
     return str(token)
+
+
+def hlCheckEmail(email):
+    usuario = getUsuarioByEmail(email)
+    if not usuario == None:
+        raise Exception('N','El email: ' + email +', no se encuentra disponible')
+    return 
+
+def hlCheckUsuario(usuario):
+    usuario = getUsuarioByUsuario(usuario)
+    if not usuario == None:
+        raise Exception('N','El usuario: ' + usuario +', no se encuentra disponible')
+    return
+
+def hlCheckPass(contraseniaUsuario):
+    if len(contraseniaUsuario)<6:
+       raise Exception('N','La contraseña debe ser mayor a 6 caracteres')
+    return
