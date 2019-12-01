@@ -37,6 +37,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
+  postSuccessMessage = '';
 
   format = 'dd-MM-yyyy';
   myDate = new Date();
@@ -84,6 +85,55 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   }
 
+  checkUsuario() {
+    if(this.formUsuario.value.usuario.usuario != null){
+      this.subscriptions.push(
+        this._seguridadService.checkUsername(this.formUsuario.value.usuario.usuario).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+
+    }
+  }
+
+  checkEmail() {
+    if(this.formUsuario.value.usuario.email  != null){
+      this.subscriptions.push(
+        this._seguridadService.checkEmail(this.formUsuario.value.usuario.email).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+    }
+  }
+
+  checkContraseniaUsuario() {
+    if(this.formUsuario.value.usuario.contraseniaUsuario != null){
+      this.subscriptions.push(
+        this._seguridadService.checkContraseniaUsuario(this.formUsuario.value.usuario.contraseniaUsuario).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+    }
+  }
+
+  
+
+
   initForm() {
     this.formUsuario = this.fb.group({
       usuario: this.fb.group({
@@ -91,16 +141,15 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         nombre: [null, Validators.required],
         apellido: [null, Validators.required],
         email: [null, [Validators.required, Validators.email]],
-        contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
+        contraseniaUsuario: [null, Validators.required],
         fchCrea: [this.formattedDate]
       }),
       rol: this.fb.group({
         cod: [this.rolSeleccionado.cod]
       }),
       fincas: [this.fb.control({
-        cod: null,
-        nombre: "",
-        isActiv: false
+        codFinca: null,
+        nombre: ""
       })]
     });
 
@@ -111,14 +160,14 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
     if (this.formUsuario.status == 'VALID') {
       this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
-        result => {
+        (result: any) => {
           this.postSuccess = true;
           this.postError = false;
           this.postErrorMessage = '';
-
+          this.postSuccessMessage = result.message;
 
         },
-        error => this.onHttpError(error)
+        error => this.onHttpError({ message: error.error.message })
       );
     } else {
       this.postError = true;
