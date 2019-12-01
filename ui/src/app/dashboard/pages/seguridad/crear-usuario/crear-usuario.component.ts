@@ -18,7 +18,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   formUsuario: FormGroup;
 
-  // Lista con opciones
+  // Lista con fincas
   tiposFincasSelect: Observable<Object>;
   tiposFincasSelectArray = [];
   fincasElegidas = [];
@@ -58,7 +58,8 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
           for (let index = 0; index < result.length; index++) {
             this.rolesSelectArray.push(result[index]);
           }
-        }
+        },
+        error => this.onHttpError({ message: error.error.message })
       )
     );
 
@@ -176,7 +177,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   }
 
   crearFinca(obj: any) {
-    debugger;
     return this.fb.control({
       codFinca: obj.codFinca,
       nombre: obj.nombre,
@@ -189,7 +189,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
     const inn = selectEl.options[selectEl.selectedIndex].innerText;
     this.fincaSeleccionada.codFinca = attrVal;
     this.fincaSeleccionada.nombre = inn;
-    console.log('this.fincaSeleccionada', this.fincaSeleccionada);
 
   }
 
@@ -204,8 +203,6 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   }
 
   agregarItem() {
-    debugger;
-    console.log('agregarItem()', this.fincaSeleccionada);
     this.fincasElegidas.push({
       codFinca: this.fincaSeleccionada.codFinca,
       nombre: this.fincaSeleccionada.nombre
