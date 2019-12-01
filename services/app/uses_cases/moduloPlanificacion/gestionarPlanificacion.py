@@ -5,8 +5,11 @@ from app.repositorio.repositorioGestionarFinca import selectFincaCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
+from app.uses_cases.libroCampo.libroCampo import createLibroCampo
 import datetime
 from flask import jsonify,make_response
+import string 
+import random 
 
 def postPlanificacion(data,currentUser):
     try:
@@ -17,11 +20,12 @@ def postPlanificacion(data,currentUser):
         codFinca = data.get('codFinca')
         comentarioJson = data.get('comentario')
         datosCultivosJsonList = data.get('cultivos')
+        nombreGrupo = data.get('nombreGrupo')
 
         #estados planif
         estadoEncurso = getNomencladoCod('estadoPlanificacion',1)
         estadoFinalizado = getNomencladoCod('estadoPlanificacion',2)
-
+        estadoCancelar = getNomencladoCod('estadoPlanificacion',3)
         #tipos planifi
         tipoInicial = getNomencladoCod('tipoPlanificacion',1)
         tipoSupervisada = getNomencladoCod('tipoPlanificacion',2)
@@ -44,8 +48,8 @@ def postPlanificacion(data,currentUser):
             if not finca:
                 raise Exception('N','No existe finca con codFinca ' + str(codFinca))
 
-            today = datetime.datetime.now.__str__
-            nombreGrupPlanif = finca.nombreFinca + str(today)
+            #today = datetime.datetime.now.__str__
+            nombreGrupPlanif = nombreGrupo
             grupPlanif = createGrupoPlanificacion(nombreGrupPlanif)
             finca.grupoPlanificacionList.append(grupPlanif)
             tipoPlanificacion = tipoInicial
@@ -71,7 +75,7 @@ def postPlanificacion(data,currentUser):
        
         ##comun
         planifNew = crearPlanificacion(comentarioJson,tipoPlanificacion,estadoEncurso,currentUser,grupPlanif)
-
+        cultivoListRst = []
         for cultivo in datosCultivosJsonList:
             ##Creacion del cultivo
             tipoCultivo = getNomencladoCod('tipoCultivo',cultivo.get('codTipoCultivo'))
@@ -81,8 +85,9 @@ def postPlanificacion(data,currentUser):
                 variedadCultivo     = cultivo.get("variedadCultivo"),
                 cicloUnico          = cultivo.get("cicloUnico")
                 )
-            cultivoObj.tipoCultivoR = tipoCultivo
-
+            
+            cultivoObj.tipoCultivoR = tipoCultivo   
+            cultivoListRst.append(cultivoObj)         
             saveEntidadSinCommit(cultivoObj) #no se si hace falta
 
             #creacion de grupo cuadro
@@ -103,6 +108,14 @@ def postPlanificacion(data,currentUser):
                     grupoCuadro.cuadroCultivoList.append(cuadroCultivo)
 
                 saveEntidadSinCommit(grupoCuadro)
+        print(grupPlanif)
+        #Creacion libro de campo
+        if (planifNew.tipoPlanificacion.cod == 3):
+            finca = selectFincaCod(codFinca)
+            for cultivo in cultivoListRst:                
+                nombreLibro = str(cultivo.tipoCultivoR.nombre) + ' ' + (str(cultivo.variedadCultivo)) + ' ' + ''.join(random.choices(string.ascii_uppercase + string.digits, k = 4)) 
+                print(nombreLibro)
+                createLibroCampo(nombreLibro,finca,grupPlanif,cultivo)
 
         Commit()
         return ResponseOkmsg('Planificación ' + tipoPlanificacion.nombre + ' creada exitosamente')
@@ -154,15 +167,18 @@ def getPlanificaciones(data,currentUser):
     #Filtrar por Finca
     try:
         fincaRst = selectFincaCod(data.get('codFinca'))
-    except Exception:
-        return make_response(jsonify({'message': 'No existe la FInca consultada'}),400)
-
+        if not fincaRst:
+            raise Exception('N','No existe la FInca consultada')
+    except Exception as e:
+        return ResponseException(e)
     grupoRstList = fincaRst.grupoPlanificacionList
+    print(grupoRstList)
     if not grupoRstList:
         pass
     elif grupoRstList:
         #Buscar el grupo pasado como parametro
         for grupoRst in grupoRstList:
+            
             if (grupoRst.cod == data.get('codGrupo')):
                 planificacionesRst = grupoRst.planificaciones
                 #Armar dto de planificaciones
@@ -173,16 +189,17 @@ def getPlanificaciones(data,currentUser):
                     planificacionDto.append(planificacionRst)
                     #Leer Cuadros de la planificacion
                     grupoCuadroRstList = planificacionRst.grupoCuadroList
-
+                    
                     for grupoCuadroRst in grupoCuadroRstList:
                         cuadroCultivoRstList = grupoCuadroRst.cuadroCultivoList
                         for cuadroCultivoRst in cuadroCultivoRstList:
                             if cuadroCultivoRst.cultivo not in cultivoCuadroList:
                                 cultivoCuadroList.append(cuadroCultivoRst.cultivo)
-                    
-                    for cultivoCuadro in cuadroCultivoRstList:
-                        cultivoDto = []
-                        cultivoDto.append(cultivoCuadro)
+                
+                    cultivoDto = []
+                    for cultivo in cultivoCuadroList:
+                        
+                        cultivoDto.append(cultivo)
                         gruposList = []
                         for grupoCuadroRst in grupoCuadroRstList:
                             grupoCuadroDto = []
@@ -195,16 +212,14 @@ def getPlanificaciones(data,currentUser):
                             cuadroCultivoRstList = grupoCuadroRst.cuadroCultivoList
                             cuadrosList = []
                             for cuadroCultivoRst in cuadroCultivoRstList:                                                                
-                                if (cuadroCultivoRst.cultivo == cultivoCuadro):
+                                if (cuadroCultivoRst.cultivo == cultivo):
                                     cuadrosList.append(cuadroCultivoRst.cuadro)
-                            parcelaDatos.append(cuadrosList)
                             grupoCuadroDto.append(parcelaDatos)
                             gruposList.append(grupoCuadroDto)
                         
                         cultivoDto.append(gruposList)
                     planificacionDto.append(cultivoDto)
                 planificacionesDtoList.append(planificacionDto)
-                print(planificacionesDtoList)
                 return planificacionesDtoList
                 
                           
@@ -213,42 +228,69 @@ def toDict(planificacionesDtoList):
     for planificacionData in planificacionesDtoList:
         planificacionDto = []
         planificacionRst = planificacionData.__getitem__(0)
-        for cultivoData in planificacionData.__getitem__(1):
-            cultivoDto = []
-            cultivoRst = cultivoData.__getitem__(0)
-            grupoList = []
-            for grupoData in cultivoData.__getitem__(1):
-                grupoRst = grupoData.__getitem__(0)                    
-                parcelaData = grupoData.__getitem__(1)
-                parcelaDto = []
-                parcelaRst = parcelaData.__getitem__(0)
-                cuadrosDto = []
-                for cuadroData in parcelaData.__getitem__(1):
-                    cuadro = cuadroData.__dict__
-                    cuadro.pop('_sa_instance_state', None)
-                    cuadro.pop('codParcela', None)
-                parcela = parcelaRst.__dict__
-                parcela.pop('_sa_instance_state', None)
-                parcela.pop('codFinca',None)
-                parcela.pop('superficie',None)
-                parcela.pop('columnas',None)
-                parcela.pop('filas',None)
-                parcela['cuadros'] = cuadrosDto
-                parcelaDto.append(parcela)
+        print('Item 0')
+        print(planificacionRst)
+        print('Item 1')
+        print(planificacionData.__getitem__(1))
+        cultivoDto = []
+        cultivoRst = planificacionData.__getitem__(1).__getitem__(0)
+        print('CULTIVO')
+        print(cultivoRst)
+        grupoList =[]
+        for grupoData in planificacionData.__getitem__(1).__getitem__(1):                                 
+            grupoRst = grupoData.__getitem__(0)                    
+            parcelaData = grupoData.__getitem__(1)
+            parcelaDto = []
+            parcelaRst = parcelaData.__getitem__(0)
+            cuadrosDto = []
+            for cuadroData in parcelaData.__getitem__(1):
+                cuadro = cuadroData.__dict__
+                cuadro.pop('_sa_instance_state', None)
+                cuadro.pop('codParcela', None)
+                cuadrosDto.append(cuadro)
+            parcela = parcelaRst.__dict__
+            parcela.pop('_sa_instance_state', None)
+            parcela.pop('codFinca',None)
+            parcela.pop('superficie',None)
+            parcela.pop('columnas',None)
+            parcela.pop('filas',None)
+            parcela['cuadros'] = cuadrosDto
+            parcelaDto.append(parcela)
 
-                grupo = grupoRst.__dict__
-                grupo.pop('_sa_instance_state', None)
-                grupo.pop('codFinca', None)
+            grupo = grupoRst.__dict__
+            grupo.pop('_sa_instance_state', None)
+            grupo.pop('codFinca', None)
 
-                grupo['parcela'] = parcelaDto
-                grupoList.append(grupo)
-            tipoCultivoRst = cultivoRst.tipoCultivo
-            tipoCultivo = tipoCultivoRst.__dict__
-            cultivo = cultivoRst.__dict__
-            tipoCultivo.pop('_sa_instance_state', None)
-            tipoCultivo.pop('nombreNomenclador', None)
-            cultivo.pop('_sa_instance_state', None)
-            cultivo.pop('tipoCultivo', None)
+            grupo['parcela'] = parcelaDto
+            grupoList.append(grupo)
+        tipoCultivoRst = cultivoRst.tipoCultivo
+        tipoCultivoData = tipoCultivoRst.__dict__
+        cultivo = cultivoRst.__dict__
+        tipoCultivoData.pop('_sa_instance_state', None)
+        tipoCultivoData.pop('nombreNomenclador', None)
+        cultivo.pop('_sa_instance_state', None)
+        cultivo.pop('tipoCultivo', None)
+        cultivo['tipoCultivo'] = tipoCultivoData
+        cultivoDto.append(cultivo)
+    tipoPlanificacionRst = planificacionRst.tipoPlanificacion
+    estadoPlanificacionRst = planificacionRst.estadoPlanificacion
+    tipoPlanificacionData = tipoPlanificacionRst.__dict__
+    estadoPlanificacionData = estadoPlanificacionRst.__dict__
+    planificacion = planificacionRst.__dict__
+    tipoPlanificacionData.pop('_sa_instance_state', None)
+    tipoPlanificacionData.pop('nombreNomenclador', None)
+    estadoPlanificacionData.pop('_sa_instance_state', None)
+    estadoPlanificacionData.pop('nombreNomenclador', None)
+    planificacion.pop('_sa_instance_state', None)
+    planificacion.pop('codEstadoPlanificacion', None)
+    planificacion.pop('codUsuario', None)
+    planificacion.pop('codTipoPlanificacion', None)
+    planificacion['estadoPlanificacion'] = estadoPlanificacionData
+    planificacion['tipoPlanificacion'] = tipoPlanificacionData
+    planificacionDto.append(planificacion)
+
+    planificacionesDto.append(planificacionDto)
+    return planificacionesDto
 
                                 
                             
