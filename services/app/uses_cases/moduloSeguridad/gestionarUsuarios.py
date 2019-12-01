@@ -38,17 +38,10 @@ def postUser(data):
         userUsuario = usuarioJson.get('usuario')
         email = usuarioJson.get('email')
         contraseniaUsuario = usuarioJson.get('contraseniaUsuario')
-
-        usuario = getUsuarioByUsuario(userUsuario)
-        if usuario:
-            raise Exception('N','El usuario: ' + userUsuario +', no se encuentra disponible')
-        
-        usuario = getUsuarioByEmail(email)
-        if usuario:
-            raise Exception('N','El email: ' + email +', no se encuentra disponible')
-        
-        if len(contraseniaUsuario)<6:
-            raise Exception('N','La contraseña debe ser mayor a 6 caracteres')
+        #check
+        hlCheckUsuario(userUsuario)
+        hlCheckEmail(email)
+        hlCheckPass(contraseniaUsuario) 
 
         #Crear usuario
         usuario = hlmodel.Usuario.from_json(usuarioJson)
@@ -213,19 +206,26 @@ def restorePass(data,currentUser):
 
 def accountUser(data):
     try:
-        filtroList={
-            'email': getUsuarioByEmail,
-            'usuario': getUsuarioByUsuario
-        }
-
         filtro = data.get('atributo')
         valor = data.get('valor').lower()
 
-        usuario = filtroList[filtro](valor)
-        if usuario == None:
-            return ResponseOkmsg(filtro + ' disponible')
-        else:
-            raise Exception('N',filtro + ' no disponible')
+        email = 'email'
+        usuario = 'usuario'
+        contraseniaUsuario = 'contraseniaUsuario'
+
+        if not (filtro == email or filtro ==usuario or filtro ==contraseniaUsuario):
+            raise Exception('N','El atributo puede ser email, usuario o contraseniaUsuario')
+        
+        if filtro == email:
+            hlCheckEmail(valor)
+        
+        if filtro == usuario:
+            hlCheckUsuario(valor)
+        
+        if filtro == contraseniaUsuario:
+            hlCheckPass(valor)
+
+        return ResponseOk()
     except Exception as e:
         return ResponseException(e)    
 
@@ -234,3 +234,21 @@ def hlformatToken(token):
     token = token.replace("b'",'')
     token = token.replace("'",'')
     return str(token)
+
+
+def hlCheckEmail(email):
+    usuario = getUsuarioByEmail(email)
+    if not usuario == None:
+        raise Exception('N','El email: ' + email +', no se encuentra disponible')
+    return 
+
+def hlCheckUsuario(user):
+    usuario = getUsuarioByUsuario(user)
+    if not usuario == None:
+        raise Exception('N','El usuario: ' + user +', no se encuentra disponible')
+    return
+
+def hlCheckPass(contraseniaUsuario):
+    if len(contraseniaUsuario)<6:
+       raise Exception('N','La contraseña debe ser mayor a 6 caracteres')
+    return
