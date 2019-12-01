@@ -45,6 +45,7 @@ urlPlan = Namespace (URL_HL + '/plan', description = 'Helper plan')
 URL_MP = 'api/planificacion'
 urlPlanificacion = Namespace(URL_MP,desciption = 'Gestionar planificacion ')
 urlGrupoPlanificacion = Namespace(URL_MP +'/grupos', description = 'Gestionar grupos de planificaciones' )
+urlParcelas = Namespace(URL_MP +'/parcelas', description = 'Gestionar grupos de planificaciones' )
 
 
 #modulo de reportes

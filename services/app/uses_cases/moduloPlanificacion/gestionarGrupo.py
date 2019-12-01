@@ -3,31 +3,11 @@ from app.model.hlmodel import Planificacion,Finca,Usuario, GrupoPlanificacion, T
 from app.repositorio.hlDb import saveEntidadSinCommit, selectByCod,Commit, selectAll, Rollback
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk,ResponseOkmsg
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
-from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import getPlanificacionInicial
 
-#{codGrupo,codFinca}
-def getPlanificaciones(data,currentUser):
-    #Filtrar por Finca
-    fincaRst = selectFincaCod(data.get('codFinca'))
-    planificacionLista = fincaRst.planificacionList
-
-    #Buscar grupo
-    grupoPlanificacionRst = selectByCod(GrupoPlanificacion, data.get('codGrupo'))
-    planificacionesRst = grupoPlanificacionRst.planificacion
-    #Verificar que el grupo es de la finca pasada como parametro
-    
-    #Por cada planificacion leer codigo y tipo
-    for planificacionElemento in planificacionesRst:
-        if planificacionElemento.tipoPlanificacion == 'inicial':
-            getPlanificacionInicial(planificacionElemento.cod)
-        elif planificacionElemento.tipoPlanificacion == 'supervisada':
-            pass
-        elif planificacionElemento.tipoPlanificacion == 'final':
-            pass
 
 #Cabecera
 ##Agregar  isCancelado
-def getAll(currentUser,codFinca):
+def getGrupos(currentUser,codFinca):
     try:
         #Buscar Finca
         fincaRst = selectFincaCod(codFinca)
@@ -35,8 +15,7 @@ def getAll(currentUser,codFinca):
         grupoPlanificacionRstList = fincaRst.grupoPlanificacionList
 
         if not grupoPlanificacionRstList:
-            message = json.dumps({'message': 'La finca no posee planificaciones'})   
-            return make_response(jsonify(message),400)
+            raise Exception('N','La finca no posee planificaciones')
         elif grupoPlanificacionRstList:            
             #Armado Dto 
             dtoGeneral = []
@@ -68,7 +47,7 @@ def getAll(currentUser,codFinca):
 def getDTO(grupoObjList):
     dtoGeneral = []
     #Etapas
-    
+    ultimoEstadoCod=0
     for grupoObj in grupoObjList:
         #Obtener grupo        
         dictGrupo = grupoObj.__getitem__(0).__dict__
