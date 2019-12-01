@@ -152,7 +152,7 @@ def activateUser(currentUser):
             currentUser.isActiv = True
             saveEntidadSinCommit(currentUser)
             Commit()
-        return ResponseOk()
+        return ResponseOkmsg('Su usuario fue activado exitosamente')
     except Exception as e:
         return ResponseException(e)
 
@@ -199,7 +199,7 @@ def restorePass(data,currentUser):
         currentUser.contraseniaUsuario = passnew
         saveEntidadSinCommit(currentUser)
         Commit()
-        return ResponseOkmsg('Contraseña recuperada correctamente')
+        return ResponseOkmsg('Contraseña recuperada exitosamente')
     except Exception as e:
         return ResponseException(e)
 
