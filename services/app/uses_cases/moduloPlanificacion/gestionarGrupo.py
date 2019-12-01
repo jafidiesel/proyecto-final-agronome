@@ -15,8 +15,7 @@ def getGrupos(currentUser,codFinca):
         grupoPlanificacionRstList = fincaRst.grupoPlanificacionList
 
         if not grupoPlanificacionRstList:
-            message = json.dumps({'message': 'La finca no posee planificaciones'})   
-            return make_response(jsonify(message),400)
+            return raise Exception('N','La finca no posee planificaciones')
         elif grupoPlanificacionRstList:            
             #Armado Dto 
             dtoGeneral = []
@@ -48,7 +47,7 @@ def getGrupos(currentUser,codFinca):
 def getDTO(grupoObjList):
     dtoGeneral = []
     #Etapas
-    
+    ultimoEstadoCod=0
     for grupoObj in grupoObjList:
         #Obtener grupo        
         dictGrupo = grupoObj.__getitem__(0).__dict__
