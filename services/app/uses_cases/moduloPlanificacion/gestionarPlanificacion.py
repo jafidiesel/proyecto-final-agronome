@@ -1,5 +1,5 @@
 from app.model.hlmodel import Planificacion, GrupoPlanificacion , Cultivo, GrupoCuadro, CuadroCultivo
-from app.repositorio.hlDb import saveEntidadSinCommit, Commit
+from app.repositorio.hlDb import saveEntidadSinCommit, Commit, Rollback
 from app.repositorio.repositorioPlanificacion import getPlanifByCod, getParcelaByCod, getCuadroByCod
 from app.repositorio.repositorioGestionarFinca import selectFincaCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
@@ -107,6 +107,7 @@ def postPlanificacion(data,currentUser):
         Commit()
         return ResponseOkmsg('Planificación ' + tipoPlanificacion.nombre + ' creada exitosamente')
     except Exception as e:
+        Rollback()
         return ResponseException(e)
 
 
@@ -203,7 +204,7 @@ def getPlanificaciones(data,currentUser):
                         cultivoDto.append(gruposList)
                     planificacionDto.append(cultivoDto)
                 planificacionesDtoList.append(planificacionDto)
-
+                print(planificacionesDtoList)
                 return planificacionesDtoList
                 
                           
