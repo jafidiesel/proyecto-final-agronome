@@ -17,6 +17,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
   codfinca: number;
 
   parcelas = [];
+  parcelasToSend = [];
 
   dummyDataCultivo = [
     "Lechuga", "Tomate", "Zanahoria", "Calabaza", "Cebolla"
@@ -64,8 +65,9 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       this._planificacionService.getParcelasLibres(this.codfinca).subscribe(
         result => {
           result.parcelas.map(element => this.parcelas.push(element))
-          console.log('this.parcelas',this.parcelas);
           this.initForm(result.parcelas);
+          this.addIdsToCuadros(this.parcelas);
+          console.log('this.parcelas', this.parcelas);
 
         },
         error => this.onHttpError({ message: error.error.message })
@@ -74,32 +76,46 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
   }
 
+  /* 
+    crearCuadro(obj: any) {
+      return this.fb.control({
+        codcuadro: obj.codCuadro,
+        nombreCuadro: obj.nombreCuadro,
+        isActive: false
+      })
+    }
+  
+    crearParcela(obj: any) {
+      return this.fb.control({
+        codParcela: obj.codParcela,
+        nombre: obj.nombre,
+        cuadros: this.fb.array(obj.cuadros.map(cuadro => this.crearCuadro(cuadro).value))
+      })
+    }
+  
+    crearCultivo(obj: any) {
+      return this.fb.control({
+        codTipoCultivo: 0,
+        variedadCultivo: "",
+        cantidadCultivo: 0,
+        produccionEsperada: 0,
+        cicloUnico: false,
+        parcelas: this.fb.array(obj.map(parcela => this.crearParcela(parcela).value))
+      })
+    } */
 
-  crearCuadro(obj: any) {
-    return this.fb.control({
-      codcuadro: obj.codCuadro,
-      nombreCuadro: obj.nombreCuadro,
-      isActive: false
-    })
-  }
+  addIdsToCuadros(parcelasArray) {
+    let id = "cuadro-id-";
+    let numero = 0;
+    let resultArray = parcelasArray.map(parcela => {
+      //debugger;
+      parcela.cuadros.map(cuadro => {
+        cuadro.id = (id + numero);
+        cuadro.isActive = false;
+        numero++;
+      });
 
-  crearParcela(obj: any) {
-    return this.fb.control({
-      codParcela: obj.codParcela,
-      nombre: obj.nombre,
-      cuadros: this.fb.array(obj.cuadros.map(cuadro => this.crearCuadro(cuadro).value))
-    })
-  }
-
-  crearCultivo(obj: any) {
-    return this.fb.group({
-      codTipoCultivo: 0,
-      variedadCultivo: "",
-      cantidadCultivo: 0,
-      produccionEsperada: 0,
-      cicloUnico: false,
-      parcelas: this.fb.array(obj.map(parcela => this.crearParcela(parcela).value))
-    })
+    });
   }
 
   initForm(form) {
@@ -108,24 +124,111 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       codPlanifBefore: null,
       codFinca: this.codfinca,
       comentario: null,
-      cultivos: this.fb.array([this.crearCultivo(form)])
+      codTipoCultivo: 0,
+      variedadCultivo: "",
+      cantidadCultivo: 0,
+      produccionEsperada: 0,
+      cicloUnico: false,
+      parcelas: [],
+      cultivos: [{}]
 
 
     });
 
     this.imprimir();
-
-
   }
 
   imprimir() {
     console.warn(this.planificacionForm.value);
+  }
+  imprimirParcelasToSend() {
+    console.warn(this.parcelasToSend);
+  }
+
+  procesarInputs() {
+    let nodeList: any;
+    nodeList = document.querySelectorAll("input[id*=cuadro-id-]:checked");
+
+    for (let index = 0; index < nodeList.length; index++) {
+      const inputElement = nodeList[index];
+      this.parcelasToSend = this.parcelas;
+      this.parcelasToSend.map(parcela => {
+        parcela.cuadros.map(cuadro => {
+          if (cuadro.id == inputElement.id) {
+            cuadro.isActive = true;
+            console.log('true en', cuadro.id);
+          }
+        });
+      });
+    }
+  }
+
+  procesarParcelasToSend() {
+    let jsonToSend = {};
+    debugger;
+
+    jsonToSend['parcelas'] = [];
+
+    this.parcelasToSend.map(parcela => {
+      let jsonParcela = {};
+      parcela.cuadros.map(cuadro => {
+        if (cuadro.isActive) {
+          jsonParcela['codParcela'] = parcela.codParcela;
+          if (jsonParcela['cuadros'] == null) jsonParcela['cuadros'] = [];
+          jsonParcela['cuadros'].push({
+            codCuadro: cuadro.codCuadro,
+            nombreCuadro: cuadro.nombreCuadro
+          })
+
+        }
+      });
+      if (jsonParcela != {}) jsonToSend['parcelas'].push(jsonParcela);
+
+    });
+
+    if (jsonToSend['parcelas'].length > 0) {
+      return jsonToSend;
+    } else {
+      return {}
+    }
+  }
+
+  procesarFormGroup(parcelas: any) {
+    let form = this.planificacionForm.value;
+    this.planificacionForm.patchValue({
+      cultivos: [{
+        codTipoCultivo: form.codTipoCultivo,
+        cantidadCultivo: form.cantidadCultivo,
+        produccionEsperada: form.produccionEsperada,
+        variedadCultivo: form.variedadCultivo,
+        cicloUnico: form.cicloUnico,
+        parcelas: parcelas
+      }]
+
+    });
+
+    delete this.planificacionForm.value.codTipoCultivo;
+    delete this.planificacionForm.value.cantidadCultivo;
+    delete this.planificacionForm.value.produccionEsperada;
+    delete this.planificacionForm.value.variedadCultivo;
+    delete this.planificacionForm.value.cicloUnico;
+    delete this.planificacionForm.value.parcelas;
 
   }
 
-  procesarTipoCultivo(event) {
+  procesarForm() {
+    this.procesarInputs();
+    let parcelasConCuadros = this.procesarParcelasToSend();
 
-    debugger;
+    if (parcelasConCuadros != {}) {
+      this.procesarFormGroup(parcelasConCuadros['parcelas']);
+    }
+
+
+  }
+
+
+  procesarTipoCultivo(event) {
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
     const optionValue = selectEl.value;
@@ -228,7 +331,9 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    this._planificacionService.guardarPlanificacion('inicial');
+    this.procesarForm();
+
+    console.warn(this.planificacionForm.value);
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success ml-1',
@@ -236,17 +341,26 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       buttonsStyling: false
     })
 
-    swalWithBootstrapButtons.fire({
-      title: '¡Exito!',
-      text: 'Se creo la planificación inicial correctamente.',
-      type: 'success',
-      confirmButtonText: 'Salir',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.value) {
-        this.router.navigate(['/planificacion/verPlanificacionInicial']);
-      }
-    });
+    this.subscriptions.push(
+      this._planificacionService.guardarPlanificacion(this.planificacionForm.value).subscribe(
+        result =>{
+          swalWithBootstrapButtons.fire({
+            title: '¡Exito!',
+            text: 'Se creo la planificación inicial correctamente.',
+            type: 'success',
+            confirmButtonText: 'Salir',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/planificacion/verPlanificacionInicial']);
+            }
+          });
+
+        },
+        error => this.onHttpError({ message: error.error.message})
+      )
+    );
+
 
 
   }
