@@ -15,17 +15,30 @@
                         <b>{{ planificacion.nombreGrupoPlanificacion }}</b>
                     </h6>
                     <div class="card-body">
-                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}</p>
+                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}
+
+                        </p>
                         <div [ngSwitch]="planificacion.planificacion.cod">
-                            <button *ngSwitchCase="1" class="btn btn-primary"
-                                [routerLink]="['/planificacion/verPlanificacionInicial/' + planificacion.cod]"
-                                routerLinkActive="router-link-active">Ver</button>
-                            <button *ngSwitchCase="2" class="btn btn-primary"
+                            <div *ngSwitchCase="1">
+                                <p><b>Planificación: </b> Inicial</p>
+                                <button class="btn btn-primary"
+                                    [routerLink]="['/planificacion/verPlanificacionInicial/' + planificacion.cod]"
+                                    routerLinkActive="router-link-active">Ver</button>
+                            </div>
+                            <div *ngSwitchCase="2">
+                                <p><b>Planificación: </b> Supervisada</p>
+                                <button class="btn btn-primary"
                                 [routerLink]="['/planificacion/verPlanificacionSupervisada/' + planificacion.cod]"
                                 routerLinkActive="router-link-active">Ver</button>
-                            <button *ngSwitchCase="3" class="btn btn-primary"
+                            </div>
+                            <div *ngSwitchCase="3">
+                                <p><b>Planificación: </b> Final</p>
+                                <button class="btn btn-primary"
                                 [routerLink]="['/planificacion/verPlanificacionFinal/' + planificacion.cod]"
                                 routerLinkActive="router-link-active">Ver</button>
+                            </div>
+                            
+                            
                         </div>
 
                     </div>

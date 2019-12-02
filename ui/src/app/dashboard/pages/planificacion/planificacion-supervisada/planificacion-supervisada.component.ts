@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 import Swal from 'sweetalert2';
@@ -12,7 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './planificacion-supervisada.component.html',
 })
 
-export class PlanificacionSupervisadaComponent implements OnInit {
+export class PlanificacionSupervisadaComponent implements OnInit, OnDestroy {
 
   rol: string;
   codFinca: number;
@@ -61,7 +61,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
         this._planificacionService.getPlanificacionesCreadas(this.codFinca, parseInt(params['cod'])).subscribe(
           result => {
-            console.log('result', result);
             this.initForm(result);
           },
           error => this.onHttpError({ message: error.error.message })
@@ -76,11 +75,24 @@ export class PlanificacionSupervisadaComponent implements OnInit {
 
   supervisar() {
     this.habilitarSupervisar = true;
+  }
 
+  procesarFormGroup() {
+    let form = this.planificacionSupervisadaForm.value;
+    this.planificacionSupervisadaForm.patchValue({
+      cultivos: [{
+        codTipoCultivo: parseInt(form.codTipoCultivo),
+        cantidadCultivo: form.cantidadCultivo,
+        produccionEsperada: form.produccionEsperada,
+        variedadCultivo: form.variedadCultivo,
+        cicloUnico: form.cicloUnico,
+        parcelas: form.cultivos.parcelas
+      }]
+
+    });
   }
 
   initForm(form) {
-    debugger;
     this.planificacionInicialForm = this.fb.group({
       action: "i",
       codPlanifBefore: null,
@@ -93,25 +105,23 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
       cicloUnico: form.inicial.cultivo[0].cicloUnico,
       cultivos: [{
-        parcelas: [form.inicial.cultivo[0].grupos.map(parcela => {
+        parcelas: form.inicial.cultivo[0].grupos.map(parcela => {
           return {
             nombreParcela: parcela.parcelas[0].nombreParcela,
             codParcela: parcela.parcelas[0].codParcela,
-            cuadros: [
+            cuadros:
               parcela.parcelas[0].cuadros.map(cuadro => {
                 return { codCuadro: cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
               })
-            ]
           }
-        })],
+        }),
       }]
     });
 
-    console.warn(this.planificacionInicialForm.value);
 
     this.planificacionSupervisadaForm = this.fb.group({
       action: "s",
-      codPlanifBefore: null,
+      codPlanifBefore: form.inicial.cod,
       codFinca: this.codFinca,
       comentario: null,
       codTipoCultivo: form.inicial.cultivo[0].tipoCultivo.cod,
@@ -120,24 +130,26 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
       cicloUnico: form.inicial.cultivo[0].cicloUnico,
       cultivos: [{
-        parcelas: [form.inicial.cultivo[0].grupos.map(parcela => {
+        parcelas: form.inicial.cultivo[0].grupos.map(parcela => {
           return {
             nombreParcela: parcela.parcelas[0].nombreParcela,
             codParcela: parcela.parcelas[0].codParcela,
-            cuadros: [
+            cuadros:
               parcela.parcelas[0].cuadros.map(cuadro => {
                 return { codCuadro: cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
               })
-            ]
+
           }
-        })],
+        }),
       }]
     });
-    //this.imprimir();
   }
 
   onSubmit() {
-    this._planificacionService.guardarPlanificacion('supervisada');
+
+    this.procesarFormGroup();
+
+
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success ml-1',
@@ -145,17 +157,27 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       buttonsStyling: false
     })
 
-    swalWithBootstrapButtons.fire({
-      title: '¡Exito!',
-      text: 'Se creo la planificación supervisada correctamente.',
-      type: 'success',
-      confirmButtonText: 'Salir',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.value) {
-        this.router.navigate(['planificacion/verPlanificacionSupervisada']);
-      }
-    });
+    //return false;
+    this.subscriptions.push(
+      this._planificacionService.guardarPlanificacion(this.planificacionSupervisadaForm.value).subscribe(
+        result => {
+          swalWithBootstrapButtons.fire({
+            title: '¡Exito!',
+            text: result.message,
+            type: 'success',
+            confirmButtonText: 'Salir',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+              this.router.navigate(['planificacion/verPlanificacionSupervisada']);
+            }
+          });
+
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+
   }
 
   // metodo custom para mostrar mensajes de error
