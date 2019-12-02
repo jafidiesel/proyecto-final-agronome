@@ -47,9 +47,10 @@ def getDTO(grupoObjList):
     try:
         dtoGeneral = []
         #Etapas
-        ultimoEstadoCod = 0
-        ultimoEstadoNombre = ""
+        
         for grupoObj in grupoObjList:
+            ultimoTipoCod = 0
+            ultimoEstadoNombre = ""
             #Obtener grupo        
             dictGrupo = grupoObj.__getitem__(0).__dict__
             dictGrupo.pop('_sa_instance_state', None) 
@@ -58,11 +59,10 @@ def getDTO(grupoObjList):
                 #Obtener datos una planificacion
                 dataPlanificacion = planificacionGrupo.__getitem__(0)
                 #Obtener la ultima planificacion en curso del grupo --> Etapa: Inicial, supervisada, Final
-                if dataPlanificacion.estadoPlanificacion.cod > ultimoEstadoCod:
-                    ultimoEstadoCod = dataPlanificacion.estadoPlanificacion.cod
-                    ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre               
-                
-            dictPlanificacion = dict(cod = ultimoEstadoCod, nombre = ultimoEstadoNombre)
+                if dataPlanificacion.tipoPlanificacion.cod > ultimoTipoCod:
+                    ultimoTipoCod = dataPlanificacion.tipoPlanificacion.cod
+                    ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre                            
+            dictPlanificacion = dict(cod = ultimoTipoCod, nombre = ultimoEstadoNombre)
             dictGrupo.pop('planificaciones', None)
             dictGrupo['planificacion'] = dictPlanificacion
             dtoGeneral.append(dictGrupo)

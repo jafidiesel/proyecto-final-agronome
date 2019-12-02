@@ -49,12 +49,17 @@ def getParcelasLibres(data):
         return dtoGeneral
     elif grupoList:
         #Leer planificaciones asociadas al Grupo
+        print(grupoList)
         for grupoPlanificacion in grupoList:    
             planificacionListRst = grupoPlanificacion.planificaciones
+            print('PLANIFICACIONES GRUPO')
+            print(planificacionListRst)
             dtoGeneralOcupada = []
             parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
             for planificacionRst in planificacionListRst:
                 if (planificacionRst.estadoPlanificacion.cod == 1 ):
+                    print('TIPOPLANIFICACION')
+                    print(planificacionRst)
                     for grupoCuadro in planificacionRst.grupoCuadroList:
                         dtoParcelaOcupada = []
                         parcelaOcupada = grupoCuadro.parcela
@@ -89,9 +94,8 @@ def getParcelasLibres(data):
                 condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
                 
                 for x in condition:
-                    print('Condicion')
-                    print(x)
-                
+                    pass
+
                 if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
                     dtoGeneralLibre.append(datoParcelaGeneral)               
             print(dtoGeneralLibre)  
