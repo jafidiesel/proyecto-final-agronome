@@ -116,7 +116,7 @@ def postPlanificacion(data,currentUser):
         print(grupPlanif)
 
         #Creacion libro de campo
-        if (planifNew.tipoPlanificacion == tipoPlanificacion):
+        if (planifNew.tipoPlanificacion == tipoFinal):
             #finca = selectFincaCod(codFinca)
             print('esto en crear libro campo')
             for cultivo in cultivoListRst:       
