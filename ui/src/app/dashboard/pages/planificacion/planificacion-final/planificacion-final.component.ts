@@ -143,7 +143,7 @@ export class PlanificacionFinalComponent implements OnInit, OnDestroy {
       action: "f",
       codPlanifBefore: form.supervisada.cod,
       codFinca: this.codFinca,
-      comentario: null,
+      comentarioPlanificacion: null,
       codTipoCultivo: form.supervisada.cultivo[0].tipoCultivo.cod,
       variedadCultivo: form.supervisada.cultivo[0].variedadCultivo,
       cantidadCultivo: 0,
@@ -190,7 +190,7 @@ export class PlanificacionFinalComponent implements OnInit, OnDestroy {
             reverseButtons: true
           }).then((result) => {
             if (result.value) {
-              this.router.navigate(['planificacion/verPlanificacionFinal']);
+              this.router.navigate(['planificacion/listarGrupos']);
             }
           });
 

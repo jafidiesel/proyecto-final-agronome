@@ -163,8 +163,12 @@
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4">
                                 <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
-                                <input type="text" class="form-control text-capitalize" id="cultivoInicial" readonly
-                                    formControlName="nombreTipoCultivo">
+                                <select class="custom-select text-capitalize" id="cultivoInicial"
+                                    *ngIf="tipoCultivoArray != '' else loading1" formControlName="codTipoCultivo">
+                                    <option *ngFor="let tipoCultivo of tipoCultivoArray" [value]="tipoCultivo[0]"
+                                        class="text-capitalize">
+                                        {{tipoCultivo[1]}}</option>
+                                </select>
                                 <ng-template #loading1>
                                     <button class="btn btn-info" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status"
@@ -175,29 +179,22 @@
                             </div>
                             <div class="form-group col-md-5 ml-4">
                                 <label for="variedad">Variedad <b>*</b></label>
-                                <input type="text" class="form-control" id="variedad" formControlName="variedadCultivo" readonly>
+                                <input type="text" class="form-control" id="variedad" formControlName="variedadCultivo">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
                                 <label for="produccion">Producción esperada (Tn) <b>*</b></label>
                                 <input type="number" class="form-control" id="produccion"
-                                    formControlName="produccionEsperada" readonly>
+                                    formControlName="produccionEsperada" >
                             </div>
                             <div class="form-group col-md-5 ml-4 ">
                                 <br>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="cicloUnicoSup"
-                                        formControlName="cicloUnico" readonly onclick="return false;" >
-                                    <label class="custom-control-label" for="cicloUnicoSup">Ciclo único <b>*</b></label>
+                                    <input type="checkbox" class="custom-control-input" id="cicloUnicoFinal"
+                                        formControlName="cicloUnico" >
+                                    <label class="custom-control-label" for="cicloUnicoFinal">Ciclo único <b>*</b></label>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-10 ml-4 ">
-                                <label>Observaciones</label>
-                                <textarea class="form-control" aria-label="With textarea"
-                                    formControlName="comentarioPlanificacion" readonly></textarea>
                             </div>
                         </div>
                     </form>
@@ -227,9 +224,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn btn-primary float-right" *ngIf="rol == 'encargadofinca'"
-                            (click)="finalizar()">Finalizar</button>
-                            <button type="button" class="btn btn-success btn-lg float-right" *ngIf="rol == 'ingeniero'"
+                            <button type="button" class="btn btn-success btn-lg float-right" *ngIf="rol == 'encargadofinca'"
                                 (click)="onSubmit()">
                                 Guardar</button>
                         </div>
