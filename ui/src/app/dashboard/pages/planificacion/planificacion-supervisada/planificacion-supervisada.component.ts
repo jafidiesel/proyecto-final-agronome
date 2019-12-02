@@ -89,7 +89,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
         produccionEsperada: form.produccionEsperada,
         variedadCultivo: form.variedadCultivo,
         cicloUnico: form.cicloUnico,
-        parcelas: form.cultivos.parcelas[0]
+        parcelas: form.cultivos.parcelas
       }]
 
     });
