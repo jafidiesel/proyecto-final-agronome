@@ -10,12 +10,7 @@ export class PlanificacionService {
   constructor(private http: HttpClient) {
     console.log("PlanificacionService up and running");
   }
-  /**
-  * @deprecated
-  */
-  guardarPlanificacion(tipo: string) {
-    localStorage.setItem('tipoPlanificacion', tipo.toString());
-  }
+
   /**
   * @deprecated
   */
@@ -37,7 +32,7 @@ export class PlanificacionService {
   *  
   * GET obtiene las planificaciones creadas segun el codigo de la finca
   */
-  getPlanificacionesCreadas(codFinca: number): Observable<any> {
+  getGrupos(codFinca: number): Observable<any> {
     return this.http.get<string>(`http://localhost:9001/api/planificacion/grupos/${codFinca}`);
   }
 
@@ -49,6 +44,40 @@ export class PlanificacionService {
   */
   getParcelasLibres(codFinca: number): Observable<any> {
     return this.http.get<string>(`http://localhost:9001/api/planificacion/parcelas/${codFinca}`);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * GET obtiene las parcelas libres segun el codigo de la finca
+  */
+  guardarPlanificacion(json: any): Observable<any> {
+    return this.http.post<string>(`http://localhost:9001/api/planificacion`, json);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * GET obtiene las parcelas libres segun el codigo de la finca
+  */
+  getPlanificacionesCreadas(codFinca: number, codGrupo: number): Observable<any> {
+    let json = {
+      codFinca: codFinca,
+      codGrupo: codGrupo
+    }
+    return this.http.post<string>(`http://localhost:9001/api/planificacion/consultar`, json);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * DEL cancela un grupo
+  */
+  cancelarGrupo(codGrupo: number): Observable<any> {
+    return this.http.delete<string>(`http://localhost:9001/api/planificacion/grupos/${codGrupo}`);
   }
 
 }

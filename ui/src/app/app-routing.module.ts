@@ -67,11 +67,11 @@ const routes: Routes = [
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
   { path: 'planificacion/listarGrupos', component: ListarGruposComponent },
-  { path: 'planificacion/listarPlanificaciones', component: ListarPlanificacionesComponent },
+  { path: 'planificacion/listarPlanificaciones/:cod', component: ListarPlanificacionesComponent },
   { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
-  { path: 'planificacion/verPlanificacionInicial', component: PlanificacionSupervisadaComponent },
-  { path: 'planificacion/verPlanificacionSupervisada', component: PlanificacionFinalComponent },
-  { path: 'planificacion/verPlanificacionFinal', component: VerPlanificacionFinalComponent},
+  { path: 'planificacion/verPlanificacionInicial/:cod', component: PlanificacionSupervisadaComponent },
+  { path: 'planificacion/verPlanificacionSupervisada/:cod', component: PlanificacionFinalComponent },
+  { path: 'planificacion/verPlanificacionFinal/:cod', component: VerPlanificacionFinalComponent},
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },

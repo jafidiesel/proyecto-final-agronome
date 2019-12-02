@@ -118,6 +118,12 @@ pg_dump -U 'usuario' -W -h 'host' 'database' -t 'tablename' > 'backup.sql'
 ```
 pg_dump -U postgres -W -h localhost -t actividad agronome > actividadbackup.sql
 ```
+⚙️Reiniciar secuencia:
+
+ALTER SEQUENCE nombreSecuencia restart 1;
+```
+ALTER SEQUENCE public.cuadro_cod_cuadro_seq restart 1;
+```
 ## Link de interes para backup con postgres ✒️
 
 ✒️ [Postgres - pgdump documentación oficial ](https://www.postgresql.org/docs/9.1/app-pgdump.html)

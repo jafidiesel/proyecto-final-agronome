@@ -3,7 +3,8 @@ from app.uses_cases.libroCampo.hlLibroCampoToDict import libroCampoListFullToDic
 from app.uses_cases.moduloRecomendacion.registrarRecomendacion import recomendacionActividad
 from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.repositorio.repositorioGestionarFinca import selectFincaCod
-from app.repositorio.hlDb import saveEntidadSinCommit, Commit
+from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
+from app.repositorio.hlDb import saveEntidadSinCommit, Commit, Rollback
 
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 import datetime
@@ -11,7 +12,6 @@ import datetime
 def consultarLibroCampo(data):
     try:
         dtoLibroCampoList = hlLibroCampoList(data)
-
         return dtoLibroCampoList
     except Exception as e:
         return ResponseException(e)
@@ -35,9 +35,14 @@ def finalizarLibroCampo(data):
             raise Exception('N','El libro de campo se no se puede finalizar, ya que su fecha de inicio es mayor a la fecha actual')
 
         libroCampo.fchFin = fchFinAux
+
+        hlFinUltimaPlanif(libroCampo.grupoPlanificacion) ##finaliza la ulitma planif
+
+
         Commit()
         return ResponseOkmsg('Libro de campo finalizado correctamente')
     except Exception as e:
+        Rollback()
         return ResponseException(e)
 
 
@@ -76,7 +81,9 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
         #asociaciones, en caso de que no me manden el objeto hay que buscarlo por cod y asociarlo
         libroCampo.cultivo = cultivo
         libroCampo.grupoPlanificacion = grupoPlanificacion
-        saveEntidadSinCommit(libroCampo)
+        finca.libroCampoList.append(libroCampo)
+        saveEntidadSinCommit(finca)
+        saveEntidadSinCommit(libroCampo)             
         Commit()
 
         return ResponseOkmsg('Libro de campo ' + nombreLibroCampo +'creado correctamente')
@@ -84,17 +91,25 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
         return ResponseException(e)
 
 
-
 def hlLibroCampoList(data):
     codFinca = data.get('codFinca')
     finca = selectFincaCod(codFinca)
     if not finca:
-        raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+        raise Exception('N','No se encuentra ninguna finca')
     
     libroCampoList = finca.libroCampoList
     if len(libroCampoList) == 0:
         raise Exception('N','La finca ' + finca.nombreFinca + ' no posee libros de campo')
 
     dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
-
     return dtoLibroCampoList
+
+
+def hlFinUltimaPlanif(grupoPlanificacion):
+    planifList = grupoPlanificacion.planificaciones
+    cant = len(planifList) - 1 #ya que empieza a contar desde el cero 
+    planificación = planifList[cant]
+    estadoFinalizado = getNomencladoCod('estadoPlanificacion',2)
+    planificación.estadoPlanificacion = estadoFinalizado
+    saveEntidadSinCommit(planificación)
+    return 
