@@ -1,0 +1,61 @@
+<main role="main" class="container mt-4">
+    <h1 class="display-4">Grupo de planificaciones</h1>
+    <div class="row">
+        <div class="col">
+            <button *ngIf="rol != 'ingeniero'" [routerLink]="['/planificacion/crearPlanificacionInicial']" type="button"
+                class="btn btn-lg btn-success m-4">Crear Planificacion inicial</button>
+        </div>
+    </div>
+    <form>
+        <div class="m-3">
+            <div class="card-columns">
+                <div *ngFor="let planificacion of planificacionesArray" class="card border-gray col-3 m-3 text-center"
+                    style="min-width: 220px;">
+                    <h6 class="card-title mt-2 text-capitalize">
+                        <b>{{ planificacion.nombreGrupoPlanificacion }}</b>
+                    </h6>
+                    <div class="card-body">
+                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}</p>
+                        <div [ngSwitch]="planificacion.planificacion.cod">
+                            <div *ngSwitchCase="1">
+                                <p><b>Planificación: </b> Inicial</p>
+                                <button class="btn btn-primary"
+                                    [routerLink]="['/planificacion/verPlanificacionInicial/' + planificacion.cod]"
+                                    routerLinkActive="router-link-active">Ver</button>
+                            </div>
+                            <div *ngSwitchCase="2">
+                                <p><b>Planificación: </b> Supervisada</p>
+                                <button class="btn btn-primary"
+                                [routerLink]="['/planificacion/verPlanificacionSupervisada/' + planificacion.cod]"
+                                routerLinkActive="router-link-active">Ver</button>
+                            </div>
+                            <div *ngSwitchCase="3">
+                                <p><b>Planificación: </b> Final</p>
+                                <button class="btn btn-primary"
+                                [routerLink]="['/planificacion/verPlanificacionFinal/' + planificacion.cod]"
+                                routerLinkActive="router-link-active">Ver</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer "  >
+                        <hr>
+                        <p> <b>Fecha de creación:</b> {{ planificacion.fchCreacion | date: 'dd/MM/yyyy' }}</p>
+                        <button type="button" class="btn btn-danger btn-sm" (click)="cancelarGrupo(planificacion.cod)" *ngIf="planificacion.isActiv && rol == 'encargadofinca' " >Cancelar Grupo</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- <div [hidden]="!postSuccess" class="alert alert-success alert-dismissible" role="alert">
+        ¡ Actividad Eliminada exitosamente !
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div> -->
+    <div [hidden]="!postError" class="alert alert-danger">
+        {{ postErrorMessage }}
+    </div>
+</main>

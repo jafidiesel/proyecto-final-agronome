@@ -1,22 +1,29 @@
 from flask import jsonify, request
 from flask_restplus import Resource
-from app.api.helperApi.hlUrl import urlPlanificacionInicial
-from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import iniciarPlanificacion,crearPlanificacionInicial
+from app.api.helperApi.hlUrl import urlPlanificacion, urlParcelas
+from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import getParcelas
+from app.uses_cases.moduloPlanificacion.gestionarPlanificacion import postPlanificacion,getPlanificaciones,toDict
 from app.api.shared.tokenHandler import token_required
 
 
-planificacion = urlPlanificacionInicial
+planificacion = urlPlanificacion
+parcelas = urlParcelas
 
-@planificacion.route('/<int:cod>')
-class PlanificacionInicialHandler(Resource):
+@parcelas.route('/<int:cod>')
+class ParcelasInicialHandler(Resource):
     @token_required
     def get(data,currentUser,cod):
-        return iniciarPlanificacion(cod) 
+        print('EN get parcelas')
+        return getParcelas(cod) 
 
 @planificacion.route('')
-class PlanificacionInicialHandler(Resource):
+class PlanificacionHandler(Resource):
     @token_required
     def post(data,currentUser):
-        return crearPlanificacionInicial(data,currentUser)
+        return postPlanificacion(data,currentUser)
        
-
+@planificacion.route('/consultar')
+class PlanificacionHandler(Resource):
+    @token_required
+    def post(data,currentUser):        
+        return toDict(getPlanificaciones(data,currentUser))

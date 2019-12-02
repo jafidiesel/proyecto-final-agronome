@@ -18,6 +18,7 @@ export class VerRecomendacionComponent implements OnInit, OnDestroy {
   actividadLoaded: boolean;
   recomendacionLoaded: boolean;
   codActividad: number;
+  codLibroCampo: number;
 
   // error flags
   postSuccess = false;
@@ -70,10 +71,12 @@ export class VerRecomendacionComponent implements OnInit, OnDestroy {
 
 
   initFormActividad(form) {
+    this.codLibroCampo = form.libroCampo.codLibroCampo;
     this.actividadForm = this.fb.group({
       codActividad: form.actividad.codActividad,
       nombreActividad: form.actividad.nombreActividad,
       fchActivDetalle: form.fchActivDetalle,
+      nombreLibroCampo: form.libroCampo.nombreLibroCampo,
       observacion: form.observacion,
       imagen: [{}],
       parametro: this.fb.array(form.parametro.map(element => this.crearParametro(element)))
@@ -87,6 +90,7 @@ export class VerRecomendacionComponent implements OnInit, OnDestroy {
       codRecomDetalle: form.codRecomDetalle,
       nombreRecomendacion: form.recomendacion.nombreRecomendacion,
       fchRecomDetalle: form.fchRecomDetalle,
+      codLibroCampo: this.codLibroCampo,
       observacion: form.observacion,
       nombreUsuario: form.usuario.nombreUsuario,
       parametro: this.fb.array(form.parametro.map(element => this.crearParametro(element)))

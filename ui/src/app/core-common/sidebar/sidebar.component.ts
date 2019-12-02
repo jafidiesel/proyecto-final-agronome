@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class SidebarComponent implements OnInit {
 
   rol: string;
-  nombreFinca: string;
+  nombreFinca : string;
   
   faEdit = faEdit;
   faListAlt = faListAlt;
@@ -30,7 +30,21 @@ export class SidebarComponent implements OnInit {
   }
 
   actualizarNombreFinca(){
-    this.nombreFinca =  (this.auth.getNombreFinca() == "false") ? "" : this.auth.getNombreFinca();
+    this.nombreFinca =  this.auth.getCurrentNombreFinca();
+  }
+
+  setActive(id){
+    /* const selectEl = event.target;
+    const valor = selectEl.value;
+    const id = selectEl.id; */
+    document.querySelectorAll('.elementMenu').forEach( element => {
+      if(element.id == id){
+        element.setAttribute('class','elementMenu active');
+      }else{
+        element.setAttribute('class','elementMenu');
+      }
+    } );
+
   }
 
 }

@@ -1,4 +1,5 @@
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById 
+from app.uses_cases.libroCampo.hlLibroCampoToDict import libroCampoToDict
 ##Parametro
 def parametroToDict(parametro):
     dtoParametro = dict(
@@ -56,12 +57,21 @@ def imgListToDict(imgList):
         dtoImagenList.append(dtoImagen)
     return dtoImagenList
 
+def hlCodRecomDetalle(activDetalle):
+    recomendacionDetalle = activDetalle.recomendacionDetalle
+    if recomendacionDetalle == None:
+        codRecomDetalle = 0
+    else:
+        codRecomDetalle =recomendacionDetalle.codRecomDetalle
+    return codRecomDetalle
 
 def activDetalleFullToDict(activDetalle):
     dtoActivDetalle = activDetalleToDict(activDetalle)
-    dtoActivDetalle['parametro'] = parametroListToDict(activDetalle.paramList)
-    dtoActivDetalle['imagen']    = imgListToDict(activDetalle.imgList)
-    dtoActivDetalle['usuario']   = usuarioToDict(activDetalle.usuario)
+    dtoActivDetalle['codRecomDetalle'] = hlCodRecomDetalle(activDetalle)
+    dtoActivDetalle['parametro']  = parametroListToDict(activDetalle.paramList)
+    dtoActivDetalle['imagen']     = imgListToDict(activDetalle.imgList)
+    dtoActivDetalle['usuario']    = usuarioToDict(activDetalle.usuario)
+    dtoActivDetalle['libroCampo'] = libroCampoToDict(activDetalle.libroCampoActivDetalle)
     return dtoActivDetalle
 
 

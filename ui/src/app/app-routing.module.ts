@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ActividadPageComponent } from './dashboard/pages/actividad-page/actividad-page.component';
-import { PlanificacionPageComponent } from './dashboard/pages/planificacion-page/planificacion-page.component';
-import { RecursosPageComponent } from './dashboard/pages/recursos-page/recursos-page.component';
 import { ConfiguracionPageComponent } from './dashboard/pages/configuracion/configuracion-page/configuracion-page.component';
 import { ReportesPageComponent } from './dashboard/pages/reportes/reportes-page/reportes-page.component';
 import { ListarRecomendacionesAsociadasComponent } from './dashboard/pages/configuracion/asociar/recomendacion/listar-recomendaciones/listar-recomendaciones-asociadas.component';
@@ -46,6 +44,13 @@ import { ReporteRiegoComponent } from './dashboard/pages/reportes/reporte-riego/
 import { BackupComponent } from './dashboard/pages/backup/backup.component';
 import { ActivarComponent } from './login/activar/activar.component';
 import { ResetComponent } from './login/reset/reset.component';
+import { ListarPlanificacionesComponent } from './dashboard/pages/planificacion/listar-planificaciones/listar-planificaciones.component';
+import { PlanificacionInicialComponent } from './dashboard/pages/planificacion/planificacion-inicial/planificacion-inicial.component';
+import { PlanificacionSupervisadaComponent } from './dashboard/pages/planificacion/planificacion-supervisada/planificacion-supervisada.component';
+import { PlanificacionFinalComponent } from './dashboard/pages/planificacion/planificacion-final/planificacion-final.component';
+import { VerPlanificacionFinalComponent } from './dashboard/pages/planificacion/ver-planificacion-final/ver-planificacion-final.component';
+import { LibroDeCampoRecomendacionComponent } from './dashboard/pages/recomendacion/libro-de-campo-recomendacion/libro-de-campo-recomendacion.component';
+import { ListarGruposComponent } from './dashboard/pages/planificacion/listar-grupos/listar-grupos.component';
 
 
 const routes: Routes = [
@@ -55,22 +60,28 @@ const routes: Routes = [
   { path: 'home', component: DashboardPageComponent },
   { path: 'login', component: LoginPageComponent },
   /* Modulo Actividades */
-  { path: 'actividades', component: ActividadPageComponent },
+  { path: 'actividades/libroDeCampo', component: ActividadPageComponent },
   { path: 'actividades/registrarActividad', component: RegistrarActividadComponent },
-  { path: 'actividades/listarActividades', component: ListarActividadesComponent },
+  /* { path: 'actividades/listarActividades', component: ListarActividadesComponent }, */
+  { path: 'actividades/listarActividades/:cod', component: ListarActividadesComponent },
   { path: 'actividades/verActividad/:cod', component: VerActividadComponent },
   /* Modulo Planificacion */
-  { path: 'planificacion', component: PlanificacionPageComponent },
+  { path: 'planificacion/listarGrupos', component: ListarGruposComponent },
+  { path: 'planificacion/listarPlanificaciones/:cod', component: ListarPlanificacionesComponent },
+  { path: 'planificacion/crearPlanificacionInicial', component: PlanificacionInicialComponent },
+  { path: 'planificacion/verPlanificacionInicial/:cod', component: PlanificacionSupervisadaComponent },
+  { path: 'planificacion/verPlanificacionSupervisada/:cod', component: PlanificacionFinalComponent },
+  { path: 'planificacion/verPlanificacionFinal/:cod', component: VerPlanificacionFinalComponent},
   /* Modulo Finca */
   { path: 'finca/listarFinca', component: CrearFincaComponent },
   { path: 'finca/crearFinca', component: CrearFincaComponent },
   { path: 'finca/editarFinca', component: EditarFincaComponent },
   /* Modulo Recomendaciones */
-  { path: 'recomendaciones/listarRecomendaciones', component: ListarRecomendacionesComponent },
+  // #TODO: Refactor this librodecampocomponentName, or reuse it in activity and recomendation
+  { path: 'recomendaciones/libroDeCampo', component: LibroDeCampoRecomendacionComponent },
+  { path: 'recomendaciones/listarRecomendaciones/:cod', component: ListarRecomendacionesComponent },
   { path: 'recomendaciones/verRecomendacion/:codAct/:codRec', component: VerRecomendacionComponent },
   { path: 'recomendaciones/registrarRecomendacion/:codAct', component: RegistrarRecomendacionComponent },
-  /* Modulo Gestionar Recursos */
-  { path: 'recursos', component: RecursosPageComponent },
   /* Modulo Seguridad */
   //{ path: 'seguridad', component: SeguridadPageComponent },
   { path: 'seguridad', component: ListarUsuariosComponent },
@@ -107,13 +118,15 @@ const routes: Routes = [
   { path: 'reportes/reporteRecomendacion', component: ReporteRecomendacionComponent },
   { path: 'reportes/reporteSiembra', component: ReporteSiembraComponent },
   { path: 'reportes/reporteRiego', component: ReporteRiegoComponent },
+  
+  /* Backup */
   { path: 'backup', component: BackupComponent },
-/*   { path: '**', pathMatch: 'full', redirectTo: 'actividades' }
- */
-  { path: 'backup', component: BackupComponent },
-  { path: 'activar', component: ActivarComponent },
-  { path: 'reset', component: ResetComponent },
-  ];
+  { path: 'activar/:token', component: ActivarComponent },
+  { path: 'recuperar', component: ResetComponent },
+  { path: 'recuperar/:token', component: ResetComponent },
+  
+  { path: '**', pathMatch: 'full', redirectTo: '/home' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

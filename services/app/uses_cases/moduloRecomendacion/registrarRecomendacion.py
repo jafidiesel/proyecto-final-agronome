@@ -15,9 +15,11 @@ def postRegistrarRecom(data,currentUser):
         parametroList = data.get('parametro')
         fch = data.get('fchRecomDetalle')
         analisisList = data.get('analisis')
-
         recomendacion = getNomencladoCod('recomendacion',codRecom)
         activDetalle = selectActivDetalleCod(codActivDetalle)
+        libroCampo   = activDetalle.libroCampoActivDetalle
+
+
         ##creacion del detalle recomendacion
         detalleRecom = RecomendacionDetalle(observacion = obs,fchRecomDetalle = fch)
         
@@ -27,6 +29,8 @@ def postRegistrarRecom(data,currentUser):
         activDetalle.recomendacionDetalle = detalleRecom
         ##asociacion de usuario
         detalleRecom.usuario = currentUser
+        ##asociacion con libro de campo
+        detalleRecom.libroCampoRecomDetalle = libroCampo
 
         ##asociacion de analisis
         for analisisJson in analisisList:
@@ -44,6 +48,13 @@ def postRegistrarRecom(data,currentUser):
 
         saveEntidadSinCommit(detalleRecom)  
         Commit()
+
+        enviaCorreo  = True #esto se puede enviar por el json
+        
+        if enviaCorreo:
+             ##Se envia correo a la persona que creo la activdetalle
+            hlSendEmailRecomendacion(activDetalle.usuario) 
+
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
@@ -59,20 +70,15 @@ def getRecomDetalle(codRecomDetalle):
     except Exception as e:
         return ResponseException(e)
 
-def recomendacionActividad(currentUser):
-    ##sacar del usuario las fincas 
-    actividadDetalleList = selectRecomenActiv() #pasarle el libro de campo
+def recomendacionActividad(data):
+    codLibroCampo = data.get('codLibroCampo')
+    actividadDetalleList = selectRecomenActiv(codLibroCampo) 
     dtoListActivSin = []
     dtoListActivRecom= []
     
     for actividadDetalle in actividadDetalleList:
         dtoAux=activDetalleToDict(actividadDetalle)
-
-        dtoFinca = dict(codFinca=1,nombreFinca='3 Huert.JArcode')
-
-
-        dtoAux['finca'] = dtoFinca
-
+        
         codRecomDetalle = actividadDetalle.codRecomDetalle
 
         if actividadDetalle.codRecomDetalle == None:
@@ -90,3 +96,12 @@ def getParametrosRecomFull(codRecomendacion):
     return (dict(parametros=dtoParametroFull)) 
 
 
+def hlSendEmailRecomendacion(usuario):
+    from app.shared.hlSendEmail import sendEmail
+    key = 'recomendacion'
+    body = usuario.usuario + ' ha registrado una nueva recomendación\nPara visualizarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    sendEmail(key,userList,body,html,additionals)

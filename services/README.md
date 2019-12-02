@@ -118,6 +118,12 @@ pg_dump -U 'usuario' -W -h 'host' 'database' -t 'tablename' > 'backup.sql'
 ```
 pg_dump -U postgres -W -h localhost -t actividad agronome > actividadbackup.sql
 ```
+⚙️Reiniciar secuencia:
+
+ALTER SEQUENCE nombreSecuencia restart 1;
+```
+ALTER SEQUENCE public.cuadro_cod_cuadro_seq restart 1;
+```
 ## Link de interes para backup con postgres ✒️
 
 ✒️ [Postgres - pgdump documentación oficial ](https://www.postgresql.org/docs/9.1/app-pgdump.html)
@@ -125,6 +131,52 @@ pg_dump -U postgres -W -h localhost -t actividad agronome > actividadbackup.sql
 ✒️ [Tutorial para crear un backup](https://platzi.com/tutoriales/1480-postgresql/2252-como-generar-una-backup-de-postgresql-y-como-restaurarla/)
 
 ✒️ [Especificaciones del comando pgdump](http://es.tldp.org/Postgresql-es/web/navegable/user/app-pgdump.html)
+
+
+## Recuperar base de datos + compatiblidad con migracion 📌
+_Para restablecer la base de datos y no perder la sincronizacion con la liberia que usamos para reorganizar las tablas se deb realizar los siguietes pasos (es necesario tener un backup de la base de datos)_
+
+
+1) DESCONECTAR y BORRAR la base de datos agronome (es importante no estar usando la db)
+
+2) CREAR la base de datos agronome
+
+3) BORRAR la carpeta  migrations de agronome\services\
+
+4) inicializar la base de datos, lanzar los siguientes comandos en agronome\services\
+ 
+```
+ app.py db init    // crea el repositorio migrations
+```
+
+```
+ app.py db migrate  //detecta las tablas a crear
+```
+
+```
+ app.py db upgrade //actualiza la tabla
+```
+
+5) COPIAR el valor que tiene la tabla  alembic_version ejemplo '019dad35f83a'
+
+6) BORRAR la base de datos agronome 
+
+7) CREAR la bas de datos agronome
+
+8) RESTAURAR base de datos
+```
+psql -U postgres -W -h localhost agronome < agronomeBackup.sql
+```
+
+9) REEMPLAZAR el numero de la tabla alembic_version por el numero copiado en el paso 5
+
+## Verificar status de postgres
+```
+cd C:\Program Files\PostgreSQL\9.6\bin
+```
+```
+pg_ctl status -D  "C:\Program Files\PostgreSQL\9.6\data"
+```
 
 ## Crear un nuevo end point  📄
 

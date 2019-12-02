@@ -98,3 +98,11 @@ def getUsuarioByName(nombre):
 def selectAllUser():
     objList=Usuario.query.order_by(Usuario.usuario).all()
     return objList
+
+def getUsuarioByEmail(email):
+    obj = Usuario.query.filter(Usuario.email == email).first()
+    return obj
+
+def getUsuarioByUsuario(usuario):
+    obj = Usuario.query.filter(Usuario.usuario == usuario).first()
+    return obj

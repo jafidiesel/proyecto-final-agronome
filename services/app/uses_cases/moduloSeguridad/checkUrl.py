@@ -1,5 +1,6 @@
 import re
-from app.api.helperApi.hlUrl import URL_MC, urlResgistrarActiv,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRegistrarRecom , urlAnalisis, urlPlan, urlReporte, urlPlanificacionInicial
+from app.api.helperApi.hlUrl import URL_MC, urlActividad,  urlUsuario, urlLogin ,urlNomenclador,urlFinca,urlRecomendacion , urlAnalisis, urlPlan, urlReporte, urlPlanificacion, urlGrupoPlanificacion, urlLibroCampo, urlParcelas
+
 def checkUrl(method,pat,rol):
     urlAux = method + pat #armo url
     nro = re.sub("\D", "", urlAux) #busco si tiene algun numero
@@ -49,13 +50,19 @@ def checkUrl(method,pat,rol):
 
 
     #Modulo Actividades
-    MAREG = '/' + urlResgistrarActiv.name
-    MAREG_POST = 'POST' + MAREG
-    MAREG_GETS = 'GET' + MAREG
-    MAREG_GET = MAREG_GETS  + '/'
-    MAREG_PUT = 'PUT' + MAREG + '/'
-    MAREG_DELETE = 'DELETE' + MAREG + '/'
-    MAREG_PARAM = 'GET' + MAREG + '/parametros/'
+    MA = '/' + urlActividad.name
+    MA_REG = 'POST' + MA + '/registrar'
+    MA_CON = 'POST' + MA + '/consultar'
+    MA_GET = 'GET'  + MA + '/'
+    MA_PUT = 'PUT'  + MA + '/'
+    MA_DELETE = 'DELETE' + MA + '/'
+    MA_PARAM = 'GET' + MA + '/parametros/'
+
+    #Libro Campo 
+    LC = '/' + urlLibroCampo.name
+    LC_POST = 'POST' + LC
+    LC_FIN  = 'POST' + LC + '/finalizar'
+    LC_REC  = 'POST' + LC + '/recomendacion'
 
     #Modulo de Gestion de Finca
     MGF = '/' + urlFinca.name
@@ -65,9 +72,9 @@ def checkUrl(method,pat,rol):
     MGF_PUT = 'PUT' + MGF + '/'
     
     #Modulo de Recomendaciones
-    MRREG = '/' + urlRegistrarRecom.name
+    MRREG = '/' + urlRecomendacion.name
     MRREG_POST =  'POST' + MRREG + '/registrar'
-    MRRECOMACTIV_GET = 'GET' + MRREG + '/actividad' 
+    MRRECOMACTIV_POST = 'POST' + MRREG + '/actividad' 
     MRREG_GET = 'GET' + MRREG + '/'
     MRREG_PARAM = 'GET' + MRREG + '/parametros/'
    
@@ -92,42 +99,63 @@ def checkUrl(method,pat,rol):
     MREPOR_ACTIVOPTIPIE = MREPOR + '/actividadOptionGfPie'
 
     #MODULO DE PLANIFICACION
-    #Planificacion Inicial
-    MPLAN = '/' + urlPlanificacionInicial.name
+    #Grupo Planificacion
+    MPGRUPO = '/' + urlGrupoPlanificacion.name
+    #print(MPGRUPO)
+    MPGRUPO_GET = 'GET' + MPGRUPO + '/'
+    MPGRUPO_POST = 'POST' + MPGRUPO
+    MPGRUPO_DELETE = 'DELETE' + MPGRUPO + '/'
+    #print(MPGRUPO_GET)
+    #Planificacion 
+    MPLAN = '/' + urlPlanificacion.name
     MPLAN_POST = 'POST' + MPLAN
     MPLAN_GET = 'GET' + MPLAN + '/'
+    MPLAN_CONS = 'POST' + MPLAN + '/consultar'
+
+    #Parcelas
+    MPPAR = '/' + urlParcelas.name
+    MPAR_GET = 'GET' + MPPAR + '/'
 
     #PERMISOS:
     default = (
         MSLOG,MSACC,
         MCNOM_GETS,MCNOM_POST_FILTER,                 #Modulo de Configuración (Nomencladores)
         MGF_GETS, MGF_GET,                            #Modulo de finca
-        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE                         #Modulo de reporte
+        MREPOR_ACTIVBAR,MREPOR_RECOMPIE,MREPOR_ACTIVDUALBAR,MREPOR_ACTIVOPTIPIE,                         #Modulo de reporte
+        LC_POST, LC_REC                                #libro campo
         ) #todos
 
     administrador = (
         MC,                                           #Modulo de Confiraución (Parametros y asociaciones)
         MSUSU,                                        #Modulo de seguridad
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                             #Modulo de finca
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
-        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
+        LC_FIN,                                          #libro de campo
+        MPLAN_POST                                          #Modulo de planificiación
     ) + default
     
     encargadofinca = (
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT, MAREG_DELETE, MAREG_PARAM, #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
-        MPLAN_POST, MPLAN_GET       #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPAR_GET,   #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPLAN_CONS,MPGRUPO_DELETE,    #Modulo Planificacion
+        MRRECOMACTIV_POST, MRREG_GET,                #modulo de recomendaciones
+        LC_FIN                                      #libro de campo
          ) + default
     
     ingeniero = (  
-        MAREG_GETS, MAREG_GET,                         #Modulo de actividad
-        MRREG_POST, MRREG_GET, MRRECOMACTIV_GET, MRREG_PARAM, #Modulo de recomendaciones
-        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM #Helper Analisis - Plan
+        MA_CON, MA_GET,                         #Modulo de actividad
+        MRREG_POST, MRREG_GET, MRRECOMACTIV_POST, MRREG_PARAM, #Modulo de recomendaciones
+        HLA_GET, HLA_POST, HLA_PARAM, HLP_POST, HLP_GET , HLP_PARAM, #Helper Analisis - Plan
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPLAN_CONS  #modulo de planificacion
+  
          )+ default
 
     supervisor = (  
-        MAREG_POST, MAREG_GETS, MAREG_GET, MAREG_PUT  #Modulo de actividad
+        MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM,  #Modulo de actividad
+        MRRECOMACTIV_POST, MRREG_GET,                #modulo de recomendaciones
          )+ default
 
 

@@ -5,7 +5,7 @@
 </div>
 <div class="card m-3">
     <div class="card-header">
-            <h5>Backup</h5>
+        <h5>Backup</h5>
     </div>
     <div class="card-body">
         <ol id="number" class="ml-4">
@@ -16,65 +16,88 @@
             <li>
                 <h6>Formato del comando:</h6>
                 <p>pg_dump -U 'usuario' -W -h 'host' 'database' > 'backup.sql' </p>
-                <h6>Completar los literales que se encuentran entre comillas simples y ejecutar el comando:</h6></li>                
-                <pre><code>pg_dump -U postgres -W -h localhost agronome &gt; agronomeBackup.sql</code></pre>
-            <li><h6>Se crea el archivo agronomeBackup.sql en la carpeta C:\Program Files\PostgreSQL\9.6\bin , en donde se visualiza el script sql</h6></li>
+                <h6>Completar los literales que se encuentran entre comillas simples y ejecutar el comando:</h6>
+            </li>
+            <pre><code>pg_dump -U postgres -W -h localhost agronome &gt; agronomeBackup.sql</code></pre>
+            <li>
+                <h6>Se crea el archivo agronomeBackup.sql en la carpeta C:\Program Files\PostgreSQL\9.6\bin , en donde
+                    se visualiza el script sql</h6>
+            </li>
         </ol>
     </div>
 </div>
 
 <div class="card m-3">
-        <div class="card-header">
-                <h5>Backup de una tabla</h5>
-        </div>
-        <div class="card-body">
-            <ol id="number" class="ml-4">
-                <li>
-                    <h6>Abrir el cmd como administrador e ir al path bin donde esta instalado postgres</h6>
-                    <pre><code>cd C:\Program Files\PostgreSQL\9.6\bin</code></pre>
-                </li>
-                <li>
-                    <h6>Formato del comando:</h6>
-                    <p>pg_dump -U 'usuario' -W -h 'host' 'database' -t 'tablename' > 'backup.sql' </p>
-                    <h6>Completar los literales que se encuentran entre comillas simples y ejecutar el comando:</h6></li>                    
-                    <pre><code>pg_dump -U postgres -W -h localhost -t actividad agronome &gt; actividadbackup.sql</code></pre>
-            </ol>
-        </div>
+    <div class="card-header">
+        <h5>Backup de una tabla</h5>
     </div>
-    
-
-<div class="card m-3">
-        <div class="card-header">
-                <h5>Recuperación</h5>
-        </div>
-        <div class="card-body">
-            <ol id="number" class="ml-4">
-                <li>
-                    <h6>Formato del comando:</h6>
-                    <p>psql -U 'usuario' -W -h 'host' 'database' &lt; 'backup.sql'</p>
-                    <h6>Lanzar:</h6>
-                    <p>psql -U 'usuario' -W -h 'host' 'database' &lt; 'backup.sql'</p>
-                    <pre><code>psql -U postgres -W -h localhost agronome &lt; agronomeBackup.sql</code></pre>
-                </li>
-            </ol>
-        </div>
+    <div class="card-body">
+        <ol id="number" class="ml-4">
+            <li>
+                <h6>Abrir el cmd como administrador e ir al path bin donde esta instalado postgres</h6>
+                <pre><code>cd C:\Program Files\PostgreSQL\9.6\bin</code></pre>
+            </li>
+            <li>
+                <h6>Formato del comando:</h6>
+                <p>pg_dump -U 'usuario' -W -h 'host' 'database' -t 'tablename' > 'backup.sql' </p>
+                <h6>Completar los literales que se encuentran entre comillas simples y ejecutar el comando:</h6>
+            </li>
+            <pre><code>pg_dump -U postgres -W -h localhost -t actividad agronome &gt; actividadbackup.sql</code></pre>
+        </ol>
+    </div>
 </div>
 
+
 <div class="card m-3">
-        <div class="card-header">
-                <h5>✒️ Link de interes para backup con postgres</h5>
-        </div>
-        <div class="card-body">
-            <ol id="number" class="ml-4">
-                <li>
-                    <h6> <a href="https://www.postgresql.org/docs/9.1/app-pgdump.html">Postgres - pgdump documentación oficial </a></h6>
-                </li>
-                <li>
-                    <h6><a href="https://platzi.com/tutoriales/1480-postgresql/2252-como-generar-una-backup-de-postgresql-y-como-restaurarla/">Tutorial para crear un backup</a></h6>
-                </li>
-                <li>
-                    <h6><a href="http://es.tldp.org/Postgresql-es/web/navegable/user/app-pgdump.html">Especificaciones del comando pgdump</a></h6>
-                </li>    
-            </ol>
-        </div>
- </div>
+    <div class="card-header">
+        <h5>Recuperación</h5>
+    </div>
+    <div class="card-body">
+        <ol id="number" class="ml-4">
+            <li>
+                <h6>Formato del comando:</h6>
+                <p>psql -U 'usuario' -W -h 'host' 'database' &lt; 'backup.sql'</p>
+                <h6>Lanzar:</h6>
+                <p>psql -U 'usuario' -W -h 'host' 'database' &lt; 'backup.sql'</p>
+                <pre><code>psql -U postgres -W -h localhost agronome &lt; agronomeBackup.sql</code></pre>
+            </li>
+        </ol>
+
+
+    </div>
+</div>
+<div class="card m-3">
+    <div class="card-header">
+        <h5>Recuperación del sistema</h5>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-primary btn-lg" (click)="recuperacion()">Iniciar recuperación del
+            sistema</button>
+    </div>
+</div>
+<div class="card m-3">
+    <div class="card-header">
+        <h5>✒️ Link de interes para backup con postgres</h5>
+    </div>
+    <div class="card-body">
+        <ol id="number" class="ml-4">
+            <li>
+                <h6> <a href="https://www.postgresql.org/docs/9.1/app-pgdump.html">Postgres - pgdump documentación
+                        oficial </a></h6>
+            </li>
+            <li>
+                <h6><a
+                        href="https://platzi.com/tutoriales/1480-postgresql/2252-como-generar-una-backup-de-postgresql-y-como-restaurarla/">Tutorial
+                        para crear un backup</a></h6>
+            </li>
+            <li>
+                <h6><a href="http://es.tldp.org/Postgresql-es/web/navegable/user/app-pgdump.html">Especificaciones del
+                        comando pgdump</a></h6>
+            </li>
+            <li>
+                <h6><a href="https://gitlab.com/proyecto-final-pantas/agronome">Link al repositorio del proyecto.</a>
+                </h6>
+            </li>
+        </ol>
+    </div>
+</div>

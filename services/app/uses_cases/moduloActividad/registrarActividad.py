@@ -1,15 +1,17 @@
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit,deleteObject
-from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm
+from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm, selectActivDetalleOrder
+from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
+from app.uses_cases.moduloGestionFinca.gestionarFinca import getUsersByFincaFilter
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk
 from app.uses_cases.hlToDict import activDetalleToDict, activDetalleFullToDict, parametroListFullToDict
 from app.extensions import db
 from datetime import datetime
 
-def postRegistrarActiv(data,currentUser):
+def registrarActivDetalle(data,currentUser):
     try:
         ##datos del json
         codActiv = data.get('codActividad')
@@ -17,6 +19,7 @@ def postRegistrarActiv(data,currentUser):
         imagenes = data.get('imagen')
         parametros = data.get('parametro')
         fch = data.get('fchActivDetalle')
+        codLibroCampo = data.get('codLibroCampo')
 
         activ = getNomencladoCod('actividad',codActiv)
         ##creación de la actividadDetalle
@@ -24,6 +27,11 @@ def postRegistrarActiv(data,currentUser):
         detalleActiv.actividad = activ #asociación con actividad
         #asociacion con usuario
         detalleActiv.usuario = currentUser
+        #asociacion con libro campo
+        libroCampo = selectLibroCod(codLibroCampo)
+        
+        detalleActiv.libroCampoActivDetalle =libroCampo
+
         ##Parametros
         for param in parametros:
             codParam = param.get('codParam')
@@ -45,24 +53,36 @@ def postRegistrarActiv(data,currentUser):
         saveEntidadSinCommit(detalleActiv)
         Commit()
 
+        enviaCorreo = True
+
+        if enviaCorreo:
+            if codActiv == 7 or codActiv==8: #Actividaes que necesitan recomendación
+                finca   = libroCampo.fincaLibroCampo
+                usuario = getUsersByFincaFilter(finca,'ingeniero')
+                hlSendEmailActividad(usuario)
+                
         return ResponseOk()
     except Exception as e:
         return ResponseException(e)
 
-def getRegistrarActiv():
+def consultarActivDetalle(data):
     try:
-        actividadDetalleList = selectActivDetalle()
+        codLibroCampo = data.get('codLibroCampo')
+        actividadDetalleList = selectActivDetalleOrder(codLibroCampo)
+        #libroCampo = selectLibroCod(codLibroCampo)
+        #actividadDetalleList = libroCampo.activDetalleList
         dtoDetalleList = []
 
-        for detalle in actividadDetalleList:
-            dtoDetalle = activDetalleToDict(detalle)
-            dtoDetalleList.append(dtoDetalle)
+        for detalle in actividadDetalleList: #creacion de los dto para mostrar
+            if not detalle.isEliminado: 
+                dtoDetalle = activDetalleToDict(detalle)
+                dtoDetalleList.append(dtoDetalle)
 
         return (dict(ActividadDetalle=dtoDetalleList))
     except Exception as e:
         return ResponseException(e)
  
-def getRegistrarActivCod(codActivDetalle):
+def getActivDetalle(codActivDetalle):
     try:
         detalle = selectActivDetalleCod(codActivDetalle)
         if not detalle:
@@ -74,18 +94,20 @@ def getRegistrarActivCod(codActivDetalle):
         return ResponseException(e)
 
 
-def putRegistrarActiv(data,currentUser,codActivDetalle):
+def putActivDetalle(data,currentUser,codActivDetalle):
     try:
+        #parametros del json
         fchNew = data.get('fchActivDetalle')
         observacionNew = data.get('observacion')
         imagenesNew = data.get('imagen')
         paramListNew = data.get('parametro')
 
-        activDetalleObj = selectActivDetalleCod(codActivDetalle)
+        activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
 
-        if not activDetalleObj.fchActivDetalle == fchNew:
+        #acualizacion de datos    
+        if not activDetalleObj.fchActivDetalle == fchNew: 
             activDetalleObj.fchActivDetalle=fchNew
 
         if not activDetalleObj.observacion == observacionNew:
@@ -121,11 +143,15 @@ def putRegistrarActiv(data,currentUser,codActivDetalle):
     except Exception as e:
         return ResponseException(e)
 
-def deleteRegistrarActiv(data,codActivDetalle):
+def deleteActivDetalle(data,codActivDetalle):
     try:
-        activDetalleObj = selectActivDetalleCod(codActivDetalle)
+        activDetalleObj = selectActivDetalleCod(codActivDetalle) #busqueda en db
         if not activDetalleObj:
             raise Exception('N','No existe actividad detalle con código ' + str(codActivDetalle))
+        
+        if not activDetalleObj.recomendacionDetalle == None:
+            raise Exception('N','La actividad no se puede eliminar ya que posee una recomendacion.')
+        
         activDetalleObj.isEliminado= True
         saveEntidadSinCommit(activDetalleObj)
         Commit()
@@ -142,3 +168,13 @@ def getParametrosFull(codActividad):
         return (dict(parametros=dtoParametroFull))
     except Exception as e:
         return ResponseException(e)
+
+def hlSendEmailActividad(usuario):
+    from app.shared.hlSendEmail import sendEmail
+    key = 'actividad'
+    body = usuario.usuario + ' ha registrado una nueva actividad \nPara visualizarla y recomendarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    sendEmail(key,userList,body,html,additionals)

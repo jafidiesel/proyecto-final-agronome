@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { formatDate } from "@angular/common";
 import { SeguridadService } from 'src/app/dashboard/services/seguridad.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FincaService } from 'src/app/dashboard/services/finca.service';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -13,7 +14,18 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
+  faTrashAlt = faTrashAlt;
+
   formUsuario: FormGroup;
+
+  // Lista con fincas
+  tiposFincasSelect: Observable<Object>;
+  tiposFincasSelectArray = [];
+  fincasElegidas = [];
+  fincaSeleccionada = {
+    codFinca: null,
+    nombre: null
+  };
 
   rolesSelectArray = [];
   rolSeleccionado = {
@@ -25,6 +37,7 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   postSuccess = false;
   postError = false;
   postErrorMessage = '';
+  postSuccessMessage = '';
 
   format = 'dd-MM-yyyy';
   myDate = new Date();
@@ -32,7 +45,9 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   formattedDate = formatDate(this.myDate, this.format, this.locale);
 
 
-  constructor(private _seguridadService: SeguridadService,
+  constructor(
+    private _seguridadService: SeguridadService,
+    private _fincaService: FincaService,
     private fb: FormBuilder) { }
 
   ngOnInit() {
@@ -42,6 +57,19 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         (result: any) => {
           for (let index = 0; index < result.length; index++) {
             this.rolesSelectArray.push(result[index]);
+          }
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+
+    this.subscriptions.push(
+      this._fincaService.getFincas().subscribe(
+        result => {
+          for (let index = 0; index < result.finca.length; index++) {
+            const element = result.finca[index];
+            this.tiposFincasSelectArray.push(element);
+
           }
         }
       )
@@ -58,6 +86,55 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
 
   }
 
+  checkUsuario() {
+    if(this.formUsuario.value.usuario.usuario != null){
+      this.subscriptions.push(
+        this._seguridadService.checkUsername(this.formUsuario.value.usuario.usuario).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+
+    }
+  }
+
+  checkEmail() {
+    if(this.formUsuario.value.usuario.email  != null){
+      this.subscriptions.push(
+        this._seguridadService.checkEmail(this.formUsuario.value.usuario.email).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+    }
+  }
+
+  checkContraseniaUsuario() {
+    if(this.formUsuario.value.usuario.contraseniaUsuario != null){
+      this.subscriptions.push(
+        this._seguridadService.checkContraseniaUsuario(this.formUsuario.value.usuario.contraseniaUsuario).subscribe(
+          result => {
+            this.postError = false;
+            this.postSuccess = false;
+            this.postErrorMessage = "";
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+      );
+    }
+  }
+
+  
+
+
   initForm() {
     this.formUsuario = this.fb.group({
       usuario: this.fb.group({
@@ -65,33 +142,79 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
         nombre: [null, Validators.required],
         apellido: [null, Validators.required],
         email: [null, [Validators.required, Validators.email]],
-        contraseniaUsuario: [null, [Validators.required, Validators.minLength(6)]],
-        isActiv: [false],
+        contraseniaUsuario: [null, Validators.required],
         fchCrea: [this.formattedDate]
       }),
       rol: this.fb.group({
         cod: [this.rolSeleccionado.cod]
-      })
+      }),
+      fincas: [this.fb.control({
+        codFinca: null,
+        nombre: ""
+      })]
     });
 
   }
 
   onSubmitUsuario() {
+    this.updateFincas();
+
     if (this.formUsuario.status == 'VALID') {
       this._seguridadService.postUsuario(this.formUsuario.value).subscribe(
-        result => {
+        (result: any) => {
           this.postSuccess = true;
           this.postError = false;
           this.postErrorMessage = '';
-
+          this.postSuccessMessage = result.message;
 
         },
-        error => this.onHttpError(error)
+        error => this.onHttpError({ message: error.error.message })
       );
     } else {
       this.postError = true;
       this.postErrorMessage = "Ingrese todos los campos obligatorios.";
     }
+  }
+
+  crearFinca(obj: any) {
+    return this.fb.control({
+      codFinca: obj.codFinca,
+      nombre: obj.nombre,
+    });
+  }
+
+  actualizarFincaSeleccionada(event) {
+    const selectEl = event.target;
+    const attrVal = parseInt(selectEl.options[selectEl.selectedIndex].getAttribute('value'));
+    const inn = selectEl.options[selectEl.selectedIndex].innerText;
+    this.fincaSeleccionada.codFinca = attrVal;
+    this.fincaSeleccionada.nombre = inn;
+
+  }
+
+  updateFincas() {
+    this.formUsuario.patchValue({
+      fincas: this.fb.array(
+        this.fincasElegidas.map(
+          element => this.crearFinca(element)
+        )
+      ).value
+    });
+  }
+
+  agregarItem() {
+    this.fincasElegidas.push({
+      codFinca: this.fincaSeleccionada.codFinca,
+      nombre: this.fincaSeleccionada.nombre
+    });
+  }
+
+  quitarItem(itemARemover) {
+    this.fincasElegidas.forEach((item, index) => {
+      if (item === itemARemover) {
+        this.fincasElegidas.splice(index, 1);
+      }
+    });
   }
 
   onHttpError(errorResponse: any) {
