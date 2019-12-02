@@ -1,7 +1,7 @@
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.model import hlmodel
 from app.repositorio.hlDb import saveEntidadSinCommit,Commit,deleteObject
-from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm
+from app.repositorio.repositorioRegistrarActividad import selectActivDetalle, selectActivDetalleCod, selectActivDetalleParm, selectActivDetalleOrder
 from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomencladoCod
 from app.uses_cases.moduloConfiguracion.gestionarParametro import getParametroById
@@ -68,8 +68,9 @@ def registrarActivDetalle(data,currentUser):
 def consultarActivDetalle(data):
     try:
         codLibroCampo = data.get('codLibroCampo')
-        libroCampo = selectLibroCod(codLibroCampo)
-        actividadDetalleList = libroCampo.activDetalleList
+        actividadDetalleList = selectActivDetalleOrder(codLibroCampo)
+        #libroCampo = selectLibroCod(codLibroCampo)
+        #actividadDetalleList = libroCampo.activDetalleList
         dtoDetalleList = []
 
         for detalle in actividadDetalleList: #creacion de los dto para mostrar

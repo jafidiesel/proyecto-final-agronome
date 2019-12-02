@@ -18,7 +18,11 @@ def selectRecomenActiv(codLibroCampo):
 
     objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadCatastrofe).filter(ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(ActividadDetalle.fchActivDetalle).all()
 
+    #objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadCatastrofe or ActividadDetalle.actividad == actividadFitosanitaria).filter(ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(ActividadDetalle.fchActivDetalle).all()
+
     auxObj = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.actividad == actividadFitosanitaria).filter(ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
+
+
 
     objetos.extend(auxObj) #union de las 2 listas
     return  objetos     
