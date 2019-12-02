@@ -2,7 +2,7 @@ from flask import jsonify, request
 from flask_restplus import Resource
 from app.api.helperApi.hlUrl import urlPlanificacion, urlParcelas
 from app.uses_cases.moduloPlanificacion.iniciarPlanificacion import getParcelas
-from app.uses_cases.moduloPlanificacion.gestionarPlanificacion import postPlanificacion,getPlanificaciones
+from app.uses_cases.moduloPlanificacion.gestionarPlanificacion import postPlanificacion,getPlanificaciones,toDict
 from app.api.shared.tokenHandler import token_required
 
 
@@ -25,5 +25,5 @@ class PlanificacionHandler(Resource):
 @planificacion.route('/consultar')
 class PlanificacionHandler(Resource):
     @token_required
-    def post(data,currentUser):
-        return getPlanificaciones(data,currentUser)
+    def post(data,currentUser):        
+        return toDict(getPlanificaciones(data,currentUser))
