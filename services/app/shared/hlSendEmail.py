@@ -15,7 +15,7 @@ hlReponseEmail = {
     'recoverPass' : 'Por favor revisa tu correo electrónico',
     'recomendacion' : 'Recomendación creada exitosamente',
     'actividad': 'Recomendación creada exitosamente',
-    'planificación' : 'Planificación creada exitosamente'
+    'planificacion' : 'Planificación creada exitosamente'
 }
 
 def sendEmail(subject, userList , body, html, additionals):

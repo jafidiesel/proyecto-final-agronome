@@ -1,5 +1,5 @@
 <main role="main" class="container mt-4">
-    <h1 class="display-4">Planificacion - dummy page</h1>
+    <h1 class="display-4">Planificacion</h1>
     <div class="content">
         <div class="row">
             <div class="col-md-12">
@@ -7,27 +7,30 @@
                     <div class="card-title ml-4">
                         <h4>Planificacion Inicial<b></b></h4>
                     </div>
-                    <form>
+                    <form [formGroup]="planificacionInicialForm" *ngIf="planificacionInicialForm != null">
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4">
                                 <label for="cultivoInicial"><b>Tipo de cultivo</b></label>
-                                <input type="text" class="form-control" id="cultivoInicial" value="Tomate" readonly>
+                                <input type="text" class="form-control text-capitalize" id="cultivoInicial" readonly
+                                    formControlName="nombreTipoCultivo">
                             </div>
                             <div class="form-group col-md-5 ml-4">
                                 <label for="variedadCultivo">Variedad <b></b></label>
-                                <input type="text" class="form-control" id="variedadCultivo" value="Perita" readonly>
+                                <input type="text" class="form-control text-capitalize" id="variedadCultivo"
+                                    formControlName="variedadCultivo" readonly>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
                                 <label for="produccionCultivo">Producción esperada (Tn)<b></b></label>
-                                <input type="number" class="form-control" id="produccionCultivo" value="10" min="0"
-                                    readonly>
+                                <input type="number" class="form-control" id="produccionCultivo"
+                                    formControlName="produccionEsperada" min="0" readonly>
                             </div>
                             <div class="form-group col-md-5 ml-4 ">
                                 <br>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="cicloUnico">
+                                    <input type="checkbox" class="custom-control-input" id="cicloUnico"
+                                        formControlName="cicloUnico" readonly onclick="return false;" />
                                     <label class="custom-control-label" for="cicloUnico" readonly>Ciclo único
                                         <b></b></label>
                                 </div>
@@ -36,7 +39,28 @@
                     </form>
 
                     <div class="card-body">
-                        <app-table [tableData]="this.parcelaArray"></app-table>
+                        <table class="table table-hover table-sm" *ngIf="this.planificacionInicialForm != null">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cuadros elegidos:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let parcela of this.planificacionInicialForm.value.cultivos.parcelas[0]">
+                                    <td>
+                                        <p class="font-weight-bold">
+                                            Parcela: {{ parcela.nombreParcela }}
+                                        </p>
+                                        <div>
+                                            <span *ngFor="let cuadro of parcela.cuadros[0]" class="mr-2"
+                                                style="font-size:14px;">
+                                                {{ cuadro.nombreCuadro}}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="card-body">
@@ -48,7 +72,7 @@
         </div>
     </div>
 
-    <div class="content" *ngIf="visible == true">
+    <div class="content" *ngIf="habilitarSupervisar == true">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -79,7 +103,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-5 ml-4 ">
-                                <label for="produccion">Producción esperada  (Tn) <b>*</b></label>
+                                <label for="produccion">Producción esperada (Tn) <b>*</b></label>
                                 <input type="number" class="form-control" id="produccion" value="10">
                             </div>
                             <div class="form-group col-md-5 ml-4 ">
@@ -92,7 +116,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-10 ml-4 ">
-                                <label >Observaciones</label>
+                                <label>Observaciones</label>
                                 <textarea class="form-control" aria-label="With textarea"></textarea>
                             </div>
                         </div>
@@ -108,9 +132,10 @@
     <div class="form-group row">
         <div class="col-sm-12">
             <button type="button" class="btn btn-danger btn-lg float-left"
-                [routerLink]="['/planificacion/listarPlanificaciones']"> Volver
+                [routerLink]="['/planificacion/listarGrupos']"> Volver
             </button>
-            <button type="button" class="btn btn-success btn-lg float-right" *ngIf="rol == 'ingeniero'" (click)="onSubmit()">
+            <button type="button" class="btn btn-success btn-lg float-right" *ngIf="rol == 'ingeniero'"
+                (click)="onSubmit()">
                 Guardar</button>
         </div>
     </div>

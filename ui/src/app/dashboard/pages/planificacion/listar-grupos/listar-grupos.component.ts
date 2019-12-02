@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs';
 export class ListarGruposComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
+
+  rol: string;
   codfinca: number;
 
   planificacionesArray = [];
@@ -26,12 +28,12 @@ export class ListarGruposComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codfinca = parseInt(this.auth.getCurrentCodFinca());
+    this.rol = this.auth.getRol();
 
     this.subscriptions.push(
-      this._planificacionService.getPlanificacionesCreadas(this.codfinca).subscribe(
+      this._planificacionService.getGrupos(this.codfinca).subscribe(
         result => {
           result.map(planificacion => this.planificacionesArray.push(planificacion));
-          console.log('this.planificacionesArray',this.planificacionesArray);
         },
         error => this.onHttpError({ message: error.error.message })
       )

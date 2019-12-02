@@ -6,13 +6,14 @@ from app.uses_cases.moduloConfiguracion.gestionarNomenclador import getNomenclad
 from app.shared.toLowerCase import toLowerCaseSingle, obtainDict
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 from app.uses_cases.libroCampo.libroCampo import createLibroCampo
+from app.uses_cases.moduloGestionFinca.gestionarFinca import getUsersByFincaFilter
 import datetime
 from flask import jsonify,make_response
 import string 
 import random 
 
 def postPlanificacion(data,currentUser):
-   
+    try: 
         data = data
         #Datos Json
         action = data.get('action')
@@ -34,7 +35,10 @@ def postPlanificacion(data,currentUser):
         iniciar = 'i'
         supervisar = 's'
         finalizar = 'f'
-    
+
+        #email
+        body = ''
+
         #check de acciones 
         if not (action == iniciar or action == supervisar or action == finalizar):
             raise Exception('N','el action ingresado no es correcto, las action disponibles son: {}, {}, {}.'.format(iniciar,supervisar,finalizar))
@@ -59,25 +63,36 @@ def postPlanificacion(data,currentUser):
             finca.grupoPlanificacionList.append(grupPlanif)
             tipoPlanificacion = tipoInicial
 
+            enviaCorreo = True
+            userEmail = getUsersByFincaFilter(finca,'ingeniero')
+            body = 'Se ha generado una nueva planificación inicial \nPara visualizarla y supervisarla utilice el siguiente enlace:\n http://localhost:4200/planificacion/listarGrupos'
+            
         else: #supervisar o finalizar
             #cambio de estado la planificación anterior de "encurso" debe pasar a finalizada
             planifBefore = getPlanifByCod(codPlanifBefore)
             if not planifBefore:
                 raise Exception('N','No existe planificación anterior con cod ' + str(codPlanifBefore))
 
-                
+    
             tipoPlanifBefore =  planifBefore.tipoPlanificacion   
             if action == supervisar:
                 hlCheckTipoPlanifBefore(tipoPlanifBefore,tipoInicial,tipoSupervisada,codPlanifBefore)
                 tipoPlanificacion = tipoSupervisada
+                enviaCorreo = True
+                userEmail = getUsersByFincaFilter(finca,'encargadofinca')
+                body = 'Se ha supervisado una planificación inicial \nPara visualizarla y finalizarla utilice el siguiente enlace:\n http://localhost:4200/planificacion/listarGrupos'
 
             else: #finalizar
                 hlCheckTipoPlanifBefore(tipoPlanifBefore,tipoSupervisada,tipoFinal,codPlanifBefore)
                 tipoPlanificacion = tipoFinal
+                enviaCorreo = False
+
             planifBefore = updateEstadoPlanificacion(planifBefore,estadoFinalizado)
 
             grupPlanif = planifBefore.grupoPlanif #recupero grupo de la planf before
-       
+            
+            
+
         ##comun
         planifNew = crearPlanificacion(comentarioJson,tipoPlanificacion,estadoEncurso,currentUser,grupPlanif)
         cultivoListRst = []
@@ -116,7 +131,7 @@ def postPlanificacion(data,currentUser):
         print(grupPlanif)
 
         #Creacion libro de campo
-        if (planifNew.tipoPlanificacion == tipoPlanificacion):
+        if (planifNew.tipoPlanificacion == tipoFinal):
             #finca = selectFincaCod(codFinca)
             print('esto en crear libro campo')
             for cultivo in cultivoListRst:       
@@ -127,9 +142,19 @@ def postPlanificacion(data,currentUser):
                 print(nombreLibro)
                 createLibroCampo(nombreLibro,finca,grupPlanif,cultivo)
 
+
+
+
         Commit()
+
+        
+        if enviaCorreo:
+            userEmail = getUsersByFincaFilter(finca,'ingeniero')
+            hlSendEmailPlanif(userEmail,body)          
+        
         return ResponseOkmsg('Planificación ' + tipoPlanificacion.nombre + ' creada exitosamente')
-    
+    except Exception as e:
+        return ResponseException(e)
 
 
 def crearPlanificacion(comentarioPlanificacion,tipoPlanificacion, estadoPlanificacion, usuario, grupoPlanificacion):
@@ -287,5 +312,19 @@ def toDict(planificacionesDtoList):
         """planificacionesDto['inicial'] = planificacion """
     return planificacionesDto
 
-                                
-                            
+
+def hlCancelPlanif(planificacion):
+    estadoCancelar = getNomencladoCod('estadoPlanificacion',3)
+    updateEstadoPlanificacion(planificacion,estadoCancelar)
+    return
+
+
+
+def hlSendEmailPlanif(usuario,body):
+    from app.shared.hlSendEmail import sendEmail
+    key = 'planificacion'
+    html = ''
+    additionals = []
+    userList = []
+    userList.append(usuario)
+    sendEmail(key,userList,body,html,additionals)

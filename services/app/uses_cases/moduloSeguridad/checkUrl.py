@@ -104,6 +104,7 @@ def checkUrl(method,pat,rol):
     #print(MPGRUPO)
     MPGRUPO_GET = 'GET' + MPGRUPO + '/'
     MPGRUPO_POST = 'POST' + MPGRUPO
+    MPGRUPO_DELETE = 'DELETE' + MPGRUPO + '/'
     #print(MPGRUPO_GET)
     #Planificacion 
     MPLAN = '/' + urlPlanificacion.name
@@ -139,7 +140,7 @@ def checkUrl(method,pat,rol):
         MA_REG, MA_CON, MA_GET, MA_PUT, MA_DELETE, MA_PARAM, #Modulo de actividad
         MGF_POST,MGF_PUT,                              #Modulo de finca
         MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPAR_GET,   #Modulo Planificacion
-        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPLAN_CONS,    #Modulo Planificacion
+        MPLAN_POST, MPLAN_GET, MPGRUPO_GET, MPGRUPO_POST, MPLAN_CONS,MPGRUPO_DELETE,    #Modulo Planificacion
         MRRECOMACTIV_POST, MRREG_GET,                #modulo de recomendaciones
         LC_FIN                                      #libro de campo
          ) + default
