@@ -6,14 +6,16 @@ hlSubject = {
     'activate'    : 'Activación de cuenta - Agronome',
     'recoverPass' : 'Restablecer contraseña - Agronome',
     'recomendacion' : 'Nueva recomendación - Agronome',
-    'actividad': 'Nueva activida - Agronome'
+    'actividad': 'Nueva activida - Agronome',
+    'planificacion': 'Nueva planificación'
 }
 
 hlReponseEmail = {
     'activate'    : 'Por favor revisa tu correo electrónico para activar la cuenta',
     'recoverPass' : 'Por favor revisa tu correo electrónico',
     'recomendacion' : 'Recomendación creada exitosamente',
-    'actividad': 'Recomendación creada correctamente'
+    'actividad': 'Recomendación creada exitosamente',
+    'planificación' : 'Planificación creada exitosamente'
 }
 
 def sendEmail(subject, userList , body, html, additionals):

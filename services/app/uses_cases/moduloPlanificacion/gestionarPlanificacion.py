@@ -39,17 +39,13 @@ def postPlanificacion(data,currentUser):
         if not (action == iniciar or action == supervisar or action == finalizar):
             raise Exception('N','el action ingresado no es correcto, las action disponibles son: {}, {}, {}.'.format(iniciar,supervisar,finalizar))
 
+        finca = selectFincaCod(codFinca) #se busca la finca para asociarla al grupo planificacion y para crear libro campo
+        if not finca:
+            raise Exception('N','No existe finca con codFinca ' + str(codFinca))
 
         #acciones 
         if action == iniciar:
-            #Creo grupo planificación 
-            finca = selectFincaCod(codFinca) #se busca la finca para asociarla al grupo planificacion
-            if not finca:
-                raise Exception('N','No existe finca con codFinca ' + str(codFinca))
-
-            #today = datetime.datetime.now.__str__
             tipoCultivo = getNomencladoCod('tipoCultivo',datosCultivosJsonList.__getitem__(0).get('codTipoCultivo'))            
-            
             #Comprobar que el nombre no existe
             #buscar todos los Grupos planificacion
             while True:
@@ -57,7 +53,8 @@ def postPlanificacion(data,currentUser):
                 if not selectGrupoName(GrupoPlanificacion, nombreGrupPlanif):
                     break       
                 print('Nombre repetido')
-                
+
+            #Creo grupo planificación 
             grupPlanif = createGrupoPlanificacion(nombreGrupPlanif)
             finca.grupoPlanificacionList.append(grupPlanif)
             tipoPlanificacion = tipoInicial
@@ -117,13 +114,15 @@ def postPlanificacion(data,currentUser):
 
                 saveEntidadSinCommit(grupoCuadro)
         print(grupPlanif)
+
         #Creacion libro de campo
-        if (planifNew.tipoPlanificacion.cod == 3):
-            finca = selectFincaCod(codFinca)
+        if (planifNew.tipoPlanificacion == tipoFinal):
+            #finca = selectFincaCod(codFinca)
+            print('esto en crear libro campo')
             for cultivo in cultivoListRst:       
-                while True:         
+                while True:        
                     nombreLibro = str(cultivo.tipoCultivoR.nombre) + ' ' + (str(cultivo.variedadCultivo)) + ' ' + ''.join(random.choices(string.ascii_uppercase + string.digits, k = 4)) 
-                    if selectLibroName(LibroCampo, nombreLibro):
+                    if not selectLibroName(LibroCampo, nombreLibro):
                         break
                 print(nombreLibro)
                 createLibroCampo(nombreLibro,finca,grupPlanif,cultivo)
