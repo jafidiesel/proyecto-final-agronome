@@ -28,7 +28,7 @@ export class ListarGruposComponent implements OnInit, OnDestroy {
     this.codfinca = parseInt(this.auth.getCurrentCodFinca());
 
     this.subscriptions.push(
-      this._planificacionService.getPlanificacionesCreadas(this.codfinca).subscribe(
+      this._planificacionService.getGrupos(this.codfinca).subscribe(
         result => {
           result.map(planificacion => this.planificacionesArray.push(planificacion));
           console.log('this.planificacionesArray',this.planificacionesArray);

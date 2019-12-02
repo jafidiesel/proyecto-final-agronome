@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-planificacion-supervisada',
@@ -10,34 +13,117 @@ import { Router } from '@angular/router';
 })
 
 export class PlanificacionSupervisadaComponent implements OnInit {
-  rol: string;
-  visible: boolean;
 
-  dummyDataCultivo = [
-    "Tomate","Lechuga","Zanahoria", "Calabaza", "Cebolla"
-  ];
+  rol: string;
+  codFinca: number;
+  subscriptions: Subscription[] = [];
+
+  // formgroup
+  planificacionInicialForm: FormGroup;
+  planificacionSupervisadaForm: FormGroup;
+
+  tipoCultivoArray = [];
 
   tableDataHeader = ['Parcela', 'Cuadros']
   parcelaArray = []
 
-  constructor(private auth: AuthService, private _planificacionService: PlanificacionService, private router: Router) { }
+  // banderas de error
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
+
+  constructor(
+    private auth: AuthService,
+    private _planificacionService: PlanificacionService,
+    private _configuracionService: ConfiguracionService,
+    private router: Router,
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.visible = false;
+    this.codFinca = parseInt(this.auth.getCurrentCodFinca());
     this.rol = this.auth.getRol();
-    this.parcelaArray.push(this.tableDataHeader)
-    this.parcelaArray.push(
-      ['Parcela 1','1,2,3'],
-    ['Parcela 2', '2,3,4'])
+
+    this.subscriptions.push(
+      this._configuracionService.getListaNomencladoresConFiltro('tipoCultivo', true).subscribe(
+        (result: any) => {
+          result.map(element => {
+            this.tipoCultivoArray.push([element.cod, element.nombre])
+          });
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+
+    this.subscriptions.push(
+      this.activatedRoute.params.subscribe(params => {
+        this._planificacionService.getPlanificacionesCreadas(this.codFinca, parseInt(params['cod'])).subscribe(
+          result => {
+            console.log('result',result);
+            this.initForm(result);
+          },
+          error => this.onHttpError({ message: error.error.message })
+        )
+
+      })
+    );
+
+
+
   }
 
-  supervisar(){
-    this.visible = true;
+  supervisar() {
+
 
   }
 
-  
-  onSubmit(){
+  initForm(form) {
+    debugger;
+    this.planificacionInicialForm = this.fb.group({
+      action: "i",
+      codPlanifBefore: null,
+      codFinca: this.codFinca,
+      comentario: null,
+      codTipoCultivo: form.inicial.cultivo[0].tipoCultivo.cod,
+      nombreTipoCultivo: form.inicial.cultivo[0].tipoCultivo.nombre,
+      variedadCultivo: form.inicial.cultivo[0].variedadCultivo,
+      cantidadCultivo: 0,
+      produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
+      cicloUnico: form.inicial.cultivo[0].cicloUnico,
+      cultivos: [{
+        parcelas: [ form.inicial.cultivo[0].grupos.map(parcela =>{
+          return {
+            nombreParcela: parcela.parcelas[0].nombreParcela,
+            codParcela: parcela.parcelas[0].codParcela,
+            cuadros: [
+              parcela.parcelas[0].cuadros.map(cuadro => { 
+                return { codCuadro:cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
+               } )
+            ]
+          }
+        }) ],
+      }]
+    });
+
+    console.warn(this.planificacionInicialForm.value);
+
+    this.planificacionSupervisadaForm = this.fb.group({
+      action: "s",
+      codPlanifBefore: null,
+      codFinca: this.codFinca,
+      comentario: null,
+      codTipoCultivo: form.inicial.cultivo[0].tipoCultivo.cod,
+      variedadCultivo: form.inicial.cultivo[0].variedadCultivo,
+      cantidadCultivo: 0,
+      produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
+      cicloUnico: form.inicial.cultivo[0].cicloUnico,
+      parcelas: [],
+      cultivos: [{}]
+    });
+    //this.imprimir();
+  }
+
+  onSubmit() {
     this._planificacionService.guardarPlanificacion('supervisada');
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -57,6 +143,17 @@ export class PlanificacionSupervisadaComponent implements OnInit {
         this.router.navigate(['planificacion/verPlanificacionSupervisada']);
       }
     });
+  }
+
+  // metodo custom para mostrar mensajes de error
+  onHttpError(errorResponse: any) {
+    this.postError = true;
+    this.postSuccess = false;
+    this.postErrorMessage = errorResponse.message;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
 }
