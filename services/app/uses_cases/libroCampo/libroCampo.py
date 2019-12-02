@@ -91,7 +91,7 @@ def hlLibroCampoList(data):
     codFinca = data.get('codFinca')
     finca = selectFincaCod(codFinca)
     if not finca:
-        raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+        raise Exception('N','No se encuentra ninguna finca')
     
     libroCampoList = finca.libroCampoList
     if len(libroCampoList) == 0:
