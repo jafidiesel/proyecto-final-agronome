@@ -15,9 +15,7 @@
                         <b>{{ planificacion.nombreGrupoPlanificacion }}</b>
                     </h6>
                     <div class="card-body">
-                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}
-
-                        </p>
+                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}</p>
                         <div [ngSwitch]="planificacion.planificacion.cod">
                             <div *ngSwitchCase="1">
                                 <p><b>Planificación: </b> Inicial</p>
@@ -37,14 +35,14 @@
                                 [routerLink]="['/planificacion/verPlanificacionFinal/' + planificacion.cod]"
                                 routerLinkActive="router-link-active">Ver</button>
                             </div>
-                            
-                            
                         </div>
 
                     </div>
-                    <div class="card-footer ">
+                    <div class="card-footer "  >
                         <hr>
                         <p> <b>Fecha de creación:</b> {{ planificacion.fchCreacion | date: 'dd/MM/yyyy' }}</p>
+                        <button type="button" class="btn btn-danger btn-sm" (click)="cancelarGrupo(planificacion.cod)" *ngIf="planificacion.isActiv && rol == 'encargadofinca' " >Cancelar Grupo</button>
+
                     </div>
                 </div>
             </div>

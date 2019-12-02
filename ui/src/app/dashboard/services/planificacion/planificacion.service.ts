@@ -64,10 +64,20 @@ export class PlanificacionService {
   */
   getPlanificacionesCreadas(codFinca: number, codGrupo: number): Observable<any> {
     let json = {
-      codFinca : codFinca,
+      codFinca: codFinca,
       codGrupo: codGrupo
     }
     return this.http.post<string>(`http://localhost:9001/api/planificacion/consultar`, json);
+  }
+
+  /**
+  * @param codFinca number 
+  * @return Observable<string>
+  *  
+  * DEL cancela un grupo
+  */
+  cancelarGrupo(codGrupo: number): Observable<any> {
+    return this.http.delete<string>(`http://localhost:9001/api/planificacion/grupos/${codGrupo}`);
   }
 
 }

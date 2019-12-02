@@ -1,7 +1,7 @@
 <main role="main" class="container mt-4">
     <h1 class="display-4">Planificacion</h1>
     <div class="content">
-        <div class="row">
+        <div class="row" *ngIf="this.planificacionInicialForm != null">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-title ml-4">
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="card-body">
-                        <button class="btn btn-primary float-right" *ngIf="rol == 'ingeniero'"
+                        <button class="btn btn-primary float-right" *ngIf="rol == 'ingeniero' && this.planificacionInicialForm.value.codCancelada != 3 "
                             (click)="supervisar()">Supervisar</button>
                     </div>
                 </div>

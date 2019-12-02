@@ -89,6 +89,7 @@ export class PlanificacionFinalComponent implements OnInit, OnDestroy {
   initForm(form) {
     this.planificacionInicialForm = this.fb.group({
       action: "i",
+      codCancelada : form.inicial.estadoPlanificacion.cod,
       codPlanifBefore: null,
       codFinca: this.codFinca,
       comentario: null,
@@ -115,6 +116,7 @@ export class PlanificacionFinalComponent implements OnInit, OnDestroy {
 
     this.planificacionSupervisadaForm = this.fb.group({
       action: "s",
+      codCancelada : form.supervisada.estadoPlanificacion.cod,
       codPlanifBefore: form.inicial.cod,
       codFinca: this.codFinca,
       comentarioPlanificacion: form.supervisada.comentarioPlanificacion,
