@@ -61,7 +61,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
         this._planificacionService.getPlanificacionesCreadas(this.codFinca, parseInt(params['cod'])).subscribe(
           result => {
-            console.log('result', result);
             this.initForm(result);
           },
           error => this.onHttpError({ message: error.error.message })
@@ -80,8 +79,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
 
   procesarFormGroup() {
     let form = this.planificacionSupervisadaForm.value;
-    debugger;
-    console.log('form.cultivos.parcelas[0]', form.cultivos.parcelas[0]);
     this.planificacionSupervisadaForm.patchValue({
       cultivos: [{
         codTipoCultivo: parseInt(form.codTipoCultivo),
@@ -146,9 +143,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
         }),
       }]
     });
-
-    debugger;
-    console.warn(this.planificacionSupervisadaForm.value);
   }
 
   onSubmit() {
@@ -163,7 +157,6 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       buttonsStyling: false
     })
 
-    console.log('this.planificacionSupervisadaForm.value', this.planificacionSupervisadaForm.value);
     //return false;
     this.subscriptions.push(
       this._planificacionService.guardarPlanificacion(this.planificacionSupervisadaForm.value).subscribe(
