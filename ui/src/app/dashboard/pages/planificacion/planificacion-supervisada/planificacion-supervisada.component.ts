@@ -95,6 +95,7 @@ export class PlanificacionSupervisadaComponent implements OnInit, OnDestroy {
   initForm(form) {
     this.planificacionInicialForm = this.fb.group({
       action: "i",
+      codCancelada : form.inicial.estadoPlanificacion.cod,
       codPlanifBefore: null,
       codFinca: this.codFinca,
       comentario: null,
