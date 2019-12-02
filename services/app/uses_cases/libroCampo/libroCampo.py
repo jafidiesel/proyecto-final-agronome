@@ -3,18 +3,14 @@ from app.uses_cases.libroCampo.hlLibroCampoToDict import libroCampoListFullToDic
 from app.uses_cases.moduloRecomendacion.registrarRecomendacion import recomendacionActividad
 from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.repositorio.repositorioGestionarFinca import selectFincaCod
-from app.repositorio.hlDb import saveEntidadSinCommit, Commit
+from app.repositorio.hlDb import saveEntidadSinCommit, Commit, Rollback
 
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk, ResponseOkmsg
 import datetime
 
 def consultarLibroCampo(data):
     try:
-        codFinca = data.get('codFinca')
-        libroCampoList = hlLibroCampoList(codFinca)
-        if len(libroCampoList) == 0:
-             raise Exception('N','La finca, no posee libros de campo')
-        dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+        dtoLibroCampoList = hlLibroCampoList(data)
 
         return dtoLibroCampoList
     except Exception as e:
@@ -42,12 +38,13 @@ def finalizarLibroCampo(data):
         Commit()
         return ResponseOkmsg('Libro de campo finalizado correctamente')
     except Exception as e:
+        Rollback()
         return ResponseException(e)
 
 
 def recomendacionLibroCampo(data):
     try:
-        dtoLibroCampoList = consultarLibroCampo(data)
+        dtoLibroCampoList = hlLibroCampoList(data)
         dtoResultList = []
         for dtoLibroCampo in dtoLibroCampoList:
             dtoResult = dtoLibroCampo
@@ -80,7 +77,9 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
         #asociaciones, en caso de que no me manden el objeto hay que buscarlo por cod y asociarlo
         libroCampo.cultivo = cultivo
         libroCampo.grupoPlanificacion = grupoPlanificacion
-        saveEntidadSinCommit(libroCampo)
+        finca.libroCampoList.append(libroCampo)
+        saveEntidadSinCommit(finca)
+        saveEntidadSinCommit(libroCampo)             
         Commit()
 
         return ResponseOkmsg('Libro de campo ' + nombreLibroCampo +'creado correctamente')
@@ -88,10 +87,16 @@ def createLibroCampo(nombreLibroCampo,finca,grupoPlanificacion,cultivo):
         return ResponseException(e)
 
 
-
-def hlLibroCampoList(codFinca):
+def hlLibroCampoList(data):
+    codFinca = data.get('codFinca')
     finca = selectFincaCod(codFinca)
     if not finca:
-        raise Exception('N','No se encuentra finca con codFinca ' + str(codFinca))
+        raise Exception('N','No se encuentra ninguna finca')
+    
     libroCampoList = finca.libroCampoList
-    return libroCampoList
+    if len(libroCampoList) == 0:
+        raise Exception('N','La finca ' + finca.nombreFinca + ' no posee libros de campo')
+
+    dtoLibroCampoList = libroCampoListFullToDict(libroCampoList)
+
+    return dtoLibroCampoList
