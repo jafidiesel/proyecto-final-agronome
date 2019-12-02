@@ -50,23 +50,27 @@ def getParcelasLibres(data):
     elif grupoList:
         #Leer planificaciones asociadas al Grupo
         print(grupoList)
+        #Parcelas repetidas en los grupos
+        parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
+        dtoGeneralOcupada = []
         for grupoPlanificacion in grupoList:    
             planificacionListRst = grupoPlanificacion.planificaciones
             print('PLANIFICACIONES GRUPO')
             print(planificacionListRst)
-            dtoGeneralOcupada = []
-            parcelasTmp = [] #Para agrupar las parcelas iguales que estan presentes en varias planificaciones
+                        
+            #Por cada planificacion del grupo
             for planificacionRst in planificacionListRst:
-                if (planificacionRst.estadoPlanificacion.cod == 1 ):
+                if (planificacionRst.estadoPlanificacion.cod == 1):
                     print('TIPOPLANIFICACION')
                     print(planificacionRst)
+                                
                     for grupoCuadro in planificacionRst.grupoCuadroList:
-                        dtoParcelaOcupada = []
+                        dtoParcelaOcupada = []    
                         parcelaOcupada = grupoCuadro.parcela
                         #Lista de parcelas ocupadas vacia
                         if not parcelasTmp or (parcelaOcupada not in parcelasTmp):
                             parcelasTmp.append(parcelaOcupada)
-                            dtoParcelaOcupada.append(parcelaOcupada)
+                            dtoParcelaOcupada.append(parcelaOcupada)                            
                             cuadrosOcupados = []
                             for cuadroCultivo in grupoCuadro.cuadroCultivoList:
                                 cuadroOcupado = cuadroCultivo.cuadro
@@ -86,21 +90,21 @@ def getParcelasLibres(data):
                                             if cuadroCultivo.cuadro not in cuadrosTmp:
                                                 elemento.__getitem__(1).append(cuadroCultivo.cuadro)    
             
-            #Comparacion de listas para extraer los items que no se repiten
-            dtoGeneralLibre = []       
-        
-            for datoParcelaGeneral in dtoGeneral:
-                dtoParcelaLibre= []
-                condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
-                
-                for x in condition:
-                    pass
-
-                if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
-                    dtoGeneralLibre.append(datoParcelaGeneral)               
-            print(dtoGeneralLibre)  
-            return dtoGeneralLibre
+        #Comparacion de listas para extraer los items que no se repiten
+        dtoGeneralLibre = []       
     
+        for datoParcelaGeneral in dtoGeneral:
+            dtoParcelaLibre= []
+            condition = (getCuadrosLibres(elemento,datoParcelaGeneral) for elemento in dtoGeneralOcupada if datoParcelaGeneral.__getitem__(0) in parcelasTmp)
+            
+            for x in condition:
+                pass
+
+            if datoParcelaGeneral.__getitem__(0) not in parcelasTmp:
+                dtoGeneralLibre.append(datoParcelaGeneral)               
+        print(dtoGeneralLibre)  
+        return dtoGeneralLibre
+
         
 def getParcelas(data):
     try:
