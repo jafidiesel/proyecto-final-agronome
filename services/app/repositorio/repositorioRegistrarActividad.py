@@ -9,7 +9,7 @@ def selectActivDetalle():
 
 def selectActivDetalleOrder(codLibroCampo): 
     libroCampo = selectLibroCod(codLibroCampo)
-    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False and ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
+    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).filter(ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
     return  objetos 
 
 def selectActivDetalleCod(codActivDetalle):
