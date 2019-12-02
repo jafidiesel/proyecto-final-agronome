@@ -67,7 +67,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
           result.parcelas.map(element => this.parcelas.push(element))
           this.initForm(result.parcelas);
           this.addIdsToCuadros(this.parcelas);
-          console.log('this.parcelas', this.parcelas);
 
         },
         error => this.onHttpError({ message: error.error.message })
@@ -134,7 +133,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
     });
 
-    this.imprimir();
   }
 
   imprimir() {
@@ -179,7 +177,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
         }
       });
-      debugger;
       if (jsonParcela['cuadros'] != null) jsonToSend['parcelas'].push(jsonParcela);
 
     });
@@ -230,7 +227,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
     const optionValue = selectEl.value;
-    console.log('optionValue',optionValue);
 
     this.planificacionForm.value.codTipoCultivo = optionValue;
 

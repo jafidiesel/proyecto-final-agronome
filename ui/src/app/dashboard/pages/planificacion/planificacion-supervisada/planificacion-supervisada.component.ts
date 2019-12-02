@@ -27,6 +27,8 @@ export class PlanificacionSupervisadaComponent implements OnInit {
   tableDataHeader = ['Parcela', 'Cuadros']
   parcelaArray = []
 
+  habilitarSupervisar = false;
+
   // banderas de error
   postSuccess = false;
   postError = false;
@@ -59,7 +61,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       this.activatedRoute.params.subscribe(params => {
         this._planificacionService.getPlanificacionesCreadas(this.codFinca, parseInt(params['cod'])).subscribe(
           result => {
-            console.log('result',result);
+            console.log('result', result);
             this.initForm(result);
           },
           error => this.onHttpError({ message: error.error.message })
@@ -73,7 +75,7 @@ export class PlanificacionSupervisadaComponent implements OnInit {
   }
 
   supervisar() {
-
+    this.habilitarSupervisar = true;
 
   }
 
@@ -91,17 +93,17 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
       cicloUnico: form.inicial.cultivo[0].cicloUnico,
       cultivos: [{
-        parcelas: [ form.inicial.cultivo[0].grupos.map(parcela =>{
+        parcelas: [form.inicial.cultivo[0].grupos.map(parcela => {
           return {
             nombreParcela: parcela.parcelas[0].nombreParcela,
             codParcela: parcela.parcelas[0].codParcela,
             cuadros: [
-              parcela.parcelas[0].cuadros.map(cuadro => { 
-                return { codCuadro:cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
-               } )
+              parcela.parcelas[0].cuadros.map(cuadro => {
+                return { codCuadro: cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
+              })
             ]
           }
-        }) ],
+        })],
       }]
     });
 
@@ -117,8 +119,19 @@ export class PlanificacionSupervisadaComponent implements OnInit {
       cantidadCultivo: 0,
       produccionEsperada: form.inicial.cultivo[0].produccionEsperada,
       cicloUnico: form.inicial.cultivo[0].cicloUnico,
-      parcelas: [],
-      cultivos: [{}]
+      cultivos: [{
+        parcelas: [form.inicial.cultivo[0].grupos.map(parcela => {
+          return {
+            nombreParcela: parcela.parcelas[0].nombreParcela,
+            codParcela: parcela.parcelas[0].codParcela,
+            cuadros: [
+              parcela.parcelas[0].cuadros.map(cuadro => {
+                return { codCuadro: cuadro.codCuadro, nombreCuadro: cuadro.nombreCuadro }
+              })
+            ]
+          }
+        })],
+      }]
     });
     //this.imprimir();
   }
