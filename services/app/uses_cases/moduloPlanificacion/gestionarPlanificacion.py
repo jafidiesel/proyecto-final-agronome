@@ -116,7 +116,7 @@ def postPlanificacion(data,currentUser):
         print(grupPlanif)
 
         #Creacion libro de campo
-        if (planifNew.tipoPlanificacion == tipoPlanificacion):
+        if (planifNew.tipoPlanificacion == tipoFinal):
             #finca = selectFincaCod(codFinca)
             print('esto en crear libro campo')
             for cultivo in cultivoListRst:       
@@ -287,5 +287,8 @@ def toDict(planificacionesDtoList):
         """planificacionesDto['inicial'] = planificacion """
     return planificacionesDto
 
-                                
-                            
+
+def hlCancelPlanif(planificacion):
+    estadoCancelar = getNomencladoCod('estadoPlanificacion',3)
+    updateEstadoPlanificacion(planificacion,estadoCancelar)
+    return

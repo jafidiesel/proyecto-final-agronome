@@ -3,7 +3,8 @@ from app.model.hlmodel import Planificacion,Finca,Usuario, GrupoPlanificacion, T
 from app.repositorio.hlDb import saveEntidadSinCommit, selectByCod,Commit, selectAll, Rollback
 from app.api.helperApi.hlResponse import ResponseException, ResponseOk,ResponseOkmsg
 from app.repositorio.repositorioGestionarFinca import selectFincaCod, selectFinca
-
+from app.repositorio.repositorioGesitonarGrupo import selectGrupoPlanifCod
+from app.uses_cases.moduloPlanificacion.gestionarPlanificacion import hlCancelPlanif
 
 #Cabecera
 ##Agregar  isCancelado
@@ -47,9 +48,10 @@ def getDTO(grupoObjList):
     try:
         dtoGeneral = []
         #Etapas
-        ultimoEstadoCod = 0
-        ultimoEstadoNombre = ""
+        
         for grupoObj in grupoObjList:
+            ultimoTipoCod = 0
+            ultimoEstadoNombre = ""
             #Obtener grupo        
             dictGrupo = grupoObj.__getitem__(0).__dict__
             dictGrupo.pop('_sa_instance_state', None) 
@@ -58,14 +60,33 @@ def getDTO(grupoObjList):
                 #Obtener datos una planificacion
                 dataPlanificacion = planificacionGrupo.__getitem__(0)
                 #Obtener la ultima planificacion en curso del grupo --> Etapa: Inicial, supervisada, Final
-                if dataPlanificacion.estadoPlanificacion.cod > ultimoEstadoCod:
-                    ultimoEstadoCod = dataPlanificacion.estadoPlanificacion.cod
-                    ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre               
-                
-            dictPlanificacion = dict(cod = ultimoEstadoCod, nombre = ultimoEstadoNombre)
+                if dataPlanificacion.tipoPlanificacion.cod > ultimoTipoCod:
+                    ultimoTipoCod = dataPlanificacion.tipoPlanificacion.cod
+                    ultimoEstadoNombre = dataPlanificacion.estadoPlanificacion.nombre                            
+            dictPlanificacion = dict(cod = ultimoTipoCod, nombre = ultimoEstadoNombre)
             dictGrupo.pop('planificaciones', None)
             dictGrupo['planificacion'] = dictPlanificacion
             dtoGeneral.append(dictGrupo)
         return dtoGeneral
+    except Exception as e:
+        return ResponseException(e)
+
+def deleteGrupo(codGrupoPlanif):
+    try:
+        grupoPlanif = selectGrupoPlanifCod(codGrupoPlanif)
+        if grupoPlanif == None:
+            raise Exception('N','No existe grupo planificacion con cod ' + str(codGrupoPlanif))
+
+        if not grupoPlanif.isActiv:
+            raise Exception('N','El grupo planificación ya se encuentra cancelado')
+
+        planifList = grupoPlanif.planificaciones
+        for planif in planifList:
+            hlCancelPlanif(planif)
+
+        grupoPlanif.isActiv=False
+        saveEntidadSinCommit(grupoPlanif)
+        Commit()
+        return ResponseOkmsg('Grupo planificación cancelado exitosamente')
     except Exception as e:
         return ResponseException(e)
