@@ -288,14 +288,7 @@ def toDict(planificacionesDtoList):
     return planificacionesDto
 
 
-
-
-
-
-def hlCancelAllPlanif(grupoPlanificacion):
+def hlCancelPlanif(planificacion):
     estadoCancelar = getNomencladoCod('estadoPlanificacion',3)
-    planifList = grupoPlanificacion.planificaciones
-    for planif in planifList:
-        updateEstadoPlanificacion(planif,estadoCancelar)
-    
+    updateEstadoPlanificacion(planificacion,estadoCancelar)
     return
