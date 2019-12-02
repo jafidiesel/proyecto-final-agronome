@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 import Swal from 'sweetalert2';
@@ -12,7 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './planificacion-supervisada.component.html',
 })
 
-export class PlanificacionSupervisadaComponent implements OnInit {
+export class PlanificacionSupervisadaComponent implements OnInit, OnDestroy {
 
   rol: string;
   codFinca: number;
