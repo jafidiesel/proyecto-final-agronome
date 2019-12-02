@@ -99,7 +99,7 @@ def getParametrosRecomFull(codRecomendacion):
 def hlSendEmailRecomendacion(usuario):
     from app.shared.hlSendEmail import sendEmail
     key = 'recomendacion'
-    body = usuario.usuario + ' ha registrado una nueva recomendación\nPara visualizarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    body = 'Se ha registrado una nueva recomendación\nPara visualizarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
     html = ''
     additionals = []
     userList = []

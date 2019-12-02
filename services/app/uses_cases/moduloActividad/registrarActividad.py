@@ -172,7 +172,7 @@ def getParametrosFull(codActividad):
 def hlSendEmailActividad(usuario):
     from app.shared.hlSendEmail import sendEmail
     key = 'actividad'
-    body = usuario.usuario + ' ha registrado una nueva actividad \nPara visualizarla y recomendarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
+    body = 'Se ha registrado una nueva actividad \nPara visualizarla y recomendarla utilice el siguiente enlace:\n http://localhost:4200/recomendaciones/listarRecomendaciones'
     html = ''
     additionals = []
     userList = []

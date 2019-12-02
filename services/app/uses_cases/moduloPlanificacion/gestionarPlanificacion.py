@@ -94,6 +94,7 @@ def postPlanificacion(data,currentUser):
             
 
         ##comun
+        nombreTipoPlanif = tipoPlanificacion.nombre
         planifNew = crearPlanificacion(comentarioJson,tipoPlanificacion,estadoEncurso,currentUser,grupPlanif)
         cultivoListRst = []
         for cultivo in datosCultivosJsonList:
@@ -149,10 +150,9 @@ def postPlanificacion(data,currentUser):
 
         
         if enviaCorreo:
-            userEmail = getUsersByFincaFilter(finca,'ingeniero')
             hlSendEmailPlanif(userEmail,body)          
         
-        return ResponseOkmsg('Planificación ' + tipoPlanificacion.nombre + ' creada exitosamente')
+        return ResponseOkmsg('Planificación ' + nombreTipoPlanif + ' creada exitosamente')
     except Exception as e:
         return ResponseException(e)
 
