@@ -64,6 +64,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       this._planificacionService.getParcelasLibres(this.codfinca).subscribe(
         result => {
           result.parcelas.map(element => this.parcelas.push(element))
+          console.log('this.parcelas',this.parcelas);
           this.initForm(result.parcelas);
 
         },
@@ -71,6 +72,15 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       )
     );
 
+  }
+
+
+  crearCuadro(obj: any) {
+    return this.fb.control({
+      codcuadro: obj.codCuadro,
+      nombreCuadro: obj.nombreCuadro,
+      isActive: false
+    })
   }
 
   crearParcela(obj: any) {
@@ -81,11 +91,14 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     })
   }
 
-  crearCuadro(obj: any) {
-    return this.fb.control({
-      codcuadro: obj.codCuadro,
-      nombreCuadro: obj.nombreCuadro,
-      isActive: false
+  crearCultivo(obj: any) {
+    return this.fb.group({
+      codTipoCultivo: 0,
+      variedadCultivo: "",
+      cantidadCultivo: 0,
+      produccionEsperada: 0,
+      cicloUnico: false,
+      parcelas: this.fb.array(obj.map(parcela => this.crearParcela(parcela).value))
     })
   }
 
@@ -95,35 +108,29 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       codPlanifBefore: null,
       codFinca: this.codfinca,
       comentario: null,
-      cultivos: [{
-        codTipoCultivo: 0,
-        cantidadCultivo: 0,
-        produccionEsperada: 0,
-        variedadCultivo: "",
-        cicloUnico: false,
-        parcelas: this.fb.array(form.map(parcela => this.crearParcela(parcela).value))
-      }]
+      cultivos: this.fb.array([this.crearCultivo(form)])
 
-      
+
     });
-    
+
     this.imprimir();
 
-    
+
   }
-  
-  imprimir(){
+
+  imprimir() {
     console.warn(this.planificacionForm.value);
 
   }
 
-  procesarOpciones(event) {
+  procesarTipoCultivo(event) {
 
     debugger;
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+    const optionValue = selectEl.value;
 
-    this.planificacionForm.value.cultivos.codTipoCultivo = optionText;
+    this.planificacionForm.value.cultivos.codTipoCultivo = optionValue;
 
   }
 

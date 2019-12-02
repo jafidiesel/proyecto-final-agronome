@@ -7,42 +7,50 @@
                     <div class="card-title ml-4">
                         <h4>Cultivo<b></b></h4>
                     </div>
-                    <form  *ngIf="planificacionForm != null" >
-                        <div >
-                            <div class="form-row">
-                                <div class="form-group col-md-5 ml-4">
-                                    <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
-                                    <select class="custom-select text-capitalize" id="cultivoInicial"
-                                        *ngIf="tipoCultivoArray != '' else loading1" (click)="procesarTipoCultivo($event)" >
-                                        <option *ngFor="let tipoCultivo of tipoCultivoArray" [value]="tipoCultivo[0]"
-                                            class="text-capitalize"  >
-                                            {{tipoCultivo[1]}}</option>
-                                    </select>
-                                    <ng-template #loading1>
-                                        <button class="btn btn-info" type="button" disabled>
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                            Cargando...
-                                        </button>
-                                    </ng-template>
-                                </div>
-                                <div class="form-group col-md-5 ml-4">
-                                    <label for="variedadCultivo">Variedad <b>*</b></label>
-                                    <input type="text" class="form-control" id="variedadCultivo"
-                                        placeholder="Ingrese la variedad del cultivo.">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-5 ml-4 ">
-                                    <label for="produccionCultivo">Producción esperada (Tn) <b>*</b></label>
-                                    <input type="number" class="form-control" id="produccionCultivo"
-                                        placeholder="Ingrese producción esperada.">
-                                </div>
-                                <div class="form-group col-md-5 ml-4 ">
-                                    <br>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="cicloUnico">
-                                        <label class="custom-control-label" for="cicloUnico">Ciclo único <b>*</b></label>
+                    <form [formGroup]="planificacionForm" (ngSubmit)="onSubmit()" *ngIf="planificacionForm != null">
+                        <div *ngIf="planificacionForm.controls.cultivos != null" >
+
+                            <div formArrayName="cultivos"  *ngFor="let item of planificacionForm.controls.cultivos?.value; let i = index;"  >
+                                <div [formGroupName]="i" >
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-5 ml-4">
+                                            <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
+                                            <select class="custom-select text-capitalize" id="cultivoInicial"
+                                                *ngIf="tipoCultivoArray != '' else loading1"
+                                                (click)="procesarTipoCultivo($event)" >
+                                                <option *ngFor="let tipoCultivo of tipoCultivoArray" [value]="tipoCultivo[0]"
+                                                    class="text-capitalize">
+                                                    {{tipoCultivo[1]}}</option>
+                                            </select>
+                                            <ng-template #loading1>
+                                                <button class="btn btn-info" type="button" disabled>
+                                                    <span class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    Cargando...
+                                                </button>
+                                            </ng-template>
+                                        </div>
+                                        <div class="form-group col-md-5 ml-4">
+                                            <label for="variedadCultivo">Variedad <b>*</b></label>
+                                            <input type="text" class="form-control" id="variedadCultivo"
+                                                placeholder="Ingrese la variedad del cultivo." formControlName="variedadCultivo" >
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-5 ml-4 ">
+                                            <label for="produccionCultivo">Producción esperada (Tn) <b>*</b></label>
+                                            <input type="number" class="form-control" id="produccionCultivo"
+                                                placeholder="Ingrese producción esperada." formControlName="produccionEsperada" >
+                                        </div>
+                                        <div class="form-group col-md-5 ml-4 ">
+                                            <br>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="cicloUnico" formControlName="cicloUnico" >
+                                                <label class="custom-control-label" for="cicloUnico">Ciclo único
+                                                    <b>*</b></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -63,13 +71,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let parcela of this.planificacionForm.get('cultivos').value.parcelas.controls">
-                                    <td >
-                                        <p class="font-weight-bold" >
-                                            Parcela: {{ parcela.value.nombre }}
+                                <tr
+                                    *ngFor="let parcela of this.planificacionForm.value.parcelas">
+                                    <td>
+                                        <p class="font-weight-bold">
+                                            Parcela: {{ parcela.nombre }}
                                         </p>
                                         <div>
-                                            <span *ngFor="let cuadro of parcela.value.cuadros.controls" class="mr-2">
+                                            <span *ngFor="let cuadro of parcela.cuadros.controls" class="mr-2">
                                                 <input type="checkbox" name="" id="" [value]="cuadro.value.codCuadro">
                                                 {{ cuadro.value.nombreCuadro}}
                                             </span>
@@ -78,7 +87,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-warning" (click)="imprimir()" > imprimir()</button>
+                        <button type="button" class="btn btn-warning" (click)="imprimir()"> imprimir()</button>
 
 
 

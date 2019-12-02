@@ -192,7 +192,7 @@
                                 <label for="{{parametro.value.nombre}}"><b>{{parametro.value.nombre.charAt(0).toUpperCase() + parametro.value.nombre.slice(1)}}
                                         *</b></label>
                                 <div *ngFor="let opcion of parametro.value.opcion; let i = index">
-                                    <div class="custom-control custom-checkbox">
+                                    <div class="custom-controlthis.crearCultivo() custom-checkbox">
                                         <input type="checkbox" class="custom-control-input input-parametros" [id]="i"
                                             (value)="parametro.value.valor">
                                         <label class="custom-control-label"
