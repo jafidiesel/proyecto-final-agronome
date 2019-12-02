@@ -120,8 +120,9 @@ export class VerPlanificacionFinalComponent implements OnInit, OnDestroy {
       action: "s",
       codPlanifBefore: form.inicial.cod,
       codFinca: this.codFinca,
-      comentario: null,
+      comentarioPlanificacion: form.supervisada.comentarioPlanificacion,
       codTipoCultivo: form.supervisada.cultivo[0].tipoCultivo.cod,
+      nombreTipoCultivo: form.supervisada.cultivo[0].tipoCultivo.nombre,
       variedadCultivo: form.supervisada.cultivo[0].variedadCultivo,
       cantidadCultivo: 0,
       produccionEsperada: form.supervisada.cultivo[0].produccionEsperada,
@@ -145,14 +146,15 @@ export class VerPlanificacionFinalComponent implements OnInit, OnDestroy {
       action: "f",
       codPlanifBefore: form.supervisada.cod,
       codFinca: this.codFinca,
-      comentario: null,
-      codTipoCultivo: form.supervisada.cultivo[0].tipoCultivo.cod,
-      variedadCultivo: form.supervisada.cultivo[0].variedadCultivo,
+      comentarioPlanificacion: null,
+      codTipoCultivo: form.final.cultivo[0].tipoCultivo.cod,
+      nombreTipoCultivo: form.final.cultivo[0].tipoCultivo.nombre,
+      variedadCultivo: form.final.cultivo[0].variedadCultivo,
       cantidadCultivo: 0,
-      produccionEsperada: form.supervisada.cultivo[0].produccionEsperada,
-      cicloUnico: form.supervisada.cultivo[0].cicloUnico,
+      produccionEsperada: form.final.cultivo[0].produccionEsperada,
+      cicloUnico: form.final.cultivo[0].cicloUnico,
       cultivos: [{
-        parcelas: form.supervisada.cultivo[0].grupos.map(parcela => {
+        parcelas: form.final.cultivo[0].grupos.map(parcela => {
           return {
             nombreParcela: parcela.parcelas[0].nombreParcela,
             codParcela: parcela.parcelas[0].codParcela,
