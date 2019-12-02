@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { PlanificacionService } from 'src/app/dashboard/services/planificacion/planificacion.service';
 import { ConfiguracionService } from 'src/app/dashboard/services/configuracion/configuracion.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-planificacion-inicial',
@@ -14,47 +16,226 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   codfinca: number;
 
-  // banderas de error
-  postSuccess = false;
-  postError = false;
-  postErrorMessage = '';
-
-  mostrarTablaParcelas = false;
+  parcelas = [];
+  parcelasToSend = [];
 
   dummyDataCultivo = [
     "Lechuga", "Tomate", "Zanahoria", "Calabaza", "Cebolla"
   ];
 
+  // formgroup
+  planificacionForm: FormGroup;
+
   tipoCultivoArray = [];
 
-  tableDataHeader = ['Parcela', 'Cuadros']
-  parcelaArray = []
+  tablaParcelaArray = []
+  mostrarTablaParcelas = false;
+
+  // banderas de error
+  postSuccess = false;
+  postError = false;
+  postErrorMessage = '';
 
   constructor(
     private router: Router,
     private _planificacionService: PlanificacionService,
-    private _configuracionService: ConfiguracionService
+    private _configuracionService: ConfiguracionService,
+    private fb: FormBuilder,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.parcelaArray.push(this.tableDataHeader);
     //this.parcelaArray.push([ 'Parcela 1', '1,2,3' ]);
     this.mostrarTablaParcelas = true;
 
+    this.codfinca = parseInt(this.auth.getCurrentCodFinca());
+
     this.subscriptions.push(
       this._configuracionService.getListaNomencladoresConFiltro('tipoCultivo', true).subscribe(
-        (result:any) => {
-          console.log('result',result);
-          result.map( element =>{
+        (result: any) => {
+          result.map(element => {
             this.tipoCultivoArray.push([element.cod, element.nombre])
           });
         },
         error => this.onHttpError({ message: error.error.message })
       )
     );
-    
-    
+
+    this.subscriptions.push(
+      this._planificacionService.getParcelasLibres(this.codfinca).subscribe(
+        result => {
+          result.parcelas.map(element => this.parcelas.push(element))
+          this.initForm(result.parcelas);
+          this.addIdsToCuadros(this.parcelas);
+          console.log('this.parcelas', this.parcelas);
+
+        },
+        error => this.onHttpError({ message: error.error.message })
+      )
+    );
+
   }
+
+  /* 
+    crearCuadro(obj: any) {
+      return this.fb.control({
+        codcuadro: obj.codCuadro,
+        nombreCuadro: obj.nombreCuadro,
+        isActive: false
+      })
+    }
+  
+    crearParcela(obj: any) {
+      return this.fb.control({
+        codParcela: obj.codParcela,
+        nombre: obj.nombre,
+        cuadros: this.fb.array(obj.cuadros.map(cuadro => this.crearCuadro(cuadro).value))
+      })
+    }
+  
+    crearCultivo(obj: any) {
+      return this.fb.control({
+        codTipoCultivo: 0,
+        variedadCultivo: "",
+        cantidadCultivo: 0,
+        produccionEsperada: 0,
+        cicloUnico: false,
+        parcelas: this.fb.array(obj.map(parcela => this.crearParcela(parcela).value))
+      })
+    } */
+
+  addIdsToCuadros(parcelasArray) {
+    let id = "cuadro-id-";
+    let numero = 0;
+    let resultArray = parcelasArray.map(parcela => {
+      parcela.cuadros.map(cuadro => {
+        cuadro.id = (id + numero);
+        cuadro.isActive = false;
+        numero++;
+      });
+
+    });
+  }
+
+  initForm(form) {
+    this.planificacionForm = this.fb.group({
+      action: "i",
+      codPlanifBefore: null,
+      codFinca: this.codfinca,
+      comentario: null,
+      codTipoCultivo: null,
+      variedadCultivo: "",
+      cantidadCultivo: 0,
+      produccionEsperada: 0,
+      cicloUnico: false,
+      parcelas: [],
+      cultivos: [{}]
+
+
+    });
+
+    this.imprimir();
+  }
+
+  imprimir() {
+    console.warn(this.planificacionForm.value);
+  }
+  imprimirParcelasToSend() {
+    console.warn(this.parcelasToSend);
+  }
+
+  procesarInputs() {
+    let nodeList: any;
+    nodeList = document.querySelectorAll("input[id*=cuadro-id-]:checked");
+
+    for (let index = 0; index < nodeList.length; index++) {
+      const inputElement = nodeList[index];
+      this.parcelasToSend = this.parcelas;
+      this.parcelasToSend.map(parcela => {
+        parcela.cuadros.map(cuadro => {
+          if (cuadro.id == inputElement.id) {
+            cuadro.isActive = true;
+          }
+        });
+      });
+    }
+  }
+
+  procesarParcelasToSend() {
+    let jsonToSend = {};
+
+    jsonToSend['parcelas'] = [];
+
+    this.parcelasToSend.map(parcela => {
+      let jsonParcela = {};
+      parcela.cuadros.map(cuadro => {
+        if (cuadro.isActive) {
+          jsonParcela['codParcela'] = parcela.codParcela;
+          if (jsonParcela['cuadros'] == null) jsonParcela['cuadros'] = [];
+          jsonParcela['cuadros'].push({
+            codCuadro: cuadro.codCuadro,
+            nombreCuadro: cuadro.nombreCuadro
+          })
+
+        }
+      });
+      debugger;
+      if (jsonParcela['cuadros'] != null) jsonToSend['parcelas'].push(jsonParcela);
+
+    });
+
+    if (jsonToSend['parcelas'].length > 0) {
+      return jsonToSend;
+    } else {
+      return {}
+    }
+  }
+
+  procesarFormGroup(parcelas: any) {
+    let form = this.planificacionForm.value;
+    this.planificacionForm.patchValue({
+      cultivos: [{
+        codTipoCultivo: parseInt(form.codTipoCultivo),
+        cantidadCultivo: form.cantidadCultivo,
+        produccionEsperada: form.produccionEsperada,
+        variedadCultivo: form.variedadCultivo,
+        cicloUnico: form.cicloUnico,
+        parcelas: parcelas
+      }]
+
+    });
+
+    //delete this.planificacionForm.value.codTipoCultivo;
+    //delete this.planificacionForm.value.cantidadCultivo;
+    //delete this.planificacionForm.value.produccionEsperada;
+    //delete this.planificacionForm.value.variedadCultivo;
+    //delete this.planificacionForm.value.cicloUnico;
+    //delete this.planificacionForm.value.parcelas;
+
+  }
+
+  procesarForm() {
+    this.procesarInputs();
+    let parcelasConCuadros = this.procesarParcelasToSend();
+
+    if (parcelasConCuadros != {}) {
+      this.procesarFormGroup(parcelasConCuadros['parcelas']);
+    }
+
+
+  }
+
+
+  procesarTipoCultivo(event) {
+    const selectEl = event.target;
+    const optionText = selectEl.options[selectEl.selectedIndex].innerText;
+    const optionValue = selectEl.value;
+    console.log('optionValue',optionValue);
+
+    this.planificacionForm.value.codTipoCultivo = optionValue;
+
+  }
+
 
   async agregarCuadros() {
 
@@ -139,8 +320,8 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       reverseButtons: true,
       preConfirm: () => {
         // Aqui se debe realizar la validacion de todos los campos seleccionados
-        this.parcelaArray.push(['Parcela 1', '1,2,3']);
-        this.parcelaArray.push(['Parcela 2', '2,3,4']);
+        this.tablaParcelaArray.push(['Parcela 1', '1,2,3']);
+        this.tablaParcelaArray.push(['Parcela 2', '2,3,4']);
         this.mostrarTablaParcelas = true;
 
       }
@@ -149,7 +330,9 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    this._planificacionService.guardarPlanificacion('inicial');
+    this.procesarForm();
+
+    console.warn(this.planificacionForm.value);
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success ml-1',
@@ -157,17 +340,26 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       buttonsStyling: false
     })
 
-    swalWithBootstrapButtons.fire({
-      title: '¡Exito!',
-      text: 'Se creo la planificación inicial correctamente.',
-      type: 'success',
-      confirmButtonText: 'Salir',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.value) {
-        this.router.navigate(['/planificacion/verPlanificacionInicial']);
-      }
-    });
+    this.subscriptions.push(
+      this._planificacionService.guardarPlanificacion(this.planificacionForm.value).subscribe(
+        result =>{
+          swalWithBootstrapButtons.fire({
+            title: '¡Exito!',
+            text: result.message,
+            type: 'success',
+            confirmButtonText: 'Salir',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.value) {
+              this.router.navigate(['/planificacion/verPlanificacionInicial']);
+            }
+          });
+
+        },
+        error => this.onHttpError({ message: error.error.message})
+      )
+    );
+
 
 
   }
