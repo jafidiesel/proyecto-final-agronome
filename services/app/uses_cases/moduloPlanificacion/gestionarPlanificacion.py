@@ -228,88 +228,64 @@ def getPlanificaciones(data,currentUser):
                         
                         cultivoDto.append(gruposList)
                     planificacionDto.append(cultivoDto)
-                planificacionesDtoList.append(planificacionDto)
+                    planificacionesDtoList.append(planificacionDto)
                 return planificacionesDtoList
                 
                           
 def toDict(planificacionesDtoList):
     print(planificacionesDtoList)
-    planificacionesDto = []
+    planificacionesDto = {}
     for planificacionData in planificacionesDtoList:
-        planificacionDto = []
         planificacionRst = planificacionData.__getitem__(0)
-        print('Item 0')
-        print(planificacionRst)
-        print('Item 1')
-        print(planificacionData.__getitem__(1))
         cultivoDto = []
         cultivoRst = planificacionData.__getitem__(1).__getitem__(0)
-        print('CULTIVO')
-        print(cultivoRst)
         grupoList =[]
         for grupoData in planificacionData.__getitem__(1).__getitem__(1):         
-            print('Grupo data')   
-            print(grupoData)                     
             grupoRst = grupoData.__getitem__(0)                    
             parcelaData = grupoData.__getitem__(1)
             parcelaDto = []
             parcelaRst = parcelaData.__getitem__(0)
             cuadrosDto = []
-            print('Parcela data')   
-            print(parcelaData) 
             for cuadroData in parcelaData.__getitem__(1):
-                print('Cuadro Data')
-                print(cuadroData)
-                cuadro = cuadroData.__dict__
-                cuadro.pop('_sa_instance_state', None)
-                cuadro.pop('codParcela', None)
+                cuadro = dict(codCuadro = cuadroData.codCuadro,nombreCuadro = cuadroData.nombreCuadro)
                 cuadrosDto.append(cuadro)
-            parcela = parcelaRst.__dict__
-            parcela.pop('_sa_instance_state', None)
-            parcela.pop('codFinca',None)
-            parcela.pop('superficie',None)
-            parcela.pop('columnas',None)
-            parcela.pop('filas',None)
+            parcela = dict(codParcela = parcelaRst.codParcela, nombreParcela = parcelaRst.nombrePacela, superficieParcela = parcelaRst.superficieParcela)
             parcela['cuadros'] = cuadrosDto
             parcelaDto.append(parcela)
-            print('PARCELA DTO')
-            print(parcelaDto)
-
-            grupo = grupoRst.__dict__
-            grupo.pop('_sa_instance_state', None)
-            grupo.pop('codFinca', None)
-            grupo.pop('cuadroCultivoList',None)
-            grupo['parcela'] = parcelaDto
-            grupoList.append(grupo)
-            print('GRUPO DTO')
-            print(grupoList)
+            grupoCuadro = dict(cod =grupoRst.cod)
+            grupoCuadro['parcelas'] = parcelaDto
+            grupoList.append(grupoCuadro)
+            
         tipoCultivoRst = cultivoRst.tipoCultivoR
-        tipoCultivoData = tipoCultivoRst.__dict__
-        cultivo = cultivoRst.__dict__
-        tipoCultivoData.pop('_sa_instance_state', None)
-        tipoCultivoData.pop('nombreNomenclador', None)
-        cultivo.pop('_sa_instance_state', None)
-        cultivo.pop('tipoCultivo', None)
-        cultivo['tipoCultivo'] = tipoCultivoData
+        cultivo = dict(cod =cultivoRst.cod,cantidadCultivo = cultivoRst.cantidadCultivo, produccionEsperada= cultivoRst.produccionEsperada, variedadCultivo = cultivoRst.variedadCultivo, cicloUnico = cultivoRst.cicloUnico)
+        cultivo['tipoCultivo'] = dict(cod = tipoCultivoRst.cod,nombre = tipoCultivoRst.nombre)
+        cultivo['grupos'] = grupoList
         cultivoDto.append(cultivo)
-    tipoPlanificacionRst = planificacionRst.tipoPlanificacion
-    estadoPlanificacionRst = planificacionRst.estadoPlanificacion
-    tipoPlanificacionData = tipoPlanificacionRst.__dict__
-    estadoPlanificacionData = estadoPlanificacionRst.__dict__
-    planificacion = planificacionRst.__dict__
-    tipoPlanificacionData.pop('_sa_instance_state', None)
-    tipoPlanificacionData.pop('nombreNomenclador', None)
-    estadoPlanificacionData.pop('_sa_instance_state', None)
-    estadoPlanificacionData.pop('nombreNomenclador', None)
-    planificacion.pop('_sa_instance_state', None)
-    planificacion.pop('codEstadoPlanificacion', None)
-    planificacion.pop('codUsuario', None)
-    planificacion.pop('codTipoPlanificacion', None)
-    planificacion['estadoPlanificacion'] = estadoPlanificacionData
-    planificacion['tipoPlanificacion'] = tipoPlanificacionData
-    planificacionDto.append(planificacion)
+        
+        fchP = planificacionRst.fchPlanificacion.strftime("%d-%m-%Y %H:%M:%S")
+        
+        
+        tipoPlanificacionRst = planificacionRst.tipoPlanificacion
+        estadoPlanificacionRst = planificacionRst.estadoPlanificacion
+        planificacion = dict(cod = planificacionRst.cod, fchPlanificacion= fchP, comentarioPlanificacion= planificacionRst.comentarioPlanificacion)
+        tipoPlanificacionData = dict(cod = tipoPlanificacionRst.cod, nombre = tipoPlanificacionRst.nombre, isActiv = tipoPlanificacionRst.isActiv)
+        estadoPlanificacionData = dict(cod = estadoPlanificacionRst.cod, nombre = estadoPlanificacionRst.nombre, isActiv = estadoPlanificacionRst.isActiv)
+        
+        
+        planificacion['estadoPlanificacion'] = estadoPlanificacionData
+        planificacion['tipoPlanificacion'] = tipoPlanificacionData
+        planificacion['cultivo'] = cultivoDto 
 
-    planificacionesDto.append(planificacionDto)
+        print('TIPO PLANIFICACION')
+        print(tipoPlanificacionRst.nombre)
+        print(tipoPlanificacionRst.cod)
+        if tipoPlanificacionRst.cod == 1:
+            planificacionesDto['inicial'] = planificacion
+        elif tipoPlanificacionRst.cod == 2:
+            planificacionesDto['supervisada'] = planificacion
+        elif tipoPlanificacionRst.cod == 3:
+            planificacionesDto['final'] = planificacion 
+        """planificacionesDto['inicial'] = planificacion """
     return planificacionesDto
 
                                 
