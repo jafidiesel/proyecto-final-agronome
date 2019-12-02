@@ -287,5 +287,15 @@ def toDict(planificacionesDtoList):
         """planificacionesDto['inicial'] = planificacion """
     return planificacionesDto
 
-                                
-                            
+
+
+
+
+
+def hlCancelAllPlanif(grupoPlanificacion):
+    estadoCancelar = getNomencladoCod('estadoPlanificacion',3)
+    planifList = grupoPlanificacion.planificaciones
+    for planif in planifList:
+        updateEstadoPlanificacion(planif,estadoCancelar)
+    
+    return
