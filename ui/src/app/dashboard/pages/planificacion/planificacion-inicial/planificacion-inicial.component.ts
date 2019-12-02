@@ -14,7 +14,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
-  codfinca: number;
+  codFinca: number;
 
   parcelas = [];
   parcelasToSend = [];
@@ -48,7 +48,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     //this.parcelaArray.push([ 'Parcela 1', '1,2,3' ]);
     this.mostrarTablaParcelas = true;
 
-    this.codfinca = parseInt(this.auth.getCurrentCodFinca());
+    this.codFinca = parseInt(this.auth.getCurrentCodFinca());
 
     this.subscriptions.push(
       this._configuracionService.getListaNomencladoresConFiltro('tipoCultivo', true).subscribe(
@@ -62,12 +62,11 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.push(
-      this._planificacionService.getParcelasLibres(this.codfinca).subscribe(
+      this._planificacionService.getParcelasLibres(this.codFinca).subscribe(
         result => {
           result.parcelas.map(element => this.parcelas.push(element))
           this.initForm(result.parcelas);
           this.addIdsToCuadros(this.parcelas);
-          console.log('this.parcelas', this.parcelas);
 
         },
         error => this.onHttpError({ message: error.error.message })
@@ -121,7 +120,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     this.planificacionForm = this.fb.group({
       action: "i",
       codPlanifBefore: null,
-      codFinca: this.codfinca,
+      codFinca: this.codFinca,
       comentario: null,
       codTipoCultivo: null,
       variedadCultivo: "",
@@ -134,7 +133,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
     });
 
-    this.imprimir();
   }
 
   imprimir() {
@@ -179,7 +177,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
         }
       });
-      debugger;
       if (jsonParcela['cuadros'] != null) jsonToSend['parcelas'].push(jsonParcela);
 
     });
@@ -230,7 +227,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
     const optionValue = selectEl.value;
-    console.log('optionValue',optionValue);
 
     this.planificacionForm.value.codTipoCultivo = optionValue;
 
