@@ -10,18 +10,28 @@
         <div class="m-3">
             <div class="card-columns">
                 <div *ngFor="let planificacion of planificacionesArray" class="card border-gray col-3 m-3 text-center"
-                    style="min-width: 300px;">
-                    <h5 class="card-title mt-2">
-                        <b>{{ planificacion[0] }}</b>
-                    </h5>
+                    style="min-width: 200px;">
+                    <h6 class="card-title mt-2 text-capitalize">
+                        <b>{{ planificacion.nombreGrupoPlanificacion }}</b>
+                    </h6>
                     <div class="card-body">
-                        <p><b>Último estado: </b>{{ planificacion[1] }}</p>
-                        <button class="btn btn-primary" [routerLink]="[ planificacion[3] ]"
-                            routerLinkActive="router-link-active">Ver</button>
+                        <p><b>Estado: </b>{{ planificacion.planificacion.nombre }}</p>
+                        <div [ngSwitch]="planificacion.planificacion.cod">
+                            <button *ngSwitchCase="1" class="btn btn-primary"
+                                [routerLink]="['/planificacion/verPlanificacionInicial/' + planificacion.cod]"
+                                routerLinkActive="router-link-active">Ver</button>
+                            <button *ngSwitchCase="2" class="btn btn-primary"
+                                [routerLink]="['/planificacion/verPlanificacionSupervisada/' + planificacion.cod]"
+                                routerLinkActive="router-link-active">Ver</button>
+                            <button *ngSwitchCase="3" class="btn btn-primary"
+                                [routerLink]="['/planificacion/verPlanificacionFinal/' + planificacion.cod]"
+                                routerLinkActive="router-link-active">Ver</button>
+                        </div>
+
                     </div>
                     <div class="card-footer ">
                         <hr>
-                        <p> <b>Fecha de creación:</b> {{ planificacion[2] }}</p>
+                        <p> <b>Fecha de creación:</b> {{ planificacion.fchCreacion | date: 'dd/MM/yyyy' }}</p>
                     </div>
                 </div>
             </div>

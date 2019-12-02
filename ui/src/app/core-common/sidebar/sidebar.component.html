@@ -25,8 +25,8 @@
           <p>Finca {{nombreFinca[0]}}</p>
         </a>
       </li>
-      <li class="elementMenu" id="planificacion" (click)="setActive('planificacion')" >
-        <a disabled routerLink="/planificacion/listarPlanificaciones" routerLinkActive="active"  *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'">
+      <li class="elementMenu" id="grupo" (click)="setActive('grupo')" >
+        <a disabled routerLink="/planificacion/listarGrupos" routerLinkActive="active"  *ngIf="rol == 'encargadofinca' || rol == 'ingeniero'">
           <i>
             <fa-icon [icon]="faListAlt" class="mr-1"></fa-icon>
           </i>
