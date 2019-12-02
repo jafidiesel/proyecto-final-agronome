@@ -17,7 +17,7 @@ def getParcelasLibres(data):
             if cuadrosNoRepetidos:
                 dtoParcelaLibre.append(datoParcelaGeneral.__getitem__(0))
                 dtoParcelaLibre.append(list(cuadrosNoRepetidos))
-            dtoGeneralLibre.append(dtoParcelaLibre)
+                dtoGeneralLibre.append(dtoParcelaLibre)
 
     #Extraer Finca de Json
     codFincaJson = data
