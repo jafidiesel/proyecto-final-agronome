@@ -12,6 +12,8 @@ export class ListarGruposComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   codfinca: number;
 
+  planificacionesArray = [];
+
   // banderas de error
   postSuccess = false;
   postError = false;
@@ -28,7 +30,8 @@ export class ListarGruposComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this._planificacionService.getPlanificacionesCreadas(this.codfinca).subscribe(
         result => {
-          console.log('result',result);
+          result.map(planificacion => this.planificacionesArray.push(planificacion));
+          console.log('this.planificacionesArray',this.planificacionesArray);
         },
         error => this.onHttpError({ message: error.error.message })
       )
