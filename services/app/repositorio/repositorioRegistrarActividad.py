@@ -1,9 +1,15 @@
 from app.extensions import db
+from app.repositorio.repositorioLibroCampo import selectLibroCod
 from app.model.hlmodel import ActividadDetalle, ActivDetalleParam, Parametro
 from sqlalchemy import desc
 
 def selectActivDetalle(): 
     objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
+    return  objetos 
+
+def selectActivDetalleOrder(codLibroCampo): 
+    libroCampo = selectLibroCod(codLibroCampo)
+    objetos = ActividadDetalle.query.filter(ActividadDetalle.isEliminado==False and ActividadDetalle.libroCampoActivDetalle == libroCampo).order_by(desc(ActividadDetalle.fchActivDetalle)).all()
     return  objetos 
 
 def selectActivDetalleCod(codActivDetalle):
