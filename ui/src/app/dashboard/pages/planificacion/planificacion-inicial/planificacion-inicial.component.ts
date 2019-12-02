@@ -108,7 +108,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     let id = "cuadro-id-";
     let numero = 0;
     let resultArray = parcelasArray.map(parcela => {
-      //debugger;
       parcela.cuadros.map(cuadro => {
         cuadro.id = (id + numero);
         cuadro.isActive = false;
@@ -124,7 +123,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
       codPlanifBefore: null,
       codFinca: this.codfinca,
       comentario: null,
-      codTipoCultivo: 0,
+      codTipoCultivo: null,
       variedadCultivo: "",
       cantidadCultivo: 0,
       produccionEsperada: 0,
@@ -156,7 +155,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
         parcela.cuadros.map(cuadro => {
           if (cuadro.id == inputElement.id) {
             cuadro.isActive = true;
-            console.log('true en', cuadro.id);
           }
         });
       });
@@ -165,7 +163,6 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
   procesarParcelasToSend() {
     let jsonToSend = {};
-    debugger;
 
     jsonToSend['parcelas'] = [];
 
@@ -182,7 +179,8 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
         }
       });
-      if (jsonParcela != {}) jsonToSend['parcelas'].push(jsonParcela);
+      debugger;
+      if (jsonParcela['cuadros'] != null) jsonToSend['parcelas'].push(jsonParcela);
 
     });
 
@@ -197,7 +195,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     let form = this.planificacionForm.value;
     this.planificacionForm.patchValue({
       cultivos: [{
-        codTipoCultivo: form.codTipoCultivo,
+        codTipoCultivo: parseInt(form.codTipoCultivo),
         cantidadCultivo: form.cantidadCultivo,
         produccionEsperada: form.produccionEsperada,
         variedadCultivo: form.variedadCultivo,
@@ -207,12 +205,12 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
 
     });
 
-    delete this.planificacionForm.value.codTipoCultivo;
-    delete this.planificacionForm.value.cantidadCultivo;
-    delete this.planificacionForm.value.produccionEsperada;
-    delete this.planificacionForm.value.variedadCultivo;
-    delete this.planificacionForm.value.cicloUnico;
-    delete this.planificacionForm.value.parcelas;
+    //delete this.planificacionForm.value.codTipoCultivo;
+    //delete this.planificacionForm.value.cantidadCultivo;
+    //delete this.planificacionForm.value.produccionEsperada;
+    //delete this.planificacionForm.value.variedadCultivo;
+    //delete this.planificacionForm.value.cicloUnico;
+    //delete this.planificacionForm.value.parcelas;
 
   }
 
@@ -232,8 +230,9 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
     const selectEl = event.target;
     const optionText = selectEl.options[selectEl.selectedIndex].innerText;
     const optionValue = selectEl.value;
+    console.log('optionValue',optionValue);
 
-    this.planificacionForm.value.cultivos.codTipoCultivo = optionValue;
+    this.planificacionForm.value.codTipoCultivo = optionValue;
 
   }
 
@@ -346,7 +345,7 @@ export class PlanificacionInicialComponent implements OnInit, OnDestroy {
         result =>{
           swalWithBootstrapButtons.fire({
             title: '¡Exito!',
-            text: 'Se creo la planificación inicial correctamente.',
+            text: result.message,
             type: 'success',
             confirmButtonText: 'Salir',
             reverseButtons: true

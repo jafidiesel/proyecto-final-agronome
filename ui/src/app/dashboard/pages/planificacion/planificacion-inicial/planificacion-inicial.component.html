@@ -14,7 +14,7 @@
                                     <label for="cultivoInicial">Seleccione un tipo de cultivo <b>*</b></label>
                                     <select class="custom-select text-capitalize" id="cultivoInicial"
                                         *ngIf="tipoCultivoArray != '' else loading1"
-                                        (click)="procesarTipoCultivo($event)" >
+                                          formControlName="codTipoCultivo" >
                                         <option *ngFor="let tipoCultivo of tipoCultivoArray" [value]="tipoCultivo[0]"
                                             class="text-capitalize">
                                             {{tipoCultivo[1]}}</option>
